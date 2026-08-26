@@ -1,0 +1,50 @@
+AwareML — CI / Reproducibility Hotfix
+
+PURPOSE
+-------
+Fix the GitHub Actions failures after the Phase-9.6 re-freeze.
+
+The previous CI had these reproducibility problems:
+1. GitHub Actions used Python 3.9 even though AwareML is frozen on CPython 3.8.10.
+2. The frozen Phase-6 runtime model requires XGBoost 2.1.4, but main requirements did not install it.
+3. An old Phase-3 ChaCha test still called the removed pre-OVR private API.
+4. The OAML job used Python 3.9, causing River 0.8.0 to build from source instead of using its CPython-3.8 wheel.
+
+FILES CHANGED
+-------------
+.github/workflows/ci.yml
+requirements.txt
+requirements-optional.txt
+tests/test_phase3_hardening.py
+
+APPLY
+-----
+cd C:\Users\maheshwari\PycharmProjects\AwareML_Extension
+Expand-Archive -Path "$HOME\Downloads\AwareML_CI_Repro_Hotfix.zip" -DestinationPath . -Force
+
+LOCAL CHECKS
+------------
+python -c "import sys; print(sys.version)"
+python -c "import xgboost; print(xgboost.__version__)"
+pytest .\tests\test_phase3_hardening.py -q
+pytest .\tests\test_recommender_v2_final.py -q
+pytest -q
+
+PUSH
+----
+git add -A
+git commit -m "Fix CI reproducibility for Python 3.8.10 and frozen Recommender V2"
+git push origin main
+
+EXPECTED GITHUB ACTIONS
+-----------------------
+main-stack                -> green
+oaml-river-compatibility  -> green
+
+NOTES
+-----
+- Project runtime remains exactly CPython 3.8.10.
+- Main River remains 0.10.1.
+- OAML compatibility remains River 0.8.0 in its isolated CI job.
+- River 0.8.0 has a CPython-3.8 manylinux wheel, so the CI job forces binary installation instead of source building.
+- No framework results, model files, benchmark artifacts, held-out datasets, or Phase-9 freeze outputs are changed.

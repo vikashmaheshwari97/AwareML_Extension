@@ -20,3 +20,8 @@ openpyxl==3.1.5
 
 # Phase 6 — canonical Parquet snapshots
 pyarrow==17.0.0
+
+# Phase 6 frozen Recommender V2 runtime dependency.
+# runtime.joblib was selected as an XGBoost model, so this is required
+# whenever the frozen recommender is loaded.
+xgboost==2.1.4

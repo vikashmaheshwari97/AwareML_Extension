@@ -64,9 +64,11 @@ class FakeAutoVW:
     def __init__(self):
         self.ready = False
         self.learn_calls = 0
+
     def predict(self, example):
         self.ready = True
         return 0.5
+
     def learn(self, example):
         assert self.ready
         self.learn_calls += 1
@@ -74,20 +76,37 @@ class FakeAutoVW:
 
 def test_chacha_native_warmup_calls_predict_before_learn():
     import pytest
+
     pytest.importorskip("river")
     from awareml.frameworks.chacha import ChaChaAdapter
+
+    # Build only the minimal native OVR state required for this unit test.
+    # The old Phase-3 private API (_native_predict/_native_learn) was replaced
+    # by the public predict_one/learn_one path when the AwareML OVR extension
+    # was introduced.
     obj = ChaChaAdapter.__new__(ChaChaAdapter)
+    obj._native_available = True
+    obj._fallback_active = False
+    obj._labels = []
+    obj._ovr_models = {}
     obj.autovw = FakeAutoVW()
-    obj._label_to_vw = {}
-    obj._vw_to_label = {}
     obj.native_error = None
-    pred = obj._native_predict({"x": 1.0})
-    assert pred is None
-    assert obj._native_learn({"x": 1.0}, 0) is True
+    obj._AutoVW = None
+    obj._loguniform = None
+
+    assert obj.predict_one({"x": 1.0}) is None
+
+    # The first class reuses obj.autovw. learn_one() must prime that AutoVW
+    # learner with predict() immediately before learn().
+    obj.learn_one({"x": 1.0}, 0)
+
     assert obj.autovw.learn_calls == 1
+    assert obj._labels == [0]
+    assert obj._ovr_models[0] is obj.autovw
 
 
 def test_phase3_default_sensitive_policy_is_audit_only():
     from awareml.types import RunConfig
+
     cfg = RunConfig(target="target", sensitive_attribute="sex")
     assert cfg.sensitive_feature_policy == "audit_only"
