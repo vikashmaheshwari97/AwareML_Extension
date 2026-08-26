@@ -1,0 +1,11 @@
+# Research/native backends for the MAIN environment.
+# OAML/GAMA and EvoAutoML are intentionally isolated elsewhere.
+codecarbon==3.0.7
+shap==0.44.1
+lime==0.2.0.1
+xgboost==2.1.4
+FLAML==2.3.4
+vowpalwabbit==9.10.0
+graphviz==0.20.3
+matplotlib==3.7.5
+statsmodels==0.14.1

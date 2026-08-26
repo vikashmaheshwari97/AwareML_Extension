@@ -1,0 +1,4 @@
+JobID             State ExitCode    Elapsed        NodeList 
+------------ ---------- -------- ---------- --------------- 
+738005_0      COMPLETED      0:0   00:01:11          ares14 
+738005_6      COMPLETED      0:0   00:01:30          ares14 

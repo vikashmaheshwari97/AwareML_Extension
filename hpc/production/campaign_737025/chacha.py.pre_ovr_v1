@@ -1,0 +1,250 @@
+from __future__ import annotations
+
+import math
+import re
+from typing import Any
+import numpy as np
+from river import metrics, preprocessing, linear_model, naive_bayes, tree
+
+from .base import BaseStreamingFramework
+from .common import safe_metric_value
+
+
+class ChaChaAdapter(BaseStreamingFramework):
+    """ChaCha adapter using FLAML's native AutoVW when available.
+
+    AutoVW operates on Vowpal Wabbit examples, so AwareML converts the encoded streaming
+    feature dictionary into VW format. For binary classification, labels are mapped to
+    ``-1/+1`` and logistic-link predictions are mapped back to the original labels.
+
+    If native AutoVW cannot initialize for the local FLAML/VW build, the adapter falls back
+    to the previous transparent UCB River expert scheduler and records the failure in params.
+    """
+
+    name = "ChaCha"
+
+    def __init__(self, seed: int = 42, exploration: float = 1.2):
+        super().__init__(seed)
+        self.exploration = float(exploration)
+        self.native_error = None
+        self._label_to_vw: dict[Any, int] = {}
+        self._vw_to_label: dict[int, Any] = {}
+        self.autovw = None
+        self._try_native()
+        if self.autovw is None:
+            self._build_fallback()
+
+    @staticmethod
+    def _safe_name(value: str) -> str:
+        value = re.sub(r"[^A-Za-z0-9_]", "_", str(value))
+        return value or "f"
+
+    def _try_native(self) -> None:
+        try:
+            from flaml.onlineml.autovw import AutoVW
+            from flaml.tune import loguniform
+
+            # FLAML AutoVW expects FLAML Domain objects (for example
+            # ``flaml.tune.loguniform``), not the JSON-style search-space
+            # dictionaries accepted by some other tuning APIs.  Loss/link are
+            # fixed VW options; learning rate and regularization are the live
+            # ChaCha search dimensions.
+            search_space = {
+                "learning_rate": loguniform(lower=0.005, upper=0.8),
+                "l1": loguniform(lower=1e-10, upper=1e-3),
+                "l2": loguniform(lower=1e-10, upper=1e-2),
+                "loss_function": "logistic",
+                "link": "logistic",
+            }
+            self.autovw = AutoVW(
+                max_live_model_num=4,
+                search_space=search_space,
+                init_config={
+                    "learning_rate": 0.1,
+                    "l1": 1e-8,
+                    "l2": 1e-6,
+                    "loss_function": "logistic",
+                    "link": "logistic",
+                },
+                metric="mae_clipped",
+                random_seed=self.seed,
+                model_selection_mode="min",
+            )
+            self.backend = "FLAML AutoVW / ChaCha native"
+        except Exception as exc:
+            self.autovw = None
+            self.native_error = f"{type(exc).__name__}: {exc}"
+            self.backend = "transparent-UCB-fallback (AutoVW init failed)"
+
+    def _register_label(self, y: Any) -> None:
+        if y in self._label_to_vw:
+            return
+        if len(self._label_to_vw) >= 2:
+            return
+        code = -1 if len(self._label_to_vw) == 0 else 1
+        self._label_to_vw[y] = code
+        self._vw_to_label[code] = y
+
+    def _vw_features(self, x: dict[str, float]) -> str:
+        parts = []
+        for k, v in x.items():
+            try:
+                fv = float(v)
+                if np.isfinite(fv):
+                    parts.append(f"{self._safe_name(k)}:{fv:.12g}")
+            except Exception:
+                continue
+        return "|x " + " ".join(parts)
+
+    def _vw_labeled(self, x: dict[str, float], y: Any) -> str | None:
+        self._register_label(y)
+        code = self._label_to_vw.get(y)
+        if code is None:
+            return None
+        return f"{code} {self._vw_features(x)}"
+
+    def _native_predict(self, x: dict[str, float]) -> Any:
+        if self.autovw is None:
+            return None
+        try:
+            # AutoVW.learn() requires a preceding predict() because predict()
+            # initializes the OnlineTrialRunner and stores (_y_predict, _best_trial).
+            # We therefore call native predict even during the one-label warm-up,
+            # although no AwareML class prediction can be returned until both
+            # binary labels have been observed.
+            raw = self.autovw.predict(self._vw_features(x))
+            if len(self._vw_to_label) < 2:
+                return None
+            if isinstance(raw, (list, tuple, np.ndarray)):
+                raw = np.asarray(raw).reshape(-1)[0]
+            val = float(raw)
+            code = 1 if (val >= 0.5 if 0.0 <= val <= 1.0 else val >= 0.0) else -1
+            return self._vw_to_label.get(code)
+        except Exception as exc:
+            self.native_error = f"predict: {type(exc).__name__}: {exc}"
+            return None
+
+    def _native_learn(self, x: dict[str, float], y: Any) -> bool:
+        if self.autovw is None:
+            return False
+        example = self._vw_labeled(x, y)
+        if example is None:
+            # Native binary AutoVW path cannot represent a third class safely.
+            self.native_error = "AutoVW native adapter currently supports binary classification only."
+            return False
+        try:
+            self.autovw.learn(example)
+            return True
+        except Exception as exc:
+            self.native_error = f"learn: {type(exc).__name__}: {exc}"
+            return False
+
+    # ------------------------------ transparent fallback ------------------------------
+    def _build_fallback(self):
+        self.experts = [
+            preprocessing.StandardScaler() | linear_model.LogisticRegression(),
+            naive_bayes.GaussianNB(),
+            tree.HoeffdingTreeClassifier(grace_period=100),
+        ]
+        self.metrics = [metrics.Accuracy() for _ in self.experts]
+        self.pulls = np.zeros(len(self.experts), dtype=int)
+        self.total = 0
+        self.last_choice = 0
+
+    def _choose(self) -> int:
+        self.total += 1
+        for i, n in enumerate(self.pulls):
+            if n == 0:
+                return i
+        means = np.array([safe_metric_value(m) for m in self.metrics], dtype=float)
+        bonus = self.exploration * np.sqrt(np.log(max(2, self.total)) / self.pulls)
+        return int(np.argmax(means + bonus))
+
+    def _fallback_predict(self, x: dict[str, float]) -> Any:
+        self.last_choice = self._choose()
+        try:
+            return self.experts[self.last_choice].predict_one(x)
+        except Exception:
+            return None
+
+    def _fallback_learn(self, x: dict[str, float], y: Any) -> None:
+        for i, expert in enumerate(self.experts):
+            try:
+                pred = expert.predict_one(x)
+                if pred is not None:
+                    self.metrics[i].update(y, pred)
+                expert.learn_one(x, y)
+            except Exception:
+                continue
+        self.pulls[self.last_choice] += 1
+
+    def predict_one(self, x: dict[str, float]) -> Any:
+        if self.autovw is not None:
+            return self._native_predict(x)
+        return self._fallback_predict(x)
+
+
+    def predict_proba_one(self, x: dict[str, float]):
+        if self.autovw is not None and len(self._vw_to_label) >= 2:
+            try:
+                raw = self.autovw.predict(self._vw_features(x))
+                if isinstance(raw, (list, tuple, np.ndarray)):
+                    raw = np.asarray(raw).reshape(-1)[0]
+                value = float(raw)
+                p_pos = value if 0.0 <= value <= 1.0 else 1.0 / (1.0 + math.exp(-value))
+                neg = self._vw_to_label.get(-1)
+                pos = self._vw_to_label.get(1)
+                if neg is not None and pos is not None:
+                    return {neg: float(1.0 - p_pos), pos: float(p_pos)}
+            except Exception:
+                return None
+
+        probs = []
+        for expert in getattr(self, "experts", []):
+            try:
+                fn = getattr(expert, "predict_proba_one", None)
+                value = fn(x) if fn is not None else None
+                if isinstance(value, dict) and value:
+                    probs.append(value)
+            except Exception:
+                continue
+        if not probs:
+            return None
+        labels = set()
+        for value in probs:
+            labels.update(value.keys())
+        out = {label: float(np.mean([float(value.get(label, 0.0) or 0.0) for value in probs])) for label in labels}
+        total = sum(max(0.0, v) for v in out.values())
+        return ({k: max(0.0, v) / total for k, v in out.items()} if total > 0 else None)
+
+    def learn_one(self, x: dict[str, float], y: Any) -> None:
+        if self.autovw is not None:
+            ok = self._native_learn(x, y)
+            if ok:
+                return
+            # If native learning fails at runtime, switch explicitly rather than silently.
+            self.autovw = None
+            self.backend = "transparent-UCB-fallback (AutoVW runtime failure)"
+            self._build_fallback()
+        self._fallback_learn(x, y)
+
+    def reset(self) -> None:
+        self._label_to_vw = {}
+        self._vw_to_label = {}
+        self.native_error = None
+        self.autovw = None
+        self._try_native()
+        if self.autovw is None:
+            self._build_fallback()
+
+    def get_params(self) -> dict:
+        data = {
+            **super().get_params(),
+            "native_autovw_active": self.autovw is not None,
+            "native_error": self.native_error,
+            "exploration": self.exploration,
+            "label_count": len(self._label_to_vw),
+        }
+        if hasattr(self, "pulls"):
+            data["arm_pulls"] = self.pulls.tolist()
+        return data

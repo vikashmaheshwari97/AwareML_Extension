@@ -1,0 +1,27 @@
+trust_calibration:
+  conditions: [correct, weak, wrong]
+  explanation_style: matched_template
+  primary_measures:
+    - trust_1_to_7
+    - perceived_correctness_1_to_7
+    - accept_recommendation_boolean
+    - decision_confidence_1_to_7
+    - response_time_seconds
+  primary_outcomes:
+    - wrong_acceptance_rate
+    - trust_discrimination_correct_vs_wrong
+    - trust_reliability_alignment
+  safeguard: "Manipulated recommendations are research-only and never used by operational ranking."
+
+information_seeking:
+  methods: [think_aloud, semi_structured_interview, interaction_log]
+  interaction_measures:
+    - first_answer_accepted
+    - follow_up_depth
+    - evidence_request_count
+    - challenge_count
+    - clarification_count
+    - counterfactual_count
+  privacy:
+    raw_dataset_rows_in_chat_log: false
+    participant_identifier: hashed_session_id

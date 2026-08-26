@@ -1,0 +1,31 @@
+protocol_version: "1.0"
+measurement:
+  backend: CodeCarbon
+  missing_value_policy: null
+  report_zero_when_unmeasured: false
+  country_iso: EST
+repetition:
+  warmup_runs: 1
+  measured_runs: 5
+  seeds: [42, 43, 44, 45, 46]
+  summarize: [mean, standard_deviation, median, bootstrap_95_ci]
+controls:
+  same_machine_per_comparison: true
+  same_sample_cap: true
+  same_time_budget: true
+  close_nonessential_background_jobs: true
+  record_wall_clock_start: true
+hardware_fields:
+  - cpu_model
+  - logical_cpu_count
+  - ram_gb
+  - gpu_model_if_used
+  - operating_system
+  - python_version
+  - codecarbon_version
+carbon_fields:
+  - country_or_region
+  - carbon_intensity_source
+  - timestamp
+notes:
+  - "Energy and CO2 must not be interpreted as independent evidence when they are near-collinear under a fixed carbon intensity."

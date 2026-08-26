@@ -1,0 +1,13 @@
+[project]
+name = "awareml-extension"
+version = "0.3.0"
+description = "Research-grade extension of AwareML for transparent, controllable and sustainable streaming AutoML"
+requires-python = ">=3.8.10,<3.9"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 110

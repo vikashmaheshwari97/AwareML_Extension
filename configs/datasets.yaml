@@ -1,0 +1,33 @@
+# Dataset manifest for the extension paper. Data is not distributed with this repository.
+# `stream_kind` prevents an ordered static dataset from being mislabeled as a native stream.
+datasets:
+  - name: Electricity (Elec2)
+    stream_kind: native_or_temporally_ordered
+    task: binary_classification
+    temporal_rule: preserve_original_order
+    source_note: "Use River/OpenML source according to experiment protocol."
+  - name: Airlines
+    stream_kind: temporally_ordered
+    task: binary_classification
+    temporal_rule: preserve_timestamp_order
+  - name: Covertype
+    stream_kind: ordered_as_stream
+    task: multiclass_classification
+    temporal_rule: preserve_benchmark_order_and_report_limitation
+  - name: Credit Card Fraud
+    stream_kind: temporally_ordered
+    task: imbalanced_binary_classification
+    temporal_rule: preserve_time_order; do_not_shuffle
+  - name: Insects
+    stream_kind: native_stream_benchmark
+    task: multiclass_classification
+    temporal_rule: preserve_original_order
+  - name: RBF drift
+    stream_kind: synthetic
+    task: classification
+    temporal_rule: seeded_generator_with_declared_drift
+
+requirements:
+  - "Use at least one native/temporally ordered real stream in every primary experiment table."
+  - "Do not use random train/test shuffling for streaming evaluation."
+  - "Record dataset version/source, sample cap, feature count, class count and missing-value treatment."

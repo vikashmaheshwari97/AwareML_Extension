@@ -1,0 +1,18 @@
+{
+  "snapshot_id": "legacy_meta_logs_v1_47",
+  "frozen": true,
+  "sha256": "68cbc5096e89893c9fe177e6ca4c8071d7a4e034808727dbd01f24d963410503",
+  "rows": 234,
+  "datasets": 47,
+  "frameworks": {
+    "AutoClass": 47,
+    "AutoStreamML": 47,
+    "EvoAutoML": 47,
+    "OAML": 46,
+    "ChaCha": 47
+  },
+  "research_integrity_notes": [
+    "Legacy CO2 values <= 0 are treated as not measured in V2 readers.",
+    "This file is immutable evidence. New HPC runs must write to artifacts/meta_experiments/<experiment_id>/ and never append here."
+  ]
+}

@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments
+.venv/
+.venv-evo/
+.venv-oaml/
+venv/
+env/
+.conda/
+
+# IDE
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Runtime / temporary outputs
+artifacts/
+hpc/logs/
+*.log
+
+# Local caches
+.cache/
+
+# Large temporary experiment files
+*.tmp
+*.bak
+
+# All project virtual environments
+.venv-*/
+venv-*/
+env-*/

@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  main-stack:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+      - name: Install main stack
+        run: |
+          python -m pip install --upgrade "pip<25"
+          pip install -r requirements.txt -r requirements-dev.txt
+      - name: Verify River pin
+        run: python -c "import river; assert river.__version__ == '0.10.1', river.__version__"
+      - name: Compile
+        run: python -m compileall -q .
+      - name: Tests
+        run: pytest -q
+
+  oaml-river-compatibility:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+      - name: Install OAML River compatibility core
+        run: |
+          python -m pip install --upgrade "pip<25"
+          pip install numpy==1.24.4 pandas==1.5.3 scipy==1.12.0 river==0.8.0
+      - name: Verify River pin
+        run: python -c "import river; assert river.__version__ == '0.8.0', river.__version__"
+      - name: Compile OAML worker
+        run: python -m py_compile awareml/workers/oaml_worker.py
