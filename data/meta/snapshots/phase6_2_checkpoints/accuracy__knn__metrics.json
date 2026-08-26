@@ -1,0 +1,17 @@
+{
+  "target": "accuracy",
+  "model": "kNN",
+  "direction": "maximize",
+  "rows": 235,
+  "mae": 0.08439208048638498,
+  "rmse": 0.11071469026956256,
+  "normalized_mae": 0.13396493198251153,
+  "normalized_rmse": 0.1757497370125816,
+  "r2": 0.6708185706874846,
+  "top1_accuracy": 0.6170212765957447,
+  "top3_accuracy": 0.9148936170212766,
+  "normalized_regret": 0.1295710938993161,
+  "spearman": 0.7170212765957445,
+  "held_out_datasets": 47,
+  "spearman_defined_datasets": 47
+}

@@ -1,0 +1,447 @@
+{
+  "schema_version": "2.0",
+  "row_granularity": "one row per dataset/framework, aggregated over seeds 42/43/44",
+  "row_count": 235,
+  "dataset_count": 47,
+  "framework_count": 5,
+  "framework_counts": {
+    "AutoClass": 47,
+    "AutoStreamML": 47,
+    "ChaCha": 47,
+    "EvoAutoML": 47,
+    "OAML": 47
+  },
+  "primary_objectives": [
+    "accuracy",
+    "runtime",
+    "energy",
+    "co2"
+  ],
+  "input_features": [
+    "framework",
+    "n_samples_dataset",
+    "n_features",
+    "n_numeric_features",
+    "n_categorical_features",
+    "numeric_feature_fraction",
+    "categorical_feature_fraction",
+    "missing_fraction",
+    "n_classes",
+    "majority_class_fraction",
+    "minority_class_fraction",
+    "class_imbalance_ratio",
+    "class_entropy_normalized",
+    "window_size",
+    "time_budget_sec"
+  ],
+  "optional_categorical_features": [
+    "dataset_family",
+    "source_type",
+    "drift_type"
+  ],
+  "targets": {
+    "accuracy": [
+      "accuracy_mean",
+      "accuracy_std"
+    ],
+    "runtime": [
+      "runtime_sec_mean",
+      "runtime_sec_std"
+    ],
+    "energy": [
+      "energy_kwh_mean",
+      "energy_kwh_std"
+    ],
+    "co2": [
+      "co2_kg_mean",
+      "co2_kg_std"
+    ]
+  },
+  "note": "No fixed utility target is stored. Phase 6 predicts the four primary objectives separately and constructs preference-aware utility at inference or evaluation time.",
+  "columns": [
+    {
+      "name": "dataset_id",
+      "dtype": "object",
+      "null_count": 0,
+      "unique_count": 47
+    },
+    {
+      "name": "framework",
+      "dtype": "object",
+      "null_count": 0,
+      "unique_count": 5
+    },
+    {
+      "name": "dataset_family",
+      "dtype": "object",
+      "null_count": 0,
+      "unique_count": 18
+    },
+    {
+      "name": "source_type",
+      "dtype": "object",
+      "null_count": 0,
+      "unique_count": 2
+    },
+    {
+      "name": "drift_type",
+      "dtype": "object",
+      "null_count": 190,
+      "unique_count": 4
+    },
+    {
+      "name": "generator",
+      "dtype": "object",
+      "null_count": 235,
+      "unique_count": 0
+    },
+    {
+      "name": "is_synthetic",
+      "dtype": "object",
+      "null_count": 235,
+      "unique_count": 0
+    },
+    {
+      "name": "n_samples_dataset",
+      "dtype": "int64",
+      "null_count": 0,
+      "unique_count": 14
+    },
+    {
+      "name": "n_features",
+      "dtype": "int64",
+      "null_count": 0,
+      "unique_count": 15
+    },
+    {
+      "name": "n_numeric_features",
+      "dtype": "int64",
+      "null_count": 0,
+      "unique_count": 15
+    },
+    {
+      "name": "n_categorical_features",
+      "dtype": "int64",
+      "null_count": 0,
+      "unique_count": 3
+    },
+    {
+      "name": "numeric_feature_fraction",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 3
+    },
+    {
+      "name": "categorical_feature_fraction",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 3
+    },
+    {
+      "name": "missing_fraction",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 1
+    },
+    {
+      "name": "n_classes",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 7
+    },
+    {
+      "name": "majority_class_fraction",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 47
+    },
+    {
+      "name": "minority_class_fraction",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 47
+    },
+    {
+      "name": "class_imbalance_ratio",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 45
+    },
+    {
+      "name": "class_entropy_normalized",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 47
+    },
+    {
+      "name": "source_size_bytes",
+      "dtype": "int64",
+      "null_count": 0,
+      "unique_count": 46
+    },
+    {
+      "name": "window_size",
+      "dtype": "int64",
+      "null_count": 0,
+      "unique_count": 1
+    },
+    {
+      "name": "time_budget_sec",
+      "dtype": "int64",
+      "null_count": 0,
+      "unique_count": 1
+    },
+    {
+      "name": "max_samples_requested",
+      "dtype": "int64",
+      "null_count": 0,
+      "unique_count": 1
+    },
+    {
+      "name": "seed_count",
+      "dtype": "int64",
+      "null_count": 0,
+      "unique_count": 1
+    },
+    {
+      "name": "seed_values",
+      "dtype": "object",
+      "null_count": 0,
+      "unique_count": 1
+    },
+    {
+      "name": "backend",
+      "dtype": "object",
+      "null_count": 0,
+      "unique_count": 5
+    },
+    {
+      "name": "campaign_id",
+      "dtype": "object",
+      "null_count": 0,
+      "unique_count": 2
+    },
+    {
+      "name": "dataset_sha256",
+      "dtype": "object",
+      "null_count": 0,
+      "unique_count": 47
+    },
+    {
+      "name": "accuracy_max",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 235
+    },
+    {
+      "name": "accuracy_mean",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 235
+    },
+    {
+      "name": "accuracy_min",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 235
+    },
+    {
+      "name": "accuracy_std",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 235
+    },
+    {
+      "name": "co2_kg_max",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 235
+    },
+    {
+      "name": "co2_kg_mean",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 235
+    },
+    {
+      "name": "co2_kg_min",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 235
+    },
+    {
+      "name": "co2_kg_std",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 235
+    },
+    {
+      "name": "energy_kwh_max",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 235
+    },
+    {
+      "name": "energy_kwh_mean",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 235
+    },
+    {
+      "name": "energy_kwh_min",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 235
+    },
+    {
+      "name": "energy_kwh_std",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 235
+    },
+    {
+      "name": "f1_macro_max",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 235
+    },
+    {
+      "name": "f1_macro_mean",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 235
+    },
+    {
+      "name": "f1_macro_min",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 235
+    },
+    {
+      "name": "f1_macro_std",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 235
+    },
+    {
+      "name": "mean_prediction_latency_ms_max",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 235
+    },
+    {
+      "name": "mean_prediction_latency_ms_mean",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 235
+    },
+    {
+      "name": "mean_prediction_latency_ms_min",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 235
+    },
+    {
+      "name": "mean_prediction_latency_ms_std",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 235
+    },
+    {
+      "name": "p95_prediction_latency_ms_max",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 235
+    },
+    {
+      "name": "p95_prediction_latency_ms_mean",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 235
+    },
+    {
+      "name": "p95_prediction_latency_ms_min",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 235
+    },
+    {
+      "name": "p95_prediction_latency_ms_std",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 235
+    },
+    {
+      "name": "runtime_sec_max",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 235
+    },
+    {
+      "name": "runtime_sec_mean",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 235
+    },
+    {
+      "name": "runtime_sec_min",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 235
+    },
+    {
+      "name": "runtime_sec_std",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 235
+    },
+    {
+      "name": "samples_processed_max",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 233
+    },
+    {
+      "name": "samples_processed_mean",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 235
+    },
+    {
+      "name": "samples_processed_min",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 234
+    },
+    {
+      "name": "samples_processed_std",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 235
+    },
+    {
+      "name": "throughput_samples_sec_max",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 235
+    },
+    {
+      "name": "throughput_samples_sec_mean",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 235
+    },
+    {
+      "name": "throughput_samples_sec_min",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 235
+    },
+    {
+      "name": "throughput_samples_sec_std",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 235
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "target": "runtime",
+  "model": "XGBoost",
+  "direction": "minimize",
+  "rows": 235,
+  "mae": 0.018307377768805838,
+  "rmse": 0.11524284729857245,
+  "normalized_mae": 2.0717705718719994,
+  "normalized_rmse": 13.041558581848976,
+  "r2": -0.2868649130885499,
+  "top1_accuracy": 0.3617021276595745,
+  "top3_accuracy": 0.723404255319149,
+  "normalized_regret": 0.23739282900156555,
+  "spearman": 0.2266870385622441,
+  "held_out_datasets": 47,
+  "spearman_defined_datasets": 40
+}

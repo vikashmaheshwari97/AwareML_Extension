@@ -1,0 +1,17 @@
+{
+  "target": "energy",
+  "model": "Ridge",
+  "direction": "minimize",
+  "rows": 235,
+  "mae": 0.0001045957001599091,
+  "rmse": 0.00018833369832851727,
+  "normalized_mae": 0.32254851094181597,
+  "normalized_rmse": 0.580776780146382,
+  "r2": -2.011793081189423,
+  "top1_accuracy": 0.5957446808510638,
+  "top3_accuracy": 1.0,
+  "normalized_regret": 0.1552185166564184,
+  "spearman": 0.697872340425532,
+  "held_out_datasets": 47,
+  "spearman_defined_datasets": 47
+}

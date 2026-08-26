@@ -1,0 +1,17 @@
+{
+  "target": "co2",
+  "model": "FrameworkMean",
+  "direction": "minimize",
+  "rows": 235,
+  "mae": 2.7767830373155375e-05,
+  "rmse": 3.9198024604079977e-05,
+  "normalized_mae": 0.20551051701164327,
+  "normalized_rmse": 0.2901057156416285,
+  "r2": 0.2485169097093024,
+  "top1_accuracy": 0.5957446808510638,
+  "top3_accuracy": 1.0,
+  "normalized_regret": 0.15521851665641825,
+  "spearman": 0.697872340425532,
+  "held_out_datasets": 47,
+  "spearman_defined_datasets": 47
+}

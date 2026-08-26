@@ -1,0 +1,17 @@
+{
+  "target": "accuracy",
+  "model": "HistGradientBoosting",
+  "direction": "maximize",
+  "rows": 235,
+  "mae": 0.10718866123180457,
+  "rmse": 0.13998618563747306,
+  "normalized_mae": 0.17015247910059283,
+  "normalized_rmse": 0.22221563598542615,
+  "r2": 0.4737462691813271,
+  "top1_accuracy": 0.574468085106383,
+  "top3_accuracy": 0.8297872340425532,
+  "normalized_regret": 0.1436673974400331,
+  "spearman": 0.6191489361702126,
+  "held_out_datasets": 47,
+  "spearman_defined_datasets": 47
+}

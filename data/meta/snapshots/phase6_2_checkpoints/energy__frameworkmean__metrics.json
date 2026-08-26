@@ -1,0 +1,17 @@
+{
+  "target": "energy",
+  "model": "FrameworkMean",
+  "direction": "minimize",
+  "rows": 235,
+  "mae": 6.664273958138125e-05,
+  "rmse": 9.407518378964494e-05,
+  "normalized_mae": 0.2055105170116433,
+  "normalized_rmse": 0.2901057156416286,
+  "r2": 0.24851690970930196,
+  "top1_accuracy": 0.5957446808510638,
+  "top3_accuracy": 1.0,
+  "normalized_regret": 0.1552185166564184,
+  "spearman": 0.697872340425532,
+  "held_out_datasets": 47,
+  "spearman_defined_datasets": 47
+}

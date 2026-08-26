@@ -1,0 +1,17 @@
+{
+  "target": "co2",
+  "model": "RandomForest",
+  "direction": "minimize",
+  "rows": 235,
+  "mae": 2.8213894432069136e-05,
+  "rmse": 3.855795489453141e-05,
+  "normalized_mae": 0.2088118500339129,
+  "normalized_rmse": 0.2853685411787657,
+  "r2": 0.27285866668267145,
+  "top1_accuracy": 0.6808510638297872,
+  "top3_accuracy": 0.9787234042553191,
+  "normalized_regret": 0.0954390233665102,
+  "spearman": 0.7468085106382978,
+  "held_out_datasets": 47,
+  "spearman_defined_datasets": 47
+}

@@ -1,0 +1,17 @@
+{
+  "target": "energy",
+  "model": "XGBoost",
+  "direction": "minimize",
+  "rows": 235,
+  "mae": 8.246175978349076e-05,
+  "rmse": 0.00010942525178883287,
+  "normalized_mae": 0.25429265053097744,
+  "normalized_rmse": 0.3374417109877492,
+  "r2": -0.016726564999924864,
+  "top1_accuracy": 0.5957446808510638,
+  "top3_accuracy": 1.0,
+  "normalized_regret": 0.1552185166564184,
+  "spearman": NaN,
+  "held_out_datasets": 47,
+  "spearman_defined_datasets": 0
+}

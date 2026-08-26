@@ -1,0 +1,79 @@
+AwareML Phase 8 — Faithfulness Layer
+
+PRECONDITION
+------------
+Phase 7 must already be frozen:
+
+python .\scripts\validate_phase7_complete.py
+
+APPLY
+-----
+Extract directly into:
+
+C:\Users\maheshwari\PycharmProjects\AwareML_Extension
+
+PowerShell:
+
+Expand-Archive -Path "$HOME\Downloads\AwareML_Phase8_Faithfulness_Layer.zip" -DestinationPath . -Force
+
+IMPORT CHECK
+------------
+python -c "from awareml.faithfulness import FaithfulnessEvaluator, FaithfulRationaleGenerator; print('PHASE8 IMPORT OK')"
+
+UNIT TESTS
+----------
+pytest .\tests\test_phase8_faithfulness.py -q
+
+DETERMINISTIC DEVELOPMENT EVALUATION
+------------------------------------
+python .\scripts\run_phase8_faithfulness.py
+python .\scripts\validate_phase8_faithfulness.py
+
+OLLAMA STATUS
+-------------
+python -c "from awareml.llm import OllamaClient; print(OllamaClient().status())"
+
+COMPLETE PHASE 8 WITH LIVE OLLAMA
+---------------------------------
+Recommended:
+
+python .\scripts\complete_phase8.py --ollama-datasets 3
+
+This runs:
+1. all 47 development datasets with the deterministic faithful baseline,
+2. 3 deterministic representative development datasets with live Ollama,
+3. validation,
+4. freeze,
+5. final validation.
+
+If you want to pin the exact installed model:
+
+python .\scripts\complete_phase8.py --ollama-datasets 3 --model "llama3.2:3b"
+
+DEVELOPMENT-ONLY OFFLINE FREEZE
+-------------------------------
+python .\scripts\complete_phase8.py --offline
+
+Use the offline option only when Ollama is intentionally unavailable.
+
+FINAL TESTS
+-----------
+pytest .\tests\test_phase8_faithfulness.py -q
+python .\scripts\validate_phase8_complete.py
+
+EXPECTED
+--------
+AwareML Phase 8 COMPLETE validation: PASS
+ALL PHASE 8 STEPS PASSED
+
+IMPORTANT
+---------
+- No five-framework AutoML reruns are required.
+- The 47 development/meta datasets are used only through the frozen Phase-6
+  recommender snapshot.
+- The frozen 23-dataset held-out evaluation split remains untouched.
+- AEF is an AwareML project-defined metric; do not attribute it to FaithLM or
+  Faithfulness Serum.
+- Phase 8 uses external evidence interventions. It does not claim internal
+  Ollama attention/PE-LRP attribution.
+- Large-scale held-out technical/HCAI evaluation remains Phase 10.

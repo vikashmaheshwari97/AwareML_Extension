@@ -1,0 +1,17 @@
+{
+  "target": "energy",
+  "model": "ExtraTrees",
+  "direction": "minimize",
+  "rows": 235,
+  "mae": 6.939731689769702e-05,
+  "rmse": 0.0001010792150832904,
+  "normalized_mae": 0.21400498485586072,
+  "normalized_rmse": 0.31170449896543045,
+  "r2": 0.13245345740884773,
+  "top1_accuracy": 0.6382978723404256,
+  "top3_accuracy": 0.9148936170212766,
+  "normalized_regret": 0.13760997858949517,
+  "spearman": 0.651063829787234,
+  "held_out_datasets": 47,
+  "spearman_defined_datasets": 47
+}

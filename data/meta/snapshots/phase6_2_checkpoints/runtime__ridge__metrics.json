@@ -1,0 +1,17 @@
+{
+  "target": "runtime",
+  "model": "Ridge",
+  "direction": "minimize",
+  "rows": 235,
+  "mae": 0.06572424664909111,
+  "rmse": 0.301497214184172,
+  "normalized_mae": 7.437742411043594,
+  "normalized_rmse": 34.119198485786235,
+  "r2": -7.80788442800033,
+  "top1_accuracy": 0.14893617021276595,
+  "top3_accuracy": 0.6382978723404256,
+  "normalized_regret": 0.41674384847329576,
+  "spearman": 0.038297872340425525,
+  "held_out_datasets": 47,
+  "spearman_defined_datasets": 47
+}

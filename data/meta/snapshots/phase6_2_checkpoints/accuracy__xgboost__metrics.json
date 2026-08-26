@@ -1,0 +1,17 @@
+{
+  "target": "accuracy",
+  "model": "XGBoost",
+  "direction": "maximize",
+  "rows": 235,
+  "mae": 0.09451700017243424,
+  "rmse": 0.13505769347017604,
+  "normalized_mae": 0.15003734267854607,
+  "normalized_rmse": 0.21439209242348253,
+  "r2": 0.5101495799304356,
+  "top1_accuracy": 0.48936170212765956,
+  "top3_accuracy": 0.8723404255319149,
+  "normalized_regret": 0.1349957232684433,
+  "spearman": 0.6595744680851063,
+  "held_out_datasets": 47,
+  "spearman_defined_datasets": 47
+}

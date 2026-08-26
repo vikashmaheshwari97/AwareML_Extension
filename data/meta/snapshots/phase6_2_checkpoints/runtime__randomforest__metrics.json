@@ -1,0 +1,17 @@
+{
+  "target": "runtime",
+  "model": "RandomForest",
+  "direction": "minimize",
+  "rows": 235,
+  "mae": 0.01709593683158757,
+  "rmse": 0.10647471190559021,
+  "normalized_mae": 1.9346767884265967,
+  "normalized_rmse": 12.049304797239667,
+  "r2": -0.09849465340869612,
+  "top1_accuracy": 0.14893617021276595,
+  "top3_accuracy": 0.7021276595744681,
+  "normalized_regret": 0.41411016659692845,
+  "spearman": 0.14255319148936166,
+  "held_out_datasets": 47,
+  "spearman_defined_datasets": 47
+}

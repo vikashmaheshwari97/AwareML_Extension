@@ -1,0 +1,17 @@
+{
+  "target": "co2",
+  "model": "XGBoost",
+  "direction": "minimize",
+  "rows": 235,
+  "mae": 3.435945614046074e-05,
+  "rmse": 4.5593911019392596e-05,
+  "normalized_mae": 0.2542953302715156,
+  "normalized_rmse": 0.3374418562869331,
+  "r2": -0.01672744058564568,
+  "top1_accuracy": 0.5957446808510638,
+  "top3_accuracy": 1.0,
+  "normalized_regret": 0.15521851665641825,
+  "spearman": NaN,
+  "held_out_datasets": 47,
+  "spearman_defined_datasets": 0
+}

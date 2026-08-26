@@ -1,0 +1,264 @@
+{
+  "schema_version": "2.0",
+  "phase": "6.3",
+  "bundle_id": "awareml-recommender-v2",
+  "created_at_utc": "2026-08-26T08:54:33+00:00",
+  "training_snapshot": {
+    "file": "recommender_train_v2.parquet",
+    "sha256": "a302a4a63aa3d5c14781515f70d440d37d8ea5439a17923a5ab65d43780223e6",
+    "rows": 235,
+    "datasets": 47,
+    "frameworks": 5
+  },
+  "benchmark_artifacts": {
+    "model_selection_sha256": "a69985800ce473d3a1d5926ff47f7a9fb0f56653acf3f6110619c74e53fb61cf",
+    "oof_predictions_sha256": "0c0e2d85195b67cdbf5e283f5d6166a7848255c329d51fc3921a8879c0d2cc1b",
+    "benchmark_metrics_sha256": "5e2e88e9ac6059aba727b3002bfcbf2c62e97a4581b3e2ec4991f8c8f6ba8b91"
+  },
+  "feature_columns": [
+    "framework",
+    "dataset_family",
+    "source_type",
+    "drift_type",
+    "n_samples_dataset",
+    "n_features",
+    "n_numeric_features",
+    "n_categorical_features",
+    "numeric_feature_fraction",
+    "categorical_feature_fraction",
+    "missing_fraction",
+    "n_classes",
+    "majority_class_fraction",
+    "minority_class_fraction",
+    "class_imbalance_ratio",
+    "class_entropy_normalized",
+    "window_size",
+    "time_budget_sec"
+  ],
+  "models": {
+    "accuracy": {
+      "model_name": "RandomForest",
+      "file": "accuracy.joblib",
+      "sha256": "81715f8430200b86114561e47a740558325d16f03c8c717ba4f27240ad5e795a",
+      "training_rows": 235,
+      "training_datasets": 47,
+      "target_column": "accuracy_mean",
+      "benchmark_selection": {
+        "model": "RandomForest",
+        "direction": "maximize",
+        "normalized_regret": 0.11537442882626224,
+        "top1_accuracy": 0.574468085106383,
+        "top3_accuracy": 0.8297872340425532,
+        "spearman": 0.6510638297872339,
+        "mae": 0.10587997314477046,
+        "rmse": 0.13123853520533546,
+        "normalized_mae": 0.16807505300142075,
+        "selection_rule": "min normalized_regret; tie-break by max top1_accuracy, max spearman, min normalized_mae"
+      }
+    },
+    "runtime": {
+      "model_name": "XGBoost",
+      "file": "runtime.joblib",
+      "sha256": "e17484e055fb050aff1e56d220b184ad3b3893b14749a60e14d5ece465ef22ba",
+      "training_rows": 235,
+      "training_datasets": 47,
+      "target_column": "runtime_sec_mean",
+      "benchmark_selection": {
+        "model": "XGBoost",
+        "direction": "minimize",
+        "normalized_regret": 0.23739282900156555,
+        "top1_accuracy": 0.3617021276595745,
+        "top3_accuracy": 0.723404255319149,
+        "spearman": 0.2266870385622441,
+        "mae": 0.018307377768805838,
+        "rmse": 0.11524284729857245,
+        "normalized_mae": 2.0717705718719994,
+        "selection_rule": "min normalized_regret; tie-break by max top1_accuracy, max spearman, min normalized_mae"
+      }
+    },
+    "energy": {
+      "model_name": "HistGradientBoosting",
+      "file": "energy.joblib",
+      "sha256": "55bb3acf75e425e3887c54b2e6913d1b9224aff4f641b3b0910cdfe7e47e5186",
+      "training_rows": 235,
+      "training_datasets": 47,
+      "target_column": "energy_kwh_mean",
+      "benchmark_selection": {
+        "model": "HistGradientBoosting",
+        "direction": "minimize",
+        "normalized_regret": 0.07440223761113203,
+        "top1_accuracy": 0.723404255319149,
+        "top3_accuracy": 0.9787234042553191,
+        "spearman": 0.7510638297872338,
+        "mae": 6.251168913003097e-05,
+        "rmse": 9.232117267431915e-05,
+        "normalized_mae": 0.19277133012660463,
+        "selection_rule": "min normalized_regret; tie-break by max top1_accuracy, max spearman, min normalized_mae"
+      }
+    },
+    "co2": {
+      "model_name": "HistGradientBoosting",
+      "file": "co2.joblib",
+      "sha256": "7c017f8f70769faca74f524743a9f97f51d43a526717b7ac80bd6e684d55fb9f",
+      "training_rows": 235,
+      "training_datasets": 47,
+      "target_column": "co2_kg_mean",
+      "benchmark_selection": {
+        "model": "HistGradientBoosting",
+        "direction": "minimize",
+        "normalized_regret": 0.061378076344052346,
+        "top1_accuracy": 0.7446808510638298,
+        "top3_accuracy": 0.9787234042553191,
+        "spearman": 0.7468085106382978,
+        "mae": 2.6081213364954316e-05,
+        "rmse": 3.8467977768013564e-05,
+        "normalized_mae": 0.1930278156735105,
+        "selection_rule": "min normalized_regret; tie-break by max top1_accuracy, max spearman, min normalized_mae"
+      }
+    }
+  },
+  "uncertainty": {
+    "accuracy": {
+      "method": "empirical_lodo_absolute_residual",
+      "calibration_rows": 235,
+      "mean_absolute_residual": 0.10587997314477046,
+      "median_absolute_residual": 0.09173451884007233,
+      "intervals": {
+        "0.80": {
+          "requested_coverage": 0.8,
+          "adjusted_quantile_level": 0.8042553191489362,
+          "absolute_residual_quantile": 0.16878807698241016,
+          "oof_observed_coverage": 0.8085106382978723
+        },
+        "0.90": {
+          "requested_coverage": 0.9,
+          "adjusted_quantile_level": 0.9063829787234042,
+          "absolute_residual_quantile": 0.24052945190074648,
+          "oof_observed_coverage": 0.9106382978723404
+        },
+        "0.95": {
+          "requested_coverage": 0.95,
+          "adjusted_quantile_level": 0.9574468085106383,
+          "absolute_residual_quantile": 0.27507939308103235,
+          "oof_observed_coverage": 0.9617021276595744
+        }
+      },
+      "claim": "Empirical dataset-level cross-validated residual interval; not an exact conformal coverage guarantee."
+    },
+    "runtime": {
+      "method": "empirical_lodo_absolute_residual",
+      "calibration_rows": 235,
+      "mean_absolute_residual": 0.018307377768805838,
+      "median_absolute_residual": 0.0014154716845951043,
+      "intervals": {
+        "0.80": {
+          "requested_coverage": 0.8,
+          "adjusted_quantile_level": 0.8042553191489362,
+          "absolute_residual_quantile": 0.004937922208533507,
+          "oof_observed_coverage": 0.8085106382978723
+        },
+        "0.90": {
+          "requested_coverage": 0.9,
+          "adjusted_quantile_level": 0.9063829787234042,
+          "absolute_residual_quantile": 0.025178246743358557,
+          "oof_observed_coverage": 0.9106382978723404
+        },
+        "0.95": {
+          "requested_coverage": 0.95,
+          "adjusted_quantile_level": 0.9574468085106383,
+          "absolute_residual_quantile": 0.044977891627546285,
+          "oof_observed_coverage": 0.9617021276595744
+        }
+      },
+      "claim": "Empirical dataset-level cross-validated residual interval; not an exact conformal coverage guarantee."
+    },
+    "energy": {
+      "method": "empirical_lodo_absolute_residual",
+      "calibration_rows": 235,
+      "mean_absolute_residual": 6.251168913003097e-05,
+      "median_absolute_residual": 4.4962423868424905e-05,
+      "intervals": {
+        "0.80": {
+          "requested_coverage": 0.8,
+          "adjusted_quantile_level": 0.8042553191489362,
+          "absolute_residual_quantile": 9.860456293385119e-05,
+          "oof_observed_coverage": 0.8085106382978723
+        },
+        "0.90": {
+          "requested_coverage": 0.9,
+          "adjusted_quantile_level": 0.9063829787234042,
+          "absolute_residual_quantile": 0.00014658130719645416,
+          "oof_observed_coverage": 0.9106382978723404
+        },
+        "0.95": {
+          "requested_coverage": 0.95,
+          "adjusted_quantile_level": 0.9574468085106383,
+          "absolute_residual_quantile": 0.00018489127184563667,
+          "oof_observed_coverage": 0.9617021276595744
+        }
+      },
+      "claim": "Empirical dataset-level cross-validated residual interval; not an exact conformal coverage guarantee."
+    },
+    "co2": {
+      "method": "empirical_lodo_absolute_residual",
+      "calibration_rows": 235,
+      "mean_absolute_residual": 2.6081213364954316e-05,
+      "median_absolute_residual": 1.9216702995979585e-05,
+      "intervals": {
+        "0.80": {
+          "requested_coverage": 0.8,
+          "adjusted_quantile_level": 0.8042553191489362,
+          "absolute_residual_quantile": 4.083628535080157e-05,
+          "oof_observed_coverage": 0.8085106382978723
+        },
+        "0.90": {
+          "requested_coverage": 0.9,
+          "adjusted_quantile_level": 0.9063829787234042,
+          "absolute_residual_quantile": 6.172446468176538e-05,
+          "oof_observed_coverage": 0.9106382978723404
+        },
+        "0.95": {
+          "requested_coverage": 0.95,
+          "adjusted_quantile_level": 0.9574468085106383,
+          "absolute_residual_quantile": 7.703632434434039e-05,
+          "oof_observed_coverage": 0.9617021276595744
+        }
+      },
+      "claim": "Empirical dataset-level cross-validated residual interval; not an exact conformal coverage guarantee."
+    }
+  },
+  "objective_correlations": {
+    "accuracy": {
+      "accuracy": 1.0,
+      "runtime": -0.05797941690476851,
+      "energy": -0.051669486902086975,
+      "co2": -0.051669486902086975
+    },
+    "runtime": {
+      "accuracy": -0.05797941690476851,
+      "runtime": 1.0,
+      "energy": 0.12651945962440012,
+      "co2": 0.12651945962440012
+    },
+    "energy": {
+      "accuracy": -0.051669486902086975,
+      "runtime": 0.12651945962440012,
+      "energy": 1.0,
+      "co2": 1.0
+    },
+    "co2": {
+      "accuracy": -0.051669486902086975,
+      "runtime": 0.12651945962440012,
+      "energy": 1.0,
+      "co2": 1.0
+    }
+  },
+  "environment": {
+    "python": "3.8.10",
+    "numpy": "1.23.5",
+    "pandas": "1.5.3",
+    "scikit_learn": "1.3.2",
+    "xgboost": "2.1.4"
+  },
+  "uncertainty_claim": "Intervals are empirical LODO residual intervals and are not presented as exact conformal coverage guarantees."
+}

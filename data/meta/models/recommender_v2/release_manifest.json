@@ -1,0 +1,32 @@
+{
+  "schema_version": "2.0",
+  "phase": "6.5",
+  "release_id": "awareml-recommender-v2",
+  "frozen_at_utc": "2026-08-26T08:55:00+00:00",
+  "model_manifest": {
+    "path": "models/recommender_v2/manifest.json",
+    "sha256": "0a6d3af6058f006b02d43b4b0e918a63a38da20be9d7d609a71bb0e266ce392d"
+  },
+  "artifacts": {
+    "models/recommender_v2/manifest.json": "0a6d3af6058f006b02d43b4b0e918a63a38da20be9d7d609a71bb0e266ce392d",
+    "models/recommender_v2/accuracy.joblib": "81715f8430200b86114561e47a740558325d16f03c8c717ba4f27240ad5e795a",
+    "models/recommender_v2/runtime.joblib": "e17484e055fb050aff1e56d220b184ad3b3893b14749a60e14d5ece465ef22ba",
+    "models/recommender_v2/energy.joblib": "55bb3acf75e425e3887c54b2e6913d1b9224aff4f641b3b0910cdfe7e47e5186",
+    "models/recommender_v2/co2.joblib": "7c017f8f70769faca74f524743a9f97f51d43a526717b7ac80bd6e684d55fb9f",
+    "snapshots/recommender_train_v2.parquet": "a302a4a63aa3d5c14781515f70d440d37d8ea5439a17923a5ab65d43780223e6",
+    "snapshots/recommender_v2_benchmark_metrics.parquet": "5e2e88e9ac6059aba727b3002bfcbf2c62e97a4581b3e2ec4991f8c8f6ba8b91",
+    "snapshots/recommender_v2_oof_predictions.parquet": "0c0e2d85195b67cdbf5e283f5d6166a7848255c329d51fc3921a8879c0d2cc1b",
+    "snapshots/recommender_v2_model_selection.json": "a69985800ce473d3a1d5926ff47f7a9fb0f56653acf3f6110619c74e53fb61cf",
+    "snapshots/recommender_v2_preference_sensitivity.parquet": "a627652bf86fdbf408487f43909394fbcba18997a6a02445a6de61ad9386f79a",
+    "snapshots/recommender_v2_preference_sensitivity_detail.parquet": "b9ae1a58d774e3a5fd3921e1ca28673c073ab16ab514d924721c268780b6b9b0"
+  },
+  "selected_models": {
+    "accuracy": "RandomForest",
+    "runtime": "XGBoost",
+    "energy": "HistGradientBoosting",
+    "co2": "HistGradientBoosting"
+  },
+  "evaluation_protocol": "47-dataset Leave-One-Dataset-Out on development/meta datasets",
+  "held_out_test_policy": "The frozen 23-dataset evaluation split remains untouched until Phase 10.",
+  "status": "frozen"
+}

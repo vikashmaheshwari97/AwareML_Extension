@@ -1,0 +1,1459 @@
+{
+  "schema_report_version": "1.0",
+  "input_file": "meta_logs_v2.json",
+  "input_sha256": "ee143ee5c2136de25ed83d3a5bb101481157c81b7adef1340e4404afa78d76c7",
+  "snapshot_id": "meta_logs_v2",
+  "schema_version": "2.0",
+  "record_count": 705,
+  "top_level_payload_keys": [
+    "created_at_utc",
+    "dataset_count",
+    "framework_count",
+    "framework_counts",
+    "protocol",
+    "records",
+    "schema_version",
+    "seed_counts",
+    "seeds",
+    "selection_policy",
+    "snapshot_id",
+    "total_records"
+  ],
+  "record_top_level_keys": [
+    "accuracy",
+    "backend",
+    "campaign_id",
+    "campaign_task_id",
+    "co2_kg",
+    "dataset_id",
+    "dataset_provenance",
+    "dataset_sha256",
+    "drift_events",
+    "drift_summary",
+    "energy_kwh",
+    "error",
+    "experiment_id",
+    "explainability",
+    "f1_macro",
+    "fairness",
+    "file_name",
+    "framework",
+    "instrumentation_overhead_sec",
+    "max_samples_requested",
+    "mean_prediction_latency_ms",
+    "node",
+    "p95_prediction_latency_ms",
+    "parameters",
+    "platform",
+    "points",
+    "prediction_diagnostics",
+    "runtime_sec",
+    "samples",
+    "samples_processed",
+    "seed",
+    "slurm_array_task_id",
+    "slurm_cpus_per_task",
+    "slurm_job_id",
+    "slurm_mem_per_node",
+    "source_tree_sha256",
+    "status",
+    "sustainability",
+    "target",
+    "throughput_samples_sec",
+    "time_budget_sec",
+    "uncertainty",
+    "window_size"
+  ],
+  "nested_roots": [
+    "dataset_provenance",
+    "drift_events",
+    "drift_summary",
+    "explainability",
+    "fairness",
+    "parameters",
+    "points",
+    "prediction_diagnostics",
+    "sustainability",
+    "uncertainty"
+  ],
+  "record_key_inventory": {
+    "accuracy": {
+      "present_count": 705,
+      "null_count": 0,
+      "types": {
+        "float": 705
+      }
+    },
+    "backend": {
+      "present_count": 705,
+      "null_count": 0,
+      "types": {
+        "str": 705
+      }
+    },
+    "campaign_id": {
+      "present_count": 705,
+      "null_count": 0,
+      "types": {
+        "str": 705
+      }
+    },
+    "campaign_task_id": {
+      "present_count": 705,
+      "null_count": 0,
+      "types": {
+        "int": 705
+      }
+    },
+    "co2_kg": {
+      "present_count": 705,
+      "null_count": 0,
+      "types": {
+        "float": 705
+      }
+    },
+    "dataset_id": {
+      "present_count": 705,
+      "null_count": 0,
+      "types": {
+        "str": 705
+      }
+    },
+    "dataset_provenance": {
+      "present_count": 705,
+      "null_count": 0,
+      "types": {
+        "dict": 705
+      }
+    },
+    "dataset_sha256": {
+      "present_count": 705,
+      "null_count": 0,
+      "types": {
+        "str": 705
+      }
+    },
+    "drift_events": {
+      "present_count": 705,
+      "null_count": 0,
+      "types": {
+        "list": 705
+      }
+    },
+    "drift_summary": {
+      "present_count": 705,
+      "null_count": 0,
+      "types": {
+        "dict": 705
+      }
+    },
+    "energy_kwh": {
+      "present_count": 705,
+      "null_count": 0,
+      "types": {
+        "float": 705
+      }
+    },
+    "error": {
+      "present_count": 705,
+      "null_count": 705,
+      "types": {
+        "null": 705
+      }
+    },
+    "experiment_id": {
+      "present_count": 705,
+      "null_count": 0,
+      "types": {
+        "str": 705
+      }
+    },
+    "explainability": {
+      "present_count": 705,
+      "null_count": 0,
+      "types": {
+        "dict": 705
+      }
+    },
+    "f1_macro": {
+      "present_count": 705,
+      "null_count": 0,
+      "types": {
+        "float": 705
+      }
+    },
+    "fairness": {
+      "present_count": 705,
+      "null_count": 0,
+      "types": {
+        "dict": 705
+      }
+    },
+    "file_name": {
+      "present_count": 705,
+      "null_count": 0,
+      "types": {
+        "str": 705
+      }
+    },
+    "framework": {
+      "present_count": 705,
+      "null_count": 0,
+      "types": {
+        "str": 705
+      }
+    },
+    "instrumentation_overhead_sec": {
+      "present_count": 705,
+      "null_count": 0,
+      "types": {
+        "float": 705
+      }
+    },
+    "max_samples_requested": {
+      "present_count": 705,
+      "null_count": 0,
+      "types": {
+        "int": 705
+      }
+    },
+    "mean_prediction_latency_ms": {
+      "present_count": 705,
+      "null_count": 0,
+      "types": {
+        "float": 705
+      }
+    },
+    "node": {
+      "present_count": 705,
+      "null_count": 0,
+      "types": {
+        "str": 705
+      }
+    },
+    "p95_prediction_latency_ms": {
+      "present_count": 705,
+      "null_count": 0,
+      "types": {
+        "float": 705
+      }
+    },
+    "parameters": {
+      "present_count": 705,
+      "null_count": 0,
+      "types": {
+        "dict": 705
+      }
+    },
+    "platform": {
+      "present_count": 705,
+      "null_count": 0,
+      "types": {
+        "str": 705
+      }
+    },
+    "points": {
+      "present_count": 705,
+      "null_count": 0,
+      "types": {
+        "list": 705
+      }
+    },
+    "prediction_diagnostics": {
+      "present_count": 705,
+      "null_count": 0,
+      "types": {
+        "dict": 705
+      }
+    },
+    "runtime_sec": {
+      "present_count": 705,
+      "null_count": 0,
+      "types": {
+        "float": 705
+      }
+    },
+    "samples": {
+      "present_count": 705,
+      "null_count": 0,
+      "types": {
+        "int": 705
+      }
+    },
+    "samples_processed": {
+      "present_count": 705,
+      "null_count": 0,
+      "types": {
+        "int": 705
+      }
+    },
+    "seed": {
+      "present_count": 705,
+      "null_count": 0,
+      "types": {
+        "int": 705
+      }
+    },
+    "slurm_array_task_id": {
+      "present_count": 705,
+      "null_count": 0,
+      "types": {
+        "str": 705
+      }
+    },
+    "slurm_cpus_per_task": {
+      "present_count": 705,
+      "null_count": 0,
+      "types": {
+        "str": 705
+      }
+    },
+    "slurm_job_id": {
+      "present_count": 705,
+      "null_count": 0,
+      "types": {
+        "str": 705
+      }
+    },
+    "slurm_mem_per_node": {
+      "present_count": 705,
+      "null_count": 0,
+      "types": {
+        "str": 705
+      }
+    },
+    "source_tree_sha256": {
+      "present_count": 705,
+      "null_count": 0,
+      "types": {
+        "str": 705
+      }
+    },
+    "status": {
+      "present_count": 705,
+      "null_count": 0,
+      "types": {
+        "str": 705
+      }
+    },
+    "sustainability": {
+      "present_count": 705,
+      "null_count": 0,
+      "types": {
+        "dict": 705
+      }
+    },
+    "target": {
+      "present_count": 705,
+      "null_count": 0,
+      "types": {
+        "str": 705
+      }
+    },
+    "throughput_samples_sec": {
+      "present_count": 705,
+      "null_count": 0,
+      "types": {
+        "float": 705
+      }
+    },
+    "time_budget_sec": {
+      "present_count": 705,
+      "null_count": 0,
+      "types": {
+        "int": 705
+      }
+    },
+    "uncertainty": {
+      "present_count": 705,
+      "null_count": 0,
+      "types": {
+        "dict": 705
+      }
+    },
+    "window_size": {
+      "present_count": 705,
+      "null_count": 0,
+      "types": {
+        "int": 705
+      }
+    }
+  },
+  "flattened_column_count": 179,
+  "flattened_columns": [
+    {
+      "name": "dataset_id",
+      "dtype": "object",
+      "null_count": 0,
+      "unique_count": 47
+    },
+    {
+      "name": "framework",
+      "dtype": "object",
+      "null_count": 0,
+      "unique_count": 5
+    },
+    {
+      "name": "seed",
+      "dtype": "int64",
+      "null_count": 0,
+      "unique_count": 3
+    },
+    {
+      "name": "experiment_id",
+      "dtype": "object",
+      "null_count": 0,
+      "unique_count": 705
+    },
+    {
+      "name": "campaign_id",
+      "dtype": "object",
+      "null_count": 0,
+      "unique_count": 2
+    },
+    {
+      "name": "campaign_task_id",
+      "dtype": "int64",
+      "null_count": 0,
+      "unique_count": 591
+    },
+    {
+      "name": "backend",
+      "dtype": "object",
+      "null_count": 0,
+      "unique_count": 5
+    },
+    {
+      "name": "status",
+      "dtype": "object",
+      "null_count": 0,
+      "unique_count": 1
+    },
+    {
+      "name": "accuracy",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 705
+    },
+    {
+      "name": "f1_macro",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 705
+    },
+    {
+      "name": "runtime_sec",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 705
+    },
+    {
+      "name": "energy_kwh",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 705
+    },
+    {
+      "name": "co2_kg",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 705
+    },
+    {
+      "name": "samples",
+      "dtype": "int64",
+      "null_count": 0,
+      "unique_count": 685
+    },
+    {
+      "name": "samples_processed",
+      "dtype": "int64",
+      "null_count": 0,
+      "unique_count": 685
+    },
+    {
+      "name": "max_samples_requested",
+      "dtype": "int64",
+      "null_count": 0,
+      "unique_count": 1
+    },
+    {
+      "name": "window_size",
+      "dtype": "int64",
+      "null_count": 0,
+      "unique_count": 1
+    },
+    {
+      "name": "time_budget_sec",
+      "dtype": "int64",
+      "null_count": 0,
+      "unique_count": 1
+    },
+    {
+      "name": "throughput_samples_sec",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 705
+    },
+    {
+      "name": "mean_prediction_latency_ms",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 705
+    },
+    {
+      "name": "p95_prediction_latency_ms",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 705
+    },
+    {
+      "name": "dataset_sha256",
+      "dtype": "object",
+      "null_count": 0,
+      "unique_count": 47
+    },
+    {
+      "name": "source_tree_sha256",
+      "dtype": "object",
+      "null_count": 0,
+      "unique_count": 2
+    },
+    {
+      "name": "dataset_provenance__categorical_features",
+      "dtype": "object",
+      "null_count": 0,
+      "unique_count": 3
+    },
+    {
+      "name": "dataset_provenance__columns",
+      "dtype": "int64",
+      "null_count": 0,
+      "unique_count": 15
+    },
+    {
+      "name": "dataset_provenance__dataframe_sha256",
+      "dtype": "object",
+      "null_count": 0,
+      "unique_count": 47
+    },
+    {
+      "name": "dataset_provenance__feature_count",
+      "dtype": "int64",
+      "null_count": 0,
+      "unique_count": 15
+    },
+    {
+      "name": "dataset_provenance__missing_fraction",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 1
+    },
+    {
+      "name": "dataset_provenance__numeric_features",
+      "dtype": "object",
+      "null_count": 0,
+      "unique_count": 26
+    },
+    {
+      "name": "dataset_provenance__rows",
+      "dtype": "int64",
+      "null_count": 0,
+      "unique_count": 14
+    },
+    {
+      "name": "dataset_provenance__schema",
+      "dtype": "object",
+      "null_count": 0,
+      "unique_count": 41
+    },
+    {
+      "name": "dataset_provenance__sensitive_attribute",
+      "dtype": "object",
+      "null_count": 705,
+      "unique_count": 0
+    },
+    {
+      "name": "dataset_provenance__sensitive_distribution",
+      "dtype": "object",
+      "null_count": 705,
+      "unique_count": 0
+    },
+    {
+      "name": "dataset_provenance__source_file_name",
+      "dtype": "object",
+      "null_count": 0,
+      "unique_count": 47
+    },
+    {
+      "name": "dataset_provenance__source_sha256",
+      "dtype": "object",
+      "null_count": 0,
+      "unique_count": 47
+    },
+    {
+      "name": "dataset_provenance__source_size_bytes",
+      "dtype": "int64",
+      "null_count": 0,
+      "unique_count": 46
+    },
+    {
+      "name": "dataset_provenance__target",
+      "dtype": "object",
+      "null_count": 0,
+      "unique_count": 2
+    },
+    {
+      "name": "dataset_provenance__target_distribution__n",
+      "dtype": "int64",
+      "null_count": 0,
+      "unique_count": 14
+    },
+    {
+      "name": "dataset_provenance__target_distribution__n_unique",
+      "dtype": "int64",
+      "null_count": 0,
+      "unique_count": 7
+    },
+    {
+      "name": "dataset_provenance__target_distribution__values",
+      "dtype": "object",
+      "null_count": 0,
+      "unique_count": 47
+    },
+    {
+      "name": "drift_events",
+      "dtype": "object",
+      "null_count": 0,
+      "unique_count": 410
+    },
+    {
+      "name": "drift_summary__episodes",
+      "dtype": "object",
+      "null_count": 0,
+      "unique_count": 432
+    },
+    {
+      "name": "drift_summary__max_accuracy_drop",
+      "dtype": "float64",
+      "null_count": 230,
+      "unique_count": 133
+    },
+    {
+      "name": "drift_summary__mean_accuracy_drop",
+      "dtype": "float64",
+      "null_count": 230,
+      "unique_count": 233
+    },
+    {
+      "name": "drift_summary__mean_recovery_samples",
+      "dtype": "float64",
+      "null_count": 634,
+      "unique_count": 60
+    },
+    {
+      "name": "drift_summary__median_recovery_samples",
+      "dtype": "float64",
+      "null_count": 634,
+      "unique_count": 59
+    },
+    {
+      "name": "drift_summary__min_assessment_samples",
+      "dtype": "int64",
+      "null_count": 0,
+      "unique_count": 1
+    },
+    {
+      "name": "drift_summary__n_drift_events",
+      "dtype": "int64",
+      "null_count": 0,
+      "unique_count": 44
+    },
+    {
+      "name": "drift_summary__n_no_observed_degradation",
+      "dtype": "int64",
+      "null_count": 0,
+      "unique_count": 34
+    },
+    {
+      "name": "drift_summary__n_recovered",
+      "dtype": "int64",
+      "null_count": 0,
+      "unique_count": 14
+    },
+    {
+      "name": "drift_summary__n_recovery_applicable",
+      "dtype": "int64",
+      "null_count": 0,
+      "unique_count": 16
+    },
+    {
+      "name": "drift_summary__recovery_rate",
+      "dtype": "float64",
+      "null_count": 613,
+      "unique_count": 19
+    },
+    {
+      "name": "drift_summary__tolerance",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 1
+    },
+    {
+      "name": "error",
+      "dtype": "object",
+      "null_count": 705,
+      "unique_count": 0
+    },
+    {
+      "name": "explainability__base_accuracy_on_explanation_window",
+      "dtype": "float64",
+      "null_count": 64,
+      "unique_count": 114
+    },
+    {
+      "name": "explainability__consistency",
+      "dtype": "float64",
+      "null_count": 64,
+      "unique_count": 576
+    },
+    {
+      "name": "explainability__deletion_accuracy",
+      "dtype": "float64",
+      "null_count": 64,
+      "unique_count": 129
+    },
+    {
+      "name": "explainability__diagnostic_note",
+      "dtype": "object",
+      "null_count": 0,
+      "unique_count": 2
+    },
+    {
+      "name": "explainability__feature_importance",
+      "dtype": "object",
+      "null_count": 0,
+      "unique_count": 590
+    },
+    {
+      "name": "explainability__fidelity",
+      "dtype": "float64",
+      "null_count": 64,
+      "unique_count": 209
+    },
+    {
+      "name": "explainability__method",
+      "dtype": "object",
+      "null_count": 64,
+      "unique_count": 1
+    },
+    {
+      "name": "explainability__method_attempts",
+      "dtype": "object",
+      "null_count": 0,
+      "unique_count": 2
+    },
+    {
+      "name": "explainability__method_metadata__metric",
+      "dtype": "object",
+      "null_count": 64,
+      "unique_count": 1
+    },
+    {
+      "name": "explainability__method_metadata__repeats_per_vector",
+      "dtype": "float64",
+      "null_count": 64,
+      "unique_count": 1
+    },
+    {
+      "name": "explainability__prequential_reference_accuracy",
+      "dtype": "float64",
+      "null_count": 64,
+      "unique_count": 362
+    },
+    {
+      "name": "explainability__replay_accuracy_gap",
+      "dtype": "float64",
+      "null_count": 64,
+      "unique_count": 388
+    },
+    {
+      "name": "explainability__replay_warning",
+      "dtype": "object",
+      "null_count": 485,
+      "unique_count": 1
+    },
+    {
+      "name": "explainability__replay_warning_threshold",
+      "dtype": "float64",
+      "null_count": 64,
+      "unique_count": 1
+    },
+    {
+      "name": "explainability__sensitivity",
+      "dtype": "float64",
+      "null_count": 64,
+      "unique_count": 634
+    },
+    {
+      "name": "explainability__sparsity",
+      "dtype": "float64",
+      "null_count": 64,
+      "unique_count": 579
+    },
+    {
+      "name": "explainability__stability",
+      "dtype": "float64",
+      "null_count": 64,
+      "unique_count": 21
+    },
+    {
+      "name": "explainability__status",
+      "dtype": "object",
+      "null_count": 0,
+      "unique_count": 2
+    },
+    {
+      "name": "fairness__status",
+      "dtype": "object",
+      "null_count": 0,
+      "unique_count": 1
+    },
+    {
+      "name": "file_name",
+      "dtype": "object",
+      "null_count": 0,
+      "unique_count": 47
+    },
+    {
+      "name": "instrumentation_overhead_sec",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 705
+    },
+    {
+      "name": "node",
+      "dtype": "object",
+      "null_count": 0,
+      "unique_count": 9
+    },
+    {
+      "name": "parameters__backend",
+      "dtype": "object",
+      "null_count": 0,
+      "unique_count": 5
+    },
+    {
+      "name": "parameters__budget",
+      "dtype": "float64",
+      "null_count": 564,
+      "unique_count": 1
+    },
+    {
+      "name": "parameters__ensemble_size",
+      "dtype": "float64",
+      "null_count": 564,
+      "unique_count": 1
+    },
+    {
+      "name": "parameters__evo_version",
+      "dtype": "object",
+      "null_count": 564,
+      "unique_count": 1
+    },
+    {
+      "name": "parameters__exploration",
+      "dtype": "float64",
+      "null_count": 564,
+      "unique_count": 1
+    },
+    {
+      "name": "parameters__exploration_window",
+      "dtype": "float64",
+      "null_count": 423,
+      "unique_count": 1
+    },
+    {
+      "name": "parameters__extension_version",
+      "dtype": "object",
+      "null_count": 564,
+      "unique_count": 1
+    },
+    {
+      "name": "parameters__fallback_used",
+      "dtype": "object",
+      "null_count": 564,
+      "unique_count": 1
+    },
+    {
+      "name": "parameters__gama_available",
+      "dtype": "object",
+      "null_count": 564,
+      "unique_count": 1
+    },
+    {
+      "name": "parameters__gama_error",
+      "dtype": "float64",
+      "null_count": 705,
+      "unique_count": 0
+    },
+    {
+      "name": "parameters__gama_fit_count",
+      "dtype": "float64",
+      "null_count": 564,
+      "unique_count": 1
+    },
+    {
+      "name": "parameters__gama_fitted",
+      "dtype": "object",
+      "null_count": 564,
+      "unique_count": 1
+    },
+    {
+      "name": "parameters__gama_refit_interval",
+      "dtype": "float64",
+      "null_count": 564,
+      "unique_count": 1
+    },
+    {
+      "name": "parameters__gama_time_budget_sec",
+      "dtype": "float64",
+      "null_count": 564,
+      "unique_count": 1
+    },
+    {
+      "name": "parameters__gama_warmup",
+      "dtype": "float64",
+      "null_count": 564,
+      "unique_count": 1
+    },
+    {
+      "name": "parameters__grace_period",
+      "dtype": "float64",
+      "null_count": 564,
+      "unique_count": 1
+    },
+    {
+      "name": "parameters__isolated_environment",
+      "dtype": "object",
+      "null_count": 423,
+      "unique_count": 1
+    },
+    {
+      "name": "parameters__label_count",
+      "dtype": "float64",
+      "null_count": 564,
+      "unique_count": 7
+    },
+    {
+      "name": "parameters__labels_seen",
+      "dtype": "object",
+      "null_count": 564,
+      "unique_count": 20
+    },
+    {
+      "name": "parameters__local_drift_events",
+      "dtype": "float64",
+      "null_count": 564,
+      "unique_count": 25
+    },
+    {
+      "name": "parameters__mode",
+      "dtype": "object",
+      "null_count": 564,
+      "unique_count": 1
+    },
+    {
+      "name": "parameters__model",
+      "dtype": "object",
+      "null_count": 564,
+      "unique_count": 1
+    },
+    {
+      "name": "parameters__multiclass_strategy",
+      "dtype": "object",
+      "null_count": 564,
+      "unique_count": 1
+    },
+    {
+      "name": "parameters__native_autovw_active",
+      "dtype": "object",
+      "null_count": 564,
+      "unique_count": 1
+    },
+    {
+      "name": "parameters__native_error",
+      "dtype": "float64",
+      "null_count": 705,
+      "unique_count": 0
+    },
+    {
+      "name": "parameters__numpy_version",
+      "dtype": "object",
+      "null_count": 564,
+      "unique_count": 1
+    },
+    {
+      "name": "parameters__online_model",
+      "dtype": "object",
+      "null_count": 564,
+      "unique_count": 1
+    },
+    {
+      "name": "parameters__ovr_model_count",
+      "dtype": "float64",
+      "null_count": 564,
+      "unique_count": 7
+    },
+    {
+      "name": "parameters__pandas_version",
+      "dtype": "object",
+      "null_count": 564,
+      "unique_count": 1
+    },
+    {
+      "name": "parameters__population_size",
+      "dtype": "float64",
+      "null_count": 423,
+      "unique_count": 2
+    },
+    {
+      "name": "parameters__problem_mode",
+      "dtype": "object",
+      "null_count": 564,
+      "unique_count": 2
+    },
+    {
+      "name": "parameters__required_river",
+      "dtype": "object",
+      "null_count": 423,
+      "unique_count": 2
+    },
+    {
+      "name": "parameters__river_version",
+      "dtype": "object",
+      "null_count": 423,
+      "unique_count": 2
+    },
+    {
+      "name": "parameters__sampling_rate",
+      "dtype": "float64",
+      "null_count": 564,
+      "unique_count": 1
+    },
+    {
+      "name": "parameters__seed",
+      "dtype": "int64",
+      "null_count": 0,
+      "unique_count": 3
+    },
+    {
+      "name": "parameters__seen",
+      "dtype": "float64",
+      "null_count": 423,
+      "unique_count": 275
+    },
+    {
+      "name": "parameters__sklearn_version",
+      "dtype": "object",
+      "null_count": 564,
+      "unique_count": 1
+    },
+    {
+      "name": "platform",
+      "dtype": "object",
+      "null_count": 0,
+      "unique_count": 1
+    },
+    {
+      "name": "points",
+      "dtype": "object",
+      "null_count": 0,
+      "unique_count": 705
+    },
+    {
+      "name": "prediction_diagnostics__majority_prediction_fraction",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 705
+    },
+    {
+      "name": "prediction_diagnostics__n_missing_predictions",
+      "dtype": "int64",
+      "null_count": 0,
+      "unique_count": 30
+    },
+    {
+      "name": "prediction_diagnostics__n_prediction_requests",
+      "dtype": "int64",
+      "null_count": 0,
+      "unique_count": 685
+    },
+    {
+      "name": "prediction_diagnostics__n_predictions_observed",
+      "dtype": "int64",
+      "null_count": 0,
+      "unique_count": 687
+    },
+    {
+      "name": "prediction_diagnostics__near_constant_prediction",
+      "dtype": "bool",
+      "null_count": 0,
+      "unique_count": 2
+    },
+    {
+      "name": "prediction_diagnostics__near_constant_threshold",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 1
+    },
+    {
+      "name": "prediction_diagnostics__positive_prediction_rate",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 705
+    },
+    {
+      "name": "prediction_diagnostics__predicted_label_counts__0",
+      "dtype": "float64",
+      "null_count": 659,
+      "unique_count": 46
+    },
+    {
+      "name": "prediction_diagnostics__predicted_label_counts__0.0",
+      "dtype": "float64",
+      "null_count": 364,
+      "unique_count": 326
+    },
+    {
+      "name": "prediction_diagnostics__predicted_label_counts__1",
+      "dtype": "float64",
+      "null_count": 639,
+      "unique_count": 62
+    },
+    {
+      "name": "prediction_diagnostics__predicted_label_counts__1.0",
+      "dtype": "float64",
+      "null_count": 264,
+      "unique_count": 417
+    },
+    {
+      "name": "prediction_diagnostics__predicted_label_counts__2",
+      "dtype": "float64",
+      "null_count": 661,
+      "unique_count": 35
+    },
+    {
+      "name": "prediction_diagnostics__predicted_label_counts__2.0",
+      "dtype": "float64",
+      "null_count": 525,
+      "unique_count": 170
+    },
+    {
+      "name": "prediction_diagnostics__predicted_label_counts__3",
+      "dtype": "float64",
+      "null_count": 663,
+      "unique_count": 40
+    },
+    {
+      "name": "prediction_diagnostics__predicted_label_counts__3.0",
+      "dtype": "float64",
+      "null_count": 585,
+      "unique_count": 108
+    },
+    {
+      "name": "prediction_diagnostics__predicted_label_counts__4",
+      "dtype": "float64",
+      "null_count": 660,
+      "unique_count": 43
+    },
+    {
+      "name": "prediction_diagnostics__predicted_label_counts__4.0",
+      "dtype": "float64",
+      "null_count": 615,
+      "unique_count": 85
+    },
+    {
+      "name": "prediction_diagnostics__predicted_label_counts__5",
+      "dtype": "float64",
+      "null_count": 660,
+      "unique_count": 43
+    },
+    {
+      "name": "prediction_diagnostics__predicted_label_counts__5.0",
+      "dtype": "float64",
+      "null_count": 630,
+      "unique_count": 74
+    },
+    {
+      "name": "prediction_diagnostics__predicted_label_counts__6",
+      "dtype": "float64",
+      "null_count": 675,
+      "unique_count": 29
+    },
+    {
+      "name": "prediction_diagnostics__predicted_label_counts__6.0",
+      "dtype": "float64",
+      "null_count": 645,
+      "unique_count": 55
+    },
+    {
+      "name": "prediction_diagnostics__predicted_label_counts__7",
+      "dtype": "float64",
+      "null_count": 670,
+      "unique_count": 32
+    },
+    {
+      "name": "prediction_diagnostics__predicted_label_counts__7.0",
+      "dtype": "float64",
+      "null_count": 660,
+      "unique_count": 40
+    },
+    {
+      "name": "prediction_diagnostics__predicted_label_counts__8",
+      "dtype": "float64",
+      "null_count": 675,
+      "unique_count": 27
+    },
+    {
+      "name": "prediction_diagnostics__predicted_label_counts__8.0",
+      "dtype": "float64",
+      "null_count": 660,
+      "unique_count": 40
+    },
+    {
+      "name": "prediction_diagnostics__predicted_label_counts__9",
+      "dtype": "float64",
+      "null_count": 675,
+      "unique_count": 28
+    },
+    {
+      "name": "prediction_diagnostics__predicted_label_counts__9.0",
+      "dtype": "float64",
+      "null_count": 660,
+      "unique_count": 41
+    },
+    {
+      "name": "prediction_diagnostics__predicted_label_counts__False",
+      "dtype": "float64",
+      "null_count": 397,
+      "unique_count": 304
+    },
+    {
+      "name": "prediction_diagnostics__predicted_label_counts__True",
+      "dtype": "float64",
+      "null_count": 507,
+      "unique_count": 194
+    },
+    {
+      "name": "prediction_diagnostics__prediction_coverage",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 588
+    },
+    {
+      "name": "prediction_diagnostics__unique_predicted_labels",
+      "dtype": "int64",
+      "null_count": 0,
+      "unique_count": 7
+    },
+    {
+      "name": "prediction_diagnostics__warning",
+      "dtype": "object",
+      "null_count": 637,
+      "unique_count": 1
+    },
+    {
+      "name": "slurm_array_task_id",
+      "dtype": "object",
+      "null_count": 0,
+      "unique_count": 591
+    },
+    {
+      "name": "slurm_cpus_per_task",
+      "dtype": "object",
+      "null_count": 0,
+      "unique_count": 1
+    },
+    {
+      "name": "slurm_job_id",
+      "dtype": "object",
+      "null_count": 0,
+      "unique_count": 705
+    },
+    {
+      "name": "slurm_mem_per_node",
+      "dtype": "object",
+      "null_count": 0,
+      "unique_count": 1
+    },
+    {
+      "name": "sustainability__co2_kg",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 705
+    },
+    {
+      "name": "sustainability__codecarbon_version",
+      "dtype": "object",
+      "null_count": 0,
+      "unique_count": 1
+    },
+    {
+      "name": "sustainability__country_iso",
+      "dtype": "object",
+      "null_count": 0,
+      "unique_count": 1
+    },
+    {
+      "name": "sustainability__cpu",
+      "dtype": "object",
+      "null_count": 0,
+      "unique_count": 1
+    },
+    {
+      "name": "sustainability__duration_sec",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 705
+    },
+    {
+      "name": "sustainability__ended_utc",
+      "dtype": "object",
+      "null_count": 0,
+      "unique_count": 705
+    },
+    {
+      "name": "sustainability__energy_kwh",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 705
+    },
+    {
+      "name": "sustainability__gpu",
+      "dtype": "object",
+      "null_count": 705,
+      "unique_count": 0
+    },
+    {
+      "name": "sustainability__logical_cpus",
+      "dtype": "int64",
+      "null_count": 0,
+      "unique_count": 1
+    },
+    {
+      "name": "sustainability__measurement_backend",
+      "dtype": "object",
+      "null_count": 0,
+      "unique_count": 1
+    },
+    {
+      "name": "sustainability__notes",
+      "dtype": "object",
+      "null_count": 0,
+      "unique_count": 705
+    },
+    {
+      "name": "sustainability__python",
+      "dtype": "object",
+      "null_count": 0,
+      "unique_count": 1
+    },
+    {
+      "name": "sustainability__ram_gb",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 3
+    },
+    {
+      "name": "sustainability__started_utc",
+      "dtype": "object",
+      "null_count": 0,
+      "unique_count": 705
+    },
+    {
+      "name": "sustainability__status",
+      "dtype": "object",
+      "null_count": 0,
+      "unique_count": 1
+    },
+    {
+      "name": "target",
+      "dtype": "object",
+      "null_count": 0,
+      "unique_count": 2
+    },
+    {
+      "name": "uncertainty__rolling_accuracy__lower",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 699
+    },
+    {
+      "name": "uncertainty__rolling_accuracy__mean",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 678
+    },
+    {
+      "name": "uncertainty__rolling_accuracy__n",
+      "dtype": "int64",
+      "null_count": 0,
+      "unique_count": 20
+    },
+    {
+      "name": "uncertainty__rolling_accuracy__upper",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 671
+    },
+    {
+      "name": "uncertainty__rolling_macro_f1__lower",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 702
+    },
+    {
+      "name": "uncertainty__rolling_macro_f1__mean",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 697
+    },
+    {
+      "name": "uncertainty__rolling_macro_f1__n",
+      "dtype": "int64",
+      "null_count": 0,
+      "unique_count": 20
+    },
+    {
+      "name": "uncertainty__rolling_macro_f1__upper",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 677
+    },
+    {
+      "name": "uncertainty__window_accuracy__lower",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 699
+    },
+    {
+      "name": "uncertainty__window_accuracy__mean",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 678
+    },
+    {
+      "name": "uncertainty__window_accuracy__n",
+      "dtype": "int64",
+      "null_count": 0,
+      "unique_count": 20
+    },
+    {
+      "name": "uncertainty__window_accuracy__upper",
+      "dtype": "float64",
+      "null_count": 0,
+      "unique_count": 671
+    }
+  ]
+}

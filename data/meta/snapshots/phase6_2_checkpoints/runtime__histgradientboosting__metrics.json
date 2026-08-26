@@ -1,0 +1,17 @@
+{
+  "target": "runtime",
+  "model": "HistGradientBoosting",
+  "direction": "minimize",
+  "rows": 235,
+  "mae": 0.01617209695592459,
+  "rmse": 0.10462827375062754,
+  "normalized_mae": 1.830129633083481,
+  "normalized_rmse": 11.8403509929023,
+  "r2": -0.060725770345066765,
+  "top1_accuracy": 0.2127659574468085,
+  "top3_accuracy": 0.6595744680851063,
+  "normalized_regret": 0.3134751603774484,
+  "spearman": 0.1246614379731744,
+  "held_out_datasets": 47,
+  "spearman_defined_datasets": 47
+}

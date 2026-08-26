@@ -1,0 +1,17 @@
+{
+  "target": "accuracy",
+  "model": "ExtraTrees",
+  "direction": "maximize",
+  "rows": 235,
+  "mae": 0.08544037131452084,
+  "rmse": 0.11697977868700148,
+  "normalized_mae": 0.13562900056192956,
+  "normalized_rmse": 0.18569500840379977,
+  "r2": 0.6325092445056746,
+  "top1_accuracy": 0.6170212765957447,
+  "top3_accuracy": 0.851063829787234,
+  "normalized_regret": 0.16658467237907865,
+  "spearman": 0.6223734697119577,
+  "held_out_datasets": 47,
+  "spearman_defined_datasets": 46
+}

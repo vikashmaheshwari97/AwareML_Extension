@@ -1,0 +1,37 @@
+{
+  "dataset": "Dutch Census testing stream",
+  "original_rows": 18438,
+  "original_columns": 13,
+  "clean_columns": 12,
+  "missing_values": 0,
+  "target": "occupation_binary",
+  "target_distribution": {
+    "0": 8309,
+    "1": 10129
+  },
+  "sensitive_attribute": "sex",
+  "sensitive_distribution": {
+    "1": 9174,
+    "2": 9264
+  },
+  "positive_label": 1,
+  "protected_attribute_usage": "audit_only",
+  "excluded_for_leakage": [
+    "occupation"
+  ],
+  "leakage_evidence": {
+    "0": {
+      "2_1": 8309,
+      "5_4_9": 0
+    },
+    "1": {
+      "2_1": 0,
+      "5_4_9": 10129
+    }
+  },
+  "notes": [
+    "occupation directly determines occupation_binary in the provided file, so it is removed from model features.",
+    "The CSV has no explicit timestamp; AwareML will process the existing row order as the stream order.",
+    "Use this file as a functional testing/demo dataset. Do not describe the row order as a known real temporal process unless independently established."
+  ]
+}

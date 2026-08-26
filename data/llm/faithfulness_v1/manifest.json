@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.0",
+  "phase": "8",
+  "release_id": "awareml-faithfulness-v1",
+  "status": "frozen",
+  "frozen_at_utc": "2026-08-26T10:19:18+00:00",
+  "method": "AwareML Evidence Fidelity (AEF)",
+  "scientific_scope": {
+    "counterfactual_evidence_tests": true,
+    "rationale_sensitivity": true,
+    "citation_grounding": true,
+    "decision_rationale_alignment": true,
+    "external_objective_influence": true,
+    "internal_llm_attention_attribution": false,
+    "pe_lrp": false,
+    "claim": "FaithLM/Serum-inspired external evidence faithfulness evaluation; no claim of internal Ollama attribution access."
+  },
+  "phase7_manifest": {
+    "path": "data/llm/copilot_v1/manifest.json",
+    "sha256": "3e9679d3420e6e82be1ba644aeb2cc0ba7388ba77ad584689f9cb5d7720209d0"
+  },
+  "evaluation": {
+    "development_datasets": 47,
+    "held_out_23_dataset_split_used": false,
+    "ollama": {
+      "requested": true,
+      "status": "pass",
+      "status_detail": {
+        "reachable": true,
+        "models": [
+          "llama3.2:3b",
+          "mistral-small:24b",
+          "minimax-m2.5:cloud",
+          "llama3:latest"
+        ],
+        "configured_model": "llama3.2:3b",
+        "resolved_model": "llama3.2:3b",
+        "error": null
+      },
+      "resolved_model": "llama3.2:3b",
+      "dataset_ids": [
+        "adult",
+        "river_randomRBF_2",
+        "synth_RandomRBFDrift"
+      ],
+      "n_datasets": 3,
+      "mean_grounding_validity": 1.0,
+      "mean_decision_alignment": 1.0,
+      "mean_attribution_alignment": 1.0,
+      "mean_counterfactual_sensitivity": 0.7887830687830689,
+      "mean_irrelevant_invariance": 1.0,
+      "mean_evidence_fidelity_score": 0.9471957671957673,
+      "min_evidence_fidelity_score": 0.9157142857142858,
+      "max_evidence_fidelity_score": 0.9839285714285714
+    }
+  },
+  "artifacts": {
+    "phase8_faithfulness_report.json": {
+      "sha256": "6d88a848d0c20a710bf231dd0a2b16819b54b060100566bc7326e9765db5b616"
+    },
+    "deterministic_faithfulness_cases.parquet": {
+      "sha256": "7dddf7529289fa9c3bdbeedbb4bcdd85ac78f408035e27dffc58ea19b1763f05"
+    },
+    "deterministic_faithfulness_summary.json": {
+      "sha256": "688b785f7d06c40c65a6e9ec08ca9cf1d0bedac8008a514d5877312be1aa5bb3"
+    },
+    "ollama_faithfulness_cases.parquet": {
+      "sha256": "b2216a23e3af077cb3960c8a7dbf88119fef7b9485dcc26afc7d88459df26de2"
+    },
+    "ollama_faithfulness_summary.json": {
+      "sha256": "18a393651d22d0f0f7347ff3e5b7053928ae681bcf3ba84137df15f652b0dcf4"
+    }
+  }
+}

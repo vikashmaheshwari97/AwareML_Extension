@@ -1,0 +1,17 @@
+{
+  "target": "energy",
+  "model": "HistGradientBoosting",
+  "direction": "minimize",
+  "rows": 235,
+  "mae": 6.251168913003097e-05,
+  "rmse": 9.232117267431915e-05,
+  "normalized_mae": 0.19277133012660463,
+  "normalized_rmse": 0.2846967583655763,
+  "r2": 0.276278147222781,
+  "top1_accuracy": 0.723404255319149,
+  "top3_accuracy": 0.9787234042553191,
+  "normalized_regret": 0.07440223761113203,
+  "spearman": 0.7510638297872338,
+  "held_out_datasets": 47,
+  "spearman_defined_datasets": 47
+}

@@ -1,0 +1,17 @@
+{
+  "target": "runtime",
+  "model": "ExtraTrees",
+  "direction": "minimize",
+  "rows": 235,
+  "mae": 0.015723925695681432,
+  "rmse": 0.12452626511395336,
+  "normalized_mae": 1.7794119366522283,
+  "normalized_rmse": 14.092124756818608,
+  "r2": -0.5025430546982419,
+  "top1_accuracy": 0.2553191489361702,
+  "top3_accuracy": 0.6808510638297872,
+  "normalized_regret": 0.315767766885489,
+  "spearman": 0.3217772631679813,
+  "held_out_datasets": 47,
+  "spearman_defined_datasets": 47
+}

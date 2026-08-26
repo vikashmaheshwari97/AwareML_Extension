@@ -1,0 +1,17 @@
+{
+  "target": "co2",
+  "model": "Ridge",
+  "direction": "minimize",
+  "rows": 235,
+  "mae": 4.358073663328021e-05,
+  "rmse": 7.846532536059039e-05,
+  "normalized_mae": 0.32254229433467746,
+  "normalized_rmse": 0.5807241460942896,
+  "r2": -2.011247206436437,
+  "top1_accuracy": 0.5957446808510638,
+  "top3_accuracy": 1.0,
+  "normalized_regret": 0.15521851665641825,
+  "spearman": 0.697872340425532,
+  "held_out_datasets": 47,
+  "spearman_defined_datasets": 47
+}

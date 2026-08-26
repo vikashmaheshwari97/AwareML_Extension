@@ -1,0 +1,17 @@
+{
+  "target": "accuracy",
+  "model": "Ridge",
+  "direction": "maximize",
+  "rows": 235,
+  "mae": 0.12292362121206077,
+  "rmse": 0.14900778367126277,
+  "normalized_mae": 0.19513033047424913,
+  "normalized_rmse": 0.23653662155663954,
+  "r2": 0.40373030390572495,
+  "top1_accuracy": 0.48936170212765956,
+  "top3_accuracy": 0.8085106382978723,
+  "normalized_regret": 0.14467189691940455,
+  "spearman": 0.5328795908641263,
+  "held_out_datasets": 47,
+  "spearman_defined_datasets": 46
+}

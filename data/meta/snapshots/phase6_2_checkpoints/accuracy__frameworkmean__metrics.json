@@ -1,0 +1,17 @@
+{
+  "target": "accuracy",
+  "model": "FrameworkMean",
+  "direction": "maximize",
+  "rows": 235,
+  "mae": 0.15216343020244544,
+  "rmse": 0.19153858905480697,
+  "normalized_mae": 0.24154593013718742,
+  "normalized_rmse": 0.30405049747402657,
+  "r2": 0.014770526107661053,
+  "top1_accuracy": 0.5531914893617021,
+  "top3_accuracy": 0.8297872340425532,
+  "normalized_regret": 0.12810871951257144,
+  "spearman": 0.5382978723404255,
+  "held_out_datasets": 47,
+  "spearman_defined_datasets": 47
+}

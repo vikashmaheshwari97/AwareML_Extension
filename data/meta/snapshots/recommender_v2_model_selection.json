@@ -1,0 +1,84 @@
+{
+  "schema_version": "2.0",
+  "phase": "6.2",
+  "created_at_utc": "2026-08-26T08:36:22+00:00",
+  "input_file": "recommender_train_v2.parquet",
+  "input_sha256": "a302a4a63aa3d5c14781515f70d440d37d8ea5439a17923a5ab65d43780223e6",
+  "evaluation_protocol": "leave_one_dataset_out",
+  "checkpoint_resume": true,
+  "dataset_count": 47,
+  "framework_count": 5,
+  "row_count": 235,
+  "targets": [
+    "accuracy",
+    "runtime",
+    "energy",
+    "co2"
+  ],
+  "models": [
+    "ExtraTrees",
+    "FrameworkMean",
+    "HistGradientBoosting",
+    "RandomForest",
+    "Ridge",
+    "XGBoost",
+    "kNN"
+  ],
+  "selected_by_target": {
+    "accuracy": {
+      "model": "RandomForest",
+      "direction": "maximize",
+      "normalized_regret": 0.11537442882626224,
+      "top1_accuracy": 0.574468085106383,
+      "top3_accuracy": 0.8297872340425532,
+      "spearman": 0.6510638297872339,
+      "mae": 0.10587997314477046,
+      "rmse": 0.13123853520533546,
+      "normalized_mae": 0.16807505300142075,
+      "selection_rule": "min normalized_regret; tie-break by max top1_accuracy, max spearman, min normalized_mae"
+    },
+    "co2": {
+      "model": "HistGradientBoosting",
+      "direction": "minimize",
+      "normalized_regret": 0.061378076344052346,
+      "top1_accuracy": 0.7446808510638298,
+      "top3_accuracy": 0.9787234042553191,
+      "spearman": 0.7468085106382978,
+      "mae": 2.6081213364954316e-05,
+      "rmse": 3.8467977768013564e-05,
+      "normalized_mae": 0.1930278156735105,
+      "selection_rule": "min normalized_regret; tie-break by max top1_accuracy, max spearman, min normalized_mae"
+    },
+    "energy": {
+      "model": "HistGradientBoosting",
+      "direction": "minimize",
+      "normalized_regret": 0.07440223761113203,
+      "top1_accuracy": 0.723404255319149,
+      "top3_accuracy": 0.9787234042553191,
+      "spearman": 0.7510638297872338,
+      "mae": 6.251168913003097e-05,
+      "rmse": 9.232117267431915e-05,
+      "normalized_mae": 0.19277133012660463,
+      "selection_rule": "min normalized_regret; tie-break by max top1_accuracy, max spearman, min normalized_mae"
+    },
+    "runtime": {
+      "model": "XGBoost",
+      "direction": "minimize",
+      "normalized_regret": 0.23739282900156555,
+      "top1_accuracy": 0.3617021276595745,
+      "top3_accuracy": 0.723404255319149,
+      "spearman": 0.2266870385622441,
+      "mae": 0.018307377768805838,
+      "rmse": 0.11524284729857245,
+      "normalized_mae": 2.0717705718719994,
+      "selection_rule": "min normalized_regret; tie-break by max top1_accuracy, max spearman, min normalized_mae"
+    }
+  },
+  "notes": [
+    "All predictions are out-of-fold at dataset level.",
+    "Accuracy is maximized; runtime, energy and CO2 are minimized.",
+    "Runtime, energy and CO2 are learned in log1p space.",
+    "Tree/XGBoost estimators use n_jobs=1 for Windows stability.",
+    "Completed target/model jobs are checkpointed and safely resumed."
+  ]
+}

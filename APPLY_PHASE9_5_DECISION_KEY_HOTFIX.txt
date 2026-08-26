@@ -1,0 +1,26 @@
+AwareML Phase 9.5 — Decision Lab duplicate-key hotfix
+
+Problem
+-------
+The Decision Lab fairness weight slider already uses:
+  r95_decision_fairness
+
+The fairness-criterion selectbox accidentally reused the same Streamlit key,
+causing StreamlitDuplicateElementKey.
+
+Fix
+---
+The fairness-criterion selectbox now uses:
+  r95_decision_fairness_metric
+
+No ranking logic, model, data, or experiment results are changed.
+
+Apply
+-----
+Expand this ZIP into the AwareML_Extension project root with -Force.
+
+Verify
+------
+python -m py_compile .\awareml\ui_v2\pages_specialist.py
+pytest .\tests\test_phase9_ui.py -q
+python -m streamlit run app.py

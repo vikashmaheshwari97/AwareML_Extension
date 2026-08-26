@@ -1,0 +1,17 @@
+{
+  "target": "co2",
+  "model": "kNN",
+  "direction": "minimize",
+  "rows": 235,
+  "mae": 3.0271310223287345e-05,
+  "rmse": 4.473305186050776e-05,
+  "normalized_mae": 0.2240388439070077,
+  "normalized_rmse": 0.33107061271337446,
+  "r2": 0.02130378863266502,
+  "top1_accuracy": 0.5106382978723404,
+  "top3_accuracy": 0.9787234042553191,
+  "normalized_regret": 0.19284276667689715,
+  "spearman": 0.6744680851063829,
+  "held_out_datasets": 47,
+  "spearman_defined_datasets": 47
+}

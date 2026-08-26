@@ -1,0 +1,34 @@
+AwareML Phase 6.2 hotfix
+
+The previous run ended with KeyboardInterrupt while RandomForest was fitting.
+That is an interruption, not corrupted data and not a Phase-6.1 failure.
+
+This hotfix:
+- keeps the same 47-dataset LODO protocol and candidate model definitions,
+- uses a threading backend to avoid Windows loky process-spawn overhead,
+- suppresses undefined Spearman warnings by checking constant ranks first,
+- prints progress for each target/model combination,
+- checkpoints each completed target/model result,
+- safely resumes if interrupted again,
+- registers the pytest integration marker.
+
+Apply by extracting this ZIP directly into:
+C:\Users\maheshwari\PycharmProjects\AwareML_Extension
+
+Then run:
+
+pytest .\tests\test_recommender_v2_benchmark.py -q -m "not integration"
+
+python .\scripts\run_recommender_v2_benchmark.py --threads 4
+
+If interrupted, run the exact same command again; completed jobs will show RESUME.
+To deliberately discard checkpoints and restart from zero:
+
+python .\scripts\run_recommender_v2_benchmark.py --threads 4 --restart
+
+After SUCCESS:
+
+python .\scripts\validate_recommender_v2_benchmark.py
+pytest .\tests\test_recommender_v2_benchmark.py -q
+
+Do not change data\meta\active_snapshot.txt yet.

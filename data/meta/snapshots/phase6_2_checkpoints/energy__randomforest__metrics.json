@@ -1,0 +1,17 @@
+{
+  "target": "energy",
+  "model": "RandomForest",
+  "direction": "minimize",
+  "rows": 235,
+  "mae": 6.774950339098781e-05,
+  "rmse": 9.260823378355789e-05,
+  "normalized_mae": 0.20892351599924142,
+  "normalized_rmse": 0.2855819872343797,
+  "r2": 0.2717705054364943,
+  "top1_accuracy": 0.6808510638297872,
+  "top3_accuracy": 0.9787234042553191,
+  "normalized_regret": 0.09543902336651028,
+  "spearman": 0.7468085106382978,
+  "held_out_datasets": 47,
+  "spearman_defined_datasets": 47
+}

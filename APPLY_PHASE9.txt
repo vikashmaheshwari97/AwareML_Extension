@@ -1,0 +1,88 @@
+AwareML Phase 9 — Research UI V2
+
+PRECONDITION
+------------
+Phases 6, 7 and 8 must be frozen.
+
+Check:
+python .\scripts\validate_phase6_complete.py
+python .\scripts\validate_phase7_complete.py
+python .\scripts\validate_phase8_complete.py
+
+APPLY
+-----
+Extract directly into:
+
+C:\Users\maheshwari\PycharmProjects\AwareML_Extension
+
+PowerShell:
+Expand-Archive -Path "$HOME\Downloads\AwareML_Phase9_Research_UI_V2.zip" -DestinationPath . -Force
+
+IMPORT CHECK
+------------
+python -c "from awareml.ui_v2.pages import PAGE_REGISTRY_V2; print('PHASE9 IMPORT OK', len(PAGE_REGISTRY_V2))"
+
+Expected:
+PHASE9 IMPORT OK 9
+
+UNIT TESTS
+----------
+pytest .\tests\test_phase9_ui.py -q
+
+BACKEND/UI VALIDATION
+---------------------
+python .\scripts\validate_phase9_ui.py
+
+COMPLETE + FREEZE
+-----------------
+python .\scripts\complete_phase9.py
+
+Expected:
+AwareML Phase 9 COMPLETE validation: PASS
+ALL PHASE 9 STEPS PASSED
+
+RUN THE INTERFACE
+-----------------
+python -m streamlit run app.py
+
+IMPORTANT
+---------
+1. The 3D Decision Space visualizes real Phase-6 predictions only.
+2. Preference sliders rerank; they do not rerun AutoML.
+3. The validated Run Studio remains the execution backend.
+4. Phase-7 human review remains mandatory.
+5. Phase-8 AEF is labeled as development/meta faithfulness evidence.
+6. Raw rows are excluded from the research export bundle.
+7. The frozen 23-dataset held-out split remains untouched until Phase 10.
+
+
+USER MANUAL
+-----------
+See: docs/PHASE9_USER_MANUAL.md
+
+PHASE 9.2 CLARITY GUIDE
+-----------------------
+See:
+docs/PHASE9_RECOMMENDER_FAITHFULNESS_GUIDE.md
+
+
+PHASE 9.3 DATASET ADVISOR
+-------------------------
+The Run Studio assistant is now generic. It adapts to any loaded classification dataset.
+Dutch Census remains only an optional example in data/demo/ and docs.
+
+
+PHASE 9.4 RESEARCH-CLARITY HOTFIX
+--------------------------------
+Added in this patch:
+- clearer temporal observatory drift/refit rendering
+- improved 3D Decision Space interpretation and plot margins
+- cleaner Copilot rationale rendering (human-readable evidence labels)
+- stronger Faithfulness Lab explanation of frozen benchmark status
+- additional specialist-lab guidance for Decision/Trust/Information-Seeking pages
+
+RECOMMENDED DEMO POSITIONING
+----------------------------
+- Keep Faithfulness Lab as a validated frozen benchmark.
+- If you later add a current-dataset faithfulness probe, present it as an optional live add-on, not as a replacement for the benchmark evidence.
+- Decision Lab is post-run ranking; 3D Decision Space is pre-run prediction/reranking.

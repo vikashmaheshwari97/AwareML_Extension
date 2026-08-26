@@ -17,3 +17,6 @@ psutil==6.1.1
 python-dotenv==1.0.1
 tqdm==4.66.5
 openpyxl==3.1.5
+
+# Phase 6 — canonical Parquet snapshots
+pyarrow==17.0.0

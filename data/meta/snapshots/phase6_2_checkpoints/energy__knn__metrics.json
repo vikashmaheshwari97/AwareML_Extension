@@ -1,0 +1,17 @@
+{
+  "target": "energy",
+  "model": "kNN",
+  "direction": "minimize",
+  "rows": 235,
+  "mae": 7.265050641599237e-05,
+  "rmse": 0.00010735855344595918,
+  "normalized_mae": 0.2240370553265729,
+  "normalized_rmse": 0.33106849992801457,
+  "r2": 0.021316280036914437,
+  "top1_accuracy": 0.5106382978723404,
+  "top3_accuracy": 0.9787234042553191,
+  "normalized_regret": 0.19284276667689726,
+  "spearman": 0.6744680851063829,
+  "held_out_datasets": 47,
+  "spearman_defined_datasets": 47
+}

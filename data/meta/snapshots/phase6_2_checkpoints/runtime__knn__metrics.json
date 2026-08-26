@@ -1,0 +1,17 @@
+{
+  "target": "runtime",
+  "model": "kNN",
+  "direction": "minimize",
+  "rows": 235,
+  "mae": 0.013655331349909896,
+  "rmse": 0.11122936781264349,
+  "normalized_mae": 1.5453176308028862,
+  "normalized_rmse": 12.587369631647292,
+  "r2": -0.19879228100500312,
+  "top1_accuracy": 0.3191489361702128,
+  "top3_accuracy": 0.7021276595744681,
+  "normalized_regret": 0.2807178705253852,
+  "spearman": 0.32553191489361694,
+  "held_out_datasets": 47,
+  "spearman_defined_datasets": 47
+}

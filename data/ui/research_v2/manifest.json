@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0",
+  "phase": "9",
+  "release_id": "awareml-research-ui-v2",
+  "status": "frozen",
+  "frozen_at_utc": "2026-08-26T12:37:57+00:00",
+  "capabilities": [
+    "global_research_state",
+    "research_command_center",
+    "interactive_plotly_3d_decision_space",
+    "preference_what_if_ranking",
+    "run_studio_bridge",
+    "streaming_observatory",
+    "responsible_ai_observatory",
+    "copilot_human_review_workspace",
+    "faithfulness_lab",
+    "research_export_center",
+    "legacy_specialist_lab_bridge"
+  ],
+  "scientific_boundaries": {
+    "decorative_synthetic_results": false,
+    "raw_dataset_rows_in_llm_export": false,
+    "held_out_23_dataset_split_used": false,
+    "pre_run_predictions_labeled_as_predictions": true,
+    "phase8_aef_labeled_as_development_evidence": true
+  },
+  "backend_releases": {
+    "phase6": {
+      "path": "data/meta/models/recommender_v2/release_manifest.json",
+      "sha256": "773fdab35726bf0b6a87a0acfdc55493cf9ccbe96fa3aa37fbe595335c1c32d3"
+    },
+    "phase7": {
+      "path": "data/llm/copilot_v1/manifest.json",
+      "sha256": "3e9679d3420e6e82be1ba644aeb2cc0ba7388ba77ad584689f9cb5d7720209d0"
+    },
+    "phase8": {
+      "path": "data/llm/faithfulness_v1/manifest.json",
+      "sha256": "769ee8ecd6320b62616e5b9c945d0b7104f934845c3253aed65caa696ea9a404"
+    }
+  }
+}

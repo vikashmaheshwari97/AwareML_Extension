@@ -1,0 +1,17 @@
+{
+  "target": "co2",
+  "model": "ExtraTrees",
+  "direction": "minimize",
+  "rows": 235,
+  "mae": 2.885996071375194e-05,
+  "rmse": 4.202452724533901e-05,
+  "normalized_mae": 0.21359340530085882,
+  "normalized_rmse": 0.31102474357193033,
+  "r2": 0.13623316814490982,
+  "top1_accuracy": 0.6382978723404256,
+  "top3_accuracy": 0.8936170212765957,
+  "normalized_regret": 0.1376099785894951,
+  "spearman": 0.6340425531914893,
+  "held_out_datasets": 47,
+  "spearman_defined_datasets": 47
+}

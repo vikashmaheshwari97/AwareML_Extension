@@ -1,0 +1,17 @@
+{
+  "target": "runtime",
+  "model": "FrameworkMean",
+  "direction": "minimize",
+  "rows": 235,
+  "mae": 0.015222752200236845,
+  "rmse": 0.10299529892478065,
+  "normalized_mae": 1.7226961954698115,
+  "normalized_rmse": 11.655553954707024,
+  "r2": -0.027873820608654842,
+  "top1_accuracy": 0.14893617021276595,
+  "top3_accuracy": 0.6382978723404256,
+  "normalized_regret": 0.41674384847329576,
+  "spearman": 0.038297872340425525,
+  "held_out_datasets": 47,
+  "spearman_defined_datasets": 47
+}

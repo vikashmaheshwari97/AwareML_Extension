@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.0",
+  "phase": "7",
+  "release_id": "awareml-copilot-v1",
+  "status": "frozen",
+  "frozen_at_utc": "2026-08-26T09:43:02+00:00",
+  "capabilities": [
+    "goal_to_configuration",
+    "human_review_gate",
+    "configuration_diff",
+    "before_run_grounded_explanation",
+    "during_run_grounded_chat",
+    "post_run_grounded_chat",
+    "preference_counterfactual",
+    "ollama_local_first",
+    "deterministic_fallback"
+  ],
+  "scientific_boundaries": {
+    "llm_recommender_role": "interpret human goals and explain evidence",
+    "ml_recommender_role": "predict accuracy/runtime/energy/co2 and empirically rank frameworks",
+    "primary_objectives": [
+      "accuracy",
+      "runtime",
+      "energy",
+      "co2"
+    ],
+    "fairness_and_explainability": "HCAI requirements/evidence, not silently mixed into the four-objective utility",
+    "raw_dataset_rows_sent_to_llm": false,
+    "23_dataset_test_split_used": false
+  },
+  "phase6_release": {
+    "path": "data/meta/models/recommender_v2/release_manifest.json",
+    "sha256": "773fdab35726bf0b6a87a0acfdc55493cf9ccbe96fa3aa37fbe595335c1c32d3"
+  },
+  "validation_report": {
+    "path": "artifacts/phase7/validation_report.json",
+    "sha256": "ba9406f8063451e09dada53e3803ca1478b27f468ccfc71cecde98b6ea64b946",
+    "ollama": {
+      "requested": true,
+      "status": "pass",
+      "status_detail": {
+        "reachable": true,
+        "models": [
+          "llama3.2:3b",
+          "mistral-small:24b",
+          "minimax-m2.5:cloud",
+          "llama3:latest"
+        ],
+        "configured_model": "llama3.1:8b",
+        "resolved_model": "llama3.2:3b",
+        "error": null
+      },
+      "goal_parse_source": "ollama",
+      "answer_source": "deterministic",
+      "model": "llama3.2:3b"
+    }
+  }
+}

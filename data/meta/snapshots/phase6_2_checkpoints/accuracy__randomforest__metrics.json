@@ -1,0 +1,17 @@
+{
+  "target": "accuracy",
+  "model": "RandomForest",
+  "direction": "maximize",
+  "rows": 235,
+  "mae": 0.10587997314477046,
+  "rmse": 0.13123853520533546,
+  "normalized_mae": 0.16807505300142075,
+  "normalized_rmse": 0.20832951789953347,
+  "r2": 0.5374618312160743,
+  "top1_accuracy": 0.574468085106383,
+  "top3_accuracy": 0.8297872340425532,
+  "normalized_regret": 0.11537442882626224,
+  "spearman": 0.6510638297872339,
+  "held_out_datasets": 47,
+  "spearman_defined_datasets": 47
+}
