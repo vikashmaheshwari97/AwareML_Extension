@@ -3,7 +3,7 @@
   "phase": "9",
   "release_id": "awareml-research-ui-v2",
   "status": "frozen",
-  "frozen_at_utc": "2026-08-26T12:37:57+00:00",
+  "frozen_at_utc": "2026-08-26T18:54:39+00:00",
   "capabilities": [
     "global_research_state",
     "research_command_center",
