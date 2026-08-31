@@ -2,7 +2,7 @@
 from .objective_parser import parse_objective_text
 from .grounded_chat import GroundedChat, ollama_status
 
-# Phase-7 Human-Centric LLM Copilot.
+# Human-Centric LLM Copilot.
 from .client import OllamaClient
 from .copilot import CopilotService
 from .evidence import (
@@ -11,23 +11,35 @@ from .evidence import (
     build_before_evidence,
     build_during_evidence,
 )
-from .goal_parser import (
-    GoalParser,
-    deterministic_goal_parse,
-)
+from .goal_parser import GoalParser, deterministic_goal_parse
 from .grounded_copilot import GroundedCopilotChat
-from .review import (
-    ReviewStore,
-    review_proposal,
+from .journal_client import (
+    JournalLLMResponseError,
+    JournalModelLockError,
+    StrictJournalOllamaClient,
 )
+from .objective_selection import (
+    GoalSelectionError,
+    JournalObjectiveSelector,
+    deterministic_objective_selection,
+    infer_hcai_requirements,
+)
+from .review import ReviewStore, review_proposal
 from .schemas import (
     ConfigDiffItem,
     CopilotConfiguration,
     CopilotProposal,
     GoalInterpretation,
     GroundedAnswer,
+    HCAIRequirements,
+    ObjectiveSelectionResult,
     PrimaryObjectiveWeights,
     ReviewDecision,
+)
+from .weighting import (
+    POLICY_ID as OBJECTIVE_WEIGHTING_POLICY_ID,
+    WeightingPolicyError,
+    equal_weights_for_selected,
 )
 
 __all__ = [
@@ -43,6 +55,13 @@ __all__ = [
     "GoalParser",
     "deterministic_goal_parse",
     "GroundedCopilotChat",
+    "StrictJournalOllamaClient",
+    "JournalModelLockError",
+    "JournalLLMResponseError",
+    "JournalObjectiveSelector",
+    "GoalSelectionError",
+    "deterministic_objective_selection",
+    "infer_hcai_requirements",
     "ReviewStore",
     "review_proposal",
     "ConfigDiffItem",
@@ -50,6 +69,11 @@ __all__ = [
     "CopilotProposal",
     "GoalInterpretation",
     "GroundedAnswer",
+    "HCAIRequirements",
+    "ObjectiveSelectionResult",
     "PrimaryObjectiveWeights",
     "ReviewDecision",
+    "OBJECTIVE_WEIGHTING_POLICY_ID",
+    "WeightingPolicyError",
+    "equal_weights_for_selected",
 ]

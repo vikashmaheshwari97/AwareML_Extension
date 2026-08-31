@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.0",
+  "phase": 11,
+  "release_id": "copilot_objective_selection_v2",
+  "release_status": "frozen",
+  "created_at_utc": "2026-08-31T14:39:56.833911+00:00",
+  "purpose": "Roadmap-aligned scenario-to-objective-set inference with separate documented equal-selected weighting.",
+  "phase10_protocol": {
+    "path": "C:\\Users\\maheshwari\\PycharmProjects\\AwareML_Extension\\data\\journal\\protocol_v1\\journal_experimental_protocol_v1.json",
+    "sha256": "30d3ff387304b8c8f63e9ae5e46a7ec83ad9b6adb8f7faf07b9d6b9d5247016f"
+  },
+  "objective_selection": {
+    "task": "multi_label_objective_selection",
+    "labels": [
+      "Accuracy",
+      "Runtime",
+      "Energy",
+      "CO2"
+    ],
+    "statuses": [
+      "valid",
+      "ambiguous",
+      "malformed",
+      "out_of_scope",
+      "contradictory"
+    ],
+    "primary_output_is_selected_objective_set": true,
+    "weights_are_primary_benchmark_output": false
+  },
+  "weighting_policy": {
+    "policy_id": "equal_selected_v1",
+    "rule": "Equal weight among selected objectives; all unselected objectives receive zero."
+  },
+  "journal_llm": {
+    "model": "llama3:8b",
+    "model_digest": "365c0bd3c000a25d28ddbf732fe1c6add414de7275464c4e4d1c3b5fcb5d8ad1",
+    "ollama_version": "0.32.14",
+    "silent_model_fallback": false
+  },
+  "failure_handling": {
+    "malformed_json": "explicit malformed status; interactive path may use labelled deterministic fallback",
+    "ambiguous": "explicit ambiguous status; human review required",
+    "out_of_scope": "explicit error/no proposal",
+    "contradictory": "explicit error/no proposal",
+    "wrong_model_or_digest": "hard failure"
+  },
+  "hcai_boundary": {
+    "fairness_is_primary_objective_label": false,
+    "explainability_is_primary_objective_label": false,
+    "drift_is_primary_objective_label": false,
+    "hcai_requirements_preserved_separately": true
+  },
+  "data_guards": {
+    "705_meta_logs_modified": false,
+    "705_meta_logs_are_copilot_training_data": false,
+    "23_heldout_dataset_contents_used": false,
+    "phase12_benchmark_created": false
+  },
+  "source_sha256": {
+    "awareml/llm/schemas.py": "f4e1c20e7e88d457e09d9bf176b4d0b4e29ebd9ef2395b3a9fe616bdbcdcb66c",
+    "awareml/llm/weighting.py": "f5277a8dc1613065a0246e7af868477c10cc6714fe40cfccebd363ee2b39ef82",
+    "awareml/llm/journal_client.py": "aaba100feed0c3acb90ab56204fd928a66f23e417410e6345f1ede9e143b3a42",
+    "awareml/llm/objective_selection.py": "ed269f7d9eef53f218b928b747cc26610a2be8c8eafcd4a07522396552e0e9c7",
+    "awareml/llm/goal_parser.py": "eab8d838cbc1397dce69234e8a825d22a20a23653ee00a929ec20671f0eaf04f",
+    "awareml/llm/copilot.py": "18b8e90bfaf9dcc09b18008e4137c507fecf71e449bdb3662e92e390ebf9e0e6",
+    "awareml/llm/__init__.py": "fea00bcad6bc63e092a21244cdd52c703a51c0f2922d51bd5b8913e51b25e73f",
+    "awareml/ui_v2/pages_copilot.py": "fe05597042c868d6597aa89d39aaa4ef2c808b93271f6e2d22c8de407ffb47e8",
+    "tests/test_phase11_objective_selection.py": "c21caaa00661ff8f6f7cf6f520be6a4f435005b660cc00f1b99da9026de07658",
+    "scripts/validate_phase11_copilot_v2.py": "84d5df50cfe551cccb3a0c447455f6f3225cfabe6b731a60082ff9bca2dc79d2"
+  }
+}
