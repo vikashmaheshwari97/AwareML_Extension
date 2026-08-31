@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AwareMLJournalObjectiveSelectionV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "status",
+    "selected_objectives",
+    "uncertainties"
+  ],
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": [
+        "valid",
+        "ambiguous",
+        "contradictory",
+        "out_of_scope"
+      ]
+    },
+    "selected_objectives": {
+      "type": "array",
+      "uniqueItems": true,
+      "minItems": 0,
+      "maxItems": 4,
+      "items": {
+        "type": "string",
+        "enum": [
+          "Accuracy",
+          "Runtime",
+          "Energy",
+          "CO2"
+        ]
+      }
+    },
+    "uncertainties": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.0",
+  "artifacts": [
+    {
+      "path": "data/meta/manifests/train_v1_47.yaml",
+      "role": "Frozen 47-dataset development/meta-training split",
+      "required": true
+    },
+    {
+      "path": "data/meta/manifests/test_v1_23.yaml",
+      "role": "23-dataset held-out manifest placeholder; identities must not be invented",
+      "required": true
+    },
+    {
+      "path": "data/meta/snapshots/meta_logs_v2.json",
+      "role": "Canonical 705-run Meta-Dataset V2 JSON",
+      "required": true,
+      "expected_sha256": "ee143ee5c2136de25ed83d3a5bb101481157c81b7adef1340e4404afa78d76c7"
+    },
+    {
+      "path": "data/meta/snapshots/recommender_train_v2.parquet",
+      "role": "235-row Recommender V2 training snapshot",
+      "required": true,
+      "expected_sha256": "a302a4a63aa3d5c14781515f70d440d37d8ea5439a17923a5ab65d43780223e6"
+    },
+    {
+      "path": "data/meta/models/recommender_v2/manifest.json",
+      "role": "Frozen Phase-6 Recommender V2 model/uncertainty manifest",
+      "required": true
+    },
+    {
+      "path": "data/llm/copilot_v1/manifest.json",
+      "role": "Frozen Phase-7 Copilot engineering baseline",
+      "required": true
+    },
+    {
+      "path": "data/llm/faithfulness_v1/manifest.json",
+      "role": "Frozen Phase-8 faithfulness engineering baseline",
+      "required": true
+    },
+    {
+      "path": "data/ui/research_v2/manifest.json",
+      "role": "Frozen Phase-9 Research UI baseline",
+      "required": true
+    },
+    {
+      "path": "requirements.txt",
+      "role": "Main CPython 3.8.10 reproducible requirements",
+      "required": true
+    },
+    {
+      "path": "requirements-optional.txt",
+      "role": "Optional/native research dependencies",
+      "required": true
+    },
+    {
+      "path": "pyproject.toml",
+      "role": "Project runtime/test configuration",
+      "required": true
+    }
+  ]
+}

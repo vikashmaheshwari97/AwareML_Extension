@@ -1,0 +1,346 @@
+{
+  "schema_version": "1.0",
+  "phase": 10,
+  "protocol_id": "journal_experimental_protocol_v1",
+  "protocol_name": "Journal Experimental Protocol v1",
+  "created_at_utc": "2026-08-31T13:50:38.356707+00:00",
+  "release_status": "frozen",
+  "purpose": "Freeze the journal experimental contract before Phase 11 changes Copilot objective inference or any later journal evaluation.",
+  "engineering_baseline": {
+    "repository": "vikashmaheshwari97/AwareML_Extension",
+    "branch": "main",
+    "commit": "bee541f2914f55db099a99693b3b6fae50a89996",
+    "commit_role": "pre_phase10_engineering_baseline",
+    "phase10_overlay_is_only_allowed_dirty_change": true,
+    "dirty_paths_at_protocol_build": [
+      "APPLY_PHASE10.txt",
+      "PHASE10_CHANGELOG.md",
+      "awareml/journal/__init__.py",
+      "awareml/journal/protocol.py",
+      "configs/journal/baseline_artifacts_v1.json",
+      "configs/journal/engineering_baseline_v1.json",
+      "configs/journal/heldout_policy_v1.json",
+      "configs/journal/journal_llm_v1.json",
+      "configs/journal/objective_selection_schema_v1.json",
+      "configs/journal/objectives_v1.json",
+      "configs/journal/roadmap_resolution_v1.json",
+      "docs/PHASE10_JOURNAL_PROTOCOL_LOCK.md",
+      "prompts/journal_objective_selection_v1.txt",
+      "scripts/build_phase10_protocol.py",
+      "scripts/complete_phase10.py",
+      "scripts/freeze_phase10_protocol.py",
+      "scripts/validate_phase10_protocol.py",
+      "tests/test_phase10_protocol.py"
+    ],
+    "artifact_checksums": [
+      {
+        "path": "data/meta/manifests/train_v1_47.yaml",
+        "role": "Frozen 47-dataset development/meta-training split",
+        "required": true,
+        "status": "present",
+        "sha256": "3a0b87c9c7ac327eab2e035f773a9b14ae667af80f6f4d70b40e0787919fd44e",
+        "size_bytes": 1120
+      },
+      {
+        "path": "data/meta/manifests/test_v1_23.yaml",
+        "role": "23-dataset held-out manifest placeholder; identities must not be invented",
+        "required": true,
+        "status": "present",
+        "sha256": "25a55467cd22f6623d4b2d0fe7ec9b9bc88536a1af6b0d3d55e585221ddc3dc9",
+        "size_bytes": 358
+      },
+      {
+        "path": "data/meta/snapshots/meta_logs_v2.json",
+        "role": "Canonical 705-run Meta-Dataset V2 JSON",
+        "required": true,
+        "status": "present",
+        "sha256": "ee143ee5c2136de25ed83d3a5bb101481157c81b7adef1340e4404afa78d76c7",
+        "size_bytes": 13161515
+      },
+      {
+        "path": "data/meta/snapshots/recommender_train_v2.parquet",
+        "role": "235-row Recommender V2 training snapshot",
+        "required": true,
+        "status": "present",
+        "sha256": "a302a4a63aa3d5c14781515f70d440d37d8ea5439a17923a5ab65d43780223e6",
+        "size_bytes": 123830
+      },
+      {
+        "path": "data/meta/models/recommender_v2/manifest.json",
+        "role": "Frozen Phase-6 Recommender V2 model/uncertainty manifest",
+        "required": true,
+        "status": "present",
+        "sha256": "0a6d3af6058f006b02d43b4b0e918a63a38da20be9d7d609a71bb0e266ce392d",
+        "size_bytes": 9914
+      },
+      {
+        "path": "data/llm/copilot_v1/manifest.json",
+        "role": "Frozen Phase-7 Copilot engineering baseline",
+        "required": true,
+        "status": "present",
+        "sha256": "3e9679d3420e6e82be1ba644aeb2cc0ba7388ba77ad584689f9cb5d7720209d0",
+        "size_bytes": 1841
+      },
+      {
+        "path": "data/llm/faithfulness_v1/manifest.json",
+        "role": "Frozen Phase-8 faithfulness engineering baseline",
+        "required": true,
+        "status": "present",
+        "sha256": "769ee8ecd6320b62616e5b9c945d0b7104f934845c3253aed65caa696ea9a404",
+        "size_bytes": 2598
+      },
+      {
+        "path": "data/ui/research_v2/manifest.json",
+        "role": "Frozen Phase-9 Research UI baseline",
+        "required": true,
+        "status": "present",
+        "sha256": "97efb9ba7d93fa48b52650616014c981e9fde61e3e1c68f1ed492572f632b5e4",
+        "size_bytes": 1377
+      },
+      {
+        "path": "requirements.txt",
+        "role": "Main CPython 3.8.10 reproducible requirements",
+        "required": true,
+        "status": "present",
+        "sha256": "7a1e09d8f290a158b044870ff2b6c3d0dcf692fa28c0b3267694881f2fedce3e",
+        "size_bytes": 614
+      },
+      {
+        "path": "requirements-optional.txt",
+        "role": "Optional/native research dependencies",
+        "required": true,
+        "status": "present",
+        "sha256": "aff08d8cc2280faa814357b4c0dba46d8e106e38080c030a7093947cfa4fe5ff",
+        "size_bytes": 383
+      },
+      {
+        "path": "pyproject.toml",
+        "role": "Project runtime/test configuration",
+        "required": true,
+        "status": "present",
+        "sha256": "3d27358da4f1669f567fd525ed07eb464b81f23bb76777e417df40a756a03b29",
+        "size_bytes": 401
+      }
+    ],
+    "active_markers": {
+      "data/meta/active_recommender_v2.txt": {
+        "exists": true,
+        "value": "models/recommender_v2/manifest.json",
+        "sha256": "4aa0e85ccefa37dc0b3ab9dac93133d5c09402c02167db92ce5955b4597b5960"
+      },
+      "data/llm/active_copilot.txt": {
+        "exists": true,
+        "value": "copilot_v1/manifest.json",
+        "sha256": "bd9879838a24b82aff0e0fd03b9e12dfa4410f7e2dda0c3f98839a87fc73750b"
+      },
+      "data/llm/active_faithfulness.txt": {
+        "exists": true,
+        "value": "faithfulness_v1/manifest.json",
+        "sha256": "988201dcf38b8fa322c2302e785dfa35d74c423c0620b33c2808967601ba44a1"
+      },
+      "data/ui/active_ui.txt": {
+        "exists": true,
+        "value": "research_v2/manifest.json",
+        "sha256": "6e3fbfd7b2b7c81b031908ecf0b227f799a52ba3ab1821abba411a1882b7b25a"
+      }
+    }
+  },
+  "roadmap_alignment": {
+    "schema_version": "1.0",
+    "source_of_truth": {
+      "roadmap_document": "AwareML_Journal_Extension_Roadmap-4.docx",
+      "accepted_paper": "AwareML: Transparent, Controllable, and Sustainable Streaming AutoML (CIKM 2026 demo)"
+    },
+    "phase10_decisions": [
+      {
+        "id": "P10-01",
+        "decision": "Keep Phases 0-9 as the completed engineering foundation. Journal reviewer-driven work starts at Phase 10."
+      },
+      {
+        "id": "P10-02",
+        "decision": "The four fixed objective labels for the NL benchmark are Accuracy, Runtime, Energy, and CO2."
+      },
+      {
+        "id": "P10-03",
+        "decision": "The NL objective-selection task is multi-label objective-set inference. Continuous weights are not the primary Phase-12 benchmark output."
+      },
+      {
+        "id": "P10-04",
+        "decision": "The roadmap phrase '23 meta-training datasets' is resolved as a wording inconsistency. Canonical architecture is 47 development/meta-training datasets plus 23 final held-out evaluation datasets."
+      },
+      {
+        "id": "P10-05",
+        "decision": "The exact identities of the 23 held-out datasets are currently absent from the repository manifest. They must not be invented. Final held-out evaluation remains blocked until identities are authoritatively recovered and frozen."
+      },
+      {
+        "id": "P10-06",
+        "decision": "Journal objective-selection LLM is LLaMA 3 8B through Ollama with exact tag llama3:8b, exact model digest, recorded Ollama version, deterministic generation options, and no silent fallback."
+      },
+      {
+        "id": "P10-07",
+        "decision": "Phase 10 freezes the target prompt/schema for Phase 11 but does not modify the current Phase-7 Copilot behavior."
+      },
+      {
+        "id": "P10-08",
+        "decision": "The 705 meta-logs remain recommender evidence. They are not Copilot objective-selection benchmark data."
+      }
+    ]
+  },
+  "dataset_split_policy": {
+    "canonical_role_resolution": {
+      "development_meta_training": {
+        "manifest": "data/meta/manifests/train_v1_47.yaml",
+        "count": 47,
+        "frozen": true
+      },
+      "final_heldout_evaluation": {
+        "manifest": "data/meta/manifests/test_v1_23.yaml",
+        "expected_count": 23,
+        "identity_count_currently_present": 0,
+        "manifest_frozen": false,
+        "identity_status": "unresolved_do_not_use"
+      }
+    },
+    "roadmap_wording_resolution": {
+      "ambiguous_phrase": "23 meta-training datasets",
+      "canonical_interpretation": "23 held-out evaluation datasets",
+      "basis": [
+        "Accepted CIKM paper: 47 meta-training datasets are disjoint from 23 held-out evaluation datasets.",
+        "Repository train_v1_47.yaml: purpose=meta_train, expected_count=47, frozen=true.",
+        "Repository test_v1_23.yaml: purpose=heldout_test, expected_count=23."
+      ],
+      "roadmap_reference_1_6_2_1_policy": "The roadmap's broader-evaluation reference is not used as permission to access the final 23 held-out datasets. Until a protocol amendment explicitly says otherwise, Phase 15 explanation-correctness work must use development/non-held-out evidence."
+    },
+    "operational_policy": [
+      "The 47 development/meta-training split remains frozen and may be used for development phases.",
+      "The 23 datasets are final held-out evaluation datasets, not meta-training datasets.",
+      "Current repository history does not contain their 23 authoritative dataset IDs; no names may be invented.",
+      "No Phase 10-17 code may load, inspect, tune on, or derive metrics from the final held-out dataset contents.",
+      "Phase 18 is blocked until the exact 23 identities are recovered from authoritative project history, populated in test_v1_23.yaml, checked for zero overlap with train_v1_47, and frozen."
+    ],
+    "heldout_access_allowed_before_phase18": false,
+    "phase18_identity_gate": {
+      "required_id_count": 23,
+      "heldout_manifest_frozen": true,
+      "zero_overlap_with_train": true,
+      "authoritative_identity_source_required": true,
+      "invented_names_forbidden": true
+    },
+    "heldout_dataset_contents_read_by_phase10": false,
+    "train_manifest_sha256": "3a0b87c9c7ac327eab2e035f773a9b14ae667af80f6f4d70b40e0787919fd44e",
+    "heldout_manifest_sha256": "25a55467cd22f6623d4b2d0fe7ec9b9bc88536a1af6b0d3d55e585221ddc3dc9"
+  },
+  "objective_vocabulary": {
+    "display_labels": [
+      "Accuracy",
+      "Runtime",
+      "Energy",
+      "CO2"
+    ],
+    "internal_keys": [
+      "accuracy",
+      "runtime",
+      "energy",
+      "co2"
+    ],
+    "source_in_current_code": "awareml/llm/schemas.py::PrimaryObjectiveWeights",
+    "current_code_match": true,
+    "benchmark_task": "multi_label_objective_selection",
+    "weights_part_of_primary_selection_output": false,
+    "prompt_sha256": "066e5f08ef5e168d0374eb4ce7506e1f94ea1ccc7dd2194a9900b38077924749",
+    "schema_sha256": "57a9249ccc278573e5b55ee44770028f2717e07cac97c214d4f0287f4d07e4c9"
+  },
+  "journal_llm": {
+    "provider": "Ollama",
+    "model_family": "LLaMA 3",
+    "parameter_size": "8B",
+    "required_model_tag": "llama3:8b",
+    "strict_exact_model": true,
+    "allow_fallback": false,
+    "generation": {
+      "temperature": 0.0,
+      "top_p": 1.0,
+      "seed": 42,
+      "stream": false,
+      "format": "json",
+      "num_predict": 512
+    },
+    "prompt_file": "prompts/journal_objective_selection_v1.txt",
+    "prompt_sha256": "066e5f08ef5e168d0374eb4ce7506e1f94ea1ccc7dd2194a9900b38077924749",
+    "schema_file": "configs/journal/objective_selection_schema_v1.json",
+    "schema_sha256": "57a9249ccc278573e5b55ee44770028f2717e07cac97c214d4f0287f4d07e4c9",
+    "runtime_lock": {
+      "verified": true,
+      "base_url": "http://localhost:11434",
+      "ollama_version": "0.32.14",
+      "model_tag": "llama3:8b",
+      "model_digest": "365c0bd3c000a25d28ddbf732fe1c6add414de7275464c4e4d1c3b5fcb5d8ad1",
+      "model_modified_at": "2026-08-31T16:49:09.6065444+03:00",
+      "model_size_bytes": 4661224676,
+      "model_details": {
+        "parent_model": "",
+        "format": "gguf",
+        "family": "llama",
+        "families": [
+          "llama"
+        ],
+        "parameter_size": "8.0B",
+        "quantization_level": "Q4_0",
+        "context_length": 8192,
+        "embedding_length": 4096
+      },
+      "fallback_used": false
+    },
+    "runtime_verified": true,
+    "phase11_requirement": "Phase 11 must wire the production objective selector to this exact prompt/schema/model lock. The existing Phase-7 continuous-weight parser remains part of the pre-Phase-10 engineering baseline and is not changed by Phase 10."
+  },
+  "downstream_weighting_policy": {
+    "phase10_status": "explicitly_not_selected_yet",
+    "primary_objective_selection_benchmark_uses_weights": false,
+    "rule": "Phase 11 must freeze the mapping from selected objective subset to recommender weights before Phase 12 benchmark execution. Objective-selection accuracy and downstream weighting are separate tasks."
+  },
+  "near_pareto_policy": {
+    "phase10_status": "existing_implementation_recorded_not_redefined_here",
+    "current_engineering_default": "epsilon_nondominance",
+    "current_epsilon": 0.05,
+    "journal_canonicalization_gate": "Phase 13"
+  },
+  "phase_gates": {
+    "phase11": [
+      "Implement selected-objective-set output against the frozen vocabulary.",
+      "Use the exact frozen prompt/schema and exact journal LLM lock.",
+      "Disable silent model fallback in journal evaluation mode.",
+      "Freeze downstream weighting policy."
+    ],
+    "phase12": [
+      "Do not use the 705 recommender meta-runs as Copilot benchmark statements.",
+      "Create a separate human-annotated NL objective-selection benchmark."
+    ],
+    "phase15": [
+      "Controlled explanation-correctness evidence must not silently consume the final held-out 23 datasets."
+    ],
+    "phase18": [
+      "Recover the exact 23 held-out dataset identities from authoritative project history.",
+      "Populate test_v1_23.yaml with exactly 23 IDs.",
+      "Verify zero overlap with train_v1_47.",
+      "Set held-out manifest frozen=true.",
+      "Only then permit final held-out evaluation."
+    ]
+  },
+  "integrity_guards": {
+    "heldout_dataset_contents_read_by_phase10": false,
+    "heldout_dataset_results_used_by_phase10": false,
+    "heldout_identity_names_invented": false,
+    "705_meta_logs_modified": false,
+    "recommender_v2_retrained": false,
+    "copilot_behavior_modified": false,
+    "faithfulness_behavior_modified": false,
+    "ui_behavior_modified": false
+  },
+  "runtime": {
+    "implementation": "CPython",
+    "version": "3.8.10",
+    "required_version": "3.8.10",
+    "match": true
+  }
+}

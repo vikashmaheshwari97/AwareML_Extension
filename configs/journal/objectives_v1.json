@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0",
+  "vocabulary_id": "awareml_primary_objectives_v1",
+  "display_labels": [
+    "Accuracy",
+    "Runtime",
+    "Energy",
+    "CO2"
+  ],
+  "internal_keys": [
+    "accuracy",
+    "runtime",
+    "energy",
+    "co2"
+  ],
+  "directions": {
+    "Accuracy": "maximize",
+    "Runtime": "minimize",
+    "Energy": "minimize",
+    "CO2": "minimize"
+  },
+  "journal_rule": "The Phase-12 objective-selection benchmark predicts a subset of exactly this fixed four-label vocabulary.",
+  "fairness_and_explainability_rule": "Fairness and explainability remain HCAI requirements/evidence dimensions and are not labels in this four-objective selection benchmark.",
+  "weights_rule": "Objective selection and downstream weighting are separate tasks. Phase 10 does not infer weights from label presence."
+}

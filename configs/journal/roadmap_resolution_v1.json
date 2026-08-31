@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0",
+  "source_of_truth": {
+    "roadmap_document": "AwareML_Journal_Extension_Roadmap-4.docx",
+    "accepted_paper": "AwareML: Transparent, Controllable, and Sustainable Streaming AutoML (CIKM 2026 demo)"
+  },
+  "phase10_decisions": [
+    {
+      "id": "P10-01",
+      "decision": "Keep Phases 0-9 as the completed engineering foundation. Journal reviewer-driven work starts at Phase 10."
+    },
+    {
+      "id": "P10-02",
+      "decision": "The four fixed objective labels for the NL benchmark are Accuracy, Runtime, Energy, and CO2."
+    },
+    {
+      "id": "P10-03",
+      "decision": "The NL objective-selection task is multi-label objective-set inference. Continuous weights are not the primary Phase-12 benchmark output."
+    },
+    {
+      "id": "P10-04",
+      "decision": "The roadmap phrase '23 meta-training datasets' is resolved as a wording inconsistency. Canonical architecture is 47 development/meta-training datasets plus 23 final held-out evaluation datasets."
+    },
+    {
+      "id": "P10-05",
+      "decision": "The exact identities of the 23 held-out datasets are currently absent from the repository manifest. They must not be invented. Final held-out evaluation remains blocked until identities are authoritatively recovered and frozen."
+    },
+    {
+      "id": "P10-06",
+      "decision": "Journal objective-selection LLM is LLaMA 3 8B through Ollama with exact tag llama3:8b, exact model digest, recorded Ollama version, deterministic generation options, and no silent fallback."
+    },
+    {
+      "id": "P10-07",
+      "decision": "Phase 10 freezes the target prompt/schema for Phase 11 but does not modify the current Phase-7 Copilot behavior."
+    },
+    {
+      "id": "P10-08",
+      "decision": "The 705 meta-logs remain recommender evidence. They are not Copilot objective-selection benchmark data."
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0",
+  "llm_lock_id": "awareml_journal_llm_v1",
+  "provider": "Ollama",
+  "model_family": "LLaMA 3",
+  "parameter_size": "8B",
+  "required_model_tag": "llama3:8b",
+  "base_url": "http://localhost:11434",
+  "strict_exact_model": true,
+  "allow_fallback": false,
+  "generation": {
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "seed": 42,
+    "stream": false,
+    "format": "json",
+    "num_predict": 512
+  },
+  "prompt_file": "prompts/journal_objective_selection_v1.txt",
+  "schema_file": "configs/journal/objective_selection_schema_v1.json",
+  "phase11_requirement": "Phase 11 must wire the production objective selector to this exact prompt/schema/model lock. The existing Phase-7 continuous-weight parser remains part of the pre-Phase-10 engineering baseline and is not changed by Phase 10."
+}

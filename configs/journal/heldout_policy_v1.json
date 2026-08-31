@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0",
+  "policy_id": "awareml_heldout_policy_v1",
+  "development_manifest": "data/meta/manifests/train_v1_47.yaml",
+  "heldout_manifest": "data/meta/manifests/test_v1_23.yaml",
+  "roadmap_wording_resolution": {
+    "ambiguous_phrase": "23 meta-training datasets",
+    "canonical_interpretation": "23 held-out evaluation datasets",
+    "basis": [
+      "Accepted CIKM paper: 47 meta-training datasets are disjoint from 23 held-out evaluation datasets.",
+      "Repository train_v1_47.yaml: purpose=meta_train, expected_count=47, frozen=true.",
+      "Repository test_v1_23.yaml: purpose=heldout_test, expected_count=23."
+    ],
+    "roadmap_reference_1_6_2_1_policy": "The roadmap's broader-evaluation reference is not used as permission to access the final 23 held-out datasets. Until a protocol amendment explicitly says otherwise, Phase 15 explanation-correctness work must use development/non-held-out evidence."
+  },
+  "operational_policy": [
+    "The 47 development/meta-training split remains frozen and may be used for development phases.",
+    "The 23 datasets are final held-out evaluation datasets, not meta-training datasets.",
+    "Current repository history does not contain their 23 authoritative dataset IDs; no names may be invented.",
+    "No Phase 10-17 code may load, inspect, tune on, or derive metrics from the final held-out dataset contents.",
+    "Phase 18 is blocked until the exact 23 identities are recovered from authoritative project history, populated in test_v1_23.yaml, checked for zero overlap with train_v1_47, and frozen."
+  ],
+  "phase18_identity_gate": {
+    "required_id_count": 23,
+    "heldout_manifest_frozen": true,
+    "zero_overlap_with_train": true,
+    "authoritative_identity_source_required": true,
+    "invented_names_forbidden": true
+  }
+}

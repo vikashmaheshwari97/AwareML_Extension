@@ -1,0 +1,10 @@
+{
+  "schema_version": "1.0",
+  "baseline_id": "awareml_pre_phase10_engineering_baseline_v1",
+  "repository": "vikashmaheshwari97/AwareML_Extension",
+  "branch": "main",
+  "reference_commit": "bee541f2914f55db099a99693b3b6fae50a89996",
+  "reference_commit_message": "Fix CI reproducibility for Python 3.8.10 and frozen Recommender V2",
+  "rule": "Phase 10 must begin from this exact engineering baseline. Only Phase-10 overlay files may be dirty while the protocol is frozen.",
+  "suggested_tag_after_phase10": "awareml-journal-protocol-v1"
+}
