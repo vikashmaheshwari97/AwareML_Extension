@@ -1,0 +1,73 @@
+AwareML CI Exact CPython 3.8.10 Container Hotfix
+=================================================
+
+WHY THIS HOTFIX EXISTS
+----------------------
+The GitHub Actions log for commit de8eb4e showed:
+
+Version 3.8.10 was not found in the local cache
+The version '3.8.10' with architecture 'x64' was not found for Ubuntu 22.04.
+
+This means the failure occurred inside actions/setup-python before dependencies
+or tests were executed.
+
+We DO NOT change the project interpreter.
+
+The project remains:
+CPython 3.8.10
+
+FIX
+---
+Both CI jobs now run inside the Docker Official Python image:
+
+python:3.8.10-buster
+
+This image contains CPython 3.8.10 directly, so the workflow no longer depends
+on GitHub's setup-python version manifest.
+
+The workflow still uses ubuntu-22.04 as the GitHub host runner, but the actual
+test processes execute inside the exact Python 3.8.10 container.
+
+UNCHANGED
+---------
+Main environment:
+- Python 3.8.10
+- River 0.10.1
+- XGBoost 2.1.4
+
+OAML compatibility environment:
+- Python 3.8.10
+- NumPy 1.23.5
+- Pandas 1.3.5
+- SciPy 1.10.1
+- scikit-learn 1.1.3
+- River 0.8.0
+
+No Phase-10 protocol artifacts, models, datasets, results, Copilot code,
+Faithfulness code, or held-out data are modified.
+
+APPLY
+-----
+cd C:\Users\maheshwari\PycharmProjects\AwareML_Extension
+
+Expand-Archive -Path "$HOME\Downloads\AwareML_CI_Python3810_Container_Hotfix.zip" -DestinationPath . -Force
+
+VALIDATE
+--------
+python .\scripts\validate_ci_runtime_lock.py
+
+pytest .\tests\test_ci_runtime_lock.py -q
+
+OPTIONAL FULL LOCAL TEST
+------------------------
+pytest -q
+
+PUSH
+----
+git add -A
+git commit -m "Fix GitHub CI provisioning for exact CPython 3.8.10"
+git push origin main
+
+Then wait for GitHub Actions and verify:
+- main-stack -> green
+- oaml-river-compatibility -> green

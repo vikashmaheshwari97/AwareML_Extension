@@ -7,16 +7,21 @@ on:
 jobs:
   main-stack:
     runs-on: ubuntu-22.04
+    timeout-minutes: 45
+
+    # GitHub's setup-python manifest no longer publishes CPython 3.8.10
+    # for ubuntu-22.04. Run the job inside the historical official Python
+    # image instead so the interpreter remains EXACTLY CPython 3.8.10.
+    container:
+      image: python:3.8.10-buster
+
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up exact CPython 3.8.10
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.8.10"
-
-      - name: Verify exact interpreter
-        run: python -c "import sys; assert sys.version_info[:3] == (3, 8, 10), sys.version"
+      - name: Verify exact CPython 3.8.10
+        run: |
+          python --version
+          python -c "import platform, sys; print(platform.platform()); assert platform.python_implementation() == 'CPython'; assert sys.version_info[:3] == (3, 8, 10), sys.version"
 
       - name: Install main stack
         run: |
@@ -37,16 +42,19 @@ jobs:
 
   oaml-river-compatibility:
     runs-on: ubuntu-22.04
+    timeout-minutes: 30
+
+    # Keep the isolated OAML compatibility job on the same exact interpreter.
+    container:
+      image: python:3.8.10-buster
+
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up exact CPython 3.8.10
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.8.10"
-
-      - name: Verify exact interpreter
-        run: python -c "import sys; assert sys.version_info[:3] == (3, 8, 10), sys.version"
+      - name: Verify exact CPython 3.8.10
+        run: |
+          python --version
+          python -c "import platform, sys; print(platform.platform()); assert platform.python_implementation() == 'CPython'; assert sys.version_info[:3] == (3, 8, 10), sys.version"
 
       - name: Install validated OAML River compatibility core
         run: |
