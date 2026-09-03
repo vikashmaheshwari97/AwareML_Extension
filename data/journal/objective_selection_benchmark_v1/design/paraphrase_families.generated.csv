@@ -1,0 +1,61 @@
+family_id,variant_id,scenario,variant_type
+P01,BASE,A diagnostic support service should make highly dependable decisions before a clinician acts.,base
+P01,PARA1,Clinicians need the diagnostic support service to be consistently right when it flags a case.,paraphrase
+P01,PARA2,The diagnostic assistant should favour trustworthy decisions because its output can influence clinical action.,paraphrase
+P01,PARA3,"For this clinical support tool, avoiding incorrect decisions matters more than operational convenience.",paraphrase
+P01,PARA4,The hospital wants predictions from the support service to remain dependable in routine use.,paraphrase
+P01,PARA5,"The system may run at ordinary speed, but its decisions should be reliable enough for clinical review.",paraphrase
+P02,BASE,A collision-warning service must react quickly enough for the driver to respond.,base
+P02,PARA1,The driving alert must arrive with almost no delay so the user can act in time.,paraphrase
+P02,PARA2,This road-safety service is useful only if each warning is returned promptly.,paraphrase
+P02,PARA3,The vehicle assistant needs very short response times for incoming hazard signals.,paraphrase
+P02,PARA4,Long processing delays would make the collision alert ineffective in live traffic.,paraphrase
+P02,PARA5,The system should produce each driving warning rapidly during operation.,paraphrase
+P03,BASE,A forest sensor will run from a small battery for months without easy access for maintenance.,base
+P03,PARA1,The remote forest monitor has to preserve its battery because technicians cannot visit often.,paraphrase
+P03,PARA2,This field sensor should keep power draw modest during a long unattended deployment.,paraphrase
+P03,PARA3,The device sits far from mains electricity and must remain practical on its battery supply.,paraphrase
+P03,PARA4,A long-lived battery-backed monitor is needed for this remote forest installation.,paraphrase
+P03,PARA5,The deployment has a tight device power budget and should avoid draining the sensor early.,paraphrase
+P04,BASE,A public cloud service is being redesigned under a low-impact computing policy.,base
+P04,PARA1,The organisation wants the cloud workload to fit a climate-conscious operating policy.,paraphrase
+P04,PARA2,This service should adopt a greener operating profile where practical.,paraphrase
+P04,PARA3,The deployment is being reviewed mainly for its broader environmental footprint.,paraphrase
+P04,PARA4,The cloud team has been asked to reduce the environmental burden of operating the service.,paraphrase
+P04,PARA5,A lower-impact computing strategy is the main concern for this deployment.,paraphrase
+P05,BASE,A fraud alert should be dependable and arrive quickly enough to stop a suspicious payment.,base
+P05,PARA1,The payment screen needs trustworthy decisions and must return them before the transaction completes.,paraphrase
+P05,PARA2,A suspicious-payment detector should rarely be wrong while reacting promptly to each request.,paraphrase
+P05,PARA3,The bank needs reliable fraud flags without waiting long enough to delay intervention.,paraphrase
+P05,PARA4,"For live payment protection, the service must combine dependable decisions with rapid responses.",paraphrase
+P05,PARA5,The detector should keep decision quality high and avoid delays that would make the alert too late.,paraphrase
+P06,BASE,A remote medical wearable should make dependable classifications while preserving its small battery.,base
+P06,PARA1,The wearable needs trustworthy predictions and should keep operating for a long time between charges.,paraphrase
+P06,PARA2,A battery-backed health monitor must avoid wrong classifications without draining the device quickly.,paraphrase
+P06,PARA3,The medical sensor should keep decision quality high while remaining practical on a limited battery.,paraphrase
+P06,PARA4,The team needs reliable wearable predictions together with modest device power draw.,paraphrase
+P06,PARA5,This health device must make sound decisions and survive long periods away from charging.,paraphrase
+P07,BASE,A live traffic service must react promptly while fitting the city's low-impact computing policy.,base
+P07,PARA1,The city needs rapid traffic decisions from a service designed for a smaller environmental footprint.,paraphrase
+P07,PARA2,The traffic monitor should avoid delays and also support a greener operating profile.,paraphrase
+P07,PARA3,"Immediate road-event responses are needed, but the deployment should remain environmentally considerate.",paraphrase
+P07,PARA4,The service must be quick enough for live traffic control while following a climate-conscious operations policy.,paraphrase
+P07,PARA5,The road platform should return decisions promptly without an unnecessarily heavy environmental footprint.,paraphrase
+P08,BASE,"A rescue drone should make dependable detections, react promptly and stay practical on its limited battery.",base
+P08,PARA1,"The emergency drone needs trustworthy detections, rapid responses and careful use of its battery supply.",paraphrase
+P08,PARA2,"For rescue work, the airborne system should avoid wrong decisions, respond quickly and preserve flight time.",paraphrase
+P08,PARA3,The drone must combine reliable predictions with time-critical reactions and modest power draw.,paraphrase
+P08,PARA4,A battery-limited rescue platform needs sound decisions and quick responses throughout the mission.,paraphrase
+P08,PARA5,"The field team needs the drone to be dependable, prompt and able to operate without draining its battery early.",paraphrase
+P09,BASE,"A remote conservation monitor should make dependable decisions, last on battery and fit a low-impact deployment.",base
+P09,PARA1,"The conservation sensor needs trustworthy classifications, long battery life and a smaller environmental footprint.",paraphrase
+P09,PARA2,"This remote monitor should avoid wrong decisions, preserve its battery and support climate-conscious operation.",paraphrase
+P09,PARA3,The field deployment needs reliable predictions from a battery-backed device with a greener operating profile.,paraphrase
+P09,PARA4,A long-lived sensor for conservation work should remain dependable and environmentally considerate.,paraphrase
+P09,PARA5,"The monitor must combine decision quality, modest device power draw and a low-impact computing strategy.",paraphrase
+P10,BASE,"An emergency field unit must make dependable decisions, respond immediately, preserve its battery and keep its environmental footprint low.",base
+P10,PARA1,"The disaster-response device needs trustworthy predictions, rapid reactions, long battery life and a low-impact operating profile.",paraphrase
+P10,PARA2,Field teams require sound decisions with little delay from a battery-backed unit designed for climate-conscious operation.,paraphrase
+P10,PARA3,"The portable emergency system should avoid wrong decisions, answer promptly, conserve its limited power supply and minimise broader environmental burden.",paraphrase
+P10,PARA4,"A remote response unit needs reliable classifications, time-critical reactions, practical battery endurance and greener operation.",paraphrase
+P10,PARA5,"The emergency deployment must combine dependable outputs, quick responses, restrained device power draw and a small environmental footprint.",paraphrase

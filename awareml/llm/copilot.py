@@ -30,6 +30,7 @@ class CopilotService:
     B) selected objective set -> documented weights
     C) weights + dataset profile -> empirical framework ranking
 
+    A and B are dataset-context free. C requires dataset meta-features.
     The LLM never directly chooses a framework.
     """
 
@@ -50,6 +51,35 @@ class CopilotService:
             self.recommender = V2Recommender()
         return self.recommender
 
+    def interpret_goal(
+        self,
+        goal: str,
+        use_llm: bool = False,
+        allow_malformed_fallback: bool = True,
+    ):
+        """Interpret a scenario without any dataset context."""
+        interpretation, parse_meta = self.goal_parser.parse(
+            goal,
+            use_llm=use_llm,
+            allow_malformed_fallback=allow_malformed_fallback,
+        )
+        return interpretation, {
+            "goal_parse": parse_meta,
+            "objective_selection": {
+                "status": interpretation.selection_status,
+                "selected_objectives": list(interpretation.selected_objectives),
+                "source": interpretation.selection_source,
+                "model": interpretation.selection_model,
+                "fallback_used": interpretation.fallback_used,
+            },
+            "weighting": {
+                "policy_id": interpretation.weighting_policy,
+                "weights": interpretation.primary_weights.normalized_dict(),
+            },
+            "dataset_context_used": False,
+            "framework_ranking_generated": False,
+        }
+
     def propose_from_profile(
         self,
         goal: str,
@@ -63,7 +93,6 @@ class CopilotService:
             goal,
             use_llm=use_llm,
         )
-
         weights = interpretation.primary_weights.normalized_dict()
 
         ranked, ranking_meta = self._get_recommender().recommend_profile(
@@ -136,6 +165,8 @@ class CopilotService:
             "ranking": ranking_meta,
             "rationale_source": rationale_answer.source,
             "rationale_model": rationale_answer.model,
+            "dataset_context_used": True,
+            "framework_ranking_generated": True,
         }
 
     def propose_from_dataframe(
@@ -153,8 +184,6 @@ class CopilotService:
         drift_type: str = "unknown",
         coverage: float = 0.90,
     ):
-        # Raw rows are used locally for meta-feature extraction only.
-        # They are never put into the LLM evidence bundle.
         profile = profile_from_dataframe_v2(
             df,
             target=target,
@@ -216,10 +245,6 @@ class CopilotService:
         ranking_mode: str = "point",
         coverage: float = 0.90,
     ):
-        """Manual counterfactual preference explorer.
-
-        This remains separate from the journal scenario-to-objective benchmark.
-        """
         return self._get_recommender().recommend_profile(
             dict(profile),
             weights=weights,

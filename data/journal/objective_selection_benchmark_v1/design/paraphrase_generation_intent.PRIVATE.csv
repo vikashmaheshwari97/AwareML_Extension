@@ -1,0 +1,11 @@
+family_id,generation_intent,intended_k_prime
+P01,Accuracy,1
+P02,Runtime,1
+P03,Energy,1
+P04,CO2,1
+P05,Accuracy|Runtime,2
+P06,Accuracy|Energy,2
+P07,Runtime|CO2,2
+P08,Accuracy|Runtime|Energy,3
+P09,Accuracy|Energy|CO2,3
+P10,Accuracy|Runtime|Energy|CO2,4

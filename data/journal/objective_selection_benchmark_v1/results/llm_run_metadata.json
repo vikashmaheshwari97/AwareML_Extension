@@ -1,0 +1,53 @@
+{
+  "artifact": "phase12_main_objective_selection_run",
+  "attempts_per_case": 1,
+  "completed_at_utc": "2026-09-03T07:47:54.755096+00:00",
+  "design_manifest_sha256": "66dc02d86bd688f0cc571408811780f30245043cf05d560fc3c7aa6fba757e44",
+  "fallback_allowed": false,
+  "frozen_inputs": {
+    "generation": {
+      "format": "json",
+      "num_predict": 512,
+      "seed": 42,
+      "stream": false,
+      "temperature": 0.0,
+      "top_p": 1.0
+    },
+    "phase10_protocol_sha256": "30d3ff387304b8c8f63e9ae5e46a7ec83ad9b6adb8f7faf07b9d6b9d5247016f",
+    "phase11_selector_manifest_sha256": "17951ac29f73b8e2f43f5bb4369eeaf97ed66f54a80d7b59352f4b9a0e795cbe",
+    "prompt_sha256": "066e5f08ef5e168d0374eb4ce7506e1f94ea1ccc7dd2194a9900b38077924749",
+    "required_model": "llama3:8b",
+    "runtime_lock": {
+      "base_url": "http://localhost:11434",
+      "fallback_used": false,
+      "model_details": {
+        "context_length": 8192,
+        "embedding_length": 4096,
+        "families": [
+          "llama"
+        ],
+        "family": "llama",
+        "format": "gguf",
+        "parameter_size": "8.0B",
+        "parent_model": "",
+        "quantization_level": "Q4_0"
+      },
+      "model_digest": "365c0bd3c000a25d28ddbf732fe1c6add414de7275464c4e4d1c3b5fcb5d8ad1",
+      "model_modified_at": "2026-08-31T16:49:09.6065444+03:00",
+      "model_size_bytes": 4661224676,
+      "model_tag": "llama3:8b",
+      "ollama_version": "0.32.14",
+      "verified": true
+    },
+    "schema_sha256": "57a9249ccc278573e5b55ee44770028f2717e07cac97c214d4f0287f4d07e4c9"
+  },
+  "n": 55,
+  "runtime_verified": {
+    "fallback_used": false,
+    "model": "llama3:8b",
+    "model_digest": "365c0bd3c000a25d28ddbf732fe1c6add414de7275464c4e4d1c3b5fcb5d8ad1",
+    "ollama_version": "0.32.14",
+    "reachable": true
+  },
+  "started_at_utc": "2026-09-03T07:38:28.809554+00:00"
+}

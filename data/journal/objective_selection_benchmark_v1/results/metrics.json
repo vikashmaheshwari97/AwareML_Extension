@@ -1,0 +1,70 @@
+{
+  "artifact": "phase12_objective_selection_metrics",
+  "by_k_prime": {
+    "1": {
+      "exact_match_rate": 0.06896551724137931,
+      "mean_jaccard": 0.42816091954022995,
+      "n": 29
+    },
+    "2": {
+      "exact_match_rate": 0.2,
+      "mean_jaccard": 0.6916666666666667,
+      "n": 20
+    },
+    "3": {
+      "exact_match_rate": 0.3333333333333333,
+      "mean_jaccard": 0.75,
+      "n": 6
+    }
+  },
+  "evaluated_model": "llama3:8b",
+  "exact_match_rate": 0.14545454545454545,
+  "ground_truth_source": "independent_human_majority_vote",
+  "hard_cases_excluded_from_primary_metrics": true,
+  "macro_f1": 0.6989329486044054,
+  "micro_f1": 0.6974789915966386,
+  "micro_precision": 0.5496688741721855,
+  "micro_recall": 0.9540229885057471,
+  "n": 55,
+  "per_objective": {
+    "Accuracy": {
+      "f1": 0.8275862068965517,
+      "fn": 0,
+      "fp": 10,
+      "precision": 0.7058823529411765,
+      "recall": 1.0,
+      "tn": 21,
+      "tp": 24
+    },
+    "CO2": {
+      "f1": 0.7058823529411764,
+      "fn": 2,
+      "fp": 13,
+      "precision": 0.5806451612903226,
+      "recall": 0.9,
+      "tn": 22,
+      "tp": 18
+    },
+    "Energy": {
+      "f1": 0.5862068965517242,
+      "fn": 2,
+      "fp": 22,
+      "precision": 0.4358974358974359,
+      "recall": 0.8947368421052632,
+      "tn": 14,
+      "tp": 17
+    },
+    "Runtime": {
+      "f1": 0.676056338028169,
+      "fn": 0,
+      "fp": 23,
+      "precision": 0.5106382978723404,
+      "recall": 1.0,
+      "tn": 8,
+      "tp": 24
+    }
+  },
+  "prediction_status_counts": {
+    "valid": 55
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "artifact": "objective_selection_benchmark_v1_design",
+  "design_summary": {
+    "adversarial_cases": 14,
+    "candidate_count": 120,
+    "generator_model": "GPT-5.6 Sol",
+    "k_prime_design_counts": {
+      "1": 30,
+      "2": 30,
+      "3": 30,
+      "4": 30
+    },
+    "paraphrase_evaluations": 50,
+    "paraphrase_families": 10
+  },
+  "evaluated_llm_outputs_created_before_design_freeze": false,
+  "file_sha256": {
+    "data/journal/objective_selection_benchmark_v1/design/adversarial_set.csv": "2d9f305d7f625dc7ecfa98a9d7027c98f22de133cda8575b22eb40694b2824f8",
+    "data/journal/objective_selection_benchmark_v1/design/candidate_generation_intent.PRIVATE.csv": "319a1a05741a708f90fb0b50fcaf9a20ebe486919ce4ed0ba073c4f9c97be144",
+    "data/journal/objective_selection_benchmark_v1/design/candidate_pool.generated.csv": "1f472e7fe90203afef53fd1492066ed4b221e07b53fc8f7c033dd1894d2c9b4b",
+    "data/journal/objective_selection_benchmark_v1/design/generation_provenance.json": "939593e63c21514c32a530fca20d591dee8bf7f7d5fba329a0736214f8c31845",
+    "data/journal/objective_selection_benchmark_v1/design/paraphrase_families.generated.csv": "140f60ecb27315192aef83958f3dec0fe7173352f79c7735bcc5802c5aaa6796",
+    "data/journal/objective_selection_benchmark_v1/design/paraphrase_generation_intent.PRIVATE.csv": "56e88f8e30a4d92f229d7d3615344a76f8eeaadb16e837f919fbf44712d0c144",
+    "prompts/phase12_external_scenario_generation_v1.txt": "56cc18cdc5a7f5467f53633b602f06c2a266b0d35402427edeae4372aff67d18"
+  },
+  "frozen_at_utc": "2026-09-01T10:38:06.732945+00:00",
+  "generation_intent_is_ground_truth": false,
+  "ground_truth_source": "independent_human_annotation_only",
+  "heldout_dataset_contents_used": false,
+  "phase10_protocol": {
+    "heldout_policy": null,
+    "journal_llm": {
+      "allow_fallback": false,
+      "generation": {
+        "format": "json",
+        "num_predict": 512,
+        "seed": 42,
+        "stream": false,
+        "temperature": 0.0,
+        "top_p": 1.0
+      },
+      "model_family": "LLaMA 3",
+      "parameter_size": "8B",
+      "phase11_requirement": "Phase 11 must wire the production objective selector to this exact prompt/schema/model lock. The existing Phase-7 continuous-weight parser remains part of the pre-Phase-10 engineering baseline and is not changed by Phase 10.",
+      "prompt_file": "prompts/journal_objective_selection_v1.txt",
+      "prompt_sha256": "066e5f08ef5e168d0374eb4ce7506e1f94ea1ccc7dd2194a9900b38077924749",
+      "provider": "Ollama",
+      "required_model_tag": "llama3:8b",
+      "runtime_lock": {
+        "base_url": "http://localhost:11434",
+        "fallback_used": false,
+        "model_details": {
+          "context_length": 8192,
+          "embedding_length": 4096,
+          "families": [
+            "llama"
+          ],
+          "family": "llama",
+          "format": "gguf",
+          "parameter_size": "8.0B",
+          "parent_model": "",
+          "quantization_level": "Q4_0"
+        },
+        "model_digest": "365c0bd3c000a25d28ddbf732fe1c6add414de7275464c4e4d1c3b5fcb5d8ad1",
+        "model_modified_at": "2026-08-31T16:49:09.6065444+03:00",
+        "model_size_bytes": 4661224676,
+        "model_tag": "llama3:8b",
+        "ollama_version": "0.32.14",
+        "verified": true
+      },
+      "runtime_verified": true,
+      "schema_file": "configs/journal/objective_selection_schema_v1.json",
+      "schema_sha256": "57a9249ccc278573e5b55ee44770028f2717e07cac97c214d4f0287f4d07e4c9",
+      "strict_exact_model": true
+    },
+    "path": "data/journal/protocol_v1/journal_experimental_protocol_v1.json",
+    "sha256": "30d3ff387304b8c8f63e9ae5e46a7ec83ad9b6adb8f7faf07b9d6b9d5247016f"
+  },
+  "phase11_selector": {
+    "path": "data/journal/objective_selection_v2/manifest.json",
+    "sha256": "23d3dfcbd1c5a0a06a37d12e50e2fdf6beab2ed33807204879b6c100ab54aa13"
+  },
+  "release_status": "frozen"
+}

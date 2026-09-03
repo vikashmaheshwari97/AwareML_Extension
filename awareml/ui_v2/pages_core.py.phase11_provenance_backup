@@ -178,19 +178,6 @@ def decision_space_page():
         pills=phase_pills(),
     )
 
-    st.markdown(
-        """
-        <div class="r9-callout">
-          <b>PRE-RUN PREFERENCE RECOMMENDATION</b><br>
-          <b>Evidence source:</b> predicted framework outcomes from frozen ML Recommender V2.<br>
-          <b>Preference source:</b> the manual Accuracy / Runtime / Energy / CO₂ sliders on this page.<br>
-          <b>Ranking engine:</b> ML Recommender V2 preference-aware reranking.<br>
-          <b>Framework execution:</b> not required; these are predictions, not observed results.
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
     if not dataset_ready():
         empty_state(
             "Load a dataset first",
@@ -264,23 +251,17 @@ def decision_space_page():
     selected_row = ranked[ranked["framework"].eq(selected)].iloc[0]
     cols = st.columns(6)
     with cols[0]:
-        st.metric("Pre-run recommended framework", str(top["framework"]), "Predicted rank #1")
+        st.metric("Recommended", str(top["framework"]), "Rank #1")
     with cols[1]:
-        st.metric("Pre-run preference utility", fmt(top["utility"], 4))
+        st.metric("Utility", fmt(top["utility"], 4))
     with cols[2]:
-        st.metric("{} predicted accuracy".format(selected), fmt(selected_row["accuracy"], 4))
+        st.metric("Selected accuracy", fmt(selected_row["accuracy"], 4))
     with cols[3]:
-        st.metric("{} predicted runtime".format(selected), fmt(selected_row["runtime"], 3, " s"))
+        st.metric("Selected runtime", fmt(selected_row["runtime"], 3, " s"))
     with cols[4]:
-        st.metric("{} predicted energy".format(selected), fmt(selected_row["energy"], 6, " kWh"))
+        st.metric("Selected energy", fmt(selected_row["energy"], 6, " kWh"))
     with cols[5]:
-        st.metric("{} predicted CO₂".format(selected), fmt(selected_row.get("co2"), 6, " kg"))
-
-    st.caption(
-        "Recommended framework and inspected framework are different concepts: "
-        "the first two cards describe the current predicted rank #1, while the "
-        "four objective cards describe the framework chosen in 'Inspect framework'."
-    )
+        st.metric("Selected CO₂", fmt(selected_row.get("co2"), 6, " kg"))
 
     view_mode = st.segmented_control(
         "3D view",

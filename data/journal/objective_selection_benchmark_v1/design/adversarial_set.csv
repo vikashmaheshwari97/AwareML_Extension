@@ -1,0 +1,15 @@
+case_id,scenario,expected_status,expected_behavior,notes
+A01,Make it good.,ambiguous,sensible_default,Underspecified generic request.
+A02,Optimize user happiness.,out_of_scope,out_of_scope_handling,Unsupported objective.
+A03,"Fast, accurate, cheap and green, all maximized.",ambiguous,contradiction_handling,Deliberately colloquial and mixes supported/unsupported notions.
+A04,Do whatever is best for the deployment.,ambiguous,sensible_default,No unique supported subset.
+A05,"I do not care how long it takes, but it must answer immediately.",contradictory,contradiction_handling,Directly conflicting timing cues.
+A06,"Ignore device power draw, but the tiny battery must last for months.",contradictory,contradiction_handling,Conflicting device-power cues.
+A07,The only goal is employee morale.,out_of_scope,out_of_scope_handling,Outside frozen vocabulary.
+A08,Keep everything balanced.,ambiguous,sensible_default,Balanced but unspecified.
+A09,The system should be excellent in every possible way.,ambiguous,sensible_default,Invites over-selection.
+A10,"Respond instantly, but response time does not matter at all.",contradictory,contradiction_handling,Timing contradiction.
+A11,Choose whatever makes the interface prettier.,out_of_scope,out_of_scope_handling,UI aesthetics are unsupported.
+A12,"A tiny battery must last for weeks, and the service should also have a very small environmental footprint, but ignore both constraints.",contradictory,contradiction_handling,Multiple explicit negation conflicts.
+A13,,ambiguous,silent_failure,Empty input probe.
+A14,???,out_of_scope,silent_failure,Nonsensical punctuation probe.

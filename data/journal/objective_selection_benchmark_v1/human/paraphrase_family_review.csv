@@ -1,0 +1,11 @@
+family_id,base_scenario,accuracy,runtime,energy,co2,all_5_paraphrases_preserve_meaning,reviewer_id,notes
+P01,A diagnostic support service should make highly dependable decisions before a clinician acts.,yes,no,no,no,yes,PARA01,All five paraphrases preserve the dependable clinical decision-quality requirement.
+P02,A collision-warning service must react quickly enough for the driver to respond.,no,yes,no,no,yes,PARA01,All five paraphrases preserve the time-critical response requirement.
+P03,A forest sensor will run from a small battery for months without easy access for maintenance.,no,no,yes,no,yes,PARA01,All five paraphrases preserve the long-term battery and low-power deployment requirement.
+P04,A public cloud service is being redesigned under a low-impact computing policy.,no,no,no,yes,yes,PARA01,All five paraphrases preserve the low-impact and environmentally conscious computing requirement.
+P05,A fraud alert should be dependable and arrive quickly enough to stop a suspicious payment.,yes,yes,no,no,yes,PARA01,All five paraphrases preserve both dependable decision quality and rapid response.
+P06,A remote medical wearable should make dependable classifications while preserving its small battery.,yes,no,yes,no,yes,PARA01,All five paraphrases preserve both reliable classification and battery-constrained operation.
+P07,A live traffic service must react promptly while fitting the city's low-impact computing policy.,no,yes,no,yes,yes,PARA01,All five paraphrases preserve both prompt response and low-impact computing requirements.
+P08,"A rescue drone should make dependable detections, react promptly and stay practical on its limited battery.",yes,yes,yes,no,yes,PARA01,"All five paraphrases preserve dependable detection, rapid response, and battery constraints."
+P09,"A remote conservation monitor should make dependable decisions, last on battery and fit a low-impact deployment.",yes,no,yes,yes,yes,PARA01,"All five paraphrases preserve dependable decisions, battery endurance, and low-impact operation."
+P10,"An emergency field unit must make dependable decisions, respond immediately, preserve its battery and keep its environmental footprint low.",yes,yes,yes,yes,yes,PARA01,"All five paraphrases preserve all four requirements: decision quality, rapid response, battery endurance, and low environmental impact."

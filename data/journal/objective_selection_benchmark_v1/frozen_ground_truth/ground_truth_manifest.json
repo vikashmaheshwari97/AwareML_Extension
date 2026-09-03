@@ -1,0 +1,61 @@
+{
+  "annotation_agreement": {
+    "annotator_count": 3,
+    "annotator_ids": [
+      "ANN01",
+      "ANN02",
+      "ANN03"
+    ],
+    "hard_case_policy": "excluded_from_primary_metrics_and_reported_separately",
+    "hard_cases": 0,
+    "mean_defined_fleiss_kappa": 0.8469914229144185,
+    "mean_pairwise_jaccard": 0.8525252525252527,
+    "per_objective_fleiss_kappa": {
+      "Accuracy": 0.9754318046456225,
+      "CO2": 0.7753573859768551,
+      "Energy": 0.7119047619047617,
+      "Runtime": 0.925271739130435
+    },
+    "resolved_ground_truth": 55,
+    "scenario_count": 55,
+    "unanimous_full_set_agreement_rate": 0.5818181818181818
+  },
+  "artifact": "objective_selection_benchmark_v1_ground_truth",
+  "completed_annotators": [
+    {
+      "annotator_id": "ANN01",
+      "file": "annotations_A.csv"
+    },
+    {
+      "annotator_id": "ANN02",
+      "file": "annotations_B.csv"
+    },
+    {
+      "annotator_id": "ANN03",
+      "file": "annotations_C.csv"
+    }
+  ],
+  "design_manifest_sha256": "66dc02d86bd688f0cc571408811780f30245043cf05d560fc3c7aa6fba757e44",
+  "file_sha256": {
+    "data/journal/objective_selection_benchmark_v1/human/annotations_A.csv": "fa2a2ca3ae328732de64e34ab5d6d6c15976cea418a7270f6f09cac98419461d",
+    "data/journal/objective_selection_benchmark_v1/human/annotations_B.csv": "a1237c801fbefcfb63a24d836635add4dccfd202d0848f0ff9ae4293b83e6bea",
+    "data/journal/objective_selection_benchmark_v1/human/annotations_C.csv": "8da2c5189797cd9557aa5c2c519a5e035eed2f1e21a972d9c9cdd45f072a92a2",
+    "data/journal/objective_selection_benchmark_v1/human/final_annotation_pool.csv": "4767c6b841f5fd6207796f37c437617bf4be459976edd00ca1cc09f9a26553d9",
+    "data/journal/objective_selection_benchmark_v1/human/human_written_scenarios.csv": "bbda18be2610d913639bfb9400620793fe10ad1bdf36deb9ea5ba5acc3db4cc2",
+    "data/journal/objective_selection_benchmark_v1/human/paraphrase_family_review.csv": "3167a8515c8e6b2cd9023d3f491aff689c2d2323583d6bff15d4352b9dc01a1d",
+    "data/journal/objective_selection_benchmark_v1/human/realism_filter.csv": "dea0a9d07d0cd72049be99eaaeaa082da799c6476fee48f2c37e11311fd82fb3",
+    "data/journal/objective_selection_benchmark_v1/results/annotation_agreement.json": "dabab6aeaef154f263b69c8e66a27d86b53b7e40fd88b49776d2865115978969",
+    "data/journal/objective_selection_benchmark_v1/results/ground_truth.jsonl": "f3811ed52a66f6405aa26eef1952dc1178bd32ae176d2c5623a0d903dd97cc23",
+    "data/journal/objective_selection_benchmark_v1/results/hard_cases.annotation.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "frozen_at_utc": "2026-09-03T07:15:30.742372+00:00",
+  "generation_intent_used_as_ground_truth": false,
+  "ground_truth_source": "independent_human_annotation",
+  "heldout_dataset_contents_used": false,
+  "llama_outputs_existed_before_ground_truth_freeze": false,
+  "paraphrase_reviewer_ids": [
+    "PARA01"
+  ],
+  "release_status": "frozen",
+  "resolved_primary_cases": 55
+}

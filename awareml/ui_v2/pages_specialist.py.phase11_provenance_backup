@@ -111,19 +111,6 @@ def decision_lab_v2_page():
         unsafe_allow_html=True,
     )
 
-    st.markdown(
-        """
-        <div class="r9-callout">
-          <b>OBSERVED POST-RUN RECOMMENDATION</b><br>
-          <b>Evidence source:</b> outcomes actually measured in the current five-framework benchmark.<br>
-          <b>Preference source:</b> the six post-run sliders on this page.<br>
-          <b>Ranking engine:</b> observed multi-objective utility + near-Pareto analysis.<br>
-          <b>Framework execution:</b> completed; this page ranks measured evidence rather than pre-run predictions.
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
     section("Observed-objective weights", "Set the importance of each measured criterion. Weights are normalized by the ranking engine over available evidence.")
     defaults = {
         "accuracy": 0.45,
@@ -162,7 +149,7 @@ def decision_lab_v2_page():
     top = recs[0]
     top_row = frame.iloc[0]
     cards = st.columns(5)
-    cards[0].metric("Post-run recommended framework", top.framework)
+    cards[0].metric("Recommended framework", top.framework)
     cards[1].metric("Observed utility", fmt(top.utility, 3))
     cards[2].metric("Observed accuracy", fmt(top_row.get("accuracy"), 3))
     cards[3].metric("Fairness score", fmt(top_row.get("fairness_score"), 3))

@@ -1,0 +1,20 @@
+{
+  "artifact": "phase12_candidate_generation",
+  "generator_role": "external_stronger_llm_not_under_evaluation",
+  "generator_model": "GPT-5.6 Sol",
+  "provider": "OpenAI / ChatGPT",
+  "generated_on": "2026-09-01",
+  "candidate_count": 120,
+  "k_prime_design_counts": {
+    "1": 30,
+    "2": 30,
+    "3": 30,
+    "4": 30
+  },
+  "paraphrase_families": 10,
+  "paraphrase_evaluations": 50,
+  "adversarial_cases": 14,
+  "important_method_note": "generation_intent is a design/coverage field only and MUST NOT be used as journal ground truth. Ground truth is created exclusively from independent human annotations.",
+  "evaluated_model": "llama3:8b",
+  "evaluated_model_used_for_generation": false
+}

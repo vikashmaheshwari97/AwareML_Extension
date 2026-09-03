@@ -12,7 +12,6 @@ from awareml.llm import (
 )
 
 from .components import (
-    empty_state,
     evidence_chips,
     hero,
     humanize_rationale_text,
@@ -24,33 +23,259 @@ from .page_utils import dataset_ready, fmt, phase_pills
 from .state import ROOT, ensure_research_state
 
 
+def _as_dict(value):
+    if value is None:
+        return {}
+    if hasattr(value, "model_dump"):
+        return value.model_dump()
+    return dict(value)
+
+
+def _clear_framework_state(state):
+    state["copilot_proposal"] = None
+    state["copilot_ranked"] = None
+    state["copilot_evidence"] = None
+    state["copilot_meta"] = None
+    state["copilot_review"] = None
+
+
+def _clear_context_free_state(state):
+    state["copilot_context_free_interpretation"] = None
+    state["copilot_context_free_meta"] = None
+
+
+def _weighting_explanation(selected):
+    selected = list(selected or [])
+    count = len(selected)
+    if count <= 0:
+        return "No objective is currently selected, so no downstream weights can be assigned."
+    share = 1.0 / float(count)
+    return (
+        "{} objective{} selected → equal_selected_v1 assigns 1/{} = {:.3f} "
+        "to each selected objective and 0.000 to every unselected objective."
+    ).format(
+        count,
+        "" if count == 1 else "s",
+        count,
+        share,
+    )
+
+
+def _render_objective_interpretation(interpretation, parse_meta, state):
+    interpretation = _as_dict(interpretation)
+
+    section(
+        "Objective interpretation",
+        (
+            "This is the primary journal-facing output. It comes from the "
+            "natural-language scenario and does not require a dataset."
+        ),
+    )
+
+    selected = interpretation.get("selected_objectives") or []
+    st.markdown(
+        "**LLM-selected objectives:** {}".format(
+            " · ".join(selected) if selected else "None"
+        )
+    )
+
+    st.warning(
+        "These objectives are the model's interpretation of the scenario, not "
+        "human ground truth. They remain reviewable and will be evaluated "
+        "systematically in Phase 12."
+    )
+
+    c1, c2, c3, c4 = st.columns(4)
+    weights = interpretation.get("primary_weights") or {}
+    with c1:
+        st.metric("Accuracy weight", fmt(weights.get("accuracy"), 3))
+    with c2:
+        st.metric("Runtime weight", fmt(weights.get("runtime"), 3))
+    with c3:
+        st.metric("Energy weight", fmt(weights.get("energy"), 3))
+    with c4:
+        st.metric("CO2 weight", fmt(weights.get("co2"), 3))
+
+    st.info(_weighting_explanation(selected))
+
+    with st.expander("Why do these objective weights have these values?"):
+        st.write(
+            "Phase 11 deliberately separates **objective selection** from "
+            "**objective weighting**. The LLM only selects a subset of the "
+            "four frozen objectives. The downstream policy then applies "
+            "`equal_selected_v1`."
+        )
+        st.code(
+            "\n".join(
+                [
+                    "Selected objectives: {}".format(
+                        ", ".join(selected) if selected else "none"
+                    ),
+                    "Number selected: {}".format(len(selected)),
+                    "Equal share: {}".format(
+                        "{:.6f}".format(1.0 / len(selected))
+                        if selected
+                        else "not applicable"
+                    ),
+                    "Unselected objectives: weight 0.000000",
+                ]
+            ),
+            language="text",
+        )
+        st.caption(
+            "These numbers do not come from the uploaded dataset or from a completed "
+            "framework run. They are produced only by the frozen weighting policy."
+        )
+
+    st.caption(
+        "Selection status: {} · source: {} · model: {} · weighting policy: {} · fallback used: {}".format(
+            interpretation.get("selection_status"),
+            interpretation.get("selection_source"),
+            interpretation.get("selection_model") or "none",
+            interpretation.get("weighting_policy"),
+            interpretation.get("fallback_used"),
+        )
+    )
+
+    for warning in parse_meta.get("warnings") or []:
+        st.warning(warning)
+
+    hcai = interpretation.get("hcai_requirements") or {}
+    st.info(
+        "HCAI requirements — drift sensitivity: {} · fairness required: {} · "
+        "explainability: {}. These remain outside the four-objective selection benchmark.".format(
+            hcai.get("drift_sensitivity"),
+            hcai.get("fairness_required"),
+            hcai.get("explainability_level"),
+        )
+    )
+
+    section(
+        "Human review of objective interpretation",
+        (
+            "This review is for the interactive Copilot only. It does not become "
+            "Phase-12 benchmark ground truth."
+        ),
+    )
+
+    review_choice = st.segmented_control(
+        "Interpretation review",
+        ["Accept interpretation", "Flag for correction", "Reject"],
+        default="Accept interpretation",
+        key="r11_objective_review_choice",
+    )
+    review_note = st.text_input(
+        "Objective-review note",
+        value=state.get("copilot_objective_review_note", ""),
+        key="r11_objective_review_note",
+        placeholder=(
+            "Example: CO2 should also be selected because 'low-impact' implies "
+            "an environmental constraint."
+        ),
+    )
+
+    if st.button(
+        "Record objective review",
+        key="r11_record_objective_review",
+    ):
+        state["copilot_objective_review"] = {
+            "decision": review_choice,
+            "note": review_note or None,
+            "selected_objectives_seen": list(selected),
+            "benchmark_ground_truth": False,
+        }
+        state["copilot_objective_review_note"] = review_note
+        st.success(
+            "Objective interpretation review recorded for this UI session. "
+            "It is not treated as journal benchmark ground truth."
+        )
+
+    if state.get("copilot_objective_review"):
+        review = state["copilot_objective_review"]
+        st.caption(
+            "Current objective-review state: {}{}".format(
+                review.get("decision"),
+                (
+                    " · {}".format(review.get("note"))
+                    if review.get("note")
+                    else ""
+                ),
+            )
+        )
+
+
+def _render_framework_placeholder(has_dataset):
+    section(
+        "Framework recommendation",
+        (
+            "The interface remains structurally consistent in context-free mode. "
+            "Dataset-dependent fields stay unavailable until a dataset profile exists."
+        ),
+    )
+
+    cols = st.columns(4)
+    with cols[0]:
+        st.metric(
+            "Pre-run predicted framework",
+            "Awaiting dataset" if not has_dataset else "Generate proposal",
+        )
+    with cols[1]:
+        st.metric("Predicted ML rank", "—")
+    with cols[2]:
+        st.metric("Predicted utility", "—")
+    with cols[3]:
+        st.metric("Review state", "OBJECTIVE READY")
+
+    st.markdown(
+        """
+        <div class="r9-callout">
+          <b>No framework is fabricated in context-free mode.</b><br>
+          The five frameworks have dataset-dependent behaviour, so AwareML waits
+          for dataset meta-features before asking frozen ML Recommender V2 to rank
+          AutoStreamML, AutoClass, EvoAutoML, OAML and ChaCha.<br><br>
+          <b>You do not need to run the benchmark first.</b> Loading a dataset and
+          choosing its target is enough to obtain the pre-run prediction.
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    with st.expander("What becomes available after a dataset is loaded?"):
+        st.markdown(
+            """
+            - pre-run predicted framework and ML rank;
+            - predicted utility under the selected objective weights;
+            - framework-specific proposed configuration;
+            - grounded recommendation rationale and technical evidence IDs;
+            - full configuration approval / approve-with-edits / reject workflow.
+            """
+        )
+
+
 def copilot_workspace_page():
     state = ensure_research_state()
+    has_dataset = bool(dataset_ready())
+    has_observed_run = bool(state.get("run_results"))
 
     hero(
         "HUMAN-CENTRIC AI",
         "Copilot Workspace",
         (
-            "Interpret a natural-language scenario as an explicit objective set, "
-            "map that set to a documented weighting policy, rank frameworks with "
-            "the frozen ML Recommender V2, and keep the human review gate."
+            "Start with only a natural-language deployment scenario. A dataset is "
+            "optional for objective interpretation and is needed only when you want "
+            "a dataset-aware framework ranking from ML Recommender V2."
         ),
         pills=phase_pills(),
     )
-
-    if not dataset_ready():
-        empty_state(
-            "Dataset context required",
-            "Load a dataset and target in Run Studio before asking the Copilot for a pre-run configuration.",
-        )
-        return
 
     st.markdown(
         """
         <div class="r9-callout">
           <b>Phase 11 architecture:</b><br>
           Scenario → <b>selected objective set</b> → <b>equal-selected weighting</b>
-          → Phase-6 ML Recommender V2 → reviewable configuration.<br><br>
+          <span style="opacity:.72">[works without a dataset]</span><br>
+          Dataset meta-profile → <b>Phase-6 ML Recommender V2</b> → framework ranking
+          <span style="opacity:.72">[requires a dataset]</span><br><br>
           The LLM does <b>not</b> directly choose AutoClass, OAML, ChaCha,
           AutoStreamML or EvoAutoML.
         </div>
@@ -67,8 +292,8 @@ def copilot_workspace_page():
         section(
             "Natural-language scenario",
             (
-                "Describe deployment needs naturally. The primary journal task is "
-                "to infer a subset of Accuracy, Runtime, Energy and CO2."
+                "No dataset is required here. Describe deployment needs naturally; "
+                "the journal task is to infer a subset of Accuracy, Runtime, Energy and CO2."
             ),
         )
 
@@ -94,8 +319,7 @@ def copilot_workspace_page():
             key="r11_copilot_llm",
             help=(
                 "Journal mode uses the exact Phase-10 model lock, prompt, schema "
-                "and no silent model fallback. Turn this off only for the transparent "
-                "deterministic fallback/demo parser."
+                "and no silent model fallback."
             ),
         )
 
@@ -111,33 +335,52 @@ def copilot_workspace_page():
             key="r11_generate_proposal",
         ):
             try:
-                # Objective selection uses GoalParser -> StrictJournalOllamaClient.
-                # Grounded rationale uses the same frozen model tag for consistency.
                 rationale_client = OllamaClient(model=exact_model)
                 service = CopilotService(
-                    recommender=load_v2_recommender(),
+                    recommender=(load_v2_recommender() if has_dataset else None),
                     goal_parser=GoalParser(),
                     chat=GroundedCopilotChat(client=rationale_client),
                     review_store=ReviewStore(
                         ROOT / "artifacts" / "copilot" / "reviews.jsonl"
                     ),
                 )
-                proposal, ranked, evidence, meta = service.propose_from_dataframe(
-                    goal=goal,
-                    df=state["dataset"],
-                    target=state["target"],
-                    sensitive_attribute=state.get("sensitive"),
-                    current_config=None,
-                    use_llm=use_llm,
-                )
-                state["copilot_proposal"] = proposal
-                state["copilot_ranked"] = ranked
-                state["copilot_evidence"] = evidence
-                state["copilot_meta"] = meta
-                state["copilot_review"] = None
-                st.success("Proposal generated. Human review is required.")
+
+                if has_dataset:
+                    proposal, ranked, evidence, meta = service.propose_from_dataframe(
+                        goal=goal,
+                        df=state["dataset"],
+                        target=state["target"],
+                        sensitive_attribute=state.get("sensitive"),
+                        current_config=None,
+                        use_llm=use_llm,
+                    )
+                    _clear_context_free_state(state)
+                    state["copilot_proposal"] = proposal
+                    state["copilot_ranked"] = ranked
+                    state["copilot_evidence"] = evidence
+                    state["copilot_meta"] = meta
+                    state["copilot_review"] = None
+                    st.success(
+                        "Dataset-aware pre-run proposal generated. Human review is required."
+                    )
+                else:
+                    interpretation, meta = service.interpret_goal(
+                        goal,
+                        use_llm=use_llm,
+                    )
+                    _clear_framework_state(state)
+                    state["copilot_context_free_interpretation"] = interpretation
+                    state["copilot_context_free_meta"] = meta
+                    st.success(
+                        "Objective proposal generated without dataset context. "
+                        "Load a dataset later only if you want a framework ranking."
+                    )
             except Exception as exc:
-                st.error("Copilot proposal failed: {}: {}".format(type(exc).__name__, exc))
+                st.error(
+                    "Copilot proposal failed: {}: {}".format(
+                        type(exc).__name__, exc
+                    )
+                )
 
     with right:
         status_panel(
@@ -148,10 +391,13 @@ def copilot_workspace_page():
                 ),
                 "Model fallback": "Forbidden",
                 "Weighting policy": "equal_selected_v1",
+                "Dataset needed for objective selection": "No",
+                "Dataset needed for framework ranking": "Yes",
                 "Raw dataset rows to LLM": "False",
                 "Human review gate": "Required",
             }
         )
+
         if journal_status.get("error"):
             st.warning(journal_status["error"])
 
@@ -159,16 +405,48 @@ def copilot_workspace_page():
             """
             <div class="r9-callout" style="margin-top:14px">
               <b>Problem A:</b> Which objectives does the scenario imply?<br>
-              <b>Problem B:</b> How are those selected objectives weighted?<br><br>
-              Phase 11 evaluates these separately. The current downstream policy
-              gives equal weight to every selected objective and zero to all
-              unselected objectives.
+              <b>Problem B:</b> How are those selected objectives weighted?<br>
+              <b>Problem C:</b> Which framework is predicted to fit this dataset?<br><br>
+              A and B are context-free. C requires dataset meta-features because
+              framework performance depends on the data.
             </div>
             """,
             unsafe_allow_html=True,
         )
 
+    if not has_dataset:
+        st.info(
+            "Context-free mode: objective interpretation and weighting are available "
+            "now. Framework recommendation remains intentionally pending until a "
+            "dataset profile exists."
+        )
+    elif not has_observed_run:
+        st.info(
+            "Pre-run recommendation mode: a dataset is uploaded, but no framework "
+            "benchmark has been executed yet. Objective weights come from the "
+            "scenario; framework performance is predicted by frozen ML Recommender "
+            "V2 from the uploaded dataset's meta-profile. These are not observed results."
+        )
+    else:
+        st.info(
+            "Dataset-aware pre-run mode: Copilot still uses the scenario plus the "
+            "dataset meta-profile for framework ranking. Already-observed benchmark "
+            "results are separate evidence in Streaming Observatory / Decision Lab."
+        )
+
+    context_free = state.get("copilot_context_free_interpretation")
+    context_free_meta = state.get("copilot_context_free_meta") or {}
     proposal = state.get("copilot_proposal")
+
+    if proposal is None and context_free is not None:
+        _render_objective_interpretation(
+            context_free,
+            context_free_meta.get("goal_parse") or {},
+            state,
+        )
+        _render_framework_placeholder(has_dataset=has_dataset)
+        return
+
     if proposal is None:
         return
 
@@ -178,45 +456,11 @@ def copilot_workspace_page():
     interpretation = proposal_dict.get("interpretation") or {}
     parse_meta = ((state.get("copilot_meta") or {}).get("goal_parse") or {})
 
-    section(
-        "Objective interpretation",
-        (
-            "The selected set is the primary journal-facing output. "
-            "Weights are a separate documented downstream mapping."
-        ),
+    _render_objective_interpretation(
+        interpretation,
+        parse_meta,
+        state,
     )
-
-    selected = interpretation.get("selected_objectives") or []
-    st.markdown(
-        "**Selected objectives:** {}".format(
-            " · ".join(selected) if selected else "None"
-        )
-    )
-
-    s1, s2, s3, s4 = st.columns(4)
-    weights = interpretation.get("primary_weights") or {}
-    with s1:
-        st.metric("Accuracy weight", fmt(weights.get("accuracy"), 3))
-    with s2:
-        st.metric("Runtime weight", fmt(weights.get("runtime"), 3))
-    with s3:
-        st.metric("Energy weight", fmt(weights.get("energy"), 3))
-    with s4:
-        st.metric("CO2 weight", fmt(weights.get("co2"), 3))
-
-    st.caption(
-        "Selection status: {} · source: {} · model: {} · weighting policy: {} · fallback used: {}".format(
-            interpretation.get("selection_status"),
-            interpretation.get("selection_source"),
-            interpretation.get("selection_model") or "none",
-            interpretation.get("weighting_policy"),
-            interpretation.get("fallback_used"),
-        )
-    )
-
-    if parse_meta.get("warnings"):
-        for warning in parse_meta["warnings"]:
-            st.warning(warning)
 
     section(
         "Reviewable framework proposal",
@@ -228,14 +472,20 @@ def copilot_workspace_page():
 
     cols = st.columns(4)
     with cols[0]:
-        st.metric("Framework", str(proposal_dict.get("ml_recommender_framework")))
+        st.metric(
+            "Pre-run predicted framework",
+            str(proposal_dict.get("ml_recommender_framework")),
+        )
     with cols[1]:
         st.metric(
-            "ML rank",
+            "Predicted ML rank",
             "#{}".format(proposal_dict.get("ml_recommender_rank", 1)),
         )
     with cols[2]:
-        st.metric("Utility", fmt(proposal_dict.get("ml_recommender_utility"), 4))
+        st.metric(
+            "Predicted utility",
+            fmt(proposal_dict.get("ml_recommender_utility"), 4),
+        )
     with cols[3]:
         review_state = state.get("copilot_review")
         decision = (
@@ -245,15 +495,11 @@ def copilot_workspace_page():
         )
         st.metric("Review state", decision or "PROPOSED")
 
-    hcai = interpretation.get("hcai_requirements") or {}
-    st.info(
-        "HCAI requirements — drift sensitivity: {} · fairness required: {} · "
-        "explainability: {}. These remain outside the four-objective selection benchmark.".format(
-            hcai.get("drift_sensitivity"),
-            hcai.get("fairness_required"),
-            hcai.get("explainability_level"),
+    if not has_observed_run:
+        st.warning(
+            "Pre-run prediction: the framework/rank/utility above are predictions "
+            "from ML Recommender V2, not measured outcomes from the uploaded dataset."
         )
-    )
 
     st.markdown("**Grounded rationale**")
     st.write(humanize_rationale_text(proposal_dict.get("rationale")))
@@ -266,7 +512,7 @@ def copilot_workspace_page():
     st.json(config, expanded=False)
 
     section(
-        "Human review",
+        "Human review of full framework proposal",
         "Approved-with-edits records the configuration diff in the Copilot audit trail.",
     )
     review_mode = st.segmented_control(

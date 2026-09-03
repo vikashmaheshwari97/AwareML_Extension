@@ -1,0 +1,21 @@
+{
+  "annotator_count": 3,
+  "annotator_ids": [
+    "ANN01",
+    "ANN02",
+    "ANN03"
+  ],
+  "hard_case_policy": "excluded_from_primary_metrics_and_reported_separately",
+  "hard_cases": 0,
+  "mean_defined_fleiss_kappa": 0.8469914229144185,
+  "mean_pairwise_jaccard": 0.8525252525252527,
+  "per_objective_fleiss_kappa": {
+    "Accuracy": 0.9754318046456225,
+    "CO2": 0.7753573859768551,
+    "Energy": 0.7119047619047617,
+    "Runtime": 0.925271739130435
+  },
+  "resolved_ground_truth": 55,
+  "scenario_count": 55,
+  "unanimous_full_set_agreement_rate": 0.5818181818181818
+}
