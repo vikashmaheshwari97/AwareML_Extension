@@ -241,3 +241,10 @@ with a SHA256 manifest.
 Do not modify Phase-11 objective-selection logic after inspecting Phase-12
 benchmark results. Any future selector change becomes a new selector/version
 and requires a new evaluation protocol.
+
+## Primary k'=4 subgroup
+
+No primary benchmark scenario received a four-objective majority-vote
+human ground-truth label after independent annotation. Therefore, primary
+k'=4 performance is reported as N/A. Generator intent is not substituted
+for human ground truth.

@@ -1,0 +1,12 @@
+You are constructing a journal benchmark for natural-language objective selection in streaming AutoML.
+
+Generate realistic deployment scenarios that IMPLY subsets of four hidden objectives:
+- predictive correctness/quality,
+- speed/time-to-response,
+- device/electrical resource use,
+- environmental impact.
+
+Do NOT explicitly use the frozen objective names Accuracy, Runtime, Energy, CO2/CO₂ in the scenario text.
+Vary domains, phrasing styles, and the number of implied objectives k' from 1 to 4.
+Do not generate framework names, model names, metric names, weights, or numeric labels.
+The resulting candidate pool will be human-filtered before annotation and evaluation.

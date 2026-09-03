@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import pytest
 
+from awareml.llm.copilot import CopilotService
 from awareml.llm.goal_parser import GoalParser, deterministic_goal_parse
 from awareml.llm.journal_client import (
     JournalLLMResponseError,
@@ -50,11 +51,7 @@ def test_phase7_compatibility_properties_remain_available():
 class _MalformedClient:
     model = "llama3:8b"
     root = None
-    protocol = {
-        "journal_llm": {
-            "prompt_file": "unused"
-        }
-    }
+    protocol = {"journal_llm": {"prompt_file": "unused"}}
 
     def generate_json(self, prompt):
         raise JournalLLMResponseError("malformed test JSON")
@@ -89,12 +86,7 @@ def test_malformed_llm_json_is_explicit_not_silent(tmp_path):
 def test_wrong_model_inventory_fails_benchmark_lock():
     with pytest.raises(JournalModelLockError):
         StrictJournalOllamaClient.validate_runtime_inventory(
-            models=[
-                {
-                    "name": "llama3.2:3b",
-                    "digest": "wrong",
-                }
-            ],
+            models=[{"name": "llama3.2:3b", "digest": "wrong"}],
             required_model_tag="llama3:8b",
             frozen_model_digest="expected-digest",
             ollama_version="0.32.14",
@@ -105,12 +97,7 @@ def test_wrong_model_inventory_fails_benchmark_lock():
 def test_wrong_digest_fails_benchmark_lock():
     with pytest.raises(JournalModelLockError):
         StrictJournalOllamaClient.validate_runtime_inventory(
-            models=[
-                {
-                    "name": "llama3:8b",
-                    "digest": "wrong-digest",
-                }
-            ],
+            models=[{"name": "llama3:8b", "digest": "wrong-digest"}],
             required_model_tag="llama3:8b",
             frozen_model_digest="expected-digest",
             ollama_version="0.32.14",
@@ -127,3 +114,32 @@ def test_ambiguous_and_out_of_scope_are_explicit():
         "Please optimize employee happiness at the office."
     )
     assert out.status in {"ambiguous", "out_of_scope"}
+
+
+class _NeverUseRecommender:
+    def recommend_profile(self, *args, **kwargs):
+        raise AssertionError(
+            "Context-free objective interpretation must not call Recommender V2."
+        )
+
+
+def test_copilot_goal_interpretation_does_not_require_dataset_or_recommender():
+    service = CopilotService(
+        recommender=_NeverUseRecommender(),
+        goal_parser=GoalParser(),
+    )
+    interpretation, meta = service.interpret_goal(
+        "High predictive performance with low energy use.",
+        use_llm=False,
+    )
+
+    assert interpretation.selected_objectives == ["Accuracy", "Energy"]
+    assert meta["dataset_context_used"] is False
+    assert meta["framework_ranking_generated"] is False
+    assert meta["weighting"]["policy_id"] == "equal_selected_v1"
+
+    weights = interpretation.primary_weights.normalized_dict()
+    assert weights["accuracy"] == pytest.approx(0.5)
+    assert weights["energy"] == pytest.approx(0.5)
+    assert weights["runtime"] == 0.0
+    assert weights["co2"] == 0.0
