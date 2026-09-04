@@ -53,3 +53,6 @@ PHASE13_CHANGELOG.md
 PHASE13_README.md
 PRE_PHASE14_HOTFIX_CHANGELOG.md
 PRE_PHASE14_HOTFIX_README.md
+
+# Local installer / hotfix / backup archive
+local_artifacts/
