@@ -1,0 +1,12 @@
+{
+  "best_simple_baseline": "energy_only",
+  "best_simple_normalized_regret": 0.15919610348462046,
+  "best_simple_top1_accuracy": 0.5531914893617021,
+  "interpretation": "ML Recommender V2 has lower normalized regret than the strongest simple baseline without sacrificing Top-1 accuracy.",
+  "ml_normalized_regret": 0.14993664303425427,
+  "ml_top1_accuracy": 0.574468085106383,
+  "normalized_regret_improvement_simple_minus_ml": 0.009259460450366186,
+  "question": "Does ML Recommender V2 outperform simple selection rules?",
+  "top1_delta_ml_minus_simple": 0.021276595744680882,
+  "verdict": "YES"
+}

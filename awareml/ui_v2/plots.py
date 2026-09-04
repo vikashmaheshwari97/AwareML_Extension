@@ -64,9 +64,9 @@ def _tokens():
             "grid": "rgba(15,23,42,0.10)",
             "zero": "rgba(15,23,42,0.20)",
             "drift": "#dc2626",
-            "refit": "#059669",
+            "refit": "#f59e0b",
             "band": "rgba(220,38,38,0.06)",
-            "refit_band": "rgba(5,150,105,0.06)",
+            "refit_band": "rgba(245,158,11,0.07)",
         }
     return {
         "panel": "#0f172a",
@@ -75,9 +75,9 @@ def _tokens():
         "grid": "rgba(226,232,240,0.12)",
         "zero": "rgba(226,232,240,0.24)",
         "drift": "#fb7185",
-        "refit": "#34d399",
+        "refit": "#fbbf24",
         "band": "rgba(251,113,133,0.09)",
-        "refit_band": "rgba(52,211,153,0.07)",
+        "refit_band": "rgba(251,191,36,0.08)",
     }
 
 
@@ -349,11 +349,11 @@ def temporal_metric_figure(results, metric, title, y_title):
         fig.add_trace(
             go.Scatter(
                 x=refit_positions, y=[0.55] * len(refit_positions),
-                mode="markers+text", name="Refit / retrain",
+                mode="markers+text", name="Explicit adaptation / refit",
                 marker={"symbol": "diamond", "size": 10, "color": t["refit"]},
                 text=[f"R{i+1}" for i in range(len(refit_positions))],
                 textposition="top center", textfont={"size": 9, "color": t["refit"]},
-                hovertemplate="Recorded refit/retrain %{text}<br>Sample %{x}<extra></extra>",
+                hovertemplate="Explicit adaptation/refit %{text}<br>Sample %{x}<extra></extra>",
             ), row=1, col=1,
         )
     if recovery_positions:
@@ -399,7 +399,7 @@ def temporal_metric_figure(results, metric, title, y_title):
     if drift_positions and not refit_positions:
         fig.add_annotation(
             x=1.0, y=1.105, xref="paper", yref="paper",
-            text="No explicit refit/retrain logged" + (" · recovery markers shown where available" if recovery_positions else ""),
+            text="No explicit adaptation/refit logged" + (" · recovery markers shown where available" if recovery_positions else ""),
             showarrow=False, xanchor="right",
             font={"size": 9, "color": t["muted"]},
         )

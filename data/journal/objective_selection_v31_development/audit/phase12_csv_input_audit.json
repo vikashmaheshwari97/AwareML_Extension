@@ -1,0 +1,66 @@
+{
+  "adversarial_cases": 14,
+  "artifact": "phase12_csv_input_audit_for_v31_development",
+  "candidate_duplicate_scenario_texts": 0,
+  "candidate_rows": 120,
+  "candidate_unique_ids": 120,
+  "final_generated_rows": 49,
+  "final_human_written_rows": 6,
+  "final_majority_k_prime_counts": {
+    "1": 29,
+    "2": 20,
+    "3": 6,
+    "4": 0
+  },
+  "final_primary_rows": 55,
+  "frozen_legacy_files_modified": false,
+  "full_set_unanimous_rate": 0.5818181818181818,
+  "full_set_unanimous_rows": 32,
+  "generated_final_majority_matches_private_generation_intent": 49,
+  "generated_final_rows_checked_against_private_intent": 49,
+  "human_written_blank_placeholders": 9,
+  "human_written_source_rows": 15,
+  "important_interpretation": [
+    "The legacy frozen Phase-12 v1 artifact must not be rewritten.",
+    "All k_prime=4 generated candidates were removed by realism filtering; restore k_prime=4 only in a fresh natural benchmark, not by resurrecting rejected checklist-like cases.",
+    "The legacy human-written source contains blank reserved rows; use the clean derivative for V3.1 development assets.",
+    "Energy and CO2 show more human disagreement than Accuracy/Runtime and should remain distinct objectives with explicit semantic evidence.",
+    "Private generation intent is provenance/coverage metadata only; it is forbidden as a V3.1 selector dependency.",
+    "A fresh final V3.1 benchmark is required because the legacy labels/errors have been inspected during method development."
+  ],
+  "intended_k_prime_counts": {
+    "1": 30,
+    "2": 30,
+    "3": 30,
+    "4": 30
+  },
+  "objective_disagreement_rows": {
+    "accuracy": 1,
+    "co2": 8,
+    "energy": 11,
+    "runtime": 3
+  },
+  "paraphrase_families": 10,
+  "paraphrase_reviewers": [
+    "PARA01"
+  ],
+  "paraphrase_rows": 60,
+  "paraphrase_variants_per_family": {
+    "P01": 6,
+    "P02": 6,
+    "P03": 6,
+    "P04": 6,
+    "P05": 6,
+    "P06": 6,
+    "P07": 6,
+    "P08": 6,
+    "P09": 6,
+    "P10": 6
+  },
+  "retained_by_intended_k_prime": {
+    "1": 26,
+    "2": 17,
+    "3": 6,
+    "4": 0
+  }
+}

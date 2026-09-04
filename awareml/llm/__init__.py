@@ -24,6 +24,14 @@ from .objective_selection import (
     deterministic_objective_selection,
     infer_hcai_requirements,
 )
+from .objective_selection_v3 import (
+    EvidenceGroundedObjectiveSelectorV3,
+    SELECTOR_ID as OBJECTIVE_SELECTOR_V3_ID,
+)
+from .objective_selection_v31 import (
+    HybridEvidenceGroundedObjectiveSelectorV31,
+    SELECTOR_ID as OBJECTIVE_SELECTOR_V31_ID,
+)
 from .review import ReviewStore, review_proposal
 from .schemas import (
     ConfigDiffItem,
@@ -59,6 +67,10 @@ __all__ = [
     "JournalModelLockError",
     "JournalLLMResponseError",
     "JournalObjectiveSelector",
+    "EvidenceGroundedObjectiveSelectorV3",
+    "OBJECTIVE_SELECTOR_V3_ID",
+    "HybridEvidenceGroundedObjectiveSelectorV31",
+    "OBJECTIVE_SELECTOR_V31_ID",
     "GoalSelectionError",
     "deterministic_objective_selection",
     "infer_hcai_requirements",

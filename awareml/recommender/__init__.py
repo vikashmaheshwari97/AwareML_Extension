@@ -26,6 +26,7 @@ from .v2_evaluation import (
 from .v2_profile import profile_from_dataframe_v2
 from .v2_ranking import (
     DEFAULT_WEIGHTS,
+    near_pareto_mask,
     normalize_weights,
     pareto_efficient_mask,
     rank_candidates,
@@ -67,6 +68,7 @@ __all__ = [
     "DEFAULT_WEIGHTS",
     "normalize_weights",
     "pareto_efficient_mask",
+    "near_pareto_mask",
     "rank_candidates",
     "V2Recommender",
     "locate_active_v2_manifest",

@@ -1,0 +1,27 @@
+{
+  "artifact": "objective_selection_v31_fresh_benchmark_design",
+  "status": "design_only_not_collected",
+  "purpose": "Fresh independent evaluation after V3.1 method freeze",
+  "target_primary_cases": 60,
+  "target_k_prime_counts": {
+    "1": 15,
+    "2": 15,
+    "3": 15,
+    "4": 15
+  },
+  "minimum_human_written_cases": 24,
+  "minimum_human_written_fraction": 0.40,
+  "annotation_reviewers": 3,
+  "paraphrase_reviewers_minimum": 2,
+  "paraphrase_annotation_mode": "blind_per_variant_objective_labels_preferred",
+  "fresh_adversarial_set_required": true,
+  "private_generation_intent_visible_to_selector_development": false,
+  "requirements": [
+    "Do not reuse the frozen Phase-12 v1 cases as the final V3.1 test set.",
+    "Include natural k_prime=4 scenarios; do not resurrect rejected checklist-like v1 candidates.",
+    "Collect substantially more genuinely human-written scenarios than the 6/55 legacy benchmark.",
+    "Freeze the V3.1 selector before final labels/test outcomes are inspected.",
+    "Keep any generator-intent metadata inaccessible to annotators and selector code until evaluation is complete.",
+    "Use a new adversarial set that was not used to design V3.1."
+  ]
+}

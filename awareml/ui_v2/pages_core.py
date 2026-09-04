@@ -11,6 +11,12 @@ from .dataset_advisor import render_dataset_advisor
 from .plots import decision_space_3d, decision_space_3d_normalized, ranking_bar
 from .state import ensure_research_state, phase_status, result_dicts
 from .page_utils import dataset_ready, fmt, phase_pills, plot, results_frame
+from .pre14_usability import (
+    preference_context,
+    quick_framework_selector,
+    render_dataset_task_guard,
+    render_decision_space_context,
+)
 
 
 
@@ -147,14 +153,14 @@ def command_center_page():
             st.caption(
                 "Interactive 3D decision space · X=Accuracy ↑ · Y=Runtime ↓ · "
                 "Z=Energy ↓ · marker size=CO₂ · white outline=selected framework · "
-                "green outline=Pareto efficient."
+                "green outline=ε-Pareto candidate (ε=0.05)."
             )
         else:
             empty_state(
                 "Decision space waiting for context",
                 (
                     "Load an active dataset to obtain Phase-6 predicted "
-                    "framework outcomes and Pareto-aware ranking."
+                    "framework outcomes and canonical ε-Pareto ranking (ε=0.05)."
                 ),
             )
 
@@ -203,16 +209,17 @@ def decision_space_page():
         "Weights normalize automatically. Changing them does not rerun AutoML; it reranks the same predicted framework outcomes from the frozen recommender.",
     )
     current = normalized_preferences(state.get("preference_weights") or {})
+    current, manual_pref = preference_context(state, current)
     c1, c2, c3, c4 = st.columns(4)
 
     with c1:
-        accuracy = st.slider("Accuracy ↑", 0, 100, int(round(current["accuracy"] * 100)), key="r9_w_accuracy")
+        accuracy = st.slider("Accuracy ↑", 0, 100, int(round(current["accuracy"] * 100)), key="r9_w_accuracy", disabled=not manual_pref)
     with c2:
-        runtime = st.slider("Runtime ↓", 0, 100, int(round(current["runtime"] * 100)), key="r9_w_runtime")
+        runtime = st.slider("Runtime ↓", 0, 100, int(round(current["runtime"] * 100)), key="r9_w_runtime", disabled=not manual_pref)
     with c3:
-        energy = st.slider("Energy ↓", 0, 100, int(round(current["energy"] * 100)), key="r9_w_energy")
+        energy = st.slider("Energy ↓", 0, 100, int(round(current["energy"] * 100)), key="r9_w_energy", disabled=not manual_pref)
     with c4:
-        co2 = st.slider("CO₂ ↓", 0, 100, int(round(current["co2"] * 100)), key="r9_w_co2")
+        co2 = st.slider("CO₂ ↓", 0, 100, int(round(current["co2"] * 100)), key="r9_w_co2", disabled=not manual_pref)
 
     state["preference_weights"] = normalized_preferences({
         "accuracy": accuracy, "runtime": runtime, "energy": energy, "co2": co2
@@ -248,25 +255,16 @@ def decision_space_page():
         return
 
     frameworks = ranked["framework"].tolist()
-    selected = st.selectbox(
-        "Inspect framework",
-        frameworks,
-        index=(
-            frameworks.index(state.get("selected_framework"))
-            if state.get("selected_framework") in frameworks
-            else 0
-        ),
-        key="r9_selected_framework",
-    )
-    state["selected_framework"] = selected
+    selected = quick_framework_selector(frameworks, state)
 
     top = ranked.iloc[0]
     selected_row = ranked[ranked["framework"].eq(selected)].iloc[0]
+    render_decision_space_context(ranked, state, selected)
     cols = st.columns(6)
     with cols[0]:
         st.metric("Pre-run recommended framework", str(top["framework"]), "Predicted rank #1")
     with cols[1]:
-        st.metric("Pre-run preference utility", fmt(top["utility"], 4))
+        st.metric("Normalized preference utility", fmt(top["utility"], 4))
     with cols[2]:
         st.metric("{} predicted accuracy".format(selected), fmt(selected_row["accuracy"], 4))
     with cols[3]:
@@ -301,7 +299,7 @@ def decision_space_page():
         plot(fig3d, "r9_decision_3d", height=660)
         st.caption(
             "Rotate and zoom directly in the Plotly scene. White outline = inspected framework; "
-            "green outline = Pareto efficient. Normalized desirability is only a visualization transform; "
+            "green outline = ε-Pareto candidate (ε=0.05). Normalized desirability is only a visualization transform; "
             "ranking still uses the selected point/conservative evidence mode and the exact preference weights."
         )
     with right:
@@ -330,7 +328,7 @@ def decision_space_page():
         "Intervals come from the Phase-6 empirical LODO residual calibration.",
     )
     display_cols = [
-        "rank", "framework", "utility", "pareto_efficient",
+        "rank", "framework", "utility", "near_pareto",
         "accuracy", "accuracy_lower", "accuracy_upper",
         "runtime", "runtime_lower", "runtime_upper",
         "energy", "energy_lower", "energy_upper",
@@ -376,7 +374,7 @@ def run_studio_v2_page():
             with cols[2]:
                 st.metric("Predicted runtime", fmt(top["runtime"], 3, " s"))
             with cols[3]:
-                st.metric("Utility", fmt(top["utility"], 4))
+                st.metric("Normalized preference utility", fmt(top["utility"], 4))
 
     st.markdown(
         """
@@ -395,6 +393,7 @@ def run_studio_v2_page():
 
     with advisor_slot:
         active = ensure_research_state()
+        render_dataset_task_guard(active)
         render_dataset_advisor(
             active.get("dataset"),
             active.get("dataset_name"),

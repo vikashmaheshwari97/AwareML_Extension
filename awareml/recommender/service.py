@@ -5,30 +5,25 @@ from typing import Iterable, Mapping, Optional
 
 import pandas as pd
 
-from awareml.engine.pareto import rank_results, objective_correlations
+from awareml.engine.pareto import objective_correlations, rank_results
+from awareml.engine.pareto_spec import CANONICAL_EPSILON
 from awareml.types import FrameworkResult, ObjectiveWeights
 
 from .v2_service import V2Recommender
 
 
 class RecommendationService:
-    """Backward-compatible recommendation facade.
-
-    `rank()` preserves the existing post-run ranking behavior.
-    `recommend_v2_*()` exposes the Phase-6 learned pre-execution recommender.
-    """
+    """Backward-compatible recommendation facade with one canonical epsilon."""
 
     def __init__(
         self,
-        epsilon: float = 0.05,
+        epsilon: float = CANONICAL_EPSILON,
         correlation_warning: float = 0.90,
         fairness_metric: str = "composite",
         v2_manifest: Optional[str] = None,
     ):
         self.epsilon = float(epsilon)
-        self.correlation_warning = float(
-            correlation_warning
-        )
+        self.correlation_warning = float(correlation_warning)
         self.fairness_metric = fairness_metric
         self.v2_manifest = v2_manifest
         self._v2 = None
@@ -46,38 +41,21 @@ class RecommendationService:
         )
         corr = objective_correlations(frame)
         warnings = []
-        if (
-            "energy_kwh" in corr.index
-            and "co2_kg" in corr.columns
-        ):
-            value = corr.loc[
-                "energy_kwh",
-                "co2_kg",
-            ]
-            if (
-                pd.notna(value)
-                and abs(value)
-                >= self.correlation_warning
-            ):
+        if "energy_kwh" in corr.index and "co2_kg" in corr.columns:
+            value = corr.loc["energy_kwh", "co2_kg"]
+            if pd.notna(value) and abs(value) >= self.correlation_warning:
                 warnings.append(
                     "Energy and CO2 are strongly correlated "
                     "(Spearman rho={:.2f}); double weighting may "
-                    "over-count the same efficiency signal.".format(
-                        value
-                    )
+                    "over-count the same efficiency signal. See the Phase-13 "
+                    "Energy/CO2 sensitivity report.".format(value)
                 )
         return frame, recs, corr, warnings
 
     def _get_v2(self) -> V2Recommender:
         if self._v2 is None:
-            path = (
-                Path(self.v2_manifest)
-                if self.v2_manifest
-                else None
-            )
-            self._v2 = V2Recommender(
-                manifest_path=path
-            )
+            path = Path(self.v2_manifest) if self.v2_manifest else None
+            self._v2 = V2Recommender(manifest_path=path)
         return self._v2
 
     def recommend_v2_profile(
@@ -92,6 +70,7 @@ class RecommendationService:
             weights=weights,
             ranking_mode=ranking_mode,
             coverage=coverage,
+            epsilon=self.epsilon,
         )
 
     def recommend_v2_dataframe(
@@ -118,4 +97,5 @@ class RecommendationService:
             drift_type=drift_type,
             ranking_mode=ranking_mode,
             coverage=coverage,
+            epsilon=self.epsilon,
         )

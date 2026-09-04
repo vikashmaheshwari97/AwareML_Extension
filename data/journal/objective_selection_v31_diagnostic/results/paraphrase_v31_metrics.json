@@ -1,0 +1,13 @@
+{
+  "artifact": "objective_selection_v31_posthoc_development_diagnostic",
+  "base_calls": 10,
+  "base_exact_match_rate": 1.0,
+  "evaluation_role": "posthoc_development_diagnostic_not_independent_test",
+  "families": 10,
+  "inference_calls": 60,
+  "paraphrase_evaluations": 50,
+  "paraphrase_exact_match_rate": 1.0,
+  "paraphrase_prediction_consistency_rate": 1.0,
+  "selector_id": "hybrid_evidence_grounded_objective_selector_v31",
+  "set_change_rate": 0.0
+}

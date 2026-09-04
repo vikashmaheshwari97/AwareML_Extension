@@ -36,3 +36,20 @@ hpc/logs/
 .venv-*/
 venv-*/
 env-*/
+
+# Local hotfix / backup / installer artifacts
+.phase*_backup/
+.pre*_backup/
+hotfix_payload/
+base_pre14_hotfix/
+phase13_payload/
+APPLY_*.py
+APPLY_*.txt
+CHECKSUMS.sha256
+PHASE11_*_CHANGELOG.md
+PHASE12_*_CHANGELOG.md
+PHASE12_*_README.md
+PHASE13_CHANGELOG.md
+PHASE13_README.md
+PRE_PHASE14_HOTFIX_CHANGELOG.md
+PRE_PHASE14_HOTFIX_README.md

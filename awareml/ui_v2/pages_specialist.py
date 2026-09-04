@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 import time
 import uuid
 
@@ -20,10 +21,18 @@ from .components import hero, section, empty_state
 from .page_utils import fmt, phase_pills, plot, results_frame
 from .plots import FRAMEWORK_COLORS, OBJECTIVE_COLORS, apply_research_layout, temporal_metric_figure
 from .state import ensure_research_state, result_dicts
+from .pre14_usability import (
+    render_decision_lab_explanation,
+    render_fairness_validity_panel,
+)
+from .study_labs_v3 import (
+    information_seeking_research_page,
+    trust_calibration_research_page,
+)
 
 
 FAIRNESS_OPTIONS = {
-    "Composite (all available gaps)": "composite",
+    "Composite (common available gaps)": "composite",
     "Demographic parity": "demographic_parity",
     "Equal opportunity": "equal_opportunity",
     "Equalized odds": "equalized_odds",
@@ -33,7 +42,7 @@ FAIRNESS_OPTIONS = {
 
 FAIRNESS_POINT_KEYS = {
     "Demographic parity": "dp_diff",
-    "Equal opportunity": "eo_diff",
+    "Equal opportunity": "equal_opportunity_diff",
     "Equalized odds": "equalized_odds_gap",
     "Predictive parity": "predictive_parity_diff",
     "Error-rate parity": "error_rate_gap",
@@ -151,7 +160,9 @@ def decision_lab_v2_page():
         fair_label = st.selectbox("Fairness criterion in utility", list(FAIRNESS_OPTIONS), key="r95_decision_fairness_metric")
         fair_metric = FAIRNESS_OPTIONS[fair_label]
     with c2:
-        epsilon = st.slider("Near-Pareto ε", 0.0, 0.20, 0.05, 0.01, key="r95_decision_eps")
+        epsilon = st.slider("Near-Pareto ε (journal default 0.05)", 0.0, 0.20, 0.05, 0.01, key="r95_decision_eps")
+        if abs(float(epsilon) - 0.05) > 1e-12:
+            st.caption("Sensitivity view: the journal-facing canonical near-Pareto result uses ε=0.05.")
 
     weights = ObjectiveWeights(**vals)
     service = RecommendationService(epsilon=epsilon, fairness_metric=fair_metric)
@@ -165,11 +176,32 @@ def decision_lab_v2_page():
     cards[0].metric("Post-run recommended framework", top.framework)
     cards[1].metric("Observed utility", fmt(top.utility, 3))
     cards[2].metric("Observed accuracy", fmt(top_row.get("accuracy"), 3))
-    cards[3].metric("Fairness score", fmt(top_row.get("fairness_score"), 3))
+    fairness_score_label = (
+        "Composite fairness score ↑ (1 - mean common gap)"
+        if fair_metric == "composite"
+        else "{} score ↑ (1 - gap)".format(fair_label)
+    )
+    cards[3].metric(fairness_score_label, fmt(top_row.get("fairness_score"), 3))
     cards[4].metric("Near-Pareto", "Yes" if top.near_pareto else "No")
+
+    if fair_metric == "composite":
+        common = str(top_row.get("fairness_criteria_used") or "").strip()
+        count = top_row.get("fairness_criteria_count")
+        total = top_row.get("fairness_criteria_total")
+        if common:
+            st.caption(
+                "Composite fairness = 1 - mean disparity over the same criteria for "
+                "every framework in this run: {} ({} of {}). Missing criteria are "
+                "reported as unavailable and are not treated as zero.".format(
+                    common, int(count), int(total)
+                )
+            )
 
     st.success(
         "{} is ranked #1 because, under the current weights, it has the highest utility calculated from the observed run evidence.".format(top.framework)
+    )
+    render_decision_lab_explanation(
+        frame, top, weights, fair_metric, fair_label, _state()
     )
     for warning in warnings:
         st.warning(warning)
@@ -221,12 +253,34 @@ def decision_lab_v2_page():
         plot(fig, "r95_decision_heat")
 
     section("Observed ranking table", "This is the auditable post-run ranking used by this page.")
+    fairness_table_label = (
+        "Composite fairness score ↑"
+        if fair_metric == "composite"
+        else "{} score ↑".format(fair_label)
+    )
     display = frame.rename(columns={
-        "framework": "Framework", "rank": "Rank", "utility": "Utility", "near_pareto": "Near-Pareto",
-        "accuracy": "Accuracy", "runtime_sec": "Runtime (s)", "energy_kwh": "Energy (kWh)",
-        "co2_kg": "CO₂ (kg)", "fairness_score": "Fairness score", "interpretability_score": "Interpretability score",
+        "framework": "Framework",
+        "rank": "Rank",
+        "utility": "Utility",
+        "near_pareto": "Near-Pareto",
+        "accuracy": "Accuracy",
+        "runtime_sec": "Runtime (s)",
+        "energy_kwh": "Energy (kWh)",
+        "co2_kg": "CO₂ (kg)",
+        "fairness_score": fairness_table_label,
+        "interpretability_score": "Interpretability score",
     })
-    st.dataframe(display, use_container_width=True, hide_index=True)
+    display["ε"] = pd.to_numeric(frame.get("pareto_epsilon"), errors="coerce")
+    visible = [
+        "Rank", "Framework", "Utility", "Near-Pareto", "ε",
+        "Accuracy", "Runtime (s)", "Energy (kWh)", "CO₂ (kg)",
+        fairness_table_label, "Interpretability score",
+    ]
+    st.dataframe(
+        display[[column for column in visible if column in display.columns]],
+        use_container_width=True,
+        hide_index=True,
+    )
 
     section("Objective correlation", "Use this to detect redundant objectives such as Energy and CO₂. Correlation is descriptive, not causal.")
     if corr is not None and not corr.empty:
@@ -321,6 +375,8 @@ def fairness_v2_page():
         st.warning("No sensitive attribute was confirmed for this run. Re-run from Run Studio with a sensitive attribute to compute fairness evidence.")
         return
 
+    render_fairness_validity_panel(state, results)
+
     metric_map = {
         "Demographic parity": "dp_diff",
         "Equal opportunity": "equal_opportunity_diff",
@@ -337,15 +393,42 @@ def fairness_v2_page():
         rows.append(row)
     fair = pd.DataFrame(rows)
     numeric = fair[list(metric_map)].apply(pd.to_numeric, errors="coerce")
-    fair["Mean gap"] = numeric.mean(axis=1, skipna=True)
-    fair["Worst gap"] = numeric.max(axis=1, skipna=True)
+    common_labels = [label for label in metric_map if numeric[label].notna().all()]
+    if common_labels:
+        fair["Comparable mean gap"] = numeric[common_labels].mean(axis=1)
+        fair["Composite fairness score ↑"] = (
+            1.0 - fair["Comparable mean gap"]
+        ).clip(lower=0.0, upper=1.0)
+    else:
+        fair["Comparable mean gap"] = np.nan
+        fair["Composite fairness score ↑"] = np.nan
+    fair["Worst available gap"] = numeric.max(axis=1, skipna=True)
+    fair["Metric coverage"] = numeric.notna().sum(axis=1).map(
+        lambda count: "{}/{}".format(int(count), len(metric_map))
+    )
+    fair["Unavailable criteria"] = [
+        ", ".join([label for label in metric_map if pd.isna(numeric.loc[idx, label])])
+        or "None"
+        for idx in fair.index
+    ]
 
     cards = st.columns(4)
-    best = fair.sort_values("Mean gap").iloc[0] if fair["Mean gap"].notna().any() else None
-    cards[0].metric("Lowest mean disparity", best["Framework"] if best is not None else "N/A", fmt(best["Mean gap"], 3) if best is not None else None)
+    best = (
+        fair.sort_values("Comparable mean gap").iloc[0]
+        if fair["Comparable mean gap"].notna().any()
+        else None
+    )
+    cards[0].metric(
+        "Lowest comparable mean disparity",
+        best["Framework"] if best is not None else "N/A",
+        fmt(best["Comparable mean gap"], 3) if best is not None else None,
+    )
     cards[1].metric("Sensitive attribute", str(state.get("sensitive")))
     cards[2].metric("Positive label", str(state.get("positive_label")))
-    cards[3].metric("Available gap values", f"{int(numeric.notna().sum().sum())}/{numeric.size}")
+    cards[3].metric(
+        "Available gap values",
+        "{}/{}".format(int(numeric.notna().sum().sum()), int(numeric.size)),
+    )
 
     section("Aggregate fairness profile", "Heatmap gives the complete criterion matrix; the adjacent chart summarizes mean and worst disparity without a crowded legend.")
     left, right = st.columns([1.28, 1])
@@ -354,22 +437,82 @@ def fairness_v2_page():
         arr = heat.to_numpy(dtype=float)
         vmax = float(np.nanmax(arr)) if np.isfinite(arr).any() else 1.0
         fig = px.imshow(
-            heat, text_auto=".3f", zmin=0, zmax=max(0.05, vmax), aspect="auto",
+            heat, text_auto=False, zmin=0, zmax=max(0.05, vmax), aspect="auto",
             color_continuous_scale="YlOrRd", title="Disparity matrix · lower is better"
         )
+        heat_text = heat.applymap(
+            lambda value: "N/A" if pd.isna(value) else "{:.3f}".format(float(value))
+        )
+        fig.update_traces(text=heat_text.to_numpy(), texttemplate="%{text}")
         apply_research_layout(fig, height=410, legend="none", title="Disparity matrix · lower is better", bottom_margin=64)
         fig.update_layout(margin=dict(l=90, r=50, t=54, b=78), coloraxis_colorbar=dict(len=0.78, thickness=12, title="Gap"))
         plot(fig, "r96_fair_heat")
     with right:
-        summary = fair[["Framework", "Mean gap", "Worst gap"]].melt(id_vars="Framework", var_name="Summary", value_name="Gap").dropna()
+        summary = fair[[
+            "Framework", "Comparable mean gap", "Worst available gap"
+        ]].melt(
+            id_vars="Framework", var_name="Summary", value_name="Gap"
+        ).dropna()
         fig = px.bar(
             summary, x="Gap", y="Framework", color="Summary", barmode="group", orientation="h",
-            color_discrete_map={"Mean gap": "#2563eb", "Worst gap": "#ef4444"},
-            title="Mean vs worst observed disparity"
+            color_discrete_map={
+                "Comparable mean gap": "#2563eb",
+                "Worst available gap": "#ef4444",
+            },
+            title="Comparable mean vs worst available disparity"
         )
         apply_research_layout(fig, height=410, legend="bottom", title="Mean vs worst observed disparity", bottom_margin=92)
         fig.update_layout(margin=dict(l=96, r=24, t=54, b=94), legend=dict(orientation="h", y=-0.20, x=0.5, xanchor="center"))
         plot(fig, "r96_fair_summary")
+
+    section(
+        "All fairness metrics",
+        "Exact current-run values. Lower disparity gaps are better. The composite "
+        "score is 1 - the mean of only those criteria available for every framework, "
+        "so frameworks are compared using the same denominator.",
+    )
+    fairness_display = fair[[
+        "Framework",
+        *list(metric_map),
+        "Comparable mean gap",
+        "Worst available gap",
+        "Composite fairness score ↑",
+        "Metric coverage",
+        "Unavailable criteria",
+        "Status",
+        "Window N",
+    ]].copy()
+    numeric_display_cols = list(metric_map) + [
+        "Comparable mean gap",
+        "Worst available gap",
+        "Composite fairness score ↑",
+    ]
+    for column in numeric_display_cols:
+        fairness_display[column] = fairness_display[column].map(
+            lambda value: "N/A" if pd.isna(value) else "{:.4f}".format(float(value))
+        )
+    fairness_display["Unavailable reason"] = fairness_display[
+        "Unavailable criteria"
+    ].map(
+        lambda value: (
+            "None"
+            if value == "None"
+            else "Criterion undefined/unavailable in the recorded window; not treated as zero."
+        )
+    )
+    st.dataframe(fairness_display, use_container_width=True, hide_index=True)
+    if not common_labels:
+        st.warning(
+            "No fairness criterion is available for every framework, so a comparable "
+            "composite fairness score cannot be computed for this run."
+        )
+    elif len(common_labels) < len(metric_map):
+        st.info(
+            "Comparable composite uses: {}. Other criteria remain visible as N/A/available "
+            "evidence but are excluded from the composite for every framework.".format(
+                ", ".join(common_labels)
+            )
+        )
 
     section("Temporal fairness", "Select one criterion. A separate event strip shows drift and explicitly recorded refit/retrain events without covering the fairness trajectories.")
     criterion = st.selectbox("Temporal fairness criterion", list(FAIRNESS_POINT_KEYS), key="r95_fair_metric")
@@ -648,162 +791,8 @@ def sustainability_v2_page():
 
 
 def trust_calibration_v2_page():
-    hero(
-        "HUMAN STUDY",
-        "Trust Calibration",
-        "Measure whether user trust follows recommendation reliability rather than explanation fluency alone.",
-        pills=phase_pills(),
-    )
-    ranking = _state().get("ranking")
-    if not ranking:
-        empty_state("Observed ranking required", "Open Decision Lab first so the trust study has an operational ranking to manipulate.")
-        return
-
-    st.markdown(
-        """
-        <div class="r9-callout">
-          <b>What this lab studies:</b> participants see recommendations with matched explanation style but different reliability conditions.
-          The research question is whether trust appropriately increases for correct recommendations and decreases for weak/wrong ones.
-          These manipulations are <b>study stimuli only</b> and never replace the operational recommendation.
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
-    if "r95_trust_case" not in st.session_state:
-        st.session_state.r95_trust_case = None
-
-    left, right = st.columns([1, 1.4])
-    with left:
-        condition = st.selectbox(
-            "Reliability condition",
-            ["Randomized", "correct", "weak", "wrong"],
-            key="r95_trust_condition",
-            help="For an actual study, Randomized is preferred. Manual conditions are useful for researcher testing.",
-        )
-        if st.button("Generate matched trial", type="primary", use_container_width=True, key="r95_trust_generate"):
-            study = TrustCalibrationStudy(seed=int(time.time()) % 100000)
-            st.session_state.r95_trust_case = study.build_case(ranking, None if condition == "Randomized" else condition)
-
-    case = st.session_state.r95_trust_case
-    with right:
-        if case:
-            st.markdown("**Recommendation shown to participant**")
-            st.markdown(case.explanation)
-            st.caption("Explanation wording and structure are intentionally held constant across reliability conditions.")
-        else:
-            st.info("Generate a trial to preview the participant stimulus.")
-
-    if not case:
-        return
-
-    section("Participant response", "These items measure trust, perceived correctness, confidence and acceptance separately.")
-    c1, c2, c3 = st.columns(3)
-    with c1:
-        trust = st.slider("Trust in recommendation", 1, 7, 4, key="r95_trust_score")
-    with c2:
-        correctness = st.slider("Perceived correctness", 1, 7, 4, key="r95_trust_correct")
-    with c3:
-        confidence = st.slider("Decision confidence", 1, 7, 4, key="r95_trust_conf")
-    accept = st.radio("Would you accept this recommendation?", ["Yes", "No"], horizontal=True, key="r95_trust_accept")
-    session = st.text_input("Participant/session code", value="pilot-session", key="r95_trust_session")
-
-    if st.button("Save trial response", key="r95_trust_save"):
-        StudyStore().log("trust", session, "trial_response", {
-            **case.to_dict(),
-            "trust": trust,
-            "perceived_correctness": correctness,
-            "decision_confidence": confidence,
-            "accepted": accept == "Yes",
-        })
-        st.success("Response stored with the study audit trail.")
-
-    with st.expander("Experimenter-only condition check", expanded=False):
-        st.json({
-            "condition": case.condition,
-            "oracle": case.oracle_framework,
-            "shown": case.shown_framework,
-            "reliability": case.reliability,
-        })
+    return trust_calibration_research_page()
 
 
 def information_seeking_v2_page():
-    hero(
-        "HUMAN STUDY",
-        "Information-Seeking Lab",
-        "Observe how users interrogate the evidence after a recommendation instead of assuming one explanation is sufficient.",
-        pills=phase_pills(),
-    )
-    results = result_dicts()
-    if not results:
-        empty_state("Run evidence required", "Run a benchmark first so the conversation can be grounded in actual evidence.")
-        return
-
-    st.markdown(
-        """
-        <div class="r9-callout">
-          <b>What this lab measures:</b> after seeing a recommendation, does the user ask for evidence, challenge the result,
-          compare alternatives, ask for clarification, or stop probing? The system logs these follow-up behaviors for HCAI analysis.
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
-    use_llm, model, status = _ollama_controls("r95_info")
-    if not _state().get("chat_session_id"):
-        _state()["chat_session_id"] = str(uuid.uuid4())
-    if "r95_chat_log" not in st.session_state:
-        st.session_state.r95_chat_log = []
-
-    chat = GroundedChat(model=model)
-    facts = chat.build_facts(results, _state().get("ranking"))
-
-    left, right = st.columns([1.6, 0.8])
-    with left:
-        st.markdown("**Grounded evidence conversation**")
-        for item in st.session_state.r95_chat_log:
-            with st.chat_message(item["role"]):
-                st.markdown(item["text"])
-        q = st.chat_input("Ask why a framework was recommended, compare alternatives, question fairness, drift, XAI or sustainability…")
-        if q:
-            st.session_state.r95_chat_log.append({"role": "user", "text": q})
-            category = classify_follow_up(q)
-            started = time.perf_counter()
-            answer, meta = chat.answer(q, facts, use_llm=use_llm)
-            latency = time.perf_counter() - started
-            st.session_state.r95_chat_log.append({"role": "assistant", "text": answer})
-            StudyStore().log("information_seeking", _state()["chat_session_id"], "chat_turn", {
-                "question": q,
-                "category": category,
-                "answer_source": meta.get("source"),
-                "model": meta.get("model"),
-                "response_time_sec": latency,
-                "turn": len(st.session_state.r95_chat_log) // 2,
-            })
-            st.rerun()
-
-    with right:
-        st.markdown("**Behavior summary**")
-        user_turns = [x for x in st.session_state.r95_chat_log if x["role"] == "user"]
-        cats = [classify_follow_up(x["text"]) for x in user_turns]
-        st.metric("Follow-up questions", len(user_turns))
-        if cats:
-            counts = pd.Series(cats).value_counts().rename_axis("Behavior").reset_index(name="Count")
-            fig = px.bar(counts, x="Count", y="Behavior", orientation="h", text_auto=True, title="Observed follow-up behavior")
-            apply_research_layout(fig, height=310, legend="none", title="Observed follow-up behavior", bottom_margin=48)
-            fig.update_layout(margin=dict(l=105, r=24, t=54, b=50))
-            plot(fig, "r95_info_behavior")
-        else:
-            st.caption("No follow-up behavior has been recorded yet.")
-
-        with st.expander("Think-aloud prompts", expanded=False):
-            for prompt in THINK_ALOUD_PROMPTS:
-                st.markdown(f"- {prompt}")
-
-        accepted = st.checkbox("Participant accepted the first answer without further probing", value=False, key="r95_info_accepted")
-        if st.button("Save session endpoint", key="r95_info_save"):
-            StudyStore().log("information_seeking", _state()["chat_session_id"], "session_end", {
-                "first_answer_accepted": accepted,
-                "follow_up_depth": len(user_turns),
-            })
-            st.success("Session endpoint stored.")
+    return information_seeking_research_page()

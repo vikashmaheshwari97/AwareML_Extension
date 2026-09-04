@@ -1,0 +1,12 @@
+{
+  "decision_code": "retain_semantics_avoid_double_counting",
+  "development_spearman_energy_co2": 0.9999999999999998,
+  "energy_vs_co2_mean_kendall_tau": 0.9787234042553189,
+  "energy_vs_co2_top1_change_rate": 0.02127659574468085,
+  "held_out_23_dataset_contents_used": false,
+  "high_correlation": true,
+  "high_correlation_threshold": 0.95,
+  "journal_decision": "Retain Energy and CO2 as distinct measurable and user-selectable objectives, but do not treat simultaneous Energy+CO2 weighting as independent evidence in the primary journal recommender claim. Report the sensitivity analysis and retain the double-counting warning.",
+  "rank_equivalent": true,
+  "rank_equivalent_rule": "top1 change <= 0.10 and mean Kendall tau >= 0.90"
+}

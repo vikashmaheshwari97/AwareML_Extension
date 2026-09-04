@@ -1,0 +1,7 @@
+human_scenario_id,scenario,author_id,confirm_not_explicitly_naming_frozen_objectives,notes
+H01,"In an emergency room setting, doctors need to trust that the AI won't miss a severe issue, and they need the diagnosis right away before making a quick call.",HW01,yes,Practical requirement for real-time clinical decision support.
+H02,"This sensor is going on a tree deep in a national park, so it needs to keep recording for months without someone having to hike out and swap batteries.",HW01,yes,Clear low-maintenance constraint for remote environmental sensors.
+H03,"If a pedestrian steps into the street, the car's computer has to recognize them instantly so the brakes engage before an impact happens.",HW02,yes,Time-sensitive safety requirement for autonomous vehicle perception.
+H04,"Our factory monitors need to catch subtle equipment glitches early, but the wireless tags have to last through a full shift without dying.",HW02,yes,Industrial monitoring requirement balancing fault detection with battery life.
+H05,We want to run search indexing around the clock without spinning up massive server clusters that wreck our green infrastructure goals.,HW03,yes,Sustainability requirement for continuous cloud services.
+H06,"Search and rescue drones need reliable identification of lost hikers, but the onboard processing can't drain the flight system mid-operation.",HW03,yes,High-stakes aerial search requirement balancing precision with power constraints.

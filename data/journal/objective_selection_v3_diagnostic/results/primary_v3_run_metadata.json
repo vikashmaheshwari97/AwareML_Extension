@@ -1,0 +1,12 @@
+{
+  "artifact": "objective_selection_v3_posthoc_diagnostic",
+  "cases": 55,
+  "evaluation_role": "posthoc_development_diagnostic_not_independent_test",
+  "fallback_used": false,
+  "ground_truth_sha256": "f3811ed52a66f6405aa26eef1952dc1178bd32ae176d2c5623a0d903dd97cc23",
+  "model": "llama3:8b",
+  "model_digest": "365c0bd3c000a25d28ddbf732fe1c6add414de7275464c4e4d1c3b5fcb5d8ad1",
+  "ollama_version": "0.32.14",
+  "phase12_frozen_artifact_modified": false,
+  "selector_id": "evidence_grounded_objective_selector_v3"
+}

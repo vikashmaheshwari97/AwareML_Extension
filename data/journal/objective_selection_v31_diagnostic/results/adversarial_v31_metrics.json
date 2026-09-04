@@ -1,0 +1,9 @@
+{
+  "artifact": "objective_selection_v31_posthoc_development_diagnostic",
+  "cases": 14,
+  "evaluation_role": "posthoc_development_diagnostic_not_independent_test",
+  "over_selection_count": 0,
+  "over_selection_rate": 0.0,
+  "selector_id": "hybrid_evidence_grounded_objective_selector_v31",
+  "status_accuracy": 1.0
+}

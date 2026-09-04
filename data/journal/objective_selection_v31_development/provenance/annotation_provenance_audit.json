@@ -1,0 +1,47 @@
+{
+  "artifact": "phase12_annotation_provenance_audit",
+  "do_not_rewrite_raw_annotation_files": true,
+  "exact_nonempty_note_matches": {
+    "A_equals_B": 43,
+    "A_equals_B_equals_C": 31,
+    "A_equals_C": 36,
+    "B_equals_C": 33
+  },
+  "examples": [
+    {
+      "note": "react quickly for live operation is runtime",
+      "scenario_id": "G002"
+    },
+    {
+      "note": "preserve battery life is directly energy",
+      "scenario_id": "G003"
+    },
+    {
+      "note": "time-critical reactions is runtime",
+      "scenario_id": "G006"
+    },
+    {
+      "note": "battery-backed sensor is clearly energy",
+      "scenario_id": "G007"
+    },
+    {
+      "note": "environmental footprint maps to CO2",
+      "scenario_id": "G008"
+    },
+    {
+      "note": "rarely wrong is accuracy",
+      "scenario_id": "G009"
+    },
+    {
+      "note": "react quickly for live operation is runtime",
+      "scenario_id": "G010"
+    },
+    {
+      "note": "preserve battery life is energy",
+      "scenario_id": "G011"
+    }
+  ],
+  "interpretation": "High note-text overlap is a provenance question, not proof of non-independent labels. Before publication, document whether labels were independently collected and whether notes were normalized later.",
+  "researcher_confirmation_required": true,
+  "rows": 55
+}

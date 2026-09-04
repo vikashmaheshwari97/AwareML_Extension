@@ -1,0 +1,146 @@
+{
+  "artifact": "recommender_multiobjective_validation_v1",
+  "baseline_conclusion": {
+    "best_simple_baseline": "energy_only",
+    "best_simple_normalized_regret": 0.15919610348462046,
+    "best_simple_top1_accuracy": 0.5531914893617021,
+    "interpretation": "ML Recommender V2 has lower normalized regret than the strongest simple baseline without sacrificing Top-1 accuracy.",
+    "ml_normalized_regret": 0.14993664303425427,
+    "ml_top1_accuracy": 0.574468085106383,
+    "normalized_regret_improvement_simple_minus_ml": 0.009259460450366186,
+    "question": "Does ML Recommender V2 outperform simple selection rules?",
+    "top1_delta_ml_minus_simple": 0.021276595744680882,
+    "verdict": "YES"
+  },
+  "baseline_methods": [
+    "ml_recommender_v2",
+    "historical_best_framework",
+    "historical_framework_mean",
+    "accuracy_only",
+    "runtime_only",
+    "energy_only",
+    "random_selection"
+  ],
+  "candidate_meta_model_count": 7,
+  "candidate_meta_models": [
+    "ExtraTrees",
+    "FrameworkMean",
+    "HistGradientBoosting",
+    "RandomForest",
+    "Ridge",
+    "XGBoost",
+    "kNN"
+  ],
+  "created_at_utc": "2026-09-03T08:54:57.334723+00:00",
+  "development_dataset_count": 47,
+  "development_protocol": "47-dataset leave-one-dataset-out validation",
+  "energy_co2_decision": {
+    "decision_code": "retain_semantics_avoid_double_counting",
+    "development_spearman_energy_co2": 0.9999999999999998,
+    "energy_vs_co2_mean_kendall_tau": 0.9787234042553189,
+    "energy_vs_co2_top1_change_rate": 0.02127659574468085,
+    "held_out_23_dataset_contents_used": false,
+    "high_correlation": true,
+    "high_correlation_threshold": 0.95,
+    "journal_decision": "Retain Energy and CO2 as distinct measurable and user-selectable objectives, but do not treat simultaneous Energy+CO2 weighting as independent evidence in the primary journal recommender claim. Report the sensitivity analysis and retain the double-counting warning.",
+    "rank_equivalent": true,
+    "rank_equivalent_rule": "top1 change <= 0.10 and mean Kendall tau >= 0.90"
+  },
+  "framework_count": 5,
+  "held_out_23_dataset_contents_used": false,
+  "input_artifacts": {
+    "oof_predictions": {
+      "path": "data/meta/snapshots/recommender_v2_oof_predictions.parquet",
+      "sha256": "0c0e2d85195b67cdbf5e283f5d6166a7848255c329d51fc3921a8879c0d2cc1b"
+    },
+    "recommender_manifest": {
+      "path": "data/meta/models/recommender_v2/manifest.json",
+      "sha256": "0a6d3af6058f006b02d43b4b0e918a63a38da20be9d7d609a71bb0e266ce392d"
+    },
+    "recommender_train": {
+      "path": "data/meta/snapshots/recommender_train_v2.parquet",
+      "sha256": "a302a4a63aa3d5c14781515f70d440d37d8ea5439a17923a5ab65d43780223e6"
+    }
+  },
+  "near_pareto": {
+    "dominance_rule": "j epsilon-dominates i iff j_k >= i_k - epsilon for all jointly available objectives and j_k > i_k + epsilon for at least one objective.",
+    "epsilon": 0.05,
+    "epsilon_zero_relation": "epsilon=0 reduces to ordinary Pareto nondominance.",
+    "journal_scope": [
+      "ML Recommender V2 / 3D Decision Space",
+      "observed post-run Decision Lab",
+      "journal paper/reporting"
+    ],
+    "legacy_column_note": "The recommender keeps pareto_efficient as a backward-compatible column alias, but from Phase 13 ranking outputs it denotes the same canonical epsilon-Pareto membership as near_pareto.",
+    "missing_objectives": "Dominance is evaluated only on objectives jointly available for the candidate pair; a pair with no common objective is not comparable.",
+    "nondominated_rule": "A candidate is epsilon-Pareto / near-Pareto when no other candidate epsilon-dominates it.",
+    "normalization": "Per candidate set and objective: clip to the 5th/95th percentile, scale to [0,1], and invert minimize objectives so higher is better.",
+    "normalization_id": "robust_quantile_05_95_all_higher_v1",
+    "space": "normalized all-higher-is-better objective space",
+    "spec_id": "epsilon_pareto_v1"
+  },
+  "phase": 13,
+  "primary_preference_scenarios": {
+    "accuracy_focus": {
+      "accuracy": 0.7,
+      "co2": 0.1,
+      "energy": 0.1,
+      "runtime": 0.1
+    },
+    "balanced": {
+      "accuracy": 0.25,
+      "co2": 0.25,
+      "energy": 0.25,
+      "runtime": 0.25
+    },
+    "speed_focus": {
+      "accuracy": 0.2,
+      "co2": 0.15,
+      "energy": 0.15,
+      "runtime": 0.5
+    },
+    "sustainability_focus": {
+      "accuracy": 0.2,
+      "co2": 0.35,
+      "energy": 0.35,
+      "runtime": 0.1
+    }
+  },
+  "release_status": "frozen",
+  "result_hashes": {
+    "baseline_comparison_detail.csv": "4db6e423808d8ed959c09fcab62c94d9ebc7e0a93fc59bd72e397b40e9a8c81b",
+    "baseline_comparison_table.csv": "6e7a1ff26de37c27c572a42caca29a7024fdef8b628dabcf59635d1daa8b968c",
+    "baseline_conclusion.json": "4b0f593f93755b350b7e4515c82f221e06eb6965340b92ec876656b0290aa04c",
+    "baseline_validation_metadata.json": "42b62718a83673b9b4e78e09fdbe27b8593dc8de441693d5538bda86f09cc180",
+    "energy_co2_decision.json": "43cd75a775a2a2bca3e6c1cb2b84b5e626f2b652d24758c755ec4d6f84245629",
+    "energy_co2_ranking_changes.csv": "e08c567a32272e7e1236b5e036f7530dcecd66f80dd2a6faa74a4ea9c614b570",
+    "energy_co2_sensitivity_detail.csv": "c7ffe0ca1745551e29cd0464fc43f37a49b659449a7668d5d62187c29d959cfe",
+    "energy_co2_sensitivity_report.csv": "a81c61b51a5d7b68760d492cd7a9ab008032c481e4d2f2c7ad4841d77317a106",
+    "near_pareto_specification.json": "1276c0e377f8b962f865995a6665e738cd864ab746246301ad61ed091c8d03f9",
+    "near_pareto_specification.md": "ad04ee04863ef091d21d8133bfc92d3fb15717d4388c1305c1294bc9eda3c766"
+  },
+  "selected_meta_models": {
+    "accuracy": "RandomForest",
+    "co2": "HistGradientBoosting",
+    "energy": "HistGradientBoosting",
+    "runtime": "XGBoost"
+  },
+  "source_code": {
+    "canonical_pareto_spec_code": {
+      "path": "awareml/engine/pareto_spec.py",
+      "sha256": "956af40038ca39c21d857e4bbe665270f142f710c3de5e8f6014f5bcde1ec2e5"
+    },
+    "phase13_validation_code": {
+      "path": "awareml/journal/recommender_validation.py",
+      "sha256": "20c160ad32029785da9061eb438a5704642f1ec914cb4a7d5663ff735782136d"
+    },
+    "post_run_pareto_code": {
+      "path": "awareml/engine/pareto.py",
+      "sha256": "65eb6b311aba7992a747c96aa34f529d7a7c99f785ef9d8b57d0e1c1dd07775d"
+    },
+    "recommender_ranking_code": {
+      "path": "awareml/recommender/v2_ranking.py",
+      "sha256": "01027decf8713128ba3cab11e87f7508bfc879745c4c246293af51239c464382"
+    }
+  }
+}

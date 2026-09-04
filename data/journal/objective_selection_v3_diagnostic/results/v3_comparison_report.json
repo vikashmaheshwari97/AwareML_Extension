@@ -1,0 +1,116 @@
+{
+  "adversarial_v3": {
+    "artifact": "objective_selection_v3_posthoc_diagnostic",
+    "cases": 14,
+    "evaluation_role": "posthoc_development_diagnostic_not_independent_test",
+    "over_selection_count": 0,
+    "over_selection_rate": 0.0,
+    "selector_id": "evidence_grounded_objective_selector_v3",
+    "status_accuracy": 1.0
+  },
+  "baseline_v1": {
+    "adversarial_taxonomy_counts": {
+      "over_selection": 14
+    },
+    "exact_match_rate": 0.14545454545454545,
+    "macro_f1": 0.6989329486044054,
+    "manifest_sha256": "74bd037c2162c17e32e61e2188b3bd88ccef5bdaf46000da851fc471a28cce72",
+    "micro_f1": 0.6974789915966386,
+    "micro_precision": 0.5496688741721855,
+    "micro_recall": 0.9540229885057471,
+    "paraphrase_consistency_rate": 0.74,
+    "release_status": "frozen"
+  },
+  "delta_v3_minus_v1": {
+    "exact_match_rate": 0.43636363636363634,
+    "macro_f1": -0.04530976019860822,
+    "micro_f1": -0.005749668288367871,
+    "micro_precision": 0.45033112582781454,
+    "micro_recall": -0.425287356321839
+  },
+  "engineering_targets": {
+    "exact_match_rate": 0.3,
+    "micro_f1": 0.75,
+    "note": "Engineering targets only; not universal publication thresholds.",
+    "paraphrase_consistency_rate": 0.85
+  },
+  "evaluation_role": "posthoc_development_diagnostic_not_independent_test",
+  "paraphrase_v3": {
+    "artifact": "objective_selection_v3_posthoc_diagnostic",
+    "base_exact_match_rate": 0.6,
+    "evaluation_role": "posthoc_development_diagnostic_not_independent_test",
+    "families": 10,
+    "paraphrase_evaluations": 50,
+    "paraphrase_exact_match_rate": 0.2,
+    "paraphrase_prediction_consistency_rate": 0.4,
+    "selector_id": "evidence_grounded_objective_selector_v3",
+    "set_change_rate": 0.6
+  },
+  "v3_posthoc": {
+    "artifact": "objective_selection_v3_posthoc_diagnostic",
+    "by_k_prime": {
+      "1": {
+        "exact_match_rate": 0.7586206896551724,
+        "mean_jaccard": 0.7586206896551724,
+        "n": 29
+      },
+      "2": {
+        "exact_match_rate": 0.3,
+        "mean_jaccard": 0.3,
+        "n": 20
+      },
+      "3": {
+        "exact_match_rate": 0.6666666666666666,
+        "mean_jaccard": 0.6666666666666666,
+        "n": 6
+      }
+    },
+    "exact_match_rate": 0.5818181818181818,
+    "interpretation": "posthoc_development_diagnostic_not_independent_test",
+    "macro_f1": 0.6536231884057971,
+    "mean_jaccard": 0.5818181818181818,
+    "micro_f1": 0.6917293233082707,
+    "micro_precision": 1.0,
+    "micro_recall": 0.5287356321839081,
+    "n": 55,
+    "per_objective": {
+      "Accuracy": {
+        "f1": 0.8,
+        "fn": 8,
+        "fp": 0,
+        "precision": 1.0,
+        "recall": 0.6666666666666666,
+        "tn": 31,
+        "tp": 16
+      },
+      "CO2": {
+        "f1": 0.6666666666666666,
+        "fn": 10,
+        "fp": 0,
+        "precision": 1.0,
+        "recall": 0.5,
+        "tn": 35,
+        "tp": 10
+      },
+      "Energy": {
+        "f1": 0.34782608695652173,
+        "fn": 15,
+        "fp": 0,
+        "precision": 1.0,
+        "recall": 0.21052631578947367,
+        "tn": 36,
+        "tp": 4
+      },
+      "Runtime": {
+        "f1": 0.8,
+        "fn": 8,
+        "fp": 0,
+        "precision": 1.0,
+        "recall": 0.6666666666666666,
+        "tn": 31,
+        "tp": 16
+      }
+    }
+  },
+  "warning": "V3 was motivated by inspection of the frozen Phase-12 v1 failure mode. Therefore improvements on these same 55 cases are development evidence, not an independent replacement for the frozen v1 journal result."
+}

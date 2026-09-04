@@ -1,0 +1,17 @@
+{
+  "dominance_rule": "j epsilon-dominates i iff j_k >= i_k - epsilon for all jointly available objectives and j_k > i_k + epsilon for at least one objective.",
+  "epsilon": 0.05,
+  "epsilon_zero_relation": "epsilon=0 reduces to ordinary Pareto nondominance.",
+  "journal_scope": [
+    "ML Recommender V2 / 3D Decision Space",
+    "observed post-run Decision Lab",
+    "journal paper/reporting"
+  ],
+  "legacy_column_note": "The recommender keeps pareto_efficient as a backward-compatible column alias, but from Phase 13 ranking outputs it denotes the same canonical epsilon-Pareto membership as near_pareto.",
+  "missing_objectives": "Dominance is evaluated only on objectives jointly available for the candidate pair; a pair with no common objective is not comparable.",
+  "nondominated_rule": "A candidate is epsilon-Pareto / near-Pareto when no other candidate epsilon-dominates it.",
+  "normalization": "Per candidate set and objective: clip to the 5th/95th percentile, scale to [0,1], and invert minimize objectives so higher is better.",
+  "normalization_id": "robust_quantile_05_95_all_higher_v1",
+  "space": "normalized all-higher-is-better objective space",
+  "spec_id": "epsilon_pareto_v1"
+}

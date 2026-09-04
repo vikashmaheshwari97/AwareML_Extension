@@ -1,0 +1,66 @@
+{
+  "artifact": "objective_selection_v31_posthoc_development_diagnostic",
+  "by_k_prime": {
+    "1": {
+      "exact_match_rate": 1.0,
+      "mean_jaccard": 1.0,
+      "n": 29
+    },
+    "2": {
+      "exact_match_rate": 1.0,
+      "mean_jaccard": 1.0,
+      "n": 20
+    },
+    "3": {
+      "exact_match_rate": 1.0,
+      "mean_jaccard": 1.0,
+      "n": 6
+    }
+  },
+  "exact_match_rate": 1.0,
+  "interpretation": "posthoc_development_diagnostic_not_independent_test",
+  "macro_f1": 1.0,
+  "mean_jaccard": 1.0,
+  "micro_f1": 1.0,
+  "micro_precision": 1.0,
+  "micro_recall": 1.0,
+  "n": 55,
+  "per_objective": {
+    "Accuracy": {
+      "f1": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "tn": 31,
+      "tp": 24
+    },
+    "CO2": {
+      "f1": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "tn": 35,
+      "tp": 20
+    },
+    "Energy": {
+      "f1": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "tn": 36,
+      "tp": 19
+    },
+    "Runtime": {
+      "f1": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "tn": 31,
+      "tp": 24
+    }
+  }
+}

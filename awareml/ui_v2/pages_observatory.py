@@ -13,6 +13,7 @@ from .plots import (
 )
 from .state import result_dicts
 from .page_utils import phase_pills, plot, results_frame, fmt
+from .pre14_usability import prepare_drift_display
 
 
 
@@ -55,7 +56,7 @@ def streaming_observatory_page():
     with cols[0]:
         st.metric("Best final accuracy", f"{best_framework} · {fmt(best_accuracy, 3)}")
     with cols[1]:
-        st.metric("Total detected drifts", str(int(all_drifts)))
+        st.metric("Framework-level drift alerts", str(int(all_drifts)))
     with cols[2]:
         st.metric("Mean drift recovery", fmt(mean_recovery, 2))
     with cols[3]:
@@ -76,26 +77,28 @@ def streaming_observatory_page():
         unsafe_allow_html=True,
     )
 
+    plot_results = prepare_drift_display(results)
+
     section(
         "Temporal performance",
         "Research-grade temporal views with synchronized event markers and extra plot padding to avoid clipping.",
     )
     c1, c2 = st.columns(2)
     with c1:
-        plot(temporal_metric_figure(results, "accuracy", "Prequential accuracy", "Accuracy"), "obs_accuracy")
+        plot(temporal_metric_figure(plot_results, "accuracy", "Prequential accuracy", "Accuracy"), "obs_accuracy")
     with c2:
-        plot(temporal_metric_figure(results, "f1_macro", "Macro-F1", "Macro-F1"), "obs_f1")
+        plot(temporal_metric_figure(plot_results, "f1_macro", "Macro-F1", "Macro-F1"), "obs_f1")
 
     c3, c4 = st.columns(2)
     with c3:
         plot(
-            temporal_metric_figure(results, "rolling_accuracy", "Rolling accuracy", "Rolling accuracy"),
+            temporal_metric_figure(plot_results, "rolling_accuracy", "Rolling accuracy", "Rolling accuracy"),
             "obs_rolling_accuracy",
         )
     with c4:
         plot(
             temporal_metric_figure(
-                results, "mean_prediction_latency_ms", "Prediction latency", "Milliseconds"
+                plot_results, "mean_prediction_latency_ms", "Prediction latency", "Milliseconds"
             ),
             "obs_latency",
         )

@@ -144,6 +144,7 @@ class GoalParser:
         # Wrong model / wrong digest / wrong Ollama version intentionally
         # propagates as JournalModelLockError. Journal evaluation must fail.
         selection = self._selector().select(text)
+        selection_audit = dict(getattr(self._selector(), "last_audit", {}) or {})
 
         if selection.status == "malformed":
             if not allow_malformed_fallback:
@@ -212,4 +213,6 @@ class GoalParser:
             "weights": interpretation.primary_weights.normalized_dict(),
             "fallback_used": False,
             "warnings": warnings,
+            "selector_id": selection_audit.get("selector_id"),
+            "evidence_audit": selection_audit,
         }
