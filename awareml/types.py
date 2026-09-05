@@ -56,6 +56,14 @@ class RunConfig:
     # Prediction-quality safeguard used when interpreting fairness gaps.
     prediction_near_constant_threshold: float = 0.95
 
+    # Phase 14 fairness-calibration and sustainability protocol controls.
+    fairness_calibration_bins: int = 10
+    sustainability_region: Optional[str] = None
+    sustainability_warmup_sec: float = 0.0
+    sustainability_warmup_samples: int = 0
+    sustainability_repetition_id: int = 1
+    sustainability_repetitions_planned: int = 1
+
 
 @dataclass
 class MetricPoint:
@@ -72,6 +80,8 @@ class MetricPoint:
     equalized_odds_gap: Optional[float] = None
     predictive_parity_diff: Optional[float] = None
     error_rate_gap: Optional[float] = None
+    group_brier_score_gap: Optional[float] = None
+    group_ece_gap: Optional[float] = None
     worst_group_accuracy: Optional[float] = None
     worst_group_macro_f1: Optional[float] = None
 

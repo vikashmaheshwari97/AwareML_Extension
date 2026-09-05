@@ -22,7 +22,7 @@ def advanced_labs_page():
         "SPECIALIST RESEARCH WORKSPACES",
         "Advanced Research Labs",
         (
-            "Phase 9.5 upgrades the specialist views while keeping the original paper-baseline recommender and protocol available for historical comparison."
+            "Specialist research workspaces integrate the current journal-extension analyses while keeping the original paper-baseline recommender and protocol available for historical comparison."
         ),
         pills=phase_pills(),
     )

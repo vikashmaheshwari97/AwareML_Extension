@@ -274,6 +274,10 @@ class FairnessSnapshotRecord:
     equalized_odds_gap: Optional[float] = None
     predictive_parity_diff: Optional[float] = None
     error_rate_gap: Optional[float] = None
+    calibration_status: str = "unavailable"
+    group_brier_score_gap: Optional[float] = None
+    group_ece_gap: Optional[float] = None
+    calibration_reason: Optional[str] = None
     worst_group_accuracy: Optional[float] = None
     worst_group_macro_f1: Optional[float] = None
     group_support: Dict[str, int] = field(default_factory=dict)
@@ -285,12 +289,23 @@ class FairnessSnapshotRecord:
             raise ValueError("Invalid fairness status.")
         metrics = [
             "dp_diff", "eo_diff", "equalized_odds_gap", "predictive_parity_diff",
-            "error_rate_gap", "worst_group_accuracy", "worst_group_macro_f1",
+            "error_rate_gap", "group_brier_score_gap", "group_ece_gap",
+            "worst_group_accuracy", "worst_group_macro_f1",
         ]
         for name in metrics:
             _require_probability(name, getattr(self, name))
         if self.status == "insufficient_support" and any(getattr(self, n) is not None for n in metrics[:5]):
-            raise ValueError("insufficient_support fairness snapshots must use None for disparity metrics.")
+            raise ValueError("insufficient_support fairness snapshots must use None for hard-label disparity metrics.")
+        if self.calibration_status not in {
+            "ok", "unavailable", "insufficient_support", "not_requested", "failed"
+        }:
+            raise ValueError("Invalid calibration fairness status.")
+        if self.calibration_status != "ok" and (
+            self.group_brier_score_gap is not None or self.group_ece_gap is not None
+        ):
+            raise ValueError(
+                "Unavailable/insufficient calibration fairness must keep Brier/ECE gaps as None."
+            )
         return self
 
     def to_dict(self) -> Dict[str, Any]:

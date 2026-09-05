@@ -29,6 +29,10 @@ from .study_labs_v3 import (
     information_seeking_research_page,
     trust_calibration_research_page,
 )
+from .phase14_integrated_sections import (
+    render_phase14_fairness_details,
+    render_phase14_sustainability_details,
+)
 
 
 FAIRNESS_OPTIONS = {
@@ -46,6 +50,8 @@ FAIRNESS_POINT_KEYS = {
     "Equalized odds": "equalized_odds_gap",
     "Predictive parity": "predictive_parity_diff",
     "Error-rate parity": "error_rate_gap",
+    "Group Brier-score gap": "group_brier_score_gap",
+    "Group ECE gap": "group_ece_gap",
 }
 
 
@@ -387,7 +393,16 @@ def fairness_v2_page():
     rows = []
     for r in results:
         f = r.get("fairness") or {}
-        row = {"Framework": r.get("framework"), "Status": f.get("status"), "Window N": f.get("window_n")}
+        row = {
+            "Framework": r.get("framework"),
+            "Status": f.get("status"),
+            "Window N": f.get("window_n"),
+            "Calibration status": f.get("calibration_status") or "unavailable",
+            "Probability coverage": f.get("probability_coverage"),
+            "Group Brier-score gap": f.get("group_brier_score_gap"),
+            "Group ECE gap": f.get("group_ece_gap"),
+            "Calibration reason": f.get("calibration_reason"),
+        }
         for label, key in metric_map.items():
             row[label] = f.get(key)
         rows.append(row)
@@ -412,17 +427,56 @@ def fairness_v2_page():
         for idx in fair.index
     ]
 
+    # Phase 14: preserve every raw fairness value, but do not declare a
+    # constant/near-constant predictor the fairness winner merely because
+    # some parity gaps collapse to zero.
+    prediction_status_by_framework = {
+        r.get("framework"): (
+            (r.get("fairness") or {}).get("prediction_behavior_status")
+            or "unavailable"
+        )
+        for r in results
+    }
+    fair["Prediction behavior"] = fair["Framework"].map(
+        prediction_status_by_framework
+    ).fillna("unavailable")
+    fair["Fairness winner eligibility"] = fair["Prediction behavior"].map(
+        lambda status: (
+            "EXCLUDED · degenerate predictions"
+            if str(status) in {"constant", "near_constant"}
+            else "ELIGIBLE"
+        )
+    )
+
+    eligible_fair = fair[
+        (~fair["Prediction behavior"].isin(["constant", "near_constant"]))
+        & fair["Comparable mean gap"].notna()
+    ].copy()
+
     cards = st.columns(4)
     best = (
-        fair.sort_values("Comparable mean gap").iloc[0]
-        if fair["Comparable mean gap"].notna().any()
+        eligible_fair.sort_values("Comparable mean gap").iloc[0]
+        if not eligible_fair.empty
         else None
     )
     cards[0].metric(
-        "Lowest comparable mean disparity",
+        "Lowest interpretable mean disparity",
         best["Framework"] if best is not None else "N/A",
         fmt(best["Comparable mean gap"], 3) if best is not None else None,
     )
+
+    excluded_frameworks = fair.loc[
+        fair["Prediction behavior"].isin(["constant", "near_constant"]),
+        "Framework",
+    ].astype(str).tolist()
+    if excluded_frameworks:
+        st.warning(
+            "Fairness-winner claim excludes degenerate/near-degenerate "
+            "predictors: {}. Their raw fairness values remain visible for "
+            "auditability and are not changed.".format(
+                ", ".join(excluded_frameworks)
+            )
+        )
     cards[1].metric("Sensitive attribute", str(state.get("sensitive")))
     cards[2].metric("Positive label", str(state.get("positive_label")))
     cards[3].metric(
@@ -479,6 +533,8 @@ def fairness_v2_page():
         "Composite fairness score ↑",
         "Metric coverage",
         "Unavailable criteria",
+        "Prediction behavior",
+        "Fairness winner eligibility",
         "Status",
         "Window N",
     ]].copy()
@@ -501,6 +557,9 @@ def fairness_v2_page():
         )
     )
     st.dataframe(fairness_display, use_container_width=True, hide_index=True)
+
+    render_phase14_fairness_details(results)
+
     if not common_labels:
         st.warning(
             "No fairness criterion is available for every framework, so a comparable "
@@ -725,8 +784,24 @@ def sustainability_v2_page():
             "CPU": s.get("cpu"),
             "GPU": s.get("gpu"),
             "RAM GB": s.get("ram_gb"),
+            "Physical CPUs": s.get("physical_cpus"),
+            "Country": s.get("country_iso"),
+            "Region": s.get("region"),
+            "Carbon intensity gCO2/kWh": s.get(
+                "carbon_intensity_g_per_kwh"
+            ),
+            "Warm-up s": s.get("warmup_sec"),
+            "Repetition": s.get("repetition_id"),
+            "Repetitions planned": s.get("repetitions_planned"),
+            "Failure reason": s.get("measurement_failure_reason"),
         })
     sdf = pd.DataFrame(rows)
+
+    st.info(
+        "Phase 14 records CPU/GPU/RAM, country/region, CodeCarbon version, "
+        "carbon intensity, measurement duration, warm-up, repetition metadata "
+        "and failure reasons. Missing measurements remain N/A rather than zero."
+    )
 
     cards = st.columns(4)
     cards[0].metric("Energy measured", f"{int(sdf['Energy kWh'].notna().sum())}/{len(sdf)}")
@@ -788,6 +863,8 @@ def sustainability_v2_page():
         fig.update_layout(margin=dict(l=62, r=50, t=54, b=60))
         plot(fig, "r95_sustain_energy_co2")
         st.caption("ρ≈1 means energy and CO₂ rank frameworks almost identically; weighting both heavily can double-count the same efficiency signal.")
+
+    render_phase14_sustainability_details(results)
 
 
 def trust_calibration_v2_page():

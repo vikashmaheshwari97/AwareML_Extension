@@ -1,0 +1,84 @@
+{
+  "protocol_id": "recommender_final_test_protocol_v1",
+  "status": "predeclared_pre_phase14",
+  "held_out_dataset_count": 23,
+  "frameworks": [
+    "AutoStreamML",
+    "AutoClass",
+    "EvoAutoML",
+    "OAML",
+    "ChaCha"
+  ],
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "expected_framework_runs": 345,
+  "run_protocol": {
+    "evaluation": "prequential_test_then_train",
+    "max_samples": 30000,
+    "window_size": 1000,
+    "time_budget_sec": 60,
+    "sustainability_tracking": true,
+    "note": "Match frozen V2 development protocol; do not use the 5k interactive demo protocol for the final external test."
+  },
+  "preference_profiles": {
+    "balanced": {
+      "accuracy": 0.25,
+      "runtime": 0.25,
+      "energy": 0.25,
+      "co2": 0.25
+    },
+    "accuracy_focused": {
+      "accuracy": 0.7,
+      "runtime": 0.1,
+      "energy": 0.1,
+      "co2": 0.1
+    },
+    "runtime_focused": {
+      "accuracy": 0.1,
+      "runtime": 0.7,
+      "energy": 0.1,
+      "co2": 0.1
+    },
+    "energy_focused": {
+      "accuracy": 0.1,
+      "runtime": 0.1,
+      "energy": 0.7,
+      "co2": 0.1
+    },
+    "co2_focused": {
+      "accuracy": 0.1,
+      "runtime": 0.1,
+      "energy": 0.1,
+      "co2": 0.7
+    },
+    "sustainability": {
+      "accuracy": 0.2,
+      "runtime": 0.1,
+      "energy": 0.35,
+      "co2": 0.35
+    }
+  },
+  "seed_aggregation": "mean of seeds 42/43/44 per held-out dataset/framework before ground-truth ranking",
+  "ground_truth_definition": "(held-out dataset, predeclared preference profile) -> observed ranking of five frameworks from 3-seed aggregated outcomes under the frozen V2 ranking rule",
+  "prediction_definition": "held-out dataset meta-profile -> frozen V2 predictions -> same frozen ranking rule",
+  "metrics": [
+    "Top-1 accuracy",
+    "Top-3 accuracy",
+    "normalized regret",
+    "Spearman ranking correlation",
+    "accuracy MAE/RMSE",
+    "runtime MAE/RMSE",
+    "energy MAE/RMSE",
+    "CO2 MAE/RMSE",
+    "empirical 90% interval coverage"
+  ],
+  "research_integrity_rules": [
+    "Do not inspect held-out outcomes before the protocol is frozen.",
+    "Do not modify or retrain V2 after viewing held-out results.",
+    "Use all three seeds for primary ground truth; do not cherry-pick per-metric seeds.",
+    "Report the held-out result even if it is worse than development validation."
+  ]
+}

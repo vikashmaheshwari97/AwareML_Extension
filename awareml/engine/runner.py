@@ -78,6 +78,8 @@ def _temporal_fairness_summary(points: list[MetricPoint]) -> dict[str, Any]:
         "equalized_odds_gap",
         "predictive_parity_diff",
         "error_rate_gap",
+        "group_brier_score_gap",
+        "group_ece_gap",
     ]
     out: dict[str, Any] = {"n_windows": len(points), "metrics": {}}
     for field in fields:
@@ -185,6 +187,8 @@ def _run_one(
         window_size=cfg.window_size,
         positive_label=cfg.positive_label,
         min_group_n=cfg.fairness_min_group_n,
+        calibration_bins=cfg.fairness_calibration_bins,
+        degenerate_prediction_threshold=cfg.prediction_near_constant_threshold,
     )
     detector = ADWIN() if ADWIN is not None else None
     points: list[MetricPoint] = []
@@ -200,6 +204,11 @@ def _run_one(
         enabled=cfg.track_sustainability,
         country_iso=settings.country_iso,
         project_name=f"AwareML-{framework.name}",
+        region=cfg.sustainability_region,
+        warmup_sec=cfg.sustainability_warmup_sec,
+        warmup_samples=cfg.sustainability_warmup_samples,
+        repetition_id=cfg.sustainability_repetition_id,
+        repetitions_planned=cfg.sustainability_repetitions_planned,
     ).start()
     started = time.perf_counter()
     processed = 0
@@ -232,6 +241,8 @@ def _run_one(
             equalized_odds_gap=fair.get("equalized_odds_gap"),
             predictive_parity_diff=fair.get("predictive_parity_diff"),
             error_rate_gap=fair.get("error_rate_gap"),
+            group_brier_score_gap=fair.get("group_brier_score_gap"),
+            group_ece_gap=fair.get("group_ece_gap"),
             worst_group_accuracy=fair.get("worst_group_accuracy"),
             worst_group_macro_f1=fair.get("worst_group_macro_f1"),
         )
@@ -272,6 +283,15 @@ def _run_one(
             equalized_odds_gap=fair.get("equalized_odds_gap"),
             predictive_parity_diff=fair.get("predictive_parity_diff"),
             error_rate_gap=fair.get("error_rate_gap"),
+            calibration_status={
+                "insufficient_group_support": "insufficient_support"
+            }.get(
+                str(fair.get("calibration_status") or "unavailable"),
+                str(fair.get("calibration_status") or "unavailable"),
+            ),
+            group_brier_score_gap=fair.get("group_brier_score_gap"),
+            group_ece_gap=fair.get("group_ece_gap"),
+            calibration_reason=fair.get("calibration_reason"),
             worst_group_accuracy=fair.get("worst_group_accuracy"),
             worst_group_macro_f1=fair.get("worst_group_macro_f1"),
             group_support={str(k): int(v) for k, v in (fair.get("groups") or {}).items()},
@@ -307,6 +327,19 @@ def _run_one(
             pred = framework.predict_one(x)
             latency.update((time.perf_counter_ns() - t_pred) / 1_000_000.0)
             prediction_diagnostics.update(pred)
+
+            # Phase 14: probability evidence is requested only for a fairness audit.
+            # It is measured as instrumentation overhead and never synthesized.
+            y_proba = None
+            if cfg.sensitive_attribute:
+                t_probability = time.perf_counter()
+                try:
+                    y_proba = framework.predict_proba_one(x)
+                except Exception:
+                    y_proba = None
+                instrumentation_overhead += max(
+                    0.0, time.perf_counter() - t_probability
+                )
 
             # Preserve the rolling baseline before observing the current label;
             # this is the reference used for post-drift degradation/recovery.
@@ -348,7 +381,12 @@ def _run_one(
                 )
 
             if cfg.sensitive_attribute and cfg.sensitive_attribute in row.index:
-                fairness.update(y, pred, row[cfg.sensitive_attribute])
+                fairness.update(
+                    y,
+                    pred,
+                    row[cfg.sensitive_attribute],
+                    y_proba=y_proba,
+                )
 
             framework.learn_one(x, y)
             processed += 1
@@ -543,6 +581,7 @@ def _run_one(
             "measured": "measured",
             "not_measured": "not_measured",
             "measurement_incomplete": "partial",
+            "measurement_failed": "failed",
             "failed": "failed",
         }
         sustain_status = status_map.get(str(sustainability.get("status")), "partial")
@@ -553,14 +592,29 @@ def _run_one(
             energy_kwh=sustainability.get("energy_kwh") if sustain_status != "not_measured" else None,
             co2_kg=sustainability.get("co2_kg") if sustain_status != "not_measured" else None,
             country_iso=sustainability.get("country_iso"),
+            carbon_intensity_g_per_kwh=sustainability.get(
+                "carbon_intensity_g_per_kwh"
+            ),
             backend=sustainability.get("measurement_backend"),
             hardware={
                 "cpu": sustainability.get("cpu"),
+                "physical_cpus": sustainability.get("physical_cpus"),
                 "logical_cpus": sustainability.get("logical_cpus"),
                 "ram_gb": sustainability.get("ram_gb"),
                 "gpu": sustainability.get("gpu"),
                 "python": sustainability.get("python"),
                 "codecarbon_version": sustainability.get("codecarbon_version"),
+                "region": sustainability.get("region"),
+                "warmup_sec": sustainability.get("warmup_sec"),
+                "warmup_samples": sustainability.get("warmup_samples"),
+                "repetition_id": sustainability.get("repetition_id"),
+                "repetitions_planned": sustainability.get("repetitions_planned"),
+                "measurement_failure_reason": sustainability.get(
+                    "measurement_failure_reason"
+                ),
+                "carbon_intensity_source": sustainability.get(
+                    "carbon_intensity_source"
+                ),
             },
         ))
 
@@ -609,6 +663,16 @@ def run_benchmark(
         raise ValueError("xai_method must be one of: auto, shap, lime, permutation.")
     if int(config.xai_max_rows) < 30:
         raise ValueError("xai_max_rows must be at least 30.")
+    if int(config.fairness_calibration_bins) < 2:
+        raise ValueError("fairness_calibration_bins must be at least 2.")
+    if float(config.sustainability_warmup_sec) < 0:
+        raise ValueError("sustainability_warmup_sec must be >= 0.")
+    if int(config.sustainability_repetition_id) < 1:
+        raise ValueError("sustainability_repetition_id must be >= 1.")
+    if int(config.sustainability_repetitions_planned) < int(config.sustainability_repetition_id):
+        raise ValueError(
+            "sustainability_repetitions_planned cannot be smaller than repetition_id."
+        )
     if float(config.xai_replay_warning_threshold) < 0:
         raise ValueError("xai_replay_warning_threshold must be >= 0.")
     if not 0.5 <= float(config.prediction_near_constant_threshold) <= 1.0:

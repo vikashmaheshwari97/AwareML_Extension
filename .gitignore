@@ -56,3 +56,16 @@ PRE_PHASE14_HOTFIX_README.md
 
 # Local installer / hotfix / backup archive
 local_artifacts/
+
+# Local development backups and hotfix artifacts
+/.phase14_*_backup/
+/.pre14_three_path_backup/
+
+# Local Phase 14 installer / backup artifacts
+/.phase14_*_backup/
+/.pre14_three_path_backup/
+/payload/
+/phase14_payload/
+/three_path_payload/
+/APPLY_PHASE14_*.py
+/README_PHASE14_*.txt

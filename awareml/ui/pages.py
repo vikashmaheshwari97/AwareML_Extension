@@ -26,6 +26,7 @@ from awareml.recommender.evaluation import grouped_benchmark
 from awareml.studies import StudyStore, TrustCalibrationStudy, classify_follow_up
 from awareml.studies.information_seeking import THINK_ALOUD_PROMPTS
 from awareml.types import ObjectiveWeights, RunConfig
+from awareml.analysis.repeatability_registry import canonical_dataframe_sha256
 from .theme import hero
 
 
@@ -235,6 +236,8 @@ def run_studio_page():
                 _state()["dataset_name"] = "Synthetic drift"
 
         df = _state().get("dataset")
+        if isinstance(df, pd.DataFrame):
+            _state()["dataset_content_sha256"] = canonical_dataframe_sha256(df)
         if df is not None:
             target = st.selectbox("Target", list(df.columns), index=max(0, len(df.columns)-1), key="run_target")
             sens_options = ["None"] + [c for c in df.columns if c != target]
@@ -260,8 +263,80 @@ def run_studio_page():
             else:
                 _state()["sensitive_feature_policy"] = "audit_only"
             classes = df[target].dropna().unique().tolist()
-            positive_label = st.selectbox("Positive label", classes, index=1 if len(classes) > 1 else 0, key="run_positive") if classes else 1
+
+            # Research-safe positive-label default. The Dutch Census demo
+            # profile declares occupation_binary=1 as the positive outcome.
+            dataset_name = str(_state().get("dataset_name") or "")
+            preferred_positive = None
+
+            if (
+                Path(dataset_name).name.lower()
+                == "dutch_census_stream_awareml.csv"
+                and target == "occupation_binary"
+            ):
+                preferred_positive = next(
+                    (
+                        value
+                        for value in classes
+                        if str(value) == "1"
+                    ),
+                    None,
+                )
+
+            if preferred_positive is None:
+                preferred_positive = next(
+                    (
+                        value
+                        for value in classes
+                        if value == 1 or str(value) == "1"
+                    ),
+                    classes[-1] if classes else 1,
+                )
+
+            profile_key = "{}|{}".format(
+                Path(dataset_name).name.lower(),
+                target,
+            )
+
+            if (
+                st.session_state.get("_awareml_positive_profile_key")
+                != profile_key
+            ):
+                st.session_state["_awareml_positive_profile_key"] = profile_key
+                st.session_state["run_positive"] = preferred_positive
+            elif (
+                classes
+                and st.session_state.get("run_positive") not in classes
+            ):
+                st.session_state["run_positive"] = preferred_positive
+
+            default_positive_index = (
+                classes.index(preferred_positive)
+                if classes and preferred_positive in classes
+                else 0
+            )
+
+            positive_label = (
+                st.selectbox(
+                    "Positive label",
+                    classes,
+                    index=default_positive_index,
+                    key="run_positive",
+                )
+                if classes
+                else 1
+            )
+
             _state()["positive_label"] = positive_label
+
+            if (
+                Path(dataset_name).name.lower()
+                == "dutch_census_stream_awareml.csv"
+                and target == "occupation_binary"
+            ):
+                st.caption(
+                    "Dutch Census demo profile: positive label = 1."
+                )
             p = profile_dataset(df, target, _state().get("dataset_name") or "dataset")
             st.caption(f"{p.n_samples:,} rows · {p.n_features} features · {p.n_classes} classes · missing {p.missing_fraction:.2%}")
 

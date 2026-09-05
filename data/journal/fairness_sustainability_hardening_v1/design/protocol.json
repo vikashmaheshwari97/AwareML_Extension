@@ -1,0 +1,65 @@
+{
+  "phase": "14",
+  "title": "Fairness + Sustainability Hardening",
+  "status": "final_freeze_protocol",
+  "fairness": {
+    "existing_metrics_retained": [
+      "dp_diff",
+      "equal_opportunity_diff",
+      "equalized_odds_gap",
+      "predictive_parity_diff",
+      "error_rate_gap",
+      "worst_group_accuracy",
+      "worst_group_macro_f1"
+    ],
+    "calibration_metrics": [
+      "group_brier_score_gap",
+      "group_ece_gap"
+    ],
+    "calibration_bins": 10,
+    "unavailable_policy": "None/N/A; never substitute zero",
+    "degenerate_prediction_policy": "Preserve raw metrics; exclude constant/near-constant predictors from Fairness Lab winner claims."
+  },
+  "sustainability": {
+    "measurement_boundary": "stop before post-hoc explainability",
+    "carbon_intensity_unit": "gCO2/kWh",
+    "carbon_intensity_formula": "(co2_kg * 1000) / energy_kwh",
+    "failure_policy": "missing remains None; never substitute zero",
+    "measurement_concurrency": "exclusive"
+  },
+  "repeatability": {
+    "paper_ready_minimum_repetitions": 5,
+    "default_seeds": [
+      42,
+      43,
+      44,
+      45,
+      46
+    ],
+    "statistics": [
+      "runtime mean \u00b1 sample SD",
+      "energy mean \u00b1 sample SD",
+      "CO2 mean \u00b1 sample SD",
+      "median retained"
+    ],
+    "sd_ddof": 1,
+    "identity_fields": [
+      "dataset_content_sha256",
+      "target",
+      "sensitive_attribute",
+      "positive_label"
+    ],
+    "storage": "timestamped dataset/configuration-specific run directories registered in artifacts/phase14/repeatability/registry.json",
+    "overwrite_policy": "never overwrite previous run evidence"
+  },
+  "provenance": {
+    "per_run": [
+      "dataset_file_sha256",
+      "dataset_content_sha256",
+      "dataset_identity_key",
+      "source_file_name",
+      "source_size_bytes"
+    ]
+  },
+  "protected_research_boundary": "Phase 12, Phase 13, V3/V3.1 and frozen ML Recommender V2 artifacts are not modified."
+}
