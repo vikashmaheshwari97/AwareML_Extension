@@ -94,7 +94,7 @@ def test_temporal_drift_and_refit_annotations():
     fig = temporal_metric_figure(results, "accuracy", "Accuracy", "Accuracy")
     names = [getattr(trace, "name", "") for trace in fig.data]
     assert "Drift" in names
-    assert "Refit / retrain" in names
+    assert "Explicit adaptation / refit" in names
 
 
 def test_dutch_demo_dataset_has_no_target_leakage_column():

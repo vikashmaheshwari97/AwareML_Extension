@@ -264,7 +264,7 @@ def decision_space_page():
     with cols[0]:
         st.metric("Pre-run recommended framework", str(top["framework"]), "Predicted rank #1")
     with cols[1]:
-        st.metric("Normalized preference utility", fmt(top["utility"], 4))
+        st.metric("Pre-run preference utility", fmt(top["utility"], 4))
     with cols[2]:
         st.metric("{} predicted accuracy".format(selected), fmt(selected_row["accuracy"], 4))
     with cols[3]:
@@ -374,7 +374,7 @@ def run_studio_v2_page():
             with cols[2]:
                 st.metric("Predicted runtime", fmt(top["runtime"], 3, " s"))
             with cols[3]:
-                st.metric("Normalized preference utility", fmt(top["utility"], 4))
+                st.metric("Pre-run preference utility", fmt(top["utility"], 4))
 
     st.markdown(
         """
