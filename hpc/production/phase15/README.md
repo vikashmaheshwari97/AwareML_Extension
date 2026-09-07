@@ -8,7 +8,7 @@ sbatch hpc/production/phase15/setup_phase15_ollama.sbatch
 bash hpc/production/phase15/submit_phase15_campaign.sh \
   --campaign-id phase15_llama3_8b_final_v1 \
   --concurrency 4 \
-  --gpu-gres gpu:a100-40g:1
+  --gpu-gres gpu:h200-141g:1
 ```
 
 Resume:

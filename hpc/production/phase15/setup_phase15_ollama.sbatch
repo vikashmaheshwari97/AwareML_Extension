@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #SBATCH --job-name=p15-ollama-setup
 #SBATCH --partition=gpu
-#SBATCH --gres=gpu:a100-40g:1
+#SBATCH --gres=gpu:h200-141g:1
 #SBATCH --time=00:45:00
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=16G
@@ -25,6 +25,8 @@ resolve_root() {
 
 ROOT="$(resolve_root)"
 cd "$ROOT"
+
+export PYTHONPATH="$ROOT${PYTHONPATH:+:$PYTHONPATH}"
 
 PY="${PHASE15_PYTHON:-$HOME/.conda/envs/awareml-main/bin/python}"
 if [[ ! -x "$PY" ]]; then

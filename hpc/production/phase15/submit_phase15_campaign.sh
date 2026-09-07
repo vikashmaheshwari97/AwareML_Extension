@@ -3,7 +3,7 @@ set -euo pipefail
 
 CAMPAIGN_ID=""
 CONCURRENCY="${PHASE15_CONCURRENCY:-4}"
-GPU_GRES="${PHASE15_GPU_GRES:-gpu:a100-40g:1}"
+GPU_GRES="${PHASE15_GPU_GRES:-gpu:h200-141g:1}"
 TIME_LIMIT="${PHASE15_TIME_LIMIT:-01:00:00}"
 MEMORY="${PHASE15_MEMORY:-16G}"
 CPUS="${PHASE15_CPUS:-4}"
@@ -58,6 +58,8 @@ resolve_root() {
 
 ROOT="$(resolve_root)"
 cd "$ROOT"
+
+export PYTHONPATH="$ROOT${PYTHONPATH:+:$PYTHONPATH}"
 
 PY="${PHASE15_PYTHON:-$HOME/.conda/envs/awareml-main/bin/python}"
 if [[ ! -x "$PY" ]]; then

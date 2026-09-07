@@ -63,7 +63,7 @@ def test_slurm_array_job_is_gpu_and_24_cases():
 
     assert "#SBATCH --partition=gpu" in text
     assert "#SBATCH --array=0-23%4" in text
-    assert "#SBATCH --gres=gpu:a100-40g:1" in text
+    assert "#SBATCH --gres=gpu:h200-141g:1" in text
     assert "--strict-runtime" in text
     assert "SLURM_ARRAY_TASK_ID" in text
 

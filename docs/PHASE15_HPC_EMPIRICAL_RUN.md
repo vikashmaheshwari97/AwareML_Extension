@@ -122,13 +122,13 @@ The setup job must pass the exact Ollama version and model-digest lock.
 
 ### 4. Submit final 24-case campaign
 
-Default A100-40G, four concurrent cases:
+Default H200-141G, four concurrent cases:
 
 ```bash
 bash hpc/production/phase15/submit_phase15_campaign.sh \
   --campaign-id phase15_llama3_8b_final_v1 \
   --concurrency 4 \
-  --gpu-gres gpu:a100-40g:1
+  --gpu-gres gpu:h200-141g:1
 ```
 
 If A100 queue pressure is high, reduce concurrency without changing the

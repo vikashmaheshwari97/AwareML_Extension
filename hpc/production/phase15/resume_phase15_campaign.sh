@@ -25,6 +25,8 @@ resolve_root() {
 ROOT="$(resolve_root)"
 cd "$ROOT"
 
+export PYTHONPATH="$ROOT${PYTHONPATH:+:$PYTHONPATH}"
+
 PY="${PHASE15_PYTHON:-$HOME/.conda/envs/awareml-main/bin/python}"
 if [[ ! -x "$PY" ]]; then
     PY="$(command -v python3 || true)"
@@ -39,7 +41,7 @@ if [[ -z "$ARRAY" ]]; then
     exit 0
 fi
 
-GPU_GRES="${PHASE15_GPU_GRES:-gpu:a100-40g:1}"
+GPU_GRES="${PHASE15_GPU_GRES:-gpu:h200-141g:1}"
 ACCOUNT_ARGS=()
 if [[ -n "${PHASE15_SLURM_ACCOUNT:-}" ]]; then
     ACCOUNT_ARGS=(--account "$PHASE15_SLURM_ACCOUNT")

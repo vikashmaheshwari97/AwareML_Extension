@@ -38,7 +38,7 @@
     "array_tasks": 24,
     "default_array_concurrency": 4,
     "default_partition": "gpu",
-    "default_gpu_gres": "gpu:a100-40g:1",
+    "default_gpu_gres": "gpu:h200-141g:1",
     "default_cpus_per_task": 4,
     "default_memory": "16G",
     "default_time_limit": "01:00:00"
