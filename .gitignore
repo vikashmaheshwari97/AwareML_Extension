@@ -116,3 +116,9 @@ local_artifacts/
 # Phase-15 Live Probe finalization artifacts
 /.phase15_liveprobe_finalization_backup/
 /phase15_liveprobe_final_payload/
+
+# Phase-15 HPC empirical runner artifacts
+/.phase15_hpc_runner_backup/
+/phase15_hpc_payload/
+/artifacts/phase15/hpc_runs/
+/artifacts/phase15/hpc_setup/
