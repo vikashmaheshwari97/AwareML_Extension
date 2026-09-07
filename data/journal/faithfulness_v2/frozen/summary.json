@@ -1,0 +1,26 @@
+{
+  "irrelevant_control": {
+    "n": 24,
+    "mean_faithfulness_score": 1.0,
+    "mean_changed_evidence_acknowledged": 0.0,
+    "mean_numeric_update_accuracy": null,
+    "mean_stale_claim_rate": 0.0,
+    "mean_irrelevant_invariance": 1.0
+  },
+  "known_faithful": {
+    "n": 24,
+    "mean_faithfulness_score": 0.9236948929113005,
+    "mean_changed_evidence_acknowledged": 1.0,
+    "mean_numeric_update_accuracy": 1.0,
+    "mean_stale_claim_rate": 0.0,
+    "mean_irrelevant_invariance": null
+  },
+  "known_unfaithful_sticky": {
+    "n": 24,
+    "mean_faithfulness_score": 0.0,
+    "mean_changed_evidence_acknowledged": 0.0,
+    "mean_numeric_update_accuracy": 0.0,
+    "mean_stale_claim_rate": 1.0,
+    "mean_irrelevant_invariance": null
+  }
+}

@@ -33,9 +33,9 @@ def main():
             "render_phase14_sustainability_details(results)" in specialist
         ),
         "per_group_calibration_ui": (
-            "Per-group calibration and hard-label details" in integrated
+            "Per-group calibration details" in integrated
         ),
-        "repeatability_ui": "Dataset-specific repeatability · Phase 14" in integrated,
+        "repeatability_ui": "Repeatability · Phase 14" in integrated,
         "brier_gap_implemented": "group_brier_score_gap" in fairness,
         "ece_gap_implemented": "group_ece_gap" in fairness,
         "sustainability_protocol_metadata": all(

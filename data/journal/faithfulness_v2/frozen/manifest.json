@@ -1,0 +1,23 @@
+{
+  "artifact": "faithfulness_v2",
+  "status": "frozen",
+  "created_utc": "2026-09-05T17:37:49.601880+00:00",
+  "scope": "controlled external evidence-intervention evaluator validation; not an actual LLM faithfulness estimate",
+  "schema_version": "faithfulness_v2",
+  "controlled_benchmark": true,
+  "actual_llm_performance_claim": false,
+  "files": {
+    "faithfulness_records.json": {
+      "sha256": "2761567493091eda3620c37822c40622937fa530b4592896bc88e9c4b26d2bc9",
+      "size_bytes": 189440
+    },
+    "summary.json": {
+      "sha256": "96dc42c2b02cac02cb48c519e3c754c77536c0544adc2bb5d370dbfb00924482",
+      "size_bytes": 742
+    },
+    "benchmark_metadata.json": {
+      "sha256": "adb1cd40bcc5f21bff3407f3c1bf2052bb46f085df86bab9aafa011b2c6fe291",
+      "size_bytes": 475
+    }
+  }
+}

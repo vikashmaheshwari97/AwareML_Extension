@@ -1,0 +1,23 @@
+{
+  "phase": 15,
+  "artifact": "trust_stimulus_bank_v1",
+  "status": "design_frozen",
+  "purpose": "Balanced controlled stimuli for Track-2 trust calibration study.",
+  "minimum_known_correct": 20,
+  "minimum_known_incorrect": 20,
+  "planned_known_correct": 24,
+  "planned_known_incorrect": 24,
+  "dataset_contexts": 6,
+  "sources": [
+    "Stage B setup/recommendation explanation",
+    "Stage E fairness explanation",
+    "Stage F SHAP/XAI explanation",
+    "Stage F conversational answer"
+  ],
+  "participant_blinding": {
+    "researcher_label_removed": true,
+    "error_type_removed": true,
+    "verifier_metrics_removed": true
+  },
+  "controlled_fixture_disclosure": "Researcher metadata identifies controlled synthetic evidence contexts."
+}

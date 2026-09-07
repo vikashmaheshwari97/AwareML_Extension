@@ -22,9 +22,9 @@ def test_constant_predictor_is_flagged_without_changing_zero_gap():
     assert result["prediction_behavior_status"] == "constant"
     assert result["probability_behavior_status"] == "constant"
     assert result["dp_diff"] == 0.0
-    # Group B has no positive ground-truth cases in this synthetic
-    # fixture, so its TPR is undefined. Equal Opportunity therefore
-    # remains None/N/A rather than being fabricated as zero.
+    # Group B has no positive ground-truth cases, therefore its TPR is
+    # undefined. Equal Opportunity must remain None/N/A; zero would
+    # fabricate fairness evidence that does not exist.
     assert result["equal_opportunity_diff"] is None
     assert result["fairness_interpretation_warning"]
 

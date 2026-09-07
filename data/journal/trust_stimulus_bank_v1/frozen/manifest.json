@@ -1,0 +1,27 @@
+{
+  "artifact": "trust_stimulus_bank_v1",
+  "status": "frozen",
+  "created_utc": "2026-09-05T17:37:49.603931+00:00",
+  "scope": "controlled Track-2 trust-calibration stimuli with researcher ground truth separated from participant-facing versions",
+  "schema_version": "trust_stimulus_bank_v1",
+  "controlled_benchmark": true,
+  "actual_llm_performance_claim": false,
+  "files": {
+    "stimuli_researcher.json": {
+      "sha256": "dd112882e7647ce664c6a37a4c81845b730e34f8b6a6d03100c1588fddc9b774",
+      "size_bytes": 110981
+    },
+    "stimuli_participant.json": {
+      "sha256": "a812e1aea8ffaf8db8b4a32ec3b7754e47350c29898519267edc317d8c6333bb",
+      "size_bytes": 28978
+    },
+    "summary.json": {
+      "sha256": "8e1511ee3aad627e261474fabe64cf600daf5b4ad600869a1b7d820b8fc4dd1e",
+      "size_bytes": 317
+    },
+    "benchmark_metadata.json": {
+      "sha256": "60b9c6c8f0b89631cdc22f02869e21c0d2c10f35530a6419a29df0fd5a12e331",
+      "size_bytes": 233
+    }
+  }
+}

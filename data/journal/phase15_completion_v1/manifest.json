@@ -1,0 +1,22 @@
+{
+  "phase": 15,
+  "title": "Explanation Correctness & Faithfulness V2",
+  "status": "frozen_controlled_completion_gate",
+  "artifacts": {
+    "explanation_correctness_v1": {
+      "manifest_path": "explanation_correctness_v1/frozen/manifest.json",
+      "manifest_sha256": "9e166b59d636d656f5e355e3aeccab27ce56765c5756d8b1b70daae8eb5f05b5"
+    },
+    "faithfulness_v2": {
+      "manifest_path": "faithfulness_v2/frozen/manifest.json",
+      "manifest_sha256": "1bf64d5f8970f2377780d1910eeeeda8df919d8977513805739039fc8d5b2b57"
+    },
+    "trust_stimulus_bank_v1": {
+      "manifest_path": "trust_stimulus_bank_v1/frozen/manifest.json",
+      "manifest_sha256": "2e151e7f1aaeac025f53a4ada9946830791465bb7480f909d57334e52849f59e"
+    }
+  },
+  "correctness_and_faithfulness_kept_separate": true,
+  "live_dataset_probe_scope": "exploratory_not_frozen_journal_evidence",
+  "empirical_llm_performance_status": "requires_reviewed_model_run"
+}

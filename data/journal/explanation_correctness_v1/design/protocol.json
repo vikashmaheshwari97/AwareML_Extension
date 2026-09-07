@@ -1,0 +1,39 @@
+{
+  "phase": 15,
+  "artifact": "explanation_correctness_v1",
+  "status": "design_frozen",
+  "purpose": "Validate claim-level explanation correctness against structured evidence.",
+  "correctness_is_distinct_from_faithfulness": true,
+  "sources": [
+    "Stage B setup/recommendation explanation",
+    "Stage E fairness explanation",
+    "Stage F SHAP/XAI explanation",
+    "Stage F conversational answer"
+  ],
+  "claim_families": [
+    "accuracy",
+    "runtime",
+    "energy",
+    "co2",
+    "dp/spd",
+    "equal_opportunity",
+    "equalized_odds",
+    "group_brier_score_gap",
+    "group_ece_gap",
+    "shap_values",
+    "feature_ranking",
+    "framework_ranking"
+  ],
+  "metrics": {
+    "claim_precision": "supported extracted factual claims / all extracted factual claims",
+    "supported_claim_rate": "supported claims / verifiable claims",
+    "numeric_correctness": "numerically correct claims / numerically verifiable claims",
+    "citation_validity": "valid cited evidence keys / all cited evidence keys",
+    "decision_consistency": "correct ranking/decision claims / verifiable ranking/decision claims",
+    "unsupported_claim_rate": "unsupported claims / extracted claims",
+    "contradiction_rate": "contradicted claims / extracted claims"
+  },
+  "missing_policy": "Undefined denominators remain N/A; never substitute zero.",
+  "judge": "deterministic structured-evidence verifier; no LLM-as-judge",
+  "controlled_benchmark_scope": "methodology/verifier validation, not model performance"
+}

@@ -1,0 +1,338 @@
+[
+  {
+    "stimulus_id": "P15_01_B_CORRECT",
+    "source": "Stage B · setup/recommendation explanation",
+    "scenario": "controlled_stream_alpha",
+    "prompt": "Explain why the current pre-run framework is recommended using only the supplied predicted evidence.",
+    "explanation": "AutoClass is ranked #1 [evidence.recommendation.top_framework]. AutoClass accuracy = 0.86 [evidence.candidates.AutoClass.accuracy]. AutoClass runtime = 8.4 [evidence.candidates.AutoClass.runtime]. AutoClass energy = 0.00092 [evidence.candidates.AutoClass.energy]. AutoClass co2 = 0.00038336 [evidence.candidates.AutoClass.co2]."
+  },
+  {
+    "stimulus_id": "P15_01_B_INCORRECT",
+    "source": "Stage B · setup/recommendation explanation",
+    "scenario": "controlled_stream_alpha",
+    "prompt": "Explain why the current pre-run framework is recommended using only the supplied predicted evidence.",
+    "explanation": "AutoClass is ranked #1 [evidence.recommendation.top_framework]. AutoClass accuracy = 0.67 [evidence.candidates.AutoClass.accuracy]. AutoClass runtime = 8.4 [evidence.candidates.AutoClass.runtime]. AutoClass energy = 0.00092 [evidence.candidates.AutoClass.energy]. AutoClass co2 = 0.00038336 [evidence.candidates.AutoClass.co2]."
+  },
+  {
+    "stimulus_id": "P15_01_E_CORRECT",
+    "source": "Stage E · fairness explanation",
+    "scenario": "controlled_stream_alpha",
+    "prompt": "Explain the fairness disparities for the focus framework, including calibration fairness where available.",
+    "explanation": "AutoClass DP = 0.035 [evidence.frameworks.AutoClass.fairness.dp_diff]. AutoClass EO = 0.028 [evidence.frameworks.AutoClass.fairness.equal_opportunity_diff]. AutoClass EOdds = 0.044 [evidence.frameworks.AutoClass.fairness.equalized_odds_gap]. AutoClass Brier gap = 0.012 [evidence.frameworks.AutoClass.fairness.group_brier_score_gap]. AutoClass ECE gap = 0.018 [evidence.frameworks.AutoClass.fairness.group_ece_gap]."
+  },
+  {
+    "stimulus_id": "P15_01_E_INCORRECT",
+    "source": "Stage E · fairness explanation",
+    "scenario": "controlled_stream_alpha",
+    "prompt": "Explain the fairness disparities for the focus framework, including calibration fairness where available.",
+    "explanation": "AutoClass DP = 0.145 [evidence.frameworks.AutoClass.fairness.dp_diff]. AutoClass EO = 0.028 [evidence.frameworks.AutoClass.fairness.equal_opportunity_diff]. AutoClass EOdds = 0.044 [evidence.frameworks.AutoClass.fairness.equalized_odds_gap]. AutoClass Brier gap = 0.012 [evidence.frameworks.AutoClass.fairness.group_brier_score_gap]. AutoClass ECE gap = 0.018 [evidence.frameworks.AutoClass.fairness.group_ece_gap]."
+  },
+  {
+    "stimulus_id": "P15_01_F_XAI_CORRECT",
+    "source": "Stage F · SHAP/XAI explanation",
+    "scenario": "controlled_stream_alpha",
+    "prompt": "Explain which feature is most influential and report the supporting SHAP values.",
+    "explanation": "age is the top feature by absolute SHAP magnitude [evidence.explainability.top_feature]. age SHAP = 0.31 [evidence.explainability.shap_values.age]. hours_per_week SHAP = -0.19 [evidence.explainability.shap_values.hours_per_week]."
+  },
+  {
+    "stimulus_id": "P15_01_F_XAI_INCORRECT",
+    "source": "Stage F · SHAP/XAI explanation",
+    "scenario": "controlled_stream_alpha",
+    "prompt": "Explain which feature is most influential and report the supporting SHAP values.",
+    "explanation": "age is the top feature by absolute SHAP magnitude [evidence.explainability.top_feature]. age SHAP = 0.55 [evidence.explainability.shap_values.age]. hours_per_week SHAP = -0.19 [evidence.explainability.shap_values.hours_per_week]."
+  },
+  {
+    "stimulus_id": "P15_01_F_CHAT_CORRECT",
+    "source": "Stage F · conversational answer",
+    "scenario": "controlled_stream_alpha",
+    "prompt": "Which framework is ranked first, and what measured/predicted evidence supports that answer?",
+    "explanation": "AutoClass is ranked #1 [evidence.ranking.0.rank]. AutoClass accuracy = 0.86 [evidence.frameworks.AutoClass.accuracy]. AutoClass runtime = 8.4 [evidence.frameworks.AutoClass.runtime_sec]. AutoClass energy = 0.00092 [evidence.frameworks.AutoClass.energy_kwh]. AutoClass co2 = 0.00038336 [evidence.frameworks.AutoClass.co2_kg]."
+  },
+  {
+    "stimulus_id": "P15_01_F_CHAT_INCORRECT",
+    "source": "Stage F · conversational answer",
+    "scenario": "controlled_stream_alpha",
+    "prompt": "Which framework is ranked first, and what measured/predicted evidence supports that answer?",
+    "explanation": "AutoClass is ranked #1 [evidence.ranking.0.rank]. AutoClass accuracy = 0.69 [evidence.frameworks.AutoClass.accuracy]. AutoClass runtime = 8.4 [evidence.frameworks.AutoClass.runtime_sec]. AutoClass energy = 0.00092 [evidence.frameworks.AutoClass.energy_kwh]. AutoClass co2 = 0.00038336 [evidence.frameworks.AutoClass.co2_kg]."
+  },
+  {
+    "stimulus_id": "P15_02_B_CORRECT",
+    "source": "Stage B · setup/recommendation explanation",
+    "scenario": "controlled_stream_beta",
+    "prompt": "Explain why the current pre-run framework is recommended using only the supplied predicted evidence.",
+    "explanation": "OAML is ranked #1 [evidence.recommendation.top_framework]. OAML accuracy = 0.866 [evidence.candidates.OAML.accuracy]. OAML runtime = 8.65 [evidence.candidates.OAML.runtime]. OAML energy = 0.00094 [evidence.candidates.OAML.energy]. OAML co2 = 0.0003917 [evidence.candidates.OAML.co2]."
+  },
+  {
+    "stimulus_id": "P15_02_B_INCORRECT",
+    "source": "Stage B · setup/recommendation explanation",
+    "scenario": "controlled_stream_beta",
+    "prompt": "Explain why the current pre-run framework is recommended using only the supplied predicted evidence.",
+    "explanation": "AutoStreamML is ranked #1 [evidence.recommendation.top_framework]. OAML accuracy = 0.866 [evidence.candidates.OAML.accuracy]. OAML runtime = 8.65 [evidence.candidates.OAML.runtime]. OAML energy = 0.00094 [evidence.candidates.OAML.energy]. OAML co2 = 0.0003917 [evidence.candidates.OAML.co2]."
+  },
+  {
+    "stimulus_id": "P15_02_E_CORRECT",
+    "source": "Stage E · fairness explanation",
+    "scenario": "controlled_stream_beta",
+    "prompt": "Explain the fairness disparities for the focus framework, including calibration fairness where available.",
+    "explanation": "OAML DP = 0.055 [evidence.frameworks.OAML.fairness.dp_diff]. OAML EO = 0.044 [evidence.frameworks.OAML.fairness.equal_opportunity_diff]. OAML EOdds = 0.058 [evidence.frameworks.OAML.fairness.equalized_odds_gap]. OAML Brier gap = 0.016 [evidence.frameworks.OAML.fairness.group_brier_score_gap]. OAML ECE gap = 0.023 [evidence.frameworks.OAML.fairness.group_ece_gap]."
+  },
+  {
+    "stimulus_id": "P15_02_E_INCORRECT",
+    "source": "Stage E · fairness explanation",
+    "scenario": "controlled_stream_beta",
+    "prompt": "Explain the fairness disparities for the focus framework, including calibration fairness where available.",
+    "explanation": "OAML DP = 0.055 [evidence.frameworks.OAML.fairness.dp_diff]. OAML EO = 0.044 [evidence.frameworks.OAML.fairness.equal_opportunity_diff]. OAML EOdds = 0.058 [evidence.frameworks.OAML.fairness.equalized_odds_gap]. OAML Brier gap = 0.016 [evidence.frameworks.OAML.fairness.group_brier_score_gap]. OAML ECE gap = 0.023 [evidence.frameworks.OAML.fairness.group_ece_gap]. A zero disparity on one criterion proves the classifier is fair."
+  },
+  {
+    "stimulus_id": "P15_02_F_XAI_CORRECT",
+    "source": "Stage F · SHAP/XAI explanation",
+    "scenario": "controlled_stream_beta",
+    "prompt": "Explain which feature is most influential and report the supporting SHAP values.",
+    "explanation": "sensor_load is the top feature by absolute SHAP magnitude [evidence.explainability.top_feature]. sensor_load SHAP = 0.322 [evidence.explainability.shap_values.sensor_load]. temperature SHAP = -0.198 [evidence.explainability.shap_values.temperature]."
+  },
+  {
+    "stimulus_id": "P15_02_F_XAI_INCORRECT",
+    "source": "Stage F · SHAP/XAI explanation",
+    "scenario": "controlled_stream_beta",
+    "prompt": "Explain which feature is most influential and report the supporting SHAP values.",
+    "explanation": "temperature is the top feature by absolute SHAP magnitude [evidence.explainability.top_feature]. sensor_load SHAP = 0.322 [evidence.explainability.shap_values.sensor_load]. temperature SHAP = -0.198 [evidence.explainability.shap_values.temperature]."
+  },
+  {
+    "stimulus_id": "P15_02_F_CHAT_CORRECT",
+    "source": "Stage F · conversational answer",
+    "scenario": "controlled_stream_beta",
+    "prompt": "Which framework is ranked first, and what measured/predicted evidence supports that answer?",
+    "explanation": "OAML is ranked #1 [evidence.ranking.0.rank]. OAML accuracy = 0.866 [evidence.frameworks.OAML.accuracy]. OAML runtime = 8.65 [evidence.frameworks.OAML.runtime_sec]. OAML energy = 0.00094 [evidence.frameworks.OAML.energy_kwh]. OAML co2 = 0.0003917 [evidence.frameworks.OAML.co2_kg]."
+  },
+  {
+    "stimulus_id": "P15_02_F_CHAT_INCORRECT",
+    "source": "Stage F · conversational answer",
+    "scenario": "controlled_stream_beta",
+    "prompt": "Which framework is ranked first, and what measured/predicted evidence supports that answer?",
+    "explanation": "ChaCha is ranked #1 [evidence.ranking.0.rank]. OAML accuracy = 0.866 [evidence.frameworks.OAML.accuracy]. OAML runtime = 8.65 [evidence.frameworks.OAML.runtime_sec]. OAML energy = 0.00094 [evidence.frameworks.OAML.energy_kwh]. OAML co2 = 0.0003917 [evidence.frameworks.OAML.co2_kg]."
+  },
+  {
+    "stimulus_id": "P15_03_B_CORRECT",
+    "source": "Stage B · setup/recommendation explanation",
+    "scenario": "controlled_stream_gamma",
+    "prompt": "Explain why the current pre-run framework is recommended using only the supplied predicted evidence.",
+    "explanation": "EvoAutoML is ranked #1 [evidence.recommendation.top_framework]. EvoAutoML accuracy = 0.872 [evidence.candidates.EvoAutoML.accuracy]. EvoAutoML runtime = 8.9 [evidence.candidates.EvoAutoML.runtime]. EvoAutoML energy = 0.00096 [evidence.candidates.EvoAutoML.energy]. EvoAutoML co2 = 0.00040003 [evidence.candidates.EvoAutoML.co2]."
+  },
+  {
+    "stimulus_id": "P15_03_B_INCORRECT",
+    "source": "Stage B · setup/recommendation explanation",
+    "scenario": "controlled_stream_gamma",
+    "prompt": "Explain why the current pre-run framework is recommended using only the supplied predicted evidence.",
+    "explanation": "EvoAutoML is ranked #1 [evidence.recommendation.top_framework]. EvoAutoML accuracy = 0.872 [evidence.candidates.EvoAutoML.accuracy]. EvoAutoML runtime = 8.9 [evidence.candidates.EvoAutoML.runtime]. EvoAutoML energy = 0.00096 [evidence.candidates.EvoAutoML.energy]. EvoAutoML co2 = 0.00040003 [evidence.candidates.EvoAutoML.co2]. The framework is guaranteed to remain best on every future dataset."
+  },
+  {
+    "stimulus_id": "P15_03_E_CORRECT",
+    "source": "Stage E · fairness explanation",
+    "scenario": "controlled_stream_gamma",
+    "prompt": "Explain the fairness disparities for the focus framework, including calibration fairness where available.",
+    "explanation": "EvoAutoML DP = 0.075 [evidence.frameworks.EvoAutoML.fairness.dp_diff]. EvoAutoML EO = 0.06 [evidence.frameworks.EvoAutoML.fairness.equal_opportunity_diff]. EvoAutoML EOdds = 0.072 [evidence.frameworks.EvoAutoML.fairness.equalized_odds_gap]. EvoAutoML Brier gap = 0.02 [evidence.frameworks.EvoAutoML.fairness.group_brier_score_gap]. EvoAutoML ECE gap = 0.028 [evidence.frameworks.EvoAutoML.fairness.group_ece_gap]."
+  },
+  {
+    "stimulus_id": "P15_03_E_INCORRECT",
+    "source": "Stage E · fairness explanation",
+    "scenario": "controlled_stream_gamma",
+    "prompt": "Explain the fairness disparities for the focus framework, including calibration fairness where available.",
+    "explanation": "EvoAutoML DP = 0.185 [evidence.frameworks.EvoAutoML.fairness.dp_diff]. EvoAutoML EO = 0.06 [evidence.frameworks.EvoAutoML.fairness.equal_opportunity_diff]. EvoAutoML EOdds = 0.072 [evidence.frameworks.EvoAutoML.fairness.equalized_odds_gap]. EvoAutoML Brier gap = 0.02 [evidence.frameworks.EvoAutoML.fairness.group_brier_score_gap]. EvoAutoML ECE gap = 0.028 [evidence.frameworks.EvoAutoML.fairness.group_ece_gap]."
+  },
+  {
+    "stimulus_id": "P15_03_F_XAI_CORRECT",
+    "source": "Stage F · SHAP/XAI explanation",
+    "scenario": "controlled_stream_gamma",
+    "prompt": "Explain which feature is most influential and report the supporting SHAP values.",
+    "explanation": "transaction_velocity is the top feature by absolute SHAP magnitude [evidence.explainability.top_feature]. transaction_velocity SHAP = 0.334 [evidence.explainability.shap_values.transaction_velocity]. account_age SHAP = -0.206 [evidence.explainability.shap_values.account_age]."
+  },
+  {
+    "stimulus_id": "P15_03_F_XAI_INCORRECT",
+    "source": "Stage F · SHAP/XAI explanation",
+    "scenario": "controlled_stream_gamma",
+    "prompt": "Explain which feature is most influential and report the supporting SHAP values.",
+    "explanation": "transaction_velocity is the top feature by absolute SHAP magnitude [evidence.explainability.top_feature]. transaction_velocity SHAP = 0.334 [evidence.explainability.shap_values.transaction_velocity]. account_age SHAP = -0.206 [evidence.explainability.shap_values.account_age]. SHAP proves that changing this feature will causally change the prediction."
+  },
+  {
+    "stimulus_id": "P15_03_F_CHAT_CORRECT",
+    "source": "Stage F · conversational answer",
+    "scenario": "controlled_stream_gamma",
+    "prompt": "Which framework is ranked first, and what measured/predicted evidence supports that answer?",
+    "explanation": "EvoAutoML is ranked #1 [evidence.ranking.0.rank]. EvoAutoML accuracy = 0.872 [evidence.frameworks.EvoAutoML.accuracy]. EvoAutoML runtime = 8.9 [evidence.frameworks.EvoAutoML.runtime_sec]. EvoAutoML energy = 0.00096 [evidence.frameworks.EvoAutoML.energy_kwh]. EvoAutoML co2 = 0.00040003 [evidence.frameworks.EvoAutoML.co2_kg]."
+  },
+  {
+    "stimulus_id": "P15_03_F_CHAT_INCORRECT",
+    "source": "Stage F · conversational answer",
+    "scenario": "controlled_stream_gamma",
+    "prompt": "Which framework is ranked first, and what measured/predicted evidence supports that answer?",
+    "explanation": "EvoAutoML is ranked #1 [evidence.ranking.0.rank]. EvoAutoML accuracy = 0.872 [evidence.frameworks.EvoAutoML.accuracy]. EvoAutoML runtime = 8.9 [evidence.frameworks.EvoAutoML.runtime_sec]. EvoAutoML energy = 0.00096 [evidence.frameworks.EvoAutoML.energy_kwh]. EvoAutoML co2 = 0.00040003 [evidence.frameworks.EvoAutoML.co2_kg]. This ranking will necessarily hold after any concept drift."
+  },
+  {
+    "stimulus_id": "P15_04_B_CORRECT",
+    "source": "Stage B · setup/recommendation explanation",
+    "scenario": "controlled_stream_delta",
+    "prompt": "Explain why the current pre-run framework is recommended using only the supplied predicted evidence.",
+    "explanation": "ChaCha is ranked #1 [evidence.recommendation.top_framework]. ChaCha accuracy = 0.878 [evidence.candidates.ChaCha.accuracy]. ChaCha runtime = 9.15 [evidence.candidates.ChaCha.runtime]. ChaCha energy = 0.00098 [evidence.candidates.ChaCha.energy]. ChaCha co2 = 0.00040837 [evidence.candidates.ChaCha.co2]."
+  },
+  {
+    "stimulus_id": "P15_04_B_INCORRECT",
+    "source": "Stage B · setup/recommendation explanation",
+    "scenario": "controlled_stream_delta",
+    "prompt": "Explain why the current pre-run framework is recommended using only the supplied predicted evidence.",
+    "explanation": "ChaCha is ranked #1 [evidence.recommendation.nonexistent]. ChaCha accuracy = 0.878 [evidence.candidates.ChaCha.accuracy]. ChaCha runtime = 9.15 [evidence.candidates.ChaCha.runtime]. ChaCha energy = 0.00098 [evidence.candidates.ChaCha.energy]. ChaCha co2 = 0.00040837 [evidence.candidates.ChaCha.co2]."
+  },
+  {
+    "stimulus_id": "P15_04_E_CORRECT",
+    "source": "Stage E · fairness explanation",
+    "scenario": "controlled_stream_delta",
+    "prompt": "Explain the fairness disparities for the focus framework, including calibration fairness where available.",
+    "explanation": "ChaCha DP = 0.095 [evidence.frameworks.ChaCha.fairness.dp_diff]. ChaCha EO = 0.076 [evidence.frameworks.ChaCha.fairness.equal_opportunity_diff]. ChaCha EOdds = 0.086 [evidence.frameworks.ChaCha.fairness.equalized_odds_gap]. ChaCha Brier gap = 0.024 [evidence.frameworks.ChaCha.fairness.group_brier_score_gap]. ChaCha ECE gap = 0.033 [evidence.frameworks.ChaCha.fairness.group_ece_gap]."
+  },
+  {
+    "stimulus_id": "P15_04_E_INCORRECT",
+    "source": "Stage E · fairness explanation",
+    "scenario": "controlled_stream_delta",
+    "prompt": "Explain the fairness disparities for the focus framework, including calibration fairness where available.",
+    "explanation": "ChaCha DP = 0.095 [evidence.frameworks.ChaCha.fairness.not_a_metric]. ChaCha EO = 0.076 [evidence.frameworks.ChaCha.fairness.equal_opportunity_diff]. ChaCha EOdds = 0.086 [evidence.frameworks.ChaCha.fairness.equalized_odds_gap]. ChaCha Brier gap = 0.024 [evidence.frameworks.ChaCha.fairness.group_brier_score_gap]. ChaCha ECE gap = 0.033 [evidence.frameworks.ChaCha.fairness.group_ece_gap]."
+  },
+  {
+    "stimulus_id": "P15_04_F_XAI_CORRECT",
+    "source": "Stage F · SHAP/XAI explanation",
+    "scenario": "controlled_stream_delta",
+    "prompt": "Explain which feature is most influential and report the supporting SHAP values.",
+    "explanation": "traffic_density is the top feature by absolute SHAP magnitude [evidence.explainability.top_feature]. traffic_density SHAP = 0.346 [evidence.explainability.shap_values.traffic_density]. weather_index SHAP = -0.214 [evidence.explainability.shap_values.weather_index]."
+  },
+  {
+    "stimulus_id": "P15_04_F_XAI_INCORRECT",
+    "source": "Stage F · SHAP/XAI explanation",
+    "scenario": "controlled_stream_delta",
+    "prompt": "Explain which feature is most influential and report the supporting SHAP values.",
+    "explanation": "traffic_density is the top feature by absolute SHAP magnitude [evidence.explainability.fake_feature]. traffic_density SHAP = 0.346 [evidence.explainability.shap_values.traffic_density]. weather_index SHAP = -0.214 [evidence.explainability.shap_values.weather_index]."
+  },
+  {
+    "stimulus_id": "P15_04_F_CHAT_CORRECT",
+    "source": "Stage F · conversational answer",
+    "scenario": "controlled_stream_delta",
+    "prompt": "Which framework is ranked first, and what measured/predicted evidence supports that answer?",
+    "explanation": "ChaCha is ranked #1 [evidence.ranking.0.rank]. ChaCha accuracy = 0.878 [evidence.frameworks.ChaCha.accuracy]. ChaCha runtime = 9.15 [evidence.frameworks.ChaCha.runtime_sec]. ChaCha energy = 0.00098 [evidence.frameworks.ChaCha.energy_kwh]. ChaCha co2 = 0.00040837 [evidence.frameworks.ChaCha.co2_kg]."
+  },
+  {
+    "stimulus_id": "P15_04_F_CHAT_INCORRECT",
+    "source": "Stage F · conversational answer",
+    "scenario": "controlled_stream_delta",
+    "prompt": "Which framework is ranked first, and what measured/predicted evidence supports that answer?",
+    "explanation": "ChaCha is ranked #1 [evidence.ranking.99.rank]. ChaCha accuracy = 0.878 [evidence.frameworks.ChaCha.accuracy]. ChaCha runtime = 9.15 [evidence.frameworks.ChaCha.runtime_sec]. ChaCha energy = 0.00098 [evidence.frameworks.ChaCha.energy_kwh]. ChaCha co2 = 0.00040837 [evidence.frameworks.ChaCha.co2_kg]."
+  },
+  {
+    "stimulus_id": "P15_05_B_CORRECT",
+    "source": "Stage B · setup/recommendation explanation",
+    "scenario": "controlled_stream_epsilon",
+    "prompt": "Explain why the current pre-run framework is recommended using only the supplied predicted evidence.",
+    "explanation": "AutoClass is ranked #1 [evidence.recommendation.top_framework]. AutoClass accuracy = 0.884 [evidence.candidates.AutoClass.accuracy]. AutoClass runtime = 9.4 [evidence.candidates.AutoClass.runtime]. AutoClass energy = 0.001 [evidence.candidates.AutoClass.energy]. AutoClass co2 = 0.0004167 [evidence.candidates.AutoClass.co2]."
+  },
+  {
+    "stimulus_id": "P15_05_B_INCORRECT",
+    "source": "Stage B · setup/recommendation explanation",
+    "scenario": "controlled_stream_epsilon",
+    "prompt": "Explain why the current pre-run framework is recommended using only the supplied predicted evidence.",
+    "explanation": "AutoClass is ranked #1 [evidence.recommendation.top_framework]. AutoClass accuracy = 0.694 [evidence.candidates.AutoClass.accuracy]. AutoClass runtime = 9.4 [evidence.candidates.AutoClass.runtime]. AutoClass energy = 0.001 [evidence.candidates.AutoClass.energy]. AutoClass co2 = 0.0004167 [evidence.candidates.AutoClass.co2]."
+  },
+  {
+    "stimulus_id": "P15_05_E_CORRECT",
+    "source": "Stage E · fairness explanation",
+    "scenario": "controlled_stream_epsilon",
+    "prompt": "Explain the fairness disparities for the focus framework, including calibration fairness where available.",
+    "explanation": "AutoClass DP = 0.115 [evidence.frameworks.AutoClass.fairness.dp_diff]. AutoClass EO = 0.092 [evidence.frameworks.AutoClass.fairness.equal_opportunity_diff]. AutoClass EOdds = 0.1 [evidence.frameworks.AutoClass.fairness.equalized_odds_gap]. AutoClass Brier gap = 0.028 [evidence.frameworks.AutoClass.fairness.group_brier_score_gap]. AutoClass ECE gap = 0.038 [evidence.frameworks.AutoClass.fairness.group_ece_gap]."
+  },
+  {
+    "stimulus_id": "P15_05_E_INCORRECT",
+    "source": "Stage E · fairness explanation",
+    "scenario": "controlled_stream_epsilon",
+    "prompt": "Explain the fairness disparities for the focus framework, including calibration fairness where available.",
+    "explanation": "AutoClass DP = 0.225 [evidence.frameworks.AutoClass.fairness.dp_diff]. AutoClass EO = 0.092 [evidence.frameworks.AutoClass.fairness.equal_opportunity_diff]. AutoClass EOdds = 0.1 [evidence.frameworks.AutoClass.fairness.equalized_odds_gap]. AutoClass Brier gap = 0.028 [evidence.frameworks.AutoClass.fairness.group_brier_score_gap]. AutoClass ECE gap = 0.038 [evidence.frameworks.AutoClass.fairness.group_ece_gap]."
+  },
+  {
+    "stimulus_id": "P15_05_F_XAI_CORRECT",
+    "source": "Stage F · SHAP/XAI explanation",
+    "scenario": "controlled_stream_epsilon",
+    "prompt": "Explain which feature is most influential and report the supporting SHAP values.",
+    "explanation": "signal_quality is the top feature by absolute SHAP magnitude [evidence.explainability.top_feature]. signal_quality SHAP = 0.358 [evidence.explainability.shap_values.signal_quality]. device_age SHAP = -0.222 [evidence.explainability.shap_values.device_age]."
+  },
+  {
+    "stimulus_id": "P15_05_F_XAI_INCORRECT",
+    "source": "Stage F · SHAP/XAI explanation",
+    "scenario": "controlled_stream_epsilon",
+    "prompt": "Explain which feature is most influential and report the supporting SHAP values.",
+    "explanation": "signal_quality is the top feature by absolute SHAP magnitude [evidence.explainability.top_feature]. signal_quality SHAP = 0.598 [evidence.explainability.shap_values.signal_quality]. device_age SHAP = -0.222 [evidence.explainability.shap_values.device_age]."
+  },
+  {
+    "stimulus_id": "P15_05_F_CHAT_CORRECT",
+    "source": "Stage F · conversational answer",
+    "scenario": "controlled_stream_epsilon",
+    "prompt": "Which framework is ranked first, and what measured/predicted evidence supports that answer?",
+    "explanation": "AutoClass is ranked #1 [evidence.ranking.0.rank]. AutoClass accuracy = 0.884 [evidence.frameworks.AutoClass.accuracy]. AutoClass runtime = 9.4 [evidence.frameworks.AutoClass.runtime_sec]. AutoClass energy = 0.001 [evidence.frameworks.AutoClass.energy_kwh]. AutoClass co2 = 0.0004167 [evidence.frameworks.AutoClass.co2_kg]."
+  },
+  {
+    "stimulus_id": "P15_05_F_CHAT_INCORRECT",
+    "source": "Stage F · conversational answer",
+    "scenario": "controlled_stream_epsilon",
+    "prompt": "Which framework is ranked first, and what measured/predicted evidence supports that answer?",
+    "explanation": "AutoClass is ranked #1 [evidence.ranking.0.rank]. AutoClass accuracy = 0.714 [evidence.frameworks.AutoClass.accuracy]. AutoClass runtime = 9.4 [evidence.frameworks.AutoClass.runtime_sec]. AutoClass energy = 0.001 [evidence.frameworks.AutoClass.energy_kwh]. AutoClass co2 = 0.0004167 [evidence.frameworks.AutoClass.co2_kg]."
+  },
+  {
+    "stimulus_id": "P15_06_B_CORRECT",
+    "source": "Stage B · setup/recommendation explanation",
+    "scenario": "controlled_stream_zeta",
+    "prompt": "Explain why the current pre-run framework is recommended using only the supplied predicted evidence.",
+    "explanation": "OAML is ranked #1 [evidence.recommendation.top_framework]. OAML accuracy = 0.89 [evidence.candidates.OAML.accuracy]. OAML runtime = 9.65 [evidence.candidates.OAML.runtime]. OAML energy = 0.00102 [evidence.candidates.OAML.energy]. OAML co2 = 0.00042503 [evidence.candidates.OAML.co2]."
+  },
+  {
+    "stimulus_id": "P15_06_B_INCORRECT",
+    "source": "Stage B · setup/recommendation explanation",
+    "scenario": "controlled_stream_zeta",
+    "prompt": "Explain why the current pre-run framework is recommended using only the supplied predicted evidence.",
+    "explanation": "AutoStreamML is ranked #1 [evidence.recommendation.top_framework]. OAML accuracy = 0.89 [evidence.candidates.OAML.accuracy]. OAML runtime = 9.65 [evidence.candidates.OAML.runtime]. OAML energy = 0.00102 [evidence.candidates.OAML.energy]. OAML co2 = 0.00042503 [evidence.candidates.OAML.co2]."
+  },
+  {
+    "stimulus_id": "P15_06_E_CORRECT",
+    "source": "Stage E · fairness explanation",
+    "scenario": "controlled_stream_zeta",
+    "prompt": "Explain the fairness disparities for the focus framework, including calibration fairness where available.",
+    "explanation": "OAML DP = 0.135 [evidence.frameworks.OAML.fairness.dp_diff]. OAML EO = 0.108 [evidence.frameworks.OAML.fairness.equal_opportunity_diff]. OAML EOdds = 0.114 [evidence.frameworks.OAML.fairness.equalized_odds_gap]. OAML Brier gap = 0.032 [evidence.frameworks.OAML.fairness.group_brier_score_gap]. OAML ECE gap = 0.043 [evidence.frameworks.OAML.fairness.group_ece_gap]."
+  },
+  {
+    "stimulus_id": "P15_06_E_INCORRECT",
+    "source": "Stage E · fairness explanation",
+    "scenario": "controlled_stream_zeta",
+    "prompt": "Explain the fairness disparities for the focus framework, including calibration fairness where available.",
+    "explanation": "OAML DP = 0.135 [evidence.frameworks.OAML.fairness.dp_diff]. OAML EO = 0.108 [evidence.frameworks.OAML.fairness.equal_opportunity_diff]. OAML EOdds = 0.114 [evidence.frameworks.OAML.fairness.equalized_odds_gap]. OAML Brier gap = 0.032 [evidence.frameworks.OAML.fairness.group_brier_score_gap]. OAML ECE gap = 0.043 [evidence.frameworks.OAML.fairness.group_ece_gap]. A zero disparity on one criterion proves the classifier is fair."
+  },
+  {
+    "stimulus_id": "P15_06_F_XAI_CORRECT",
+    "source": "Stage F · SHAP/XAI explanation",
+    "scenario": "controlled_stream_zeta",
+    "prompt": "Explain which feature is most influential and report the supporting SHAP values.",
+    "explanation": "credit_utilization is the top feature by absolute SHAP magnitude [evidence.explainability.top_feature]. credit_utilization SHAP = 0.37 [evidence.explainability.shap_values.credit_utilization]. income_ratio SHAP = -0.23 [evidence.explainability.shap_values.income_ratio]."
+  },
+  {
+    "stimulus_id": "P15_06_F_XAI_INCORRECT",
+    "source": "Stage F · SHAP/XAI explanation",
+    "scenario": "controlled_stream_zeta",
+    "prompt": "Explain which feature is most influential and report the supporting SHAP values.",
+    "explanation": "income_ratio is the top feature by absolute SHAP magnitude [evidence.explainability.top_feature]. credit_utilization SHAP = 0.37 [evidence.explainability.shap_values.credit_utilization]. income_ratio SHAP = -0.23 [evidence.explainability.shap_values.income_ratio]."
+  },
+  {
+    "stimulus_id": "P15_06_F_CHAT_CORRECT",
+    "source": "Stage F · conversational answer",
+    "scenario": "controlled_stream_zeta",
+    "prompt": "Which framework is ranked first, and what measured/predicted evidence supports that answer?",
+    "explanation": "OAML is ranked #1 [evidence.ranking.0.rank]. OAML accuracy = 0.89 [evidence.frameworks.OAML.accuracy]. OAML runtime = 9.65 [evidence.frameworks.OAML.runtime_sec]. OAML energy = 0.00102 [evidence.frameworks.OAML.energy_kwh]. OAML co2 = 0.00042503 [evidence.frameworks.OAML.co2_kg]."
+  },
+  {
+    "stimulus_id": "P15_06_F_CHAT_INCORRECT",
+    "source": "Stage F · conversational answer",
+    "scenario": "controlled_stream_zeta",
+    "prompt": "Which framework is ranked first, and what measured/predicted evidence supports that answer?",
+    "explanation": "ChaCha is ranked #1 [evidence.ranking.0.rank]. OAML accuracy = 0.89 [evidence.frameworks.OAML.accuracy]. OAML runtime = 9.65 [evidence.frameworks.OAML.runtime_sec]. OAML energy = 0.00102 [evidence.frameworks.OAML.energy_kwh]. OAML co2 = 0.00042503 [evidence.frameworks.OAML.co2_kg]."
+  }
+]

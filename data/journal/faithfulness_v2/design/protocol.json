@@ -1,0 +1,25 @@
+{
+  "phase": 15,
+  "artifact": "faithfulness_v2",
+  "status": "design_frozen",
+  "purpose": "Measure explanation response to external structured-evidence interventions.",
+  "faithfulness_is_distinct_from_correctness": true,
+  "method": "FaithLM-style external counterfactual evidence intervention",
+  "reference_repository": "https://github.com/ynchuang/FaithLM",
+  "awareml_scope": "No claim of access to model internals; intervene on structured evidence supplied to the explanation generator.",
+  "metrics": [
+    "changed_evidence_acknowledged",
+    "numeric_update_accuracy",
+    "stale_claim_rate",
+    "decision_update_consistency",
+    "irrelevant_invariance",
+    "explanation_change",
+    "faithfulness_score"
+  ],
+  "controls": [
+    "known-faithful evidence-conditioned generator",
+    "known-unfaithful sticky explanation",
+    "irrelevant metadata control"
+  ],
+  "controlled_benchmark_scope": "intervention-evaluator validation, not model performance"
+}

@@ -69,3 +69,50 @@ local_artifacts/
 /three_path_payload/
 /APPLY_PHASE14_*.py
 /README_PHASE14_*.txt
+
+# Local Phase 15 development artifacts
+/.phase15_explanation_integrity_backup/
+/artifacts/phase15/llm_runs/
+
+# Installer extraction / safety artifacts
+/phase14_semantics_guard_payload/
+/.phase14_semantics_guard_backup/
+
+# Phase-15 benchmark validity backup
+/.phase15_benchmark_validity_backup/
+
+# Phase-15 final verifier backup
+/.phase15_final_verifier_backup/
+
+# Phase-15 Live UI final hotfix artifacts
+/.phase15_live_ui_final_backup/
+/phase15_live_ui_final_payload/
+
+# Phase-15 generation-v3 hotfix artifacts
+/.phase15_generation_v3_backup/
+/phase15_generation_v3_payload/
+
+# Phase-15 point-estimate resolver hotfix artifacts
+/.phase15_point_resolver_backup/
+/phase15_point_resolver_payload/
+
+# Phase-15 Stage-E grounding-guard artifacts
+/.phase15_stagee_guard_backup/
+/phase15_stagee_guard_payload/
+
+# Phase-15 consolidated live-runner artifacts
+/.phase15_allstages_live_backup/
+/phase15_allstages_payload/
+/artifacts/phase15/live_batch_runs/
+
+# Phase-15 Live Dataset Probe final UX artifacts
+/.phase15_liveux_final_backup/
+/phase15_liveux_final_payload/
+
+# Phase-15 simple batch final artifacts
+/.phase15_simplebatch_final_backup/
+/phase15_simplebatch_payload/
+
+# Phase-15 Live Probe finalization artifacts
+/.phase15_liveprobe_finalization_backup/
+/phase15_liveprobe_final_payload/

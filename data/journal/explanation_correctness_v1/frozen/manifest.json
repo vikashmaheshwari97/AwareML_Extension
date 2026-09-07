@@ -1,0 +1,23 @@
+{
+  "artifact": "explanation_correctness_v1",
+  "status": "frozen",
+  "created_utc": "2026-09-05T17:37:49.598990+00:00",
+  "scope": "controlled verifier-validation benchmark; not an actual LLM performance estimate",
+  "schema_version": "explanation_correctness_v1",
+  "controlled_benchmark": true,
+  "actual_llm_performance_claim": false,
+  "files": {
+    "correctness_reports.json": {
+      "sha256": "62f0b8c2d7fd0a11cd1ba3ebaad8d4cec27271031808962f40a9b112bf6c83da",
+      "size_bytes": 259318
+    },
+    "summary.json": {
+      "sha256": "7f90242057b13c2948ff78c2817d18440096b5927c3e18d517ff3f8f11af74be",
+      "size_bytes": 2862
+    },
+    "benchmark_metadata.json": {
+      "sha256": "33060abe53dc1e76264b9721ee0436067fc98d62974841133701cb96780f8fa3",
+      "size_bytes": 248
+    }
+  }
+}

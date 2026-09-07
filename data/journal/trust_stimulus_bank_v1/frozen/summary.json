@@ -1,0 +1,14 @@
+{
+  "total": 48,
+  "labels": {
+    "known_correct": 24,
+    "known_incorrect": 24
+  },
+  "sources": {
+    "Stage B · setup/recommendation explanation": 12,
+    "Stage E · fairness explanation": 12,
+    "Stage F · SHAP/XAI explanation": 12,
+    "Stage F · conversational answer": 12
+  },
+  "dataset_contexts": 6
+}

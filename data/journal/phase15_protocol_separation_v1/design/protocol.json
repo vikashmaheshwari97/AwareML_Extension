@@ -1,0 +1,35 @@
+{
+  "schema_version": "phase15_protocol_separation_v1",
+  "status": "frozen_for_next_empirical_run",
+  "scientific_separation": {
+    "controlled_benchmark": {
+      "purpose": "known-ground-truth verifier/intervention validation",
+      "journal_evidence": true,
+      "actual_llm_performance_claim": false
+    },
+    "live_dataset_probe": {
+      "purpose": "exploratory real-dataset explanation inspection",
+      "journal_evidence": false,
+      "prompt_protocol": "phase15_live_guided_prompt_v3",
+      "generation_validity": "minimal grounded signal only; correctness imperfections are retained and scored rather than converted into grounding failures"
+    },
+    "empirical_llm_benchmark": {
+      "purpose": "actual LLM correctness/faithfulness evaluation",
+      "journal_evidence_after_review": true,
+      "prompt_protocol": "phase15_explanation_prompt_v4",
+      "guided_live_prompt_used": false,
+      "posthoc_tuning_after_final_run": false
+    }
+  },
+  "live_ui": {
+    "primary_workflow": "single four-source batch",
+    "faithfulness_default": "one intervention per source",
+    "manual_stage_by_stage_required": false,
+    "advanced_manual_verification": "collapsed optional section",
+    "status_semantics": {
+      "OK": "pipeline completed and displayed quality checks are clean",
+      "REVIEW": "usable LLM output exists but quality metrics need inspection",
+      "FAILED": "no usable grounded output/intervention was produced"
+    }
+  }
+}

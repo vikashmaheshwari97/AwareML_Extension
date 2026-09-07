@@ -75,9 +75,10 @@ def main():
             in specialist
         ),
         "artifact_repeatability_loader": (
-            "find_latest_matching_run" in integrated
-            and "list_dataset_runs" in integrated
-            and "dataset_content_sha256" in integrated
+            "phase14_repeated_results.json"
+            in integrated
+            and "repeatability_manifest.json"
+            in integrated
         ),
         "repeatability_streamlit_preflight": (
             "_active_streamlit_processes"
