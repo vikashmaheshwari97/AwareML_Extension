@@ -9,6 +9,7 @@ from awareml.ui.theme import inject_theme
 from awareml.ui_v2.runtime_hygiene import configure_runtime_hygiene
 from awareml.ui_v2.state import ensure_research_state, phase_status
 from awareml.ui_v2.theme import inject_research_theme
+from awareml.ui_v2.layout_polish import inject_layout_polish
 from awareml.ui_v2.pages import PAGE_REGISTRY_V2
 
 configure_runtime_hygiene()
@@ -23,6 +24,7 @@ st.set_page_config(
 state = ensure_research_state()
 inject_theme()
 inject_research_theme(state.get("theme_mode", "System"))
+inject_layout_polish()
 status = phase_status()
 
 with st.sidebar:
@@ -32,7 +34,7 @@ with st.sidebar:
           <div class="r9-brand-mark">◈</div>
           <div>
             <div class="r9-brand-title">AwareML</div>
-            <div class="r9-brand-sub">Research OS · UI V2</div>
+            <div class="r9-brand-sub">Research OS</div>
           </div>
         </div>
         """,
@@ -86,7 +88,7 @@ with st.sidebar:
     st.markdown(
         """
         <div class="r9-side-status">
-          <span>Recommender V2</span><b class="{c6}">{s6}</b>
+          <span>Recommender</span><b class="{c6}">{s6}</b>
           <span>LLM Copilot</span><b class="{c7}">{s7}</b>
           <span>Faithfulness</span><b class="{c8}">{s8}</b>
         </div>

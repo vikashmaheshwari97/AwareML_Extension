@@ -1,0 +1,5 @@
+{
+  "artifact": "AwareML Phase17 Information-Seeking classifier fix",
+  "scope": "classifier precedence + exact regression test",
+  "logic_change": "Clarification phrases take precedence over generic metric/data evidence keywords"
+}

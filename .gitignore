@@ -122,3 +122,55 @@ local_artifacts/
 /phase15_hpc_payload/
 /artifacts/phase15/hpc_runs/
 /artifacts/phase15/hpc_setup/
+
+# Phase 16 — Trust Calibration local installer/runtime artifacts
+/.phase16_trust_calibration_backup/
+/phase16_trust_payload/
+/APPLY_PHASE16_TRUST_CALIBRATION.py
+/README_PHASE16_TRUST_CALIBRATION.txt
+/PHASE16_PACKAGE_MANIFEST.json
+
+# Trust Calibration UI polish local artifacts
+/.trust_calibration_ui_polish_backup/
+/trust_ui_polish_payload/
+/APPLY_TRUST_CALIBRATION_UI_POLISH.py
+/README_TRUST_CALIBRATION_UI_POLISH.txt
+/TRUST_CALIBRATION_UI_POLISH_MANIFEST.json
+
+# Trust Calibration simple-access local artifacts
+/.trust_calibration_simple_access_backup/
+/trust_access_payload/
+/APPLY_TRUST_CALIBRATION_SIMPLE_ACCESS.py
+/README_TRUST_CALIBRATION_SIMPLE_ACCESS.txt
+/TRUST_CALIBRATION_SIMPLE_ACCESS_MANIFEST.json
+
+# Trust Calibration final-usability local artifacts
+/.trust_calibration_final_usability_backup/
+/trust_final_usability_payload/
+/APPLY_TRUST_CALIBRATION_FINAL_USABILITY.py
+/README_TRUST_CALIBRATION_FINAL_USABILITY.txt
+/TRUST_CALIBRATION_FINAL_USABILITY_MANIFEST.json
+
+# Trust Calibration UI-finish local artifacts
+/.trust_calibration_ui_finish_backup/
+/trust_ui_finish_payload/
+/APPLY_TRUST_CALIBRATION_UI_FINISH.py
+/README_TRUST_CALIBRATION_UI_FINISH.txt
+/TRUST_CALIBRATION_UI_FINISH_MANIFEST.json
+
+# Information-Seeking local installer artifacts
+/.phase17_information_seeking_backup/
+/phase17_information_seeking_payload/
+/APPLY_PHASE17_INFORMATION_SEEKING.py
+/README_PHASE17_INFORMATION_SEEKING.txt
+/PHASE17_INFORMATION_SEEKING_MANIFEST.json
+
+# Information-Seeking grounding/UX local artifacts
+/.information_seeking_grounding_ux_backup/
+/phase17_grounding_ux_payload/
+/APPLY_INFORMATION_SEEKING_GROUNDING_UX_FIX.py
+/README_INFORMATION_SEEKING_GROUNDING_UX_FIX.txt
+/INFORMATION_SEEKING_GROUNDING_UX_MANIFEST.json
+/artifacts/information_seeking_context_pilot.json
+/artifacts/information_seeking_context_final.json
+

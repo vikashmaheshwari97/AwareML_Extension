@@ -1,0 +1,86 @@
+{
+  "artifact": "information_seeking_protocol_v1",
+  "schema_version": "information_seeking_v1",
+  "track": 3,
+  "status": "draft",
+  "central_rq": "When do users ask for more information instead of accepting the initial explanation?",
+  "scope": "Smaller optional HCAI study; may be run after or alongside Trust Calibration.",
+  "participant_target": {
+    "suggested_min": 10,
+    "suggested_max": 15,
+    "final_target": null,
+    "status": "pending_finalization"
+  },
+  "collection": {
+    "design": "within-session behavioral observation",
+    "modes": [
+      "pilot",
+      "final"
+    ],
+    "pilot_excluded_from_final_analysis": true,
+    "current_run_required": true,
+    "observed_ranking_required": true,
+    "response_mode": "deterministic_grounded_evidence_router"
+  },
+  "measurements": [
+    "whether_follow_up_occurred",
+    "number_of_follow_ups",
+    "first_follow_up_category",
+    "time_before_first_follow_up",
+    "evidence_viewed",
+    "recommendation_accepted_overridden_rejected",
+    "final_decision_confidence",
+    "participant_rationale",
+    "information_seeking_occurred",
+    "evidence_view_count",
+    "requested_topics"
+  ],
+  "classifier": {
+    "categories": [
+      "evidence_request",
+      "explanation_probe",
+      "challenge",
+      "counterfactual_or_comparison",
+      "clarification",
+      "other_follow_up"
+    ],
+    "role": "analysis_assist_only",
+    "qualitative_coding_replacement": false
+  },
+  "qualitative_analysis": {
+    "manual_coding_required": true,
+    "coding_scheme_file": "coding_scheme.json",
+    "representative_patterns_are_descriptive_not_themes": true
+  },
+  "ethics": {
+    "status": "pending",
+    "reference": null
+  },
+  "participant_materials": {
+    "status": "draft",
+    "consent_text": "DRAFT FOR PILOT ONLY. Replace with finalized participant information and consent language before final recruitment."
+  },
+  "finalization_gate": {
+    "protocol_status_required": "final_ready",
+    "coding_scheme_status_required": "final",
+    "ethics_status_allowed": [
+      "approved",
+      "exempt",
+      "not_required"
+    ],
+    "participant_materials_status_required": "final",
+    "final_target_required": true
+  },
+  "study_context": {
+    "pilot_policy": "Researcher may capture one standardized measured AwareML run plus observed Decision Lab ranking for repeated participant sessions.",
+    "main_policy": "Use a frozen standardized study context; real participants should not be required to rerun Run Studio unless that is explicitly part of the approved design.",
+    "raw_dataset_rows_saved": false,
+    "derived_measured_evidence_only": true
+  },
+  "response_policy": {
+    "mode": "deterministic_grounded_multi_topic_router",
+    "multi_topic_queries_answer_all_requested_supported_topics": true,
+    "participant_sees_classifier_label": false,
+    "classifier_logged_for_analysis": true
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "artifact": "awareml_ui_label_test_fix",
+  "scope": "test-only update for stale Explanation Integrity display-label assertion",
+  "logic_changes": false,
+  "files": [
+    "APPLY_UI_LABEL_TEST_FIX.py",
+    "README_UI_LABEL_TEST_FIX.txt"
+  ]
+}

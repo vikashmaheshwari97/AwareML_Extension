@@ -1,0 +1,115 @@
+{
+  "artifact": "phase16_trust_calibration_protocol_v1",
+  "schema_version": "phase16_trust_calibration_v1",
+  "phase": 16,
+  "track": 2,
+  "status": "draft",
+  "central_rq": "Does user trust track actual explanation correctness, or merely how fluent/confident the explanation sounds?",
+  "prerequisite": {
+    "phase15_required": true,
+    "stimulus_bank": "data/journal/trust_stimulus_bank_v1/frozen",
+    "stimulus_bank_role": "Frozen controlled Track-2 correct-vs-incorrect explanation stimuli; not an actual-LLM-performance claim."
+  },
+  "design": {
+    "within_subject": true,
+    "randomized": true,
+    "blinded": true,
+    "target_participants_starting_range": [30, 40],
+    "items_per_participant": 20,
+    "allowed_items_per_participant": [16, 18, 20, 22, 24],
+    "conditions": ["correct", "incorrect"],
+    "condition_ratio": [0.5, 0.5],
+    "shared_pool_min_per_condition": 20,
+    "one_variant_per_pair_per_participant": true,
+    "track1_authors_excluded": true,
+    "expertise_groups": [
+      "Novice / student",
+      "Practitioner",
+      "ML / AutoML expert"
+    ]
+  },
+  "trust_measure": {
+    "status": "pending_morten",
+    "instrument_name": null,
+    "citation": null,
+    "scale_min": 1,
+    "scale_max": 7,
+    "scale_min_label": "very low",
+    "scale_max_label": "very high",
+    "scoring_rule": "mean_after_reverse_coding",
+    "items": [
+      {
+        "id": "pilot_trust",
+        "text": "How much do you trust this explanation to support the decision?",
+        "reverse": false,
+        "pilot_only": true
+      }
+    ],
+    "notes": "Morten must replace/finalize this provisional pilot item with the validated trust measure before design freeze."
+  },
+  "power_calculation": {
+    "status": "pending_morten",
+    "method": null,
+    "effect_size_assumption": null,
+    "alpha": 0.05,
+    "target_power": 0.8,
+    "required_completed_participants": null,
+    "notes": "Starting recruitment range is 30-40 participants; Morten must finalize the power calculation and required completed N."
+  },
+  "ethics": {
+    "status": "pending",
+    "reference": null,
+    "notes": "Set according to the applicable institutional ethics determination before FINAL data collection."
+  },
+  "participant_materials": {
+    "status": "draft",
+    "instructions": "You will see a sequence of AI-generated or AI-style explanations. Evaluate each explanation independently using the information shown. Do not try to infer the hidden study condition.",
+    "consent_text": "DRAFT FOR PILOT ONLY. Replace this text with the finalized participant information and consent language approved for the study before FINAL recruitment."
+  },
+  "measurements": {
+    "trust_rating": true,
+    "perceived_correctness": true,
+    "fluency_rating": true,
+    "perceived_confidence": true,
+    "recommendation_acceptance": true,
+    "override_reject": true,
+    "response_time": true,
+    "correctness_condition": true,
+    "expertise_group": true,
+    "expertise_self_rating": true,
+    "order": true,
+    "opaque_item_id": true,
+    "stimulus_id_researcher_only": true
+  },
+  "randomization": {
+    "version": "phase16_balanced_within_subject_v1",
+    "deterministic_per_pseudonymous_participant": true,
+    "balanced_conditions_within_participant": true,
+    "balanced_source_stages": true,
+    "max_same_condition_run": 3,
+    "participant_item_id_is_opaque": true,
+    "correctness_label_hidden_from_participant": true
+  },
+  "analysis_plan": {
+    "primary_estimand": "Within-participant mean trust(correct) minus mean trust(incorrect).",
+    "primary_uncertainty": "Participant-level bootstrap 95% confidence interval.",
+    "primary_test": "Paired sign-flip permutation test.",
+    "overtrust_definition": "Accepting a known-incorrect explanation/recommendation stimulus.",
+    "undertrust_definition": "Overriding or rejecting a known-correct explanation/recommendation stimulus.",
+    "appropriate_reliance_definition": "Accept correct stimuli and override/reject incorrect stimuli.",
+    "style_analysis": "Compare trust association with actual correctness, fluency and perceived confidence using participant-centered standardized regression plus Spearman summaries.",
+    "expertise_analysis": "Report calibration gap and over-trust by predeclared expertise group.",
+    "order_analysis": "Report trust-vs-order and response-time-vs-order Spearman associations.",
+    "source_stage_analysis": "Report descriptive trust and over-trust by Phase-15 source stage."
+  },
+  "completion_gate": {
+    "freeze_study_protocol": true,
+    "freeze_stimulus_randomization": true,
+    "freeze_participant_responses": true,
+    "freeze_analysis_script": true,
+    "freeze_calibration_results": true,
+    "freeze_overtrust_results": true,
+    "require_power_target_met": true,
+    "require_complete_balanced_participant_records": true
+  }
+}

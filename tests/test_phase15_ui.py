@@ -9,7 +9,8 @@ def test_phase15_lab_is_integrated():
         ROOT / "awareml" / "ui_v2" / "pages_advanced.py"
     ).read_text(encoding="utf-8")
 
-    assert "Explanation Integrity · Phase 15" in advanced
+    assert '"Explanation Integrity": phase15_explanation_integrity_page' in advanced
+    assert "Explanation Integrity · Phase 15" not in advanced
     assert "phase15_explanation_integrity_page" in advanced
 
 

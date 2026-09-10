@@ -37,7 +37,7 @@ def fmt(value, digits=3, suffix=""):
 def phase_pills():
     status = phase_status()
     return [
-        ("ML Recommender V2", "good" if status["phase6"]["ready"] else "warn"),
+        ("ML Recommender", "good" if status["phase6"]["ready"] else "warn"),
         ("LLM Copilot", "good" if status["phase7"]["ready"] else "warn"),
         ("Faithfulness", "good" if status["phase8"]["ready"] else "warn"),
     ]

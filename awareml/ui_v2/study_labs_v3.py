@@ -497,3 +497,19 @@ def information_seeking_research_page():
             st.session_state.r95_chat_log = []
             _state()["chat_session_id"] = str(uuid.uuid4())
             st.rerun()
+
+# PHASE16_TRUST_CALIBRATION_OVERRIDE_V1
+# Phase 16 replaces the earlier utility-based trust-calibration UI. Keep the old
+# function body only as historical source; all callers resolve to the Phase-16 page.
+from .phase16_trust_calibration import (
+    phase16_trust_calibration_page as trust_calibration_research_page,
+)
+
+# PHASE17_INFORMATION_SEEKING_OVERRIDE_V1
+# Keep the historical implementation above for provenance, but route the
+# Advanced-Labs Information-Seeking workspace to the journal study implementation.
+from .phase17_information_seeking import (
+    information_seeking_research_page as _phase17_information_seeking_research_page,
+)
+information_seeking_research_page = _phase17_information_seeking_research_page
+

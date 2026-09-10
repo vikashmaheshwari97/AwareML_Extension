@@ -1,0 +1,49 @@
+{
+  "artifact": "information_seeking_qualitative_coding_scheme_v1",
+  "status": "draft_review_required",
+  "principle": "Manual qualitative coding is authoritative; the automated follow-up classifier is only an analysis aid.",
+  "codes": [
+    {
+      "id": "verification_seeking",
+      "label": "Verification seeking",
+      "definition": "Participant seeks measurements, sources, evidence, or provenance to verify the recommendation."
+    },
+    {
+      "id": "uncertainty_reduction",
+      "label": "Uncertainty reduction",
+      "definition": "Participant asks follow-ups primarily to reduce uncertainty before making a decision."
+    },
+    {
+      "id": "comparison_search",
+      "label": "Comparison search",
+      "definition": "Participant compares alternatives or asks a counterfactual before deciding."
+    },
+    {
+      "id": "skeptical_challenge",
+      "label": "Skeptical challenge",
+      "definition": "Participant explicitly questions, disputes, or challenges the recommendation/explanation."
+    },
+    {
+      "id": "terminology_clarification",
+      "label": "Terminology clarification",
+      "definition": "Participant asks what a metric, term, or explanation means."
+    },
+    {
+      "id": "information_sufficiency",
+      "label": "Information sufficiency",
+      "definition": "Participant indicates that the currently available information is enough and stops probing."
+    },
+    {
+      "id": "decision_revision",
+      "label": "Decision revision",
+      "definition": "New information causes the participant to change, override, or reject the initial recommendation."
+    }
+  ],
+  "coding_instructions": [
+    "Code the participant's behavior and rationale, not the classifier label.",
+    "Multiple codes may apply to one session.",
+    "Record a short coder note for borderline cases.",
+    "Use representative quotations/patterns only after checking that they do not expose participant identity.",
+    "If two coders are used, resolve disagreements using the study's agreed adjudication procedure."
+  ]
+}
