@@ -30,6 +30,8 @@ from .research_evidence import (
 from .state import ROOT, ensure_research_state
 from .copilot_three_path import render_historical_preference_prior_tab, render_dataset_aware_v2_tab
 from .copilot_historical import render_historical_meta_recommender_tab
+from .copilot_workspace_v5 import render_copilot_workspace_header, render_goal_framework_guidance
+from .copilot_unified import render_goal_copilot_unified_page
 from .pre14_usability import (
     clean_pre_run_rationale,
     persist_objective_review,
@@ -797,30 +799,16 @@ def _render_objective_interpretation(interpretation, parse_meta, state):
 
 # PRE14_THREE_PATH_COPILOT_WRAPPER
 def copilot_workspace_page():
-    st.markdown("## AwareML Copilot · choose the evidence path that fits your situation")
-    st.caption(
-        "Goal Copilot understands what you want. Historical Preference Prior shows what generally worked before. "
-        "Dataset-aware ML Recommender V2 predicts what should work for the dataset you actually loaded."
-    )
-
-    overview = st.columns(3)
-    with overview[0]:
-        st.markdown("**1 · Goal Copilot**")
-        st.caption("No dataset · LLaMA 3 8B + V3.1 · understands Accuracy / Runtime / Energy / CO2 · not a framework selector by itself.")
-    with overview[1]:
-        st.markdown("**2 · Historical Preference Prior**")
-        st.caption("No dataset · 705 runs summarized · global starting point · historical aggregation, not machine learning.")
-    with overview[2]:
-        st.markdown("**3 · Dataset-aware ML Recommender V2**")
-        st.caption("Dataset + target · learned models · dataset-specific pre-run framework prediction · true ML recommender.")
+    state = ensure_research_state()
+    render_copilot_workspace_header(state)
 
     goal_tab, prior_tab, v2_tab = st.tabs([
         "1 · Goal Copilot",
-        "2 · Historical Preference Prior · No dataset",
+        "2 · Historical Preference Prior",
         "3 · Dataset-aware ML Recommender V2",
     ])
     with goal_tab:
-        _goal_copilot_workspace_page()
+        render_goal_copilot_unified_page()
     with prior_tab:
         render_historical_preference_prior_tab()
     with v2_tab:

@@ -174,3 +174,8 @@ local_artifacts/
 /artifacts/information_seeking_context_pilot.json
 /artifacts/information_seeking_context_final.json
 
+
+# Local development / patch backups
+.*_backup/
+.*_backups/
+phase15_h200_*.bundle

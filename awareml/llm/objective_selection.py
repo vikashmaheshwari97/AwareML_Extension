@@ -168,31 +168,170 @@ def deterministic_objective_selection(text: str) -> ObjectiveSelectionResult:
     )
 
 
+def _first_hcai_match(text, patterns):
+    for pattern in patterns:
+        match = re.search(pattern, text, flags=re.IGNORECASE)
+        if match:
+            return match.group(0)
+    return None
+
+
+def infer_hcai_evidence(text: str) -> dict:
+    t = re.sub(r"\s+", " ", (text or "").lower()).strip()
+
+    drift_patterns = (
+        r"\bconcept drift\b",
+        r"\bdrift\b",
+        r"\bnon[- ]stationary\b",
+        r"\bdistribution shift\b",
+        r"\bchanging distribution\b",
+        r"\badapt quickly\b",
+        r"\brecover quickly\b",
+    )
+
+    fairness_patterns = (
+        r"\bfair(?:ness)?\b",
+        r"\bbias(?:ed)?\b",
+        r"\bequit(?:y|able|ably)\b",
+        r"\bprotected groups?\b",
+        r"\btreat [^.!?]{0,50}groups? consistently\b",
+        r"\btreat [^.!?]{0,50}groups? equally\b",
+        r"\bconsistent(?:ly)? across [^.!?]{0,70}(?:groups?|populations?|demographics?)\b",
+        r"\bacross different [^.!?]{0,55}(?:groups?|populations?|demographics?)\b",
+        r"\bavoid [^.!?]{0,40}disparit(?:y|ies)\b",
+    )
+
+    explain_high_patterns = (
+        r"\bexplain(?:able|ability|ed|ing)?\b",
+        r"\binterpretable\b",
+        r"\binterpretability\b",
+        r"\btransparent\b",
+        r"\bunderstandable\b",
+        r"\bclear reasons?\b",
+        r"\bprovide [^.!?]{0,20}(?:clear )?reasons?\b",
+        r"\b(?:clinicians?|users?|operators?|people|humans?) can understand\b",
+        r"\breasons? [^.!?]{0,50}(?:clinicians?|users?|operators?|people|humans?) can understand\b",
+        r"\bjustify (?:its|the) (?:decision|prediction|recommendation)s?\b",
+        r"\bprovide (?:a )?(?:rationale|justification)\b",
+        r"\bbefore acting on (?:its|the) recommendations?\b",
+    )
+
+    explain_moderate_patterns = (
+        r"\bfeature importance\b",
+        r"\bwhy (?:the|this) (?:model|system|prediction|recommendation)\b",
+        r"\breasoning\b",
+        r"\brationale\b",
+    )
+
+    strict_energy_patterns = (
+        r"\bstrict energy\b",
+        r"\bvery low energy\b",
+        r"\bminimi[sz]e energy\b",
+        r"\blowest energy\b",
+        r"\btight power budget\b",
+        r"\bavoid unnecessary power consumption\b",
+        r"\bminimi[sz]e power consumption\b",
+    )
+
+    moderate_energy_patterns = (
+        r"\benergy\b",
+        r"\bpower consumption\b",
+        r"\bpower use\b",
+        r"\bpower usage\b",
+        r"\bbattery\b",
+        r"\blow[- ]power\b",
+        r"\bedge device\b",
+        r"\bedge environment\b",
+        r"\bbetween charges\b",
+    )
+
+    drift_phrase = _first_hcai_match(t, drift_patterns)
+    fairness_phrase = _first_hcai_match(t, fairness_patterns)
+    explain_high_phrase = _first_hcai_match(t, explain_high_patterns)
+    explain_mid_phrase = _first_hcai_match(t, explain_moderate_patterns)
+    strict_energy_phrase = _first_hcai_match(t, strict_energy_patterns)
+    moderate_energy_phrase = _first_hcai_match(t, moderate_energy_patterns)
+
+    drift = {
+        "value": "high" if drift_phrase else "moderate",
+        "status": "scenario_supported" if drift_phrase else "platform_baseline",
+        "evidence": drift_phrase,
+        "reason": (
+            "The scenario explicitly indicates distribution-change or adaptation needs."
+            if drift_phrase
+            else "No explicit drift cue was found; moderate drift monitoring is the AwareML baseline."
+        ),
+    }
+
+    fairness = {
+        "required": bool(fairness_phrase),
+        "status": "scenario_supported" if fairness_phrase else "not_requested",
+        "evidence": fairness_phrase,
+        "reason": (
+            "The wording implies consistent or equitable treatment across people or population groups."
+            if fairness_phrase
+            else "No sufficiently specific fairness or group-treatment cue was found."
+        ),
+    }
+
+    if explain_high_phrase:
+        explainability = {
+            "value": "high",
+            "status": "scenario_supported",
+            "evidence": explain_high_phrase,
+            "reason": (
+                "The scenario explicitly asks for understandable reasons, transparency, "
+                "or explanation support for human decision-making."
+            ),
+        }
+    elif explain_mid_phrase:
+        explainability = {
+            "value": "moderate",
+            "status": "scenario_supported",
+            "evidence": explain_mid_phrase,
+            "reason": "The scenario requests some explanatory support.",
+        }
+    else:
+        explainability = {
+            "value": "moderate",
+            "status": "platform_baseline",
+            "evidence": None,
+            "reason": (
+                "No explicit explainability cue was found; moderate explainability is "
+                "the AwareML baseline rather than a user-requested level."
+            ),
+        }
+
+    if strict_energy_phrase:
+        energy = {
+            "value": "strict",
+            "status": "scenario_supported",
+            "evidence": strict_energy_phrase,
+        }
+    elif moderate_energy_phrase:
+        energy = {
+            "value": "moderate",
+            "status": "scenario_supported",
+            "evidence": moderate_energy_phrase,
+        }
+    else:
+        energy = {
+            "value": "low",
+            "status": "platform_baseline",
+            "evidence": None,
+        }
+
+    return {
+        "drift": drift,
+        "fairness": fairness,
+        "explainability": explainability,
+        "energy_constraint": energy,
+    }
+
+
 def infer_hcai_requirements(text: str) -> HCAIRequirements:
-    """HCAI requirements are deliberately separate from primary objectives."""
-
     t = (text or "").lower()
-
-    drift_sensitivity = (
-        "high"
-        if _contains_any(
-            t,
-            [
-                "concept drift",
-                "drift",
-                "non-stationary",
-                "nonstationary",
-                "adapt quickly",
-                "recover quickly",
-            ],
-        )
-        else "moderate"
-    )
-
-    fairness_required = _contains_any(
-        t,
-        ["fair", "fairness", "bias", "equity", "protected group"],
-    )
+    evidence = infer_hcai_evidence(text)
 
     fairness_metric = None
     if "equal opportunity" in t:
@@ -202,30 +341,6 @@ def infer_hcai_requirements(text: str) -> HCAIRequirements:
     elif "demographic parity" in t:
         fairness_metric = "demographic_parity"
 
-    explainability_level = (
-        "high"
-        if _contains_any(
-            t,
-            [
-                "explain",
-                "interpretable",
-                "interpretability",
-                "transparent",
-                "understandable",
-            ],
-        )
-        else "moderate"
-    )
-
-    energy_constraint = "low"
-    if _contains_any(
-        t,
-        ["strict energy", "very low energy", "minimize energy", "lowest energy"],
-    ):
-        energy_constraint = "strict"
-    elif _contains_any(t, ["energy", "power", "battery", "edge device", "edge environment"]):
-        energy_constraint = "moderate"
-
     runtime_match = re.search(
         r"(?:under|within|max(?:imum)?|no more than)[^0-9]{0,18}"
         r"(\d+(?:\.\d+)?)\s*(?:s|sec|secs|second|seconds)\b",
@@ -234,14 +349,13 @@ def infer_hcai_requirements(text: str) -> HCAIRequirements:
     max_runtime_sec = float(runtime_match.group(1)) if runtime_match else None
 
     return HCAIRequirements(
-        drift_sensitivity=drift_sensitivity,
-        energy_constraint=energy_constraint,
-        fairness_required=fairness_required,
+        drift_sensitivity=evidence["drift"]["value"],
+        energy_constraint=evidence["energy_constraint"]["value"],
+        fairness_required=bool(evidence["fairness"]["required"]),
         fairness_metric=fairness_metric,
-        explainability_level=explainability_level,
+        explainability_level=evidence["explainability"]["value"],
         max_runtime_sec=max_runtime_sec,
     )
-
 
 class JournalObjectiveSelector:
     """Problem A: frozen scenario -> objective-set inference."""

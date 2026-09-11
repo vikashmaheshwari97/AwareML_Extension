@@ -109,15 +109,19 @@ def render_historical_preference_prior_tab() -> None:
                 st.rerun()
 
     d = HIST_PRESETS["Accuracy first"]
+    st.session_state.setdefault("three_hist_accuracy", int(d["accuracy"]))
+    st.session_state.setdefault("three_hist_runtime", int(d["runtime"]))
+    st.session_state.setdefault("three_hist_energy", int(d["energy"]))
+    st.session_state.setdefault("three_hist_co2", int(d["co2"]))
     c1, c2, c3, c4 = st.columns(4)
     with c1:
-        a = st.slider("Accuracy ↑", 0, 100, int(st.session_state.get("three_hist_accuracy", d["accuracy"])), key="three_hist_accuracy")
+        a = st.slider("Accuracy ↑", 0, 100, key="three_hist_accuracy")
     with c2:
-        r = st.slider("Runtime ↓", 0, 100, int(st.session_state.get("three_hist_runtime", d["runtime"])), key="three_hist_runtime")
+        r = st.slider("Runtime ↓", 0, 100, key="three_hist_runtime")
     with c3:
-        e = st.slider("Low energy ↓", 0, 100, int(st.session_state.get("three_hist_energy", d["energy"])), key="three_hist_energy")
+        e = st.slider("Low energy ↓", 0, 100, key="three_hist_energy")
     with c4:
-        co = st.slider("Low CO2 ↓", 0, 100, int(st.session_state.get("three_hist_co2", d["co2"])), key="three_hist_co2")
+        co = st.slider("Low CO2 ↓", 0, 100, key="three_hist_co2")
 
     weights = normalize_preference_weights({"accuracy": a, "runtime": r, "energy": e, "co2": co})
     st.info("Normalized priorities: {}".format(_weights_text(weights)))
@@ -319,15 +323,19 @@ def render_dataset_aware_v2_tab() -> None:
                 st.rerun()
 
     d = V2_PRESETS["Balanced"]
+    st.session_state.setdefault("three_v2_accuracy", int(d["accuracy"]))
+    st.session_state.setdefault("three_v2_runtime", int(d["runtime"]))
+    st.session_state.setdefault("three_v2_energy", int(d["energy"]))
+    st.session_state.setdefault("three_v2_co2", int(d["co2"]))
     c1, c2, c3, c4 = st.columns(4)
     with c1:
-        a = st.slider("Accuracy ↑", 0, 100, int(st.session_state.get("three_v2_accuracy", d["accuracy"])), key="three_v2_accuracy")
+        a = st.slider("Accuracy ↑", 0, 100, key="three_v2_accuracy")
     with c2:
-        r = st.slider("Runtime ↓", 0, 100, int(st.session_state.get("three_v2_runtime", d["runtime"])), key="three_v2_runtime")
+        r = st.slider("Runtime ↓", 0, 100, key="three_v2_runtime")
     with c3:
-        e = st.slider("Energy ↓", 0, 100, int(st.session_state.get("three_v2_energy", d["energy"])), key="three_v2_energy")
+        e = st.slider("Energy ↓", 0, 100, key="three_v2_energy")
     with c4:
-        co = st.slider("CO2 ↓", 0, 100, int(st.session_state.get("three_v2_co2", d["co2"])), key="three_v2_co2")
+        co = st.slider("CO2 ↓", 0, 100, key="three_v2_co2")
 
     weights = normalize_weights({"accuracy": a, "runtime": r, "energy": e, "co2": co})
     st.info("Normalized preferences: {}".format(_weights_text(weights)))
@@ -402,7 +410,7 @@ def render_dataset_aware_v2_tab() -> None:
     table = ranked[[c for c in cols if c in ranked.columns]].copy()
     st.dataframe(table, use_container_width=True, hide_index=True)
 
-    hist = state.get("historical_meta_result") or state.get("three_hist_result") or {}
+    hist = state.get("copilot_auto_historical_result") or state.get("historical_meta_result") or state.get("three_hist_result") or {}
     compare = st.columns(3)
     compare[0].metric("Goal Copilot", "Priorities ready" if goal_weights is not None else "Not generated")
     compare[1].metric("Historical prior", str(hist.get("winner") or "Not generated"))
