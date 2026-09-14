@@ -1,0 +1,47 @@
+{
+  "artifact": "objective_selection_benchmark_v2_primary_amended_materialization",
+  "evaluated_selector_outputs_existed_before_primary_materialization": false,
+  "file_sha256": {
+    "data/journal/objective_selection_benchmark_v2/frozen/amended_primary_manifest.json": "7373758b271325ee670aa4fdc83c8a7025829f3e8eafe46b185f14688a66609d",
+    "data/journal/objective_selection_benchmark_v2/frozen/ground_truth_manifest.json": "b6ba9cf91824db113d9c66b268dcf6d779e316280389d64d4b51c12636436ee8",
+    "data/journal/objective_selection_benchmark_v2/frozen/primary_benchmark.csv": "483ab4d898ab169f66407322d93307ee9a935f59a0e32078e74c1404f23d4ae9",
+    "data/journal/objective_selection_benchmark_v2/results/primary_benchmark_amended.csv": "39e3d8742d92ac567b7508f320acddba4bbec390dc21a85241f59cf7347c81f0",
+    "data/journal/objective_selection_v2/manifest.json": "17951ac29f73b8e2f43f5bb4369eeaf97ed66f54a80d7b59352f4b9a0e795cbe",
+    "data/journal/objective_selection_v32/manifest.json": "a742f50422ba25555700123bf10121f2e26619c0b5bb4290683fe5683fa6bf45"
+  },
+  "generator_intent_used_as_ground_truth": false,
+  "ground_truth_source": "independent_human_majority_vote_only, including frozen H041-H055 amendment",
+  "parent_amended_primary_manifest_sha256": "7373758b271325ee670aa4fdc83c8a7025829f3e8eafe46b185f14688a66609d",
+  "release_status": "frozen",
+  "selection_algorithm": "inherited exactly from frozen amended_primary_manifest; no reselection",
+  "summary": {
+    "distinct_objective_sets": 12,
+    "generated": 34,
+    "human_written": 26,
+    "human_written_fraction": 0.43333333333333335,
+    "k_prime_counts": {
+      "1": 15,
+      "2": 15,
+      "3": 15,
+      "4": 15
+    },
+    "materialization_note": "Selection/order are inherited unchanged from frozen amended_primary_manifest. For amendment rows whose convenience CSV ground_truth field was blank, the pipe-delimited ground-truth set is deterministically materialized from the frozen per-objective majority-vote yes/no columns; k_prime is checked for consistency.",
+    "n": 60,
+    "objective_set_counts": {
+      "Accuracy": 7,
+      "Accuracy|Energy": 4,
+      "Accuracy|Energy|CO2": 2,
+      "Accuracy|Runtime": 9,
+      "Accuracy|Runtime|CO2": 2,
+      "Accuracy|Runtime|Energy": 8,
+      "Accuracy|Runtime|Energy|CO2": 15,
+      "Energy": 1,
+      "Energy|CO2": 1,
+      "Runtime": 7,
+      "Runtime|Energy": 1,
+      "Runtime|Energy|CO2": 3
+    },
+    "selection_used_generator_intent": false,
+    "selection_used_model_outputs": false
+  }
+}

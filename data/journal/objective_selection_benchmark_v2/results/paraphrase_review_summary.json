@@ -1,0 +1,12 @@
+{
+  "acceptance_rule": "both reviewers preserve meaning AND both independently recover the base human ground-truth set",
+  "accepted_variants": 50,
+  "candidate_variants": 50,
+  "excluded": [],
+  "excluded_variants": 0,
+  "families": 10,
+  "reviewer_ids": [
+    "reviewer_A",
+    "reviewer_B"
+  ]
+}

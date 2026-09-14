@@ -1,0 +1,15 @@
+{
+  "artifact": "phase12_v2_adversarial_generation_provenance",
+  "created_on": "2026-09-14",
+  "generator": "GPT-5.6 Sol",
+  "generator_role": "external design generator; not either evaluated llama3:8b selector",
+  "case_count": 12,
+  "expected_status_counts": {
+    "ambiguous": 4,
+    "contradictory": 4,
+    "out_of_scope": 4
+  },
+  "expected_statuses_frozen_before_evaluation": true,
+  "model_outputs_used": false,
+  "legacy_cases_copied": false
+}

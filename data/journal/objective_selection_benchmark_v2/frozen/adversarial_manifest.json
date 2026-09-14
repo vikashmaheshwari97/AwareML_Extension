@@ -1,0 +1,33 @@
+{
+  "artifact": "objective_selection_benchmark_v2_adversarial",
+  "evaluated_selector_outputs_existed_before_freeze": false,
+  "file_sha256": {
+    "data/journal/objective_selection_benchmark_v2/adversarial/adversarial_cases.csv": "d4c57218e3b10dbe69ce89836e4d0f9a6b685513ae084c9624ff5208f4c97a54",
+    "data/journal/objective_selection_benchmark_v2/frozen/adversarial_set.csv": "d4c57218e3b10dbe69ce89836e4d0f9a6b685513ae084c9624ff5208f4c97a54"
+  },
+  "frozen_at_utc": "2026-09-14T16:56:26.372459+00:00",
+  "release_status": "frozen",
+  "summary": {
+    "category_counts": {
+      "decision_quality_conflict": 1,
+      "environmental_conflict": 1,
+      "explicitly_unresolved_priority": 1,
+      "identity_and_retention": 1,
+      "interface_styling": 1,
+      "localization_accessibility": 1,
+      "power_conflict": 1,
+      "reporting_workflow": 1,
+      "timing_conflict": 1,
+      "undefined_terms": 1,
+      "underspecified_tradeoff": 1,
+      "vague_multi_concern": 1
+    },
+    "expected_status_counts": {
+      "ambiguous": 4,
+      "contradictory": 4,
+      "out_of_scope": 4
+    },
+    "expected_status_frozen_before_evaluation": true,
+    "n": 12
+  }
+}

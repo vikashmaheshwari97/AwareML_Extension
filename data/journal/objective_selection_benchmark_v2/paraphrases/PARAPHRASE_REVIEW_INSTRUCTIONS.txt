@@ -1,0 +1,36 @@
+AwareML Phase-12-v2 — Independent Paraphrase Review Instructions
+=================================================================
+
+You are reviewing 50 paraphrases from 10 families.
+
+Files you should receive:
+- review_A.csv OR review_B.csv (only one)
+- review_reference.csv
+- this instruction file
+
+Do NOT receive base_scenarios.csv because it contains the hidden reference objective set.
+
+For each paraphrase:
+1. Find the same family_id in review_reference.csv and read the base scenario.
+2. Decide whether the paraphrase preserves the practical meaning of the base.
+   Fill meaning_preserved = yes or no.
+3. Independently decide which of the four benchmark concerns are clearly requested
+   by the paraphrase itself:
+   - accuracy: correctness, dependability, trustworthy decisions, avoiding wrong calls
+   - runtime: speed, latency, deadlines, prompt/early response, time windows
+   - energy: battery life, charging, electrical/power limits, device power draw
+   - co2: climate/environmental impact, cleaner electricity, fossil-heavy supply
+4. Fill every accuracy/runtime/energy/co2 cell with yes or no.
+5. Use one anonymous reviewer_id for every row.
+6. Notes are optional, but explain any meaning_preserved=no decision.
+
+Rules:
+- Work independently from the other reviewer.
+- Do not discuss answers before both files are complete.
+- Do not inspect model predictions, private generator intent, or previous benchmark outputs.
+- Do not edit family_id, variant_id, or scenario.
+- Multiple concerns may be yes.
+- If a concern is only implied by vague wording and is not clearly requested, mark no.
+
+Acceptance is strict: both reviewers must say meaning_preserved=yes AND both reviewers
+must independently recover exactly the base human-ground-truth objective set.

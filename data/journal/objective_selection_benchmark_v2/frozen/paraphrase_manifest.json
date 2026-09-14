@@ -1,0 +1,26 @@
+{
+  "artifact": "objective_selection_benchmark_v2_paraphrases",
+  "evaluated_selector_outputs_existed_before_freeze": false,
+  "file_sha256": {
+    "data/journal/objective_selection_benchmark_v2/frozen/paraphrase_set.csv": "5684aabccc0789d27465d7aac51c43093a4d781b8ea8f7d5d0021e7fa0e3e8d1",
+    "data/journal/objective_selection_benchmark_v2/paraphrases/base_scenarios.csv": "76421b2e0895a2487094d819b9da6cf5f5c21d60cf73a83e3780713d41d1828e",
+    "data/journal/objective_selection_benchmark_v2/paraphrases/paraphrase_candidates.csv": "b5e316eb56b9c0f1858fa4cdd5ff7317533268b74636bb8474d76b3c0f6ae15d",
+    "data/journal/objective_selection_benchmark_v2/paraphrases/review_A.csv": "36b46016399ee5b68f2aff64c72f33fe8426a0f9662759c93d74446713e3fbaa",
+    "data/journal/objective_selection_benchmark_v2/paraphrases/review_B.csv": "ac222e0684cbc6c9832ead631033da71de5bb53132af3fb16a686347fb6c7e37",
+    "data/journal/objective_selection_benchmark_v2/results/paraphrase_review_summary.json": "7953f32dae4a24fde018adb90bf9b4d6b6c2bdd70b93b8ccccb069b29c4e9930"
+  },
+  "frozen_at_utc": "2026-09-14T17:26:43.417986+00:00",
+  "release_status": "frozen",
+  "summary": {
+    "acceptance_rule": "both reviewers preserve meaning AND both independently recover the base human ground-truth set",
+    "accepted_variants": 50,
+    "candidate_variants": 50,
+    "excluded": [],
+    "excluded_variants": 0,
+    "families": 10,
+    "reviewer_ids": [
+      "reviewer_A",
+      "reviewer_B"
+    ]
+  }
+}
