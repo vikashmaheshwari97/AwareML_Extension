@@ -1,0 +1,79 @@
+{
+  "benchmark_behavior": {
+    "benchmark_mode": true,
+    "evidence_requirement": "selected labels require an exact scenario-local quote that passes a compact objective-specific concept guard",
+    "guard_role": "reject unsupported LLM additions only; never add omitted objectives",
+    "malformed_response": "explicit_malformed_no_recovery",
+    "semantic_recovery": false,
+    "wrong_model_or_digest": "hard_failure"
+  },
+  "development_lineage": {
+    "legacy_phase11_v2_selector_sha256": "17951ac29f73b8e2f43f5bb4369eeaf97ed66f54a80d7b59352f4b9a0e795cbe",
+    "legacy_phase12_v1_manifest_sha256": "74bd037c2162c17e32e61e2188b3bd88ccef5bdaf46000da851fc471a28cce72",
+    "old_phase12_cases_are_development_only": true,
+    "old_phase12_cases_may_not_be_final_v32_test": true,
+    "v31_source_sha256": "b1a122b5f4c453723388a4e80786588035bb02487e2ce65913b8fc8b83743080"
+  },
+  "frozen_at_utc": "2026-09-14T09:16:17.838014+00:00",
+  "interactive_behavior": {
+    "must_be_explicitly_enabled": true,
+    "recovery_is_recorded_in_fallback_used_and_audit": true,
+    "semantic_recovery_available": true
+  },
+  "journal_llm": {
+    "baseline_reporting_name": "Phase-11 V2 method replay under Phase-11R confirmatory runtime",
+    "candidate_reporting_name": "Objective Selection V3.2",
+    "generation": {
+      "format": "json",
+      "num_predict": 512,
+      "seed": 42,
+      "stream": false,
+      "temperature": 0.0,
+      "top_p": 1.0
+    },
+    "legacy_phase10_ollama_version": "0.32.14",
+    "model": "llama3:8b",
+    "model_digest": "365c0bd3c000a25d28ddbf732fe1c6add414de7275464c4e4d1c3b5fcb5d8ad1",
+    "ollama_version": "0.34.0",
+    "runtime_lock_id": "objective_selection_v32_confirmatory_runtime_20260914",
+    "same_model_digest_as_phase10": true,
+    "silent_model_fallback": false
+  },
+  "legacy_active_selector_marker_unchanged": {
+    "path": "data/journal/active_objective_selector.txt",
+    "value": "objective_selection_v2/manifest.json"
+  },
+  "near_pareto": {
+    "epsilon": 0.05,
+    "source": "awareml/engine/pareto_spec.py",
+    "spec_id": "epsilon_pareto_v1"
+  },
+  "objective_vocabulary": [
+    "Accuracy",
+    "Runtime",
+    "Energy",
+    "CO2"
+  ],
+  "purpose": "Precision-oriented evidence-grounded objective selection frozen before fresh Phase-12-v2 ground truth/outcomes.",
+  "release_id": "objective_selection_v32_confirmatory_freeze",
+  "release_status": "frozen",
+  "schema_version": "3.2",
+  "selector_id": "evidence_grounded_objective_selector_v32",
+  "selector_version": "3.2",
+  "source_sha256": {
+    "awareml/engine/pareto_spec.py": "956af40038ca39c21d857e4bbe665270f142f710c3de5e8f6014f5bcde1ec2e5",
+    "awareml/llm/confirmatory_runtime_v32.py": "b0a9895e6eaa6c16b7860e939a039398b9dbe3bfe83a4c9a4865313833e8a06e",
+    "awareml/llm/journal_client.py": "aaba100feed0c3acb90ab56204fd928a66f23e417410e6345f1ede9e143b3a42",
+    "awareml/llm/objective_selection_v32.py": "adf134fa681e810e7129740b6bfc5bf1e4276df049c8f0ac38c718f726166e7f",
+    "awareml/llm/schemas.py": "f4e1c20e7e88d457e09d9bf176b4d0b4e29ebd9ef2395b3a9fe616bdbcdcb66c",
+    "awareml/llm/weighting.py": "f5277a8dc1613065a0246e7af868477c10cc6714fe40cfccebd363ee2b39ef82",
+    "configs/journal/objective_selection_schema_v32.json": "991d5c8006af10ebf064f9a7519cee2d93ec39c53c74802881b9d8b2798ebe5b",
+    "configs/journal/objective_selection_v32_runtime_lock.json": "e55a30be90a544bb4cf5e39476b0f1e3d8239b62c96f6dd60658bfa3afca8457",
+    "configs/journal/phase12_v2_protocol.json": "b2e5352fbf23a738b97d9dd074ba1374fb96c98bd91e9330456cce2c3093c9c7",
+    "prompts/objective_selection_evidence_grounded_v32.txt": "586bb2113444b3607f3a930d682a81c3209dd14668a88713c660bb627194b6b8"
+  },
+  "weighting_policy": {
+    "policy_id": "equal_selected_v1",
+    "rule": "Equal weight among selected objectives; all unselected objectives receive zero."
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "generator_model": "FILL_WITH_OUTSIDE_STRONGER_MODEL",
+  "generator_provider": "FILL_ME",
+  "evaluated_model_used_for_generation": false,
+  "generation_batches": ["A", "B", "C", "D", "E"],
+  "notes": "Run the five batch profiles independently using prompts/phase12_v2_external_scenario_generation.md."
+}

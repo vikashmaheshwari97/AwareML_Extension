@@ -1,0 +1,120 @@
+{
+  "schema_version": "2.0",
+  "protocol_id": "objective_selection_benchmark_v2",
+  "purpose": "Fresh confirmatory paired evaluation of the frozen Phase-11 V2 method replay and frozen evidence-grounded V3.2 under the same Phase-11R runtime, on the same independently annotated benchmark.",
+  "objective_vocabulary": [
+    "Accuracy",
+    "Runtime",
+    "Energy",
+    "CO2"
+  ],
+  "immutable_legacy_benchmark": "data/journal/objective_selection_benchmark_v1/frozen/manifest.json",
+  "legacy_baseline_selector": "data/journal/objective_selection_v2/manifest.json",
+  "candidate_selector": "data/journal/objective_selection_v32/manifest.json",
+  "design": {
+    "generated_candidate_count": 150,
+    "minimum_human_raw": 30,
+    "minimum_annotation_pool": 100,
+    "minimum_generation_batches": 5,
+    "intended_k_prime_counts": {
+      "1": 25,
+      "2": 30,
+      "3": 45,
+      "4": 50
+    },
+    "private_generator_intent_is_ground_truth": false,
+    "evaluated_model_may_generate_candidates": false,
+    "explicit_objective_names_forbidden_in_primary_scenarios": true
+  },
+  "annotation": {
+    "annotator_count": 3,
+    "independent_before_discussion": true,
+    "hard_case_policy": {
+      "ambiguous_votes_at_least": 2,
+      "pairwise_jaccard_below": 0.5,
+      "split_objectives_threshold": 2,
+      "zero_label_majority_is_hard": true
+    },
+    "ground_truth_rule": "Per-objective majority vote of at least 2 of 3 annotators; private generation intent is never used."
+  },
+  "primary": {
+    "target_n": 60,
+    "target_k_prime_counts": {
+      "1": 15,
+      "2": 15,
+      "3": 15,
+      "4": 15
+    },
+    "minimum_human_written": 24,
+    "minimum_human_written_fraction": 0.4,
+    "selection_rule": "Deterministic diversity selection from non-hard human-majority labels before any evaluated-selector outputs exist."
+  },
+  "paraphrase": {
+    "families": 10,
+    "paraphrases_per_family": 5,
+    "require_distinct_ground_truth_sets": true,
+    "minimum_reviewers": 2,
+    "acceptance_rule": "Both reviewers independently confirm meaning preservation and recover the base human ground-truth objective set."
+  },
+  "adversarial": {
+    "minimum_cases": 10,
+    "maximum_cases": 15,
+    "allowed_expected_statuses": [
+      "ambiguous",
+      "contradictory",
+      "out_of_scope"
+    ],
+    "expected_status_frozen_before_evaluation": true,
+    "must_be_fresh_not_legacy": true
+  },
+  "metrics": {
+    "primary": [
+      "per_objective_precision",
+      "per_objective_recall",
+      "per_objective_f1",
+      "micro_precision",
+      "micro_recall",
+      "micro_f1",
+      "macro_f1",
+      "exact_match_rate",
+      "mean_jaccard",
+      "hamming_loss",
+      "over_selection_any_fp_rate",
+      "under_selection_any_fn_rate",
+      "strict_superset_rate",
+      "strict_subset_rate",
+      "malformed_rate",
+      "results_by_k_prime"
+    ],
+    "bootstrap_iterations": 2000,
+    "bootstrap_seed": 20260914,
+    "confidence_level": 0.95,
+    "paired_test": "two-sided exact McNemar on per-scenario exact-set correctness"
+  },
+  "benchmark_mode": {
+    "semantic_recovery_allowed": false,
+    "malformed_llm_json_remains_malformed": true,
+    "wrong_model_or_digest": "hard_fail",
+    "guard_may_reject_unsupported_llm_additions": true,
+    "guard_may_add_llm_omissions": false
+  },
+  "weighting_policy": {
+    "policy_id": "equal_selected_v1",
+    "rule": "Equal weight among selected objectives; all unselected objectives receive zero."
+  },
+  "near_pareto": {
+    "spec_id": "epsilon_pareto_v1",
+    "epsilon": 0.05,
+    "normalization": "5th/95th percentile robust unit normalization; minimize objectives inverted; all higher is better."
+  },
+  "runtime_policy": {
+    "lock_file": "configs/journal/objective_selection_v32_runtime_lock.json",
+    "common_runtime_for_both_selectors": true,
+    "same_llama3_8b_model_digest_as_phase10": true,
+    "phase10_ollama_version": "0.32.14",
+    "confirmatory_ollama_version": "0.34.0",
+    "baseline_reporting_name": "Phase-11 V2 method replay under Phase-11R confirmatory runtime",
+    "candidate_reporting_name": "Objective Selection V3.2",
+    "do_not_claim_literal_phase10_runtime_replay": true
+  }
+}

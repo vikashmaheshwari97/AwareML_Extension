@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AwareMLJournalObjectiveSelectionV32",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["status", "decisions", "uncertainties"],
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": ["valid", "ambiguous", "contradictory", "out_of_scope"]
+    },
+    "decisions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["Accuracy", "Runtime", "Energy", "CO2"],
+      "properties": {
+        "Accuracy": {"$ref": "#/$defs/decision"},
+        "Runtime": {"$ref": "#/$defs/decision"},
+        "Energy": {"$ref": "#/$defs/decision"},
+        "CO2": {"$ref": "#/$defs/decision"}
+      }
+    },
+    "uncertainties": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  },
+  "$defs": {
+    "decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["selected", "evidence", "confidence"],
+      "properties": {
+        "selected": {"type": "boolean"},
+        "evidence": {"type": ["string", "null"]},
+        "confidence": {"type": "string", "enum": ["high", "medium", "low"]}
+      }
+    }
+  }
+}
