@@ -1,0 +1,43 @@
+{
+  "artifact": "phase12_v2_human_enrichment_amendment",
+  "amendment_id": "human_enrichment_H041_H055",
+  "status": "collection_pending",
+  "created_on": "2026-09-14",
+  "reason": "Post-annotation feasibility check showed that the frozen Phase-12-v2 pool could not satisfy the predeclared >=24 human-written final-primary quota together with exact 15/15/15/15 balancing by human-confirmed k-prime, after applying the frozen hard-case rule.",
+  "timing": "before any confirmatory V2/V3.2 model evaluation",
+  "new_human_ids": [
+    "H041",
+    "H042",
+    "H043",
+    "H044",
+    "H045",
+    "H046",
+    "H047",
+    "H048",
+    "H049",
+    "H050",
+    "H051",
+    "H052",
+    "H053",
+    "H054",
+    "H055"
+  ],
+  "new_human_candidate_count": 15,
+  "sampling_goal": "Enrich genuine human-authored multi-constraint deployment requests without revealing the hidden objective labels or using any model outputs.",
+  "preserve_existing_frozen_artifacts": true,
+  "existing_annotations_must_not_be_modified": true,
+  "existing_hard_case_rule_must_not_be_modified": true,
+  "existing_ground_truth_must_not_be_overwritten": true,
+  "generator_intent_is_ground_truth": false,
+  "model_outputs_used_to_design_amendment": false,
+  "next_stages": [
+    "collect H041-H055",
+    "audit without rewriting human text",
+    "independent realism review",
+    "three independent objective annotations",
+    "majority-vote + frozen hard-case rule",
+    "human-quota and k-prime feasibility check",
+    "versioned amended primary freeze",
+    "confirmatory model evaluation only after amended primary freeze"
+  ]
+}

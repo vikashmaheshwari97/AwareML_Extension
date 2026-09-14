@@ -1,7 +1,90 @@
 {
-  "generator_model": "FILL_WITH_OUTSIDE_STRONGER_MODEL",
-  "generator_provider": "FILL_ME",
+  "artifact": "phase12_v2_candidate_generation",
+  "generator_role": "external_stronger_llm_not_under_evaluation",
+  "generator_model": "GPT-5.6 Sol",
+  "provider": "OpenAI / ChatGPT",
+  "generated_on": "2026-09-14",
+  "candidate_count": 150,
+  "independent_generation_batches": 5,
+  "batch_design": {
+    "A": {
+      "scenario_ids": "G001-G030",
+      "candidate_count": 30,
+      "style": "deployment-context / professional",
+      "k_prime_design_counts": {
+        "1": 7,
+        "2": 7,
+        "3": 8,
+        "4": 8
+      }
+    },
+    "B": {
+      "scenario_ids": "G031-G060",
+      "candidate_count": 30,
+      "style": "constraint-first / operational",
+      "k_prime_design_counts": {
+        "1": 6,
+        "2": 6,
+        "3": 9,
+        "4": 9
+      }
+    },
+    "C": {
+      "scenario_ids": "G061-G090",
+      "candidate_count": 30,
+      "style": "outcome-first / domain-rich",
+      "k_prime_design_counts": {
+        "1": 5,
+        "2": 6,
+        "3": 9,
+        "4": 10
+      }
+    },
+    "D": {
+      "scenario_ids": "G091-G120",
+      "candidate_count": 30,
+      "style": "informal / mixed sentence length",
+      "k_prime_design_counts": {
+        "1": 4,
+        "2": 6,
+        "3": 9,
+        "4": 11
+      }
+    },
+    "E": {
+      "scenario_ids": "G121-G150",
+      "candidate_count": 30,
+      "style": "complex multi-constraint / natural trade-offs",
+      "k_prime_design_counts": {
+        "1": 3,
+        "2": 5,
+        "3": 10,
+        "4": 12
+      }
+    }
+  },
+  "overall_k_prime_design_counts": {
+    "1": 25,
+    "2": 30,
+    "3": 45,
+    "4": 50
+  },
+  "source_file_sha256": {
+    "batch_A_candidates(1).csv": "c4f01222e7603490c9959c038187d43fb53326f133a690175327b3e29f58904d",
+    "batch_A_intent.PRIVATE(1).csv": "44077c60644c5bb93f7243dce5a4ae9e8be6fb6941736e93de796c4d207a60a8",
+    "batch_B_candidates(1).csv": "7daa68d63b4a3551b9617dd2891ea51176d539ce7966b7af42ea22186575bb60",
+    "batch_B_intent.PRIVATE(1).csv": "9fe35363a58f002ae429edba0973a30b9c8790354e0316e90fff9c156c881a44",
+    "batch_C_candidates(1).csv": "f69cab72b83b37acca913d47895e995cc61dd2477de8c34a782a75c781e3f724",
+    "batch_C_intent.PRIVATE(1).csv": "c3e490435c0905c1a9ca8d1db1391ddadb684496985566f3ffc143295cef69cc",
+    "batch_D_candidates(1).csv": "6c14db56a88c15d5a18a207206b88be4fc52591edcb51b7014ea5b36d0f102d5",
+    "batch_D_intent.PRIVATE(1).csv": "005c5a05e1c00f10a95b3e021ac37a6d81940b90e2f0a25f182b87d08cce506f",
+    "batch_E_candidates(1).csv": "5712415dc66e21e3fc7521b48602e301d8435ee9ffc180bb039c97a8975a2ef2",
+    "batch_E_intent.PRIVATE(1).csv": "6af172c7ab983a07bfa6895bb3d0f44bd070c60028d7752ae3b9d2666ed9893d"
+  },
+  "combined_generated_candidates_sha256": "2cff33b2d1e07e680d7e6b3ed94a7db25f4d1ef27613af933b40c5205faccbe8",
+  "combined_private_intent_sha256": "ef2a473f6a69ecc06cf3e49dcab43df6146b0d0c864f6f9a85d2f0f947d45220",
+  "important_method_note": "generation_intent is private design/coverage metadata only and MUST NOT be used as journal ground truth. Ground truth is created exclusively from independent human annotations.",
+  "evaluated_model": "llama3:8b",
   "evaluated_model_used_for_generation": false,
-  "generation_batches": ["A", "B", "C", "D", "E"],
-  "notes": "Run the five batch profiles independently using prompts/phase12_v2_external_scenario_generation.md."
+  "v32_selector_frozen_before_generation": true
 }

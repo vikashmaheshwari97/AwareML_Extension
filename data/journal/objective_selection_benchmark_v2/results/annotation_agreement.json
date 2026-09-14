@@ -1,0 +1,28 @@
+{
+  "annotator_count": 3,
+  "annotator_ids": [
+    "ANN01",
+    "ANN02",
+    "ANN03"
+  ],
+  "eligible_primary_cases": 170,
+  "generation_intent_used_as_ground_truth": false,
+  "ground_truth_source": "independent_human_majority_vote_only",
+  "hard_case_policy": {
+    "ambiguous_votes_at_least": 2,
+    "pairwise_jaccard_below": 0.5,
+    "split_objectives_threshold": 2,
+    "zero_label_majority_is_hard": true
+  },
+  "hard_cases": 18,
+  "mean_defined_fleiss_kappa": 0.9468871297004878,
+  "mean_pairwise_jaccard": 0.9346926713947997,
+  "per_objective_fleiss_kappa": {
+    "Accuracy": 0.854395249774108,
+    "CO2": 1.0,
+    "Energy": 0.9711612210461729,
+    "Runtime": 0.9619920479816705
+  },
+  "scenario_count": 188,
+  "unanimous_full_set_agreement_rate": 0.8829787234042553
+}

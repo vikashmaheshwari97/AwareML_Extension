@@ -1,0 +1,44 @@
+{
+  "agreement": {
+    "annotator_count": 3,
+    "annotator_ids": [
+      "ANN01",
+      "ANN02",
+      "ANN03"
+    ],
+    "eligible_primary_cases": 170,
+    "generation_intent_used_as_ground_truth": false,
+    "ground_truth_source": "independent_human_majority_vote_only",
+    "hard_case_policy": {
+      "ambiguous_votes_at_least": 2,
+      "pairwise_jaccard_below": 0.5,
+      "split_objectives_threshold": 2,
+      "zero_label_majority_is_hard": true
+    },
+    "hard_cases": 18,
+    "mean_defined_fleiss_kappa": 0.9468871297004878,
+    "mean_pairwise_jaccard": 0.9346926713947997,
+    "per_objective_fleiss_kappa": {
+      "Accuracy": 0.854395249774108,
+      "CO2": 1.0,
+      "Energy": 0.9711612210461729,
+      "Runtime": 0.9619920479816705
+    },
+    "scenario_count": 188,
+    "unanimous_full_set_agreement_rate": 0.8829787234042553
+  },
+  "artifact": "objective_selection_benchmark_v2_ground_truth",
+  "design_manifest_sha256": "8814ee36d9621875c343275590f75d50464874a208d0edeba827763344c59982",
+  "file_sha256": {
+    "data/journal/objective_selection_benchmark_v2/annotations/annotations_A.csv": "ffe484a3207b97e1153da8cf3576771b2b0be569797cc1e2df7f4a3a20a4a90b",
+    "data/journal/objective_selection_benchmark_v2/annotations/annotations_B.csv": "b0da32409db4c6c5a1e2fa739c9877c21951836744f192d3096ebbeb454aa5b6",
+    "data/journal/objective_selection_benchmark_v2/annotations/annotations_C.csv": "40773e62c1f1bd3a9f04d4569b03d14c8cf6c1d162e91b9dc1db10d4bc5aff54",
+    "data/journal/objective_selection_benchmark_v2/results/annotation_agreement.json": "e685d87c3687444547ba1642626148f8f9b95ff938bf2b602bb23ee5ef444279",
+    "data/journal/objective_selection_benchmark_v2/results/ground_truth_all.csv": "8fd73071f227340800f13387f42bcde3a9fe7d800386b579b67bd9c1fbcde4f4",
+    "data/journal/objective_selection_benchmark_v2/results/hard_cases.csv": "7343155a1bf2e7b54f85b938a164d3b5b87909a7e46a49917494da0c1e055d64"
+  },
+  "frozen_at_utc": "2026-09-14T14:36:19.941369+00:00",
+  "generation_intent_used_as_ground_truth": false,
+  "llm_outputs_existed_before_ground_truth_freeze": false,
+  "release_status": "frozen"
+}

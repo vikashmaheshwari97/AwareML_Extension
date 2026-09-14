@@ -1,0 +1,32 @@
+{
+  "scenario_count": 15,
+  "annotator_ids": [
+    "ANN01",
+    "ANN02",
+    "ANN03"
+  ],
+  "per_objective_fleiss_kappa": {
+    "Accuracy": 1.0,
+    "Runtime": 1.0,
+    "Energy": 1.0,
+    "CO2": 1.0
+  },
+  "mean_defined_fleiss_kappa": 1.0,
+  "overall_binary_fleiss_kappa": 1.0,
+  "mean_pairwise_jaccard": 1.0,
+  "pairwise_mean_jaccard": {
+    "A-B": 1.0,
+    "A-C": 1.0,
+    "B-C": 1.0
+  },
+  "unanimous_full_set_agreement_rate": 1.0,
+  "unanimous_full_set_cases": 15,
+  "hard_cases": 1,
+  "eligible_cases": 14,
+  "eligible_k_prime_distribution": {
+    "1": 6,
+    "2": 8,
+    "3": 0,
+    "4": 0
+  }
+}

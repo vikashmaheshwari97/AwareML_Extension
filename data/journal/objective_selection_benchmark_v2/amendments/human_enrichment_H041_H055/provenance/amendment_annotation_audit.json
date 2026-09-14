@@ -1,0 +1,47 @@
+{
+  "status": "PASS",
+  "rows_each": {
+    "A": 15,
+    "B": 15,
+    "C": 15
+  },
+  "same_ids": true,
+  "same_scenario_text": true,
+  "annotator_ids": {
+    "A": [
+      "ANN01"
+    ],
+    "B": [
+      "ANN02"
+    ],
+    "C": [
+      "ANN03"
+    ]
+  },
+  "invalid_values": 0,
+  "hard_case_ids": [
+    "H044"
+  ],
+  "eligible_ids": [
+    "H041",
+    "H042",
+    "H043",
+    "H045",
+    "H046",
+    "H047",
+    "H048",
+    "H049",
+    "H050",
+    "H051",
+    "H052",
+    "H053",
+    "H054",
+    "H055"
+  ],
+  "file_sha256": {
+    "annotations_amendment_A.csv": "ccaf731f8502c478b055f97a4120030d6c0f4f1b7d318d89b1e692a03bdbecbb",
+    "annotations_amendment_B.csv": "da5baf3c39059ef56ed3ad6769700451f101a65e217b5259adb1668a0590d8a8",
+    "annotations_amendment_C.csv": "912ac5c8f50741ead121e8c6fe917ecff652585d2245056dd3e500b018a85fdf"
+  },
+  "methodological_note": "Perfect agreement is structurally valid but unusual. It should be accepted only if the three files were completed independently, without discussion or answer sharing."
+}

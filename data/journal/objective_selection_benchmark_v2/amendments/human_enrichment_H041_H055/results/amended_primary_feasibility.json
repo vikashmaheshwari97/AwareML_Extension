@@ -1,0 +1,32 @@
+{
+  "original_eligible_human_k_prime": {
+    "1": 18,
+    "2": 3,
+    "3": 0,
+    "4": 0
+  },
+  "amendment_eligible_human_k_prime": {
+    "1": 6,
+    "2": 8,
+    "3": 0,
+    "4": 0
+  },
+  "combined_eligible_human_k_prime": {
+    "1": 24,
+    "2": 11,
+    "3": 0,
+    "4": 0
+  },
+  "balanced_primary_slots_per_k_prime": 15,
+  "maximum_human_cases_possible_in_balanced_primary_60": 26,
+  "required_minimum_human_cases": 24,
+  "human_quota_feasible": true,
+  "example_feasible_human_composition": {
+    "k1": 15,
+    "k2": 9,
+    "k3": 0,
+    "k4": 0,
+    "total": 24
+  },
+  "important_note": "This is a feasibility result only. No final primary cases have been selected and no model outputs were used."
+}

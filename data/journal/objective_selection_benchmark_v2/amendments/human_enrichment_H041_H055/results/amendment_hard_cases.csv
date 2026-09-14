@@ -1,0 +1,2 @@
+scenario_id,scenario,accuracy,runtime,energy,co2,k_prime,hard_case,hard_case_reason
+H044,"For the patient monitoring alerts, nurses need to know exactly why the alarm went off, not just a red light, and it needs to keep working even if the hospital wifi drops for a minute.",no,no,no,no,0,yes,zero_label_majority

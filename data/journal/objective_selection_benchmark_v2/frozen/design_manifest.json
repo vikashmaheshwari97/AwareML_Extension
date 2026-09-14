@@ -1,0 +1,70 @@
+{
+  "artifact": "objective_selection_benchmark_v2_design",
+  "evaluated_model_outputs_existed_before_design_freeze": false,
+  "file_sha256": {
+    "configs/journal/phase12_v2_protocol.json": "b2e5352fbf23a738b97d9dd074ba1374fb96c98bd91e9330456cce2c3093c9c7",
+    "data/journal/objective_selection_benchmark_v2/design/generated_candidates.csv": "2cff33b2d1e07e680d7e6b3ed94a7db25f4d1ef27613af933b40c5205faccbe8",
+    "data/journal/objective_selection_benchmark_v2/design/generation_provenance.json": "6ffc2a47e84f14b41da85165c914f76085b5025fe380278ce431480286e903b1",
+    "data/journal/objective_selection_benchmark_v2/design/private/generated_intent.PRIVATE.csv": "ef2a473f6a69ecc06cf3e49dcab43df6146b0d0c864f6f9a85d2f0f947d45220",
+    "data/journal/objective_selection_benchmark_v2/human/human_candidates.csv": "38ae842eca80578015832fb07f6a6d829be6aac0b4243041d048ddc231f6cca3",
+    "data/journal/objective_selection_benchmark_v2/human/realism_filter.csv": "465fdc0859764b43d474b2739c741a851e19b1742a27195766f99fe89bce4cee",
+    "docs/PHASE12_V2_HUMAN_INSTRUCTIONS.md": "275051504e4e1dda73325aca08a4698619394b60ac602acbbaa0f5506b1c6254",
+    "prompts/phase12_v2_external_scenario_generation.md": "bc0173894d7768538626bffd1e2d10c353b256a4e24134d428cb04f7965ef481"
+  },
+  "frozen_at_utc": "2026-09-14T14:02:40.853324+00:00",
+  "generation_intent_is_ground_truth": false,
+  "heldout_dataset_contents_used": false,
+  "legacy_phase12_v1_immutable": {
+    "path": "data/journal/objective_selection_benchmark_v1/frozen/manifest.json",
+    "primary_benchmark_n": 55,
+    "release_status": "frozen",
+    "sha256": "74bd037c2162c17e32e61e2188b3bd88ccef5bdaf46000da851fc471a28cce72"
+  },
+  "protocol_sha256": "b2e5352fbf23a738b97d9dd074ba1374fb96c98bd91e9330456cce2c3093c9c7",
+  "release_status": "frozen",
+  "selector_freezes": {
+    "legacy_v2": {
+      "path": "data/journal/objective_selection_v2/manifest.json",
+      "sha256": "17951ac29f73b8e2f43f5bb4369eeaf97ed66f54a80d7b59352f4b9a0e795cbe"
+    },
+    "v32": {
+      "path": "data/journal/objective_selection_v32/manifest.json",
+      "selector_id": "evidence_grounded_objective_selector_v32",
+      "sha256": "a742f50422ba25555700123bf10121f2e26619c0b5bb4290683fe5683fa6bf45"
+    }
+  },
+  "summary": {
+    "generated_candidates": 150,
+    "generation_batches": {
+      "A": 30,
+      "B": 30,
+      "C": 30,
+      "D": 30,
+      "E": 30
+    },
+    "generator_model": "GPT-5.6 Sol",
+    "human_candidates": 40,
+    "intended_k_prime_counts_private": {
+      "1": 25,
+      "2": 30,
+      "3": 45,
+      "4": 50
+    },
+    "kept_for_annotation": 188,
+    "kept_human": 39,
+    "legacy_overlap_audit": {
+      "legacy_files_checked": [
+        "data\\journal\\objective_selection_benchmark_v1\\design\\candidate_pool.generated.csv",
+        "data\\journal\\objective_selection_benchmark_v1\\human\\human_written_scenarios.csv",
+        "data\\journal\\objective_selection_benchmark_v1\\human\\final_annotation_pool.csv"
+      ],
+      "legacy_scenarios_loaded": 181,
+      "pairwise_overlap_checks": 34390,
+      "reuse_detected": false
+    },
+    "realism_filterers": [
+      "RVR07"
+    ],
+    "total_candidates": 190
+  }
+}

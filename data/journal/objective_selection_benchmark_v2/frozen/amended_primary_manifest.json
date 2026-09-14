@@ -1,0 +1,176 @@
+{
+  "artifact": "objective_selection_benchmark_v2_amended_primary",
+  "release_status": "frozen",
+  "frozen_at_utc": "2026-09-14T16:10:04.172287+00:00",
+  "amendment_id": "human_enrichment_H041_H055",
+  "reason": "The original frozen Phase-12-v2 annotation pool could not satisfy the predeclared >=24 human-written final-primary quota together with exact 15/15/15/15 k-prime balancing after the frozen hard-case policy. H041-H055 were collected and independently reviewed/annotated before any confirmatory V2/V3.2 model evaluation.",
+  "parent_artifacts": {
+    "design_manifest": {
+      "path": "data/journal/objective_selection_benchmark_v2/frozen/design_manifest.json",
+      "sha256": "8814ee36d9621875c343275590f75d50464874a208d0edeba827763344c59982"
+    },
+    "ground_truth_manifest": {
+      "path": "data/journal/objective_selection_benchmark_v2/frozen/ground_truth_manifest.json",
+      "sha256": "b6ba9cf91824db113d9c66b268dcf6d779e316280389d64d4b51c12636436ee8"
+    },
+    "ground_truth_all": {
+      "path": "data/journal/objective_selection_benchmark_v2/results/ground_truth_all.csv",
+      "sha256": "8fd73071f227340800f13387f42bcde3a9fe7d800386b579b67bd9c1fbcde4f4"
+    }
+  },
+  "amendment_artifact_hashes": {
+    "data/journal/objective_selection_benchmark_v2/amendments/human_enrichment_H041_H055/collection/human_enrichment_candidates_H041_H055.csv": "15ec5acd3c49e07ec5ac88df9a62432dccfed9d48afeb932fa51197a52b88891",
+    "data/journal/objective_selection_benchmark_v2/amendments/human_enrichment_H041_H055/provenance/amendment_protocol.json": "019ce40824cf12c84fc6034d666d7827e936ac40df2f5e9208307fa621a159be",
+    "data/journal/objective_selection_benchmark_v2/amendments/human_enrichment_H041_H055/provenance/H041_H055_REALISM_AUDIT.json": "9d2f85bc54178f855a167befd5c94df7d85d57b5f9f2062b28cf7bba057009a4",
+    "data/journal/objective_selection_benchmark_v2/amendments/human_enrichment_H041_H055/provenance/amendment_annotation_audit.json": "a3c865bcccec282ea2ed3f61f36cb2dd7a9634d3536faf57f649dc9b9db72c07",
+    "data/journal/objective_selection_benchmark_v2/amendments/human_enrichment_H041_H055/realism_review/human_enrichment_realism_filter_H041_H055.csv": "9eef181e7d96cab5b38ae6065e72a356fb66f9d17af90f0e21ec47e65b51c9a0",
+    "data/journal/objective_selection_benchmark_v2/amendments/human_enrichment_H041_H055/annotations/annotations_amendment_A.csv": "ccaf731f8502c478b055f97a4120030d6c0f4f1b7d318d89b1e692a03bdbecbb",
+    "data/journal/objective_selection_benchmark_v2/amendments/human_enrichment_H041_H055/annotations/annotations_amendment_B.csv": "da5baf3c39059ef56ed3ad6769700451f101a65e217b5259adb1668a0590d8a8",
+    "data/journal/objective_selection_benchmark_v2/amendments/human_enrichment_H041_H055/annotations/annotations_amendment_C.csv": "912ac5c8f50741ead121e8c6fe917ecff652585d2245056dd3e500b018a85fdf",
+    "data/journal/objective_selection_benchmark_v2/amendments/human_enrichment_H041_H055/results/amendment_ground_truth.csv": "f5ee7fc40456d0561417d6086ff5e93c777625943809becfe68e90c041a49c6b",
+    "data/journal/objective_selection_benchmark_v2/amendments/human_enrichment_H041_H055/results/amendment_hard_cases.csv": "3f7c780bd5c9987983925933b266f1414fe9e074b369bd3ce4a8d01772baa863",
+    "data/journal/objective_selection_benchmark_v2/amendments/human_enrichment_H041_H055/results/amendment_annotation_agreement.json": "13b5ebfaa72da6dd1a3dc81d86aa22acd6607ef5db145cb93f03bfc18bd5c478",
+    "data/journal/objective_selection_benchmark_v2/amendments/human_enrichment_H041_H055/results/amended_primary_feasibility.json": "360de210f51cbcdf178e27387db00f47d9d2dc97914b30b259126212622d7eee"
+  },
+  "selection": {
+    "primary_csv": "data/journal/objective_selection_benchmark_v2/results/primary_benchmark_amended.csv",
+    "primary_csv_sha256": "39e3d8742d92ac567b7508f320acddba4bbec390dc21a85241f59cf7347c81f0",
+    "selection_seed": "20260914",
+    "selection_policy": "Exactly 15 cases are selected for each human-confirmed k'=1,2,3,4. Within each k' stratum, all eligible human-written cases are prioritized up to the 15-slot cap; remaining slots are filled by eligible generated cases. Deterministic SHA-256 ranking by scenario_id is used only as a tie-breaker within source groups.",
+    "selection_inputs": [
+      "human majority-vote ground truth",
+      "frozen hard-case status",
+      "source type (human/generated)",
+      "human-confirmed k-prime",
+      "deterministic scenario-id hash tie-break"
+    ],
+    "model_outputs_used": false,
+    "private_generator_intent_used": false,
+    "generator_intent_used_as_ground_truth": false,
+    "selected_n": 60,
+    "selected_k_prime_counts": {
+      "1": 15,
+      "2": 15,
+      "3": 15,
+      "4": 15
+    },
+    "selected_human": 26,
+    "selected_generated": 34,
+    "selected_human_by_k_prime": {
+      "1": 15,
+      "2": 11,
+      "3": 0,
+      "4": 0
+    },
+    "selected_original": 47,
+    "selected_amendment": 13,
+    "selected_scenario_ids": [
+      "H032",
+      "H045",
+      "H048",
+      "H051",
+      "H027",
+      "H039",
+      "H007",
+      "H014",
+      "H018",
+      "H010",
+      "H054",
+      "H021",
+      "H024",
+      "H055",
+      "H009",
+      "H043",
+      "G032",
+      "G027",
+      "H012",
+      "G123",
+      "G015",
+      "H041",
+      "H052",
+      "H001",
+      "H053",
+      "H047",
+      "H050",
+      "H046",
+      "H049",
+      "H026",
+      "G044",
+      "G074",
+      "G033",
+      "G150",
+      "G146",
+      "G133",
+      "G080",
+      "G105",
+      "G109",
+      "G072",
+      "G122",
+      "G030",
+      "G076",
+      "G073",
+      "G039",
+      "G050",
+      "G111",
+      "G116",
+      "G112",
+      "G085",
+      "G124",
+      "G113",
+      "G143",
+      "G006",
+      "G035",
+      "G084",
+      "G022",
+      "G026",
+      "G128",
+      "G118"
+    ]
+  },
+  "feasibility": {
+    "combined_eligible_cases": 184,
+    "original_eligible_cases": 170,
+    "amendment_eligible_cases": 14,
+    "selected_cases": 60,
+    "selected_human": 26,
+    "selected_generated": 34,
+    "selected_original": 47,
+    "selected_amendment": 13,
+    "k_prime": {
+      "1": {
+        "eligible_total": 49,
+        "eligible_human": 24,
+        "eligible_generated": 25,
+        "selected_human": 15,
+        "selected_generated": 0
+      },
+      "2": {
+        "eligible_total": 41,
+        "eligible_human": 11,
+        "eligible_generated": 30,
+        "selected_human": 11,
+        "selected_generated": 4
+      },
+      "3": {
+        "eligible_total": 45,
+        "eligible_human": 0,
+        "eligible_generated": 45,
+        "selected_human": 0,
+        "selected_generated": 15
+      },
+      "4": {
+        "eligible_total": 49,
+        "eligible_human": 0,
+        "eligible_generated": 49,
+        "selected_human": 0,
+        "selected_generated": 15
+      }
+    }
+  },
+  "immutability": {
+    "existing_design_manifest_overwritten": false,
+    "existing_ground_truth_manifest_overwritten": false,
+    "existing_ground_truth_all_overwritten": false,
+    "existing_annotations_modified_by_this_script": false
+  }
+}

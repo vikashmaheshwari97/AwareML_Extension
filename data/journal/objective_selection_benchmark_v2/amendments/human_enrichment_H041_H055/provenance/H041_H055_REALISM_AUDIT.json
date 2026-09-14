@@ -1,0 +1,32 @@
+{
+  "status": "PASS_READY_FOR_3_INDEPENDENT_ANNOTATORS",
+  "realism_review_rows": 15,
+  "review_ids_exact_ER001_ER015": true,
+  "scenario_domain_style_unchanged": true,
+  "reviewer_ids": [
+    "R01"
+  ],
+  "kept": 15,
+  "rejected": 0,
+  "ambiguous": 0,
+  "retained_ids": [
+    "H041",
+    "H042",
+    "H043",
+    "H044",
+    "H045",
+    "H046",
+    "H047",
+    "H048",
+    "H049",
+    "H050",
+    "H051",
+    "H052",
+    "H053",
+    "H054",
+    "H055"
+  ],
+  "important_note": "The independent realism reviewer retained all 15 amendment cases and marked none ambiguous. This is structurally valid. Preserve these decisions; do not modify them to engineer k-prime balance.",
+  "completed_review_sha256": "3ac570eb5763ae2c359cf52eea88abfa2020dcb1fb282ff1c92205f6d2422617",
+  "mapped_realism_sha256": "9eef181e7d96cab5b38ae6065e72a356fb66f9d17af90f0e21ec47e65b51c9a0"
+}
