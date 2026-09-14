@@ -1,0 +1,741 @@
+{
+  "artifact": "objective_selection_benchmark_v2",
+  "baseline_adversarial_metrics": {
+    "details": [
+      {
+        "actual_status": "valid",
+        "case_id": "ADV01",
+        "expected_status": "ambiguous",
+        "selected_objectives": [
+          "Accuracy",
+          "Energy",
+          "Runtime"
+        ],
+        "taxonomy": "unsupported_valid_selection"
+      },
+      {
+        "actual_status": "valid",
+        "case_id": "ADV02",
+        "expected_status": "ambiguous",
+        "selected_objectives": [
+          "CO2",
+          "Energy",
+          "Runtime"
+        ],
+        "taxonomy": "unsupported_valid_selection"
+      },
+      {
+        "actual_status": "valid",
+        "case_id": "ADV03",
+        "expected_status": "ambiguous",
+        "selected_objectives": [
+          "Accuracy",
+          "Energy",
+          "Runtime"
+        ],
+        "taxonomy": "unsupported_valid_selection"
+      },
+      {
+        "actual_status": "valid",
+        "case_id": "ADV04",
+        "expected_status": "ambiguous",
+        "selected_objectives": [
+          "Accuracy",
+          "CO2",
+          "Energy",
+          "Runtime"
+        ],
+        "taxonomy": "over_selection_all_objectives"
+      },
+      {
+        "actual_status": "valid",
+        "case_id": "ADV05",
+        "expected_status": "contradictory",
+        "selected_objectives": [
+          "Accuracy",
+          "Runtime"
+        ],
+        "taxonomy": "unsupported_valid_selection"
+      },
+      {
+        "actual_status": "valid",
+        "case_id": "ADV06",
+        "expected_status": "contradictory",
+        "selected_objectives": [
+          "CO2",
+          "Energy",
+          "Runtime"
+        ],
+        "taxonomy": "unsupported_valid_selection"
+      },
+      {
+        "actual_status": "valid",
+        "case_id": "ADV07",
+        "expected_status": "contradictory",
+        "selected_objectives": [
+          "CO2",
+          "Energy",
+          "Runtime"
+        ],
+        "taxonomy": "unsupported_valid_selection"
+      },
+      {
+        "actual_status": "valid",
+        "case_id": "ADV08",
+        "expected_status": "contradictory",
+        "selected_objectives": [
+          "Accuracy",
+          "Runtime"
+        ],
+        "taxonomy": "unsupported_valid_selection"
+      },
+      {
+        "actual_status": "valid",
+        "case_id": "ADV09",
+        "expected_status": "out_of_scope",
+        "selected_objectives": [
+          "CO2",
+          "Energy",
+          "Runtime"
+        ],
+        "taxonomy": "unsupported_valid_selection"
+      },
+      {
+        "actual_status": "valid",
+        "case_id": "ADV10",
+        "expected_status": "out_of_scope",
+        "selected_objectives": [
+          "Accuracy",
+          "Runtime"
+        ],
+        "taxonomy": "unsupported_valid_selection"
+      },
+      {
+        "actual_status": "valid",
+        "case_id": "ADV11",
+        "expected_status": "out_of_scope",
+        "selected_objectives": [
+          "Accuracy",
+          "Runtime"
+        ],
+        "taxonomy": "unsupported_valid_selection"
+      },
+      {
+        "actual_status": "valid",
+        "case_id": "ADV12",
+        "expected_status": "out_of_scope",
+        "selected_objectives": [
+          "Accuracy",
+          "Runtime"
+        ],
+        "taxonomy": "unsupported_valid_selection"
+      }
+    ],
+    "invalid_nonempty_selection_rate": 1.0,
+    "malformed_rate": 0.0,
+    "n": 12,
+    "selector": "baseline",
+    "status_accuracy": 0.0,
+    "taxonomy_counts": {
+      "over_selection_all_objectives": 1,
+      "unsupported_valid_selection": 11
+    }
+  },
+  "baseline_paraphrase_metrics": {
+    "all_variants_human_semantics_reviewed": true,
+    "by_family": {
+      "P01": {
+        "exact_match_rate": 0.0,
+        "n": 5,
+        "prediction_consistency_rate": 0.4
+      },
+      "P02": {
+        "exact_match_rate": 0.0,
+        "n": 5,
+        "prediction_consistency_rate": 0.4
+      },
+      "P03": {
+        "exact_match_rate": 0.0,
+        "n": 5,
+        "prediction_consistency_rate": 0.2
+      },
+      "P04": {
+        "exact_match_rate": 1.0,
+        "n": 5,
+        "prediction_consistency_rate": 1.0
+      },
+      "P05": {
+        "exact_match_rate": 0.0,
+        "n": 5,
+        "prediction_consistency_rate": 1.0
+      },
+      "P06": {
+        "exact_match_rate": 0.0,
+        "n": 5,
+        "prediction_consistency_rate": 1.0
+      },
+      "P07": {
+        "exact_match_rate": 0.8,
+        "n": 5,
+        "prediction_consistency_rate": 0.8
+      },
+      "P08": {
+        "exact_match_rate": 0.0,
+        "n": 5,
+        "prediction_consistency_rate": 1.0
+      },
+      "P09": {
+        "exact_match_rate": 0.4,
+        "n": 5,
+        "prediction_consistency_rate": 0.6
+      },
+      "P10": {
+        "exact_match_rate": 0.6,
+        "n": 5,
+        "prediction_consistency_rate": 0.6
+      }
+    },
+    "families": 10,
+    "paraphrase_error_rate_against_human_ground_truth": 0.72,
+    "paraphrase_evaluations": 50,
+    "paraphrase_exact_match_rate": 0.28,
+    "paraphrase_prediction_consistency_rate": 0.7,
+    "selector": "baseline",
+    "set_change_from_base_prediction_rate": 0.3
+  },
+  "baseline_primary_metrics": {
+    "bootstrap_95_ci": {
+      "exact_match_rate": [
+        0.38333333333333336,
+        0.6333333333333333
+      ],
+      "hamming_loss": [
+        0.125,
+        0.24166666666666667
+      ],
+      "macro_f1": [
+        0.8135015556741225,
+        0.9186106241976532
+      ],
+      "mean_jaccard": [
+        0.7124999999999999,
+        0.8444444444444444
+      ],
+      "micro_f1": [
+        0.8228228228228228,
+        0.9150780781980109
+      ],
+      "over_selection_any_fp_rate": [
+        0.35,
+        0.6
+      ],
+      "under_selection_any_fn_rate": [
+        0.0,
+        0.05
+      ]
+    },
+    "by_k_prime": {
+      "1": {
+        "exact_match_rate": 0.06666666666666667,
+        "hamming_loss": 0.45,
+        "macro_f1": 0.38825757575757575,
+        "mean_jaccard": 0.4222222222222222,
+        "micro_f1": 0.5263157894736842,
+        "micro_precision": 0.35714285714285715,
+        "micro_recall": 1.0,
+        "n": 15,
+        "over_selection_any_fp_rate": 0.9333333333333333,
+        "under_selection_any_fn_rate": 0.0
+      },
+      "2": {
+        "exact_match_rate": 0.6,
+        "hamming_loss": 0.11666666666666667,
+        "macro_f1": 0.8574074074074074,
+        "mean_jaccard": 0.8555555555555554,
+        "micro_f1": 0.8955223880597014,
+        "micro_precision": 0.8108108108108109,
+        "micro_recall": 1.0,
+        "n": 15,
+        "over_selection_any_fp_rate": 0.4,
+        "under_selection_any_fn_rate": 0.0
+      },
+      "3": {
+        "exact_match_rate": 0.4666666666666667,
+        "hamming_loss": 0.13333333333333333,
+        "macro_f1": 0.9198412698412699,
+        "mean_jaccard": 0.8666666666666667,
+        "micro_f1": 0.9183673469387755,
+        "micro_precision": 0.8490566037735849,
+        "micro_recall": 1.0,
+        "n": 15,
+        "over_selection_any_fp_rate": 0.5333333333333333,
+        "under_selection_any_fn_rate": 0.0
+      },
+      "4": {
+        "exact_match_rate": 0.9333333333333333,
+        "hamming_loss": 0.016666666666666666,
+        "macro_f1": 0.9913793103448276,
+        "mean_jaccard": 0.9833333333333333,
+        "micro_f1": 0.9915966386554621,
+        "micro_precision": 1.0,
+        "micro_recall": 0.9833333333333333,
+        "n": 15,
+        "over_selection_any_fp_rate": 0.0,
+        "under_selection_any_fn_rate": 0.06666666666666667
+      }
+    },
+    "exact_match_rate": 0.5166666666666667,
+    "fallback_used_count": 0,
+    "ground_truth_source": "independent_human_majority_vote_only",
+    "hamming_loss": 0.17916666666666667,
+    "macro_f1": 0.8727157102157101,
+    "malformed_rate": 0.0,
+    "mean_jaccard": 0.7819444444444444,
+    "micro_f1": 0.873900293255132,
+    "micro_precision": 0.7801047120418848,
+    "micro_recall": 0.9933333333333333,
+    "n": 60,
+    "over_selection_any_fp_rate": 0.4666666666666667,
+    "per_objective": {
+      "Accuracy": {
+        "f1": 0.8761904761904762,
+        "fn": 1,
+        "fp": 12,
+        "precision": 0.7931034482758621,
+        "recall": 0.9787234042553191,
+        "tn": 1,
+        "tp": 46
+      },
+      "CO2": {
+        "f1": 0.8518518518518519,
+        "fn": 0,
+        "fp": 8,
+        "precision": 0.7419354838709677,
+        "recall": 1.0,
+        "tn": 29,
+        "tp": 23
+      },
+      "Energy": {
+        "f1": 0.8974358974358974,
+        "fn": 0,
+        "fp": 8,
+        "precision": 0.813953488372093,
+        "recall": 1.0,
+        "tn": 17,
+        "tp": 35
+      },
+      "Runtime": {
+        "f1": 0.8653846153846153,
+        "fn": 0,
+        "fp": 14,
+        "precision": 0.7627118644067796,
+        "recall": 1.0,
+        "tn": 1,
+        "tp": 45
+      }
+    },
+    "selector": "baseline",
+    "status_counts": {
+      "valid": 60
+    },
+    "strict_subset_rate": 0.016666666666666666,
+    "strict_superset_rate": 0.4666666666666667,
+    "under_selection_any_fn_rate": 0.016666666666666666,
+    "valid_status_rate": 1.0
+  },
+  "file_sha256": {
+    "data/journal/objective_selection_benchmark_v1/frozen/manifest.json": "74bd037c2162c17e32e61e2188b3bd88ccef5bdaf46000da851fc471a28cce72",
+    "data/journal/objective_selection_benchmark_v2/frozen/adversarial_manifest.json": "51e273fa77e3982291181a67108cba2338e826f5e58486857a3a7d477022e936",
+    "data/journal/objective_selection_benchmark_v2/frozen/design_manifest.json": "8814ee36d9621875c343275590f75d50464874a208d0edeba827763344c59982",
+    "data/journal/objective_selection_benchmark_v2/frozen/ground_truth_manifest.json": "b6ba9cf91824db113d9c66b268dcf6d779e316280389d64d4b51c12636436ee8",
+    "data/journal/objective_selection_benchmark_v2/frozen/paraphrase_manifest.json": "1448cd18592a30a6e8af8981f9a1adf2d26967356ed24abb825e4a37efaed489",
+    "data/journal/objective_selection_benchmark_v2/frozen/primary_manifest.json": "5b79a058f5cef0415ecba616371425ce9fa8035a3a2c4f6a63fac49d0cbaf32b",
+    "data/journal/objective_selection_benchmark_v2/results/baseline_adversarial_metrics.json": "497110b7b29a5fa1964871de6d307a29933feee6c31d3ff92277bcaca07047d3",
+    "data/journal/objective_selection_benchmark_v2/results/baseline_adversarial_outputs.jsonl": "b2de92c9abf3a7fcd4698014a5644a441cd389526e41d3e011afe313582b71b7",
+    "data/journal/objective_selection_benchmark_v2/results/baseline_adversarial_run_metadata.json": "535f76e48d345048cc3fcd290c9d69782b2ccef9e9bf026111d354ab19fc3773",
+    "data/journal/objective_selection_benchmark_v2/results/baseline_paraphrase_metrics.json": "b9cc5621c9bda4adcc4f43bba7e6c6dde1af703b279c37a0b37207ade38e2ca2",
+    "data/journal/objective_selection_benchmark_v2/results/baseline_paraphrase_outputs.jsonl": "a0f807d79cb720e6e5f9f12e0bc8bffabd1517d1a5b48bf35506bec8d0a32c4b",
+    "data/journal/objective_selection_benchmark_v2/results/baseline_paraphrase_run_metadata.json": "fe3966d1bf2d34d877d6a466e6d07cd7b9dfb115a28cec064d10d1430d71b12a",
+    "data/journal/objective_selection_benchmark_v2/results/baseline_primary_metrics.json": "16dfc54b64da6cbe8ae6ab0595c1cca424b69a1d44aa5a48de9ddf2f4b247c98",
+    "data/journal/objective_selection_benchmark_v2/results/baseline_primary_outputs.jsonl": "58db40a52a13589815b601cd69ae07e64a9bc0bbd27065e4daf3302244fa8357",
+    "data/journal/objective_selection_benchmark_v2/results/baseline_primary_run_metadata.json": "ebcefdf5696bb87b6129ec5db2dc3f36fba8a134b42844607d6933fb8c470985",
+    "data/journal/objective_selection_benchmark_v2/results/paired_primary_comparison.json": "334ee81dbc09747342f0cd328d95dab7f2b23f868f700677a4631346d5f919a8",
+    "data/journal/objective_selection_benchmark_v2/results/v32_adversarial_metrics.json": "bd078f336be924d2c3913b9c5b7b8546572794ada79a2e78de58f38f0e7a93f2",
+    "data/journal/objective_selection_benchmark_v2/results/v32_adversarial_outputs.jsonl": "751a03932c69e95e38e5234a882017f6788eaedd106cf2c5cd40bff4ff2827bd",
+    "data/journal/objective_selection_benchmark_v2/results/v32_adversarial_run_metadata.json": "c3b2da10fd86f5bf7d0ca6392955478b4aff5d46160cb6a548da56808135d52b",
+    "data/journal/objective_selection_benchmark_v2/results/v32_paraphrase_metrics.json": "89fee467810a6a204b7b59b7473ae4cfbf49af24b3c0394a07c872c84cd55be2",
+    "data/journal/objective_selection_benchmark_v2/results/v32_paraphrase_outputs.jsonl": "a54b48d95f16b936f363105d7efe3dac9f9095a89f11b3410bd818cecdf2fea5",
+    "data/journal/objective_selection_benchmark_v2/results/v32_paraphrase_run_metadata.json": "3f36b3aef942adf002560e2c2bfa4107c3ca113b5e91191f0a130579c7cc7cfb",
+    "data/journal/objective_selection_benchmark_v2/results/v32_primary_metrics.json": "2d10548d4881a508deb29f9d1ab34a8db9c8471df901a1ed06b5f7a183aba1f7",
+    "data/journal/objective_selection_benchmark_v2/results/v32_primary_outputs.jsonl": "48df39a85e85a41c102a760e1dd9ad1ef85006eb46528f00c1fc574c6e9da423",
+    "data/journal/objective_selection_benchmark_v2/results/v32_primary_run_metadata.json": "b93584af0aad753fe367812944e73d1fdd932b1dbc5176d069d827ba24168235",
+    "data/journal/objective_selection_v2/manifest.json": "17951ac29f73b8e2f43f5bb4369eeaf97ed66f54a80d7b59352f4b9a0e795cbe",
+    "data/journal/objective_selection_v32/manifest.json": "a742f50422ba25555700123bf10121f2e26619c0b5bb4290683fe5683fa6bf45"
+  },
+  "frozen_at_utc": "2026-09-14T19:31:29.548484+00:00",
+  "generation_intent_used_as_ground_truth": false,
+  "ground_truth_source": "independent_human_majority_vote_only",
+  "legacy_phase12_v1_preserved": {
+    "path": "data/journal/objective_selection_benchmark_v1/frozen/manifest.json",
+    "primary_benchmark_n": 55,
+    "release_status": "frozen",
+    "sha256": "74bd037c2162c17e32e61e2188b3bd88ccef5bdaf46000da851fc471a28cce72"
+  },
+  "near_pareto_definition_unchanged": {
+    "epsilon": 0.05,
+    "source": "awareml/engine/pareto_spec.py",
+    "spec_id": "epsilon_pareto_v1"
+  },
+  "objective_vocabulary": [
+    "Accuracy",
+    "Runtime",
+    "Energy",
+    "CO2"
+  ],
+  "paired_primary_comparison": {
+    "artifact": "phase12_v2_paired_primary_comparison",
+    "baseline_selector": "frozen Phase-11 V2 LLaMA selector",
+    "candidate_selector": "frozen V3.2 evidence-grounded selector",
+    "deltas_v32_minus_baseline": {
+      "exact_match_rate": -0.4833333333333334,
+      "hamming_loss": 0.375,
+      "macro_f1": -0.661092511985369,
+      "mean_jaccard": -0.6722222222222223,
+      "micro_f1": -0.6703074788838745,
+      "micro_precision": 0.2198952879581152,
+      "micro_recall": -0.88,
+      "over_selection_any_fp_rate": -0.4666666666666667,
+      "under_selection_any_fn_rate": 0.95
+    },
+    "mcnemar_exact": {
+      "baseline_correct_v32_wrong": 31,
+      "baseline_wrong_v32_correct": 2,
+      "two_sided_exact_p": 1.3085082173347473e-07
+    },
+    "n": 60,
+    "same_fresh_benchmark": true
+  },
+  "primary_benchmark_n": 60,
+  "protocol_id": "objective_selection_benchmark_v2",
+  "release_status": "frozen",
+  "selector_freezes": {
+    "legacy_v2": {
+      "path": "data/journal/objective_selection_v2/manifest.json",
+      "sha256": "17951ac29f73b8e2f43f5bb4369eeaf97ed66f54a80d7b59352f4b9a0e795cbe"
+    },
+    "v32": {
+      "path": "data/journal/objective_selection_v32/manifest.json",
+      "selector_id": "evidence_grounded_objective_selector_v32",
+      "sha256": "a742f50422ba25555700123bf10121f2e26619c0b5bb4290683fe5683fa6bf45"
+    }
+  },
+  "v32_adversarial_metrics": {
+    "details": [
+      {
+        "actual_status": "malformed",
+        "case_id": "ADV01",
+        "expected_status": "ambiguous",
+        "selected_objectives": [],
+        "taxonomy": "malformed_failure"
+      },
+      {
+        "actual_status": "malformed",
+        "case_id": "ADV02",
+        "expected_status": "ambiguous",
+        "selected_objectives": [],
+        "taxonomy": "malformed_failure"
+      },
+      {
+        "actual_status": "ambiguous",
+        "case_id": "ADV03",
+        "expected_status": "ambiguous",
+        "selected_objectives": [],
+        "taxonomy": "sensible_abstention"
+      },
+      {
+        "actual_status": "malformed",
+        "case_id": "ADV04",
+        "expected_status": "ambiguous",
+        "selected_objectives": [],
+        "taxonomy": "malformed_failure"
+      },
+      {
+        "actual_status": "ambiguous",
+        "case_id": "ADV05",
+        "expected_status": "contradictory",
+        "selected_objectives": [],
+        "taxonomy": "wrong_rejection_status"
+      },
+      {
+        "actual_status": "valid",
+        "case_id": "ADV06",
+        "expected_status": "contradictory",
+        "selected_objectives": [
+          "Energy"
+        ],
+        "taxonomy": "unsupported_valid_selection"
+      },
+      {
+        "actual_status": "ambiguous",
+        "case_id": "ADV07",
+        "expected_status": "contradictory",
+        "selected_objectives": [],
+        "taxonomy": "wrong_rejection_status"
+      },
+      {
+        "actual_status": "ambiguous",
+        "case_id": "ADV08",
+        "expected_status": "contradictory",
+        "selected_objectives": [],
+        "taxonomy": "wrong_rejection_status"
+      },
+      {
+        "actual_status": "ambiguous",
+        "case_id": "ADV09",
+        "expected_status": "out_of_scope",
+        "selected_objectives": [],
+        "taxonomy": "wrong_rejection_status"
+      },
+      {
+        "actual_status": "ambiguous",
+        "case_id": "ADV10",
+        "expected_status": "out_of_scope",
+        "selected_objectives": [],
+        "taxonomy": "wrong_rejection_status"
+      },
+      {
+        "actual_status": "ambiguous",
+        "case_id": "ADV11",
+        "expected_status": "out_of_scope",
+        "selected_objectives": [],
+        "taxonomy": "wrong_rejection_status"
+      },
+      {
+        "actual_status": "ambiguous",
+        "case_id": "ADV12",
+        "expected_status": "out_of_scope",
+        "selected_objectives": [],
+        "taxonomy": "wrong_rejection_status"
+      }
+    ],
+    "invalid_nonempty_selection_rate": 0.08333333333333333,
+    "malformed_rate": 0.25,
+    "n": 12,
+    "selector": "v32",
+    "status_accuracy": 0.08333333333333333,
+    "taxonomy_counts": {
+      "malformed_failure": 3,
+      "sensible_abstention": 1,
+      "unsupported_valid_selection": 1,
+      "wrong_rejection_status": 7
+    }
+  },
+  "v32_paraphrase_metrics": {
+    "all_variants_human_semantics_reviewed": true,
+    "by_family": {
+      "P01": {
+        "exact_match_rate": 0.2,
+        "n": 5,
+        "prediction_consistency_rate": 0.8
+      },
+      "P02": {
+        "exact_match_rate": 0.0,
+        "n": 5,
+        "prediction_consistency_rate": 1.0
+      },
+      "P03": {
+        "exact_match_rate": 0.8,
+        "n": 5,
+        "prediction_consistency_rate": 0.8
+      },
+      "P04": {
+        "exact_match_rate": 0.2,
+        "n": 5,
+        "prediction_consistency_rate": 0.8
+      },
+      "P05": {
+        "exact_match_rate": 0.0,
+        "n": 5,
+        "prediction_consistency_rate": 1.0
+      },
+      "P06": {
+        "exact_match_rate": 0.0,
+        "n": 5,
+        "prediction_consistency_rate": 0.8
+      },
+      "P07": {
+        "exact_match_rate": 0.0,
+        "n": 5,
+        "prediction_consistency_rate": 0.0
+      },
+      "P08": {
+        "exact_match_rate": 0.0,
+        "n": 5,
+        "prediction_consistency_rate": 0.4
+      },
+      "P09": {
+        "exact_match_rate": 0.0,
+        "n": 5,
+        "prediction_consistency_rate": 0.6
+      },
+      "P10": {
+        "exact_match_rate": 0.0,
+        "n": 5,
+        "prediction_consistency_rate": 0.2
+      }
+    },
+    "families": 10,
+    "paraphrase_error_rate_against_human_ground_truth": 0.88,
+    "paraphrase_evaluations": 50,
+    "paraphrase_exact_match_rate": 0.12,
+    "paraphrase_prediction_consistency_rate": 0.64,
+    "selector": "v32",
+    "set_change_from_base_prediction_rate": 0.36
+  },
+  "v32_primary_metrics": {
+    "bootstrap_95_ci": {
+      "exact_match_rate": [
+        0.0,
+        0.08333333333333333
+      ],
+      "hamming_loss": [
+        0.48739583333333336,
+        0.6208333333333333
+      ],
+      "macro_f1": [
+        0.13391192393406778,
+        0.2810984589297865
+      ],
+      "mean_jaccard": [
+        0.058333333333333334,
+        0.1694444444444444
+      ],
+      "micro_f1": [
+        0.12819767441860463,
+        0.2758715945894456
+      ],
+      "over_selection_any_fp_rate": [
+        0.0,
+        0.0
+      ],
+      "under_selection_any_fn_rate": [
+        0.9166666666666666,
+        1.0
+      ]
+    },
+    "by_k_prime": {
+      "1": {
+        "exact_match_rate": 0.13333333333333333,
+        "hamming_loss": 0.21666666666666667,
+        "macro_f1": 0.3125,
+        "mean_jaccard": 0.13333333333333333,
+        "micro_f1": 0.23529411764705882,
+        "micro_precision": 1.0,
+        "micro_recall": 0.13333333333333333,
+        "n": 15,
+        "over_selection_any_fp_rate": 0.0,
+        "under_selection_any_fn_rate": 0.8666666666666667
+      },
+      "2": {
+        "exact_match_rate": 0.0,
+        "hamming_loss": 0.48333333333333334,
+        "macro_f1": 0.03571428571428572,
+        "mean_jaccard": 0.03333333333333333,
+        "micro_f1": 0.06451612903225806,
+        "micro_precision": 1.0,
+        "micro_recall": 0.03333333333333333,
+        "n": 15,
+        "over_selection_any_fp_rate": 0.0,
+        "under_selection_any_fn_rate": 1.0
+      },
+      "3": {
+        "exact_match_rate": 0.0,
+        "hamming_loss": 0.6333333333333333,
+        "macro_f1": 0.25432288299935357,
+        "mean_jaccard": 0.15555555555555553,
+        "micro_f1": 0.2692307692307693,
+        "micro_precision": 1.0,
+        "micro_recall": 0.15555555555555556,
+        "n": 15,
+        "over_selection_any_fp_rate": 0.0,
+        "under_selection_any_fn_rate": 1.0
+      },
+      "4": {
+        "exact_match_rate": 0.0,
+        "hamming_loss": 0.8833333333333333,
+        "macro_f1": 0.19533668730650156,
+        "mean_jaccard": 0.11666666666666667,
+        "micro_f1": 0.208955223880597,
+        "micro_precision": 1.0,
+        "micro_recall": 0.11666666666666667,
+        "n": 15,
+        "over_selection_any_fp_rate": 0.0,
+        "under_selection_any_fn_rate": 1.0
+      }
+    },
+    "exact_match_rate": 0.03333333333333333,
+    "fallback_used_count": 0,
+    "ground_truth_source": "independent_human_majority_vote_only",
+    "hamming_loss": 0.5541666666666667,
+    "macro_f1": 0.2116231982303411,
+    "malformed_rate": 0.23333333333333334,
+    "mean_jaccard": 0.10972222222222222,
+    "micro_f1": 0.20359281437125748,
+    "micro_precision": 1.0,
+    "micro_recall": 0.11333333333333333,
+    "n": 60,
+    "over_selection_any_fp_rate": 0.0,
+    "per_objective": {
+      "Accuracy": {
+        "f1": 0.08163265306122448,
+        "fn": 45,
+        "fp": 0,
+        "precision": 1.0,
+        "recall": 0.0425531914893617,
+        "tn": 13,
+        "tp": 2
+      },
+      "CO2": {
+        "f1": 0.23076923076923078,
+        "fn": 20,
+        "fp": 0,
+        "precision": 1.0,
+        "recall": 0.13043478260869565,
+        "tn": 37,
+        "tp": 3
+      },
+      "Energy": {
+        "f1": 0.40909090909090906,
+        "fn": 26,
+        "fp": 0,
+        "precision": 1.0,
+        "recall": 0.2571428571428571,
+        "tn": 25,
+        "tp": 9
+      },
+      "Runtime": {
+        "f1": 0.125,
+        "fn": 42,
+        "fp": 0,
+        "precision": 1.0,
+        "recall": 0.06666666666666667,
+        "tn": 15,
+        "tp": 3
+      }
+    },
+    "selector": "v32",
+    "status_counts": {
+      "ambiguous": 30,
+      "malformed": 14,
+      "valid": 16
+    },
+    "strict_subset_rate": 0.9666666666666667,
+    "strict_superset_rate": 0.0,
+    "under_selection_any_fn_rate": 0.9666666666666667,
+    "valid_status_rate": 0.26666666666666666
+  },
+  "weighting_policy_unchanged": {
+    "policy_id": "equal_selected_v1",
+    "rule": "Equal weight among selected objectives; all unselected objectives receive zero."
+  }
+}

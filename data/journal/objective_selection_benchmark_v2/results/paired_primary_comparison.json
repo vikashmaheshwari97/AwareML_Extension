@@ -1,0 +1,23 @@
+{
+  "artifact": "phase12_v2_paired_primary_comparison",
+  "baseline_selector": "frozen Phase-11 V2 LLaMA selector",
+  "candidate_selector": "frozen V3.2 evidence-grounded selector",
+  "deltas_v32_minus_baseline": {
+    "exact_match_rate": -0.4833333333333334,
+    "hamming_loss": 0.375,
+    "macro_f1": -0.661092511985369,
+    "mean_jaccard": -0.6722222222222223,
+    "micro_f1": -0.6703074788838745,
+    "micro_precision": 0.2198952879581152,
+    "micro_recall": -0.88,
+    "over_selection_any_fp_rate": -0.4666666666666667,
+    "under_selection_any_fn_rate": 0.95
+  },
+  "mcnemar_exact": {
+    "baseline_correct_v32_wrong": 31,
+    "baseline_wrong_v32_correct": 2,
+    "two_sided_exact_p": 1.3085082173347473e-07
+  },
+  "n": 60,
+  "same_fresh_benchmark": true
+}

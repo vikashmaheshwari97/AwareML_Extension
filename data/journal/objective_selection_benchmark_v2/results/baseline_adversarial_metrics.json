@@ -1,0 +1,141 @@
+{
+  "details": [
+    {
+      "actual_status": "valid",
+      "case_id": "ADV01",
+      "expected_status": "ambiguous",
+      "selected_objectives": [
+        "Accuracy",
+        "Energy",
+        "Runtime"
+      ],
+      "taxonomy": "unsupported_valid_selection"
+    },
+    {
+      "actual_status": "valid",
+      "case_id": "ADV02",
+      "expected_status": "ambiguous",
+      "selected_objectives": [
+        "CO2",
+        "Energy",
+        "Runtime"
+      ],
+      "taxonomy": "unsupported_valid_selection"
+    },
+    {
+      "actual_status": "valid",
+      "case_id": "ADV03",
+      "expected_status": "ambiguous",
+      "selected_objectives": [
+        "Accuracy",
+        "Energy",
+        "Runtime"
+      ],
+      "taxonomy": "unsupported_valid_selection"
+    },
+    {
+      "actual_status": "valid",
+      "case_id": "ADV04",
+      "expected_status": "ambiguous",
+      "selected_objectives": [
+        "Accuracy",
+        "CO2",
+        "Energy",
+        "Runtime"
+      ],
+      "taxonomy": "over_selection_all_objectives"
+    },
+    {
+      "actual_status": "valid",
+      "case_id": "ADV05",
+      "expected_status": "contradictory",
+      "selected_objectives": [
+        "Accuracy",
+        "Runtime"
+      ],
+      "taxonomy": "unsupported_valid_selection"
+    },
+    {
+      "actual_status": "valid",
+      "case_id": "ADV06",
+      "expected_status": "contradictory",
+      "selected_objectives": [
+        "CO2",
+        "Energy",
+        "Runtime"
+      ],
+      "taxonomy": "unsupported_valid_selection"
+    },
+    {
+      "actual_status": "valid",
+      "case_id": "ADV07",
+      "expected_status": "contradictory",
+      "selected_objectives": [
+        "CO2",
+        "Energy",
+        "Runtime"
+      ],
+      "taxonomy": "unsupported_valid_selection"
+    },
+    {
+      "actual_status": "valid",
+      "case_id": "ADV08",
+      "expected_status": "contradictory",
+      "selected_objectives": [
+        "Accuracy",
+        "Runtime"
+      ],
+      "taxonomy": "unsupported_valid_selection"
+    },
+    {
+      "actual_status": "valid",
+      "case_id": "ADV09",
+      "expected_status": "out_of_scope",
+      "selected_objectives": [
+        "CO2",
+        "Energy",
+        "Runtime"
+      ],
+      "taxonomy": "unsupported_valid_selection"
+    },
+    {
+      "actual_status": "valid",
+      "case_id": "ADV10",
+      "expected_status": "out_of_scope",
+      "selected_objectives": [
+        "Accuracy",
+        "Runtime"
+      ],
+      "taxonomy": "unsupported_valid_selection"
+    },
+    {
+      "actual_status": "valid",
+      "case_id": "ADV11",
+      "expected_status": "out_of_scope",
+      "selected_objectives": [
+        "Accuracy",
+        "Runtime"
+      ],
+      "taxonomy": "unsupported_valid_selection"
+    },
+    {
+      "actual_status": "valid",
+      "case_id": "ADV12",
+      "expected_status": "out_of_scope",
+      "selected_objectives": [
+        "Accuracy",
+        "Runtime"
+      ],
+      "taxonomy": "unsupported_valid_selection"
+    }
+  ],
+  "invalid_nonempty_selection_rate": 1.0,
+  "malformed_rate": 0.0,
+  "n": 12,
+  "selector": "baseline",
+  "status_accuracy": 0.0,
+  "taxonomy_counts": {
+    "over_selection_all_objectives": 1,
+    "unsupported_valid_selection": 11
+  }
+}

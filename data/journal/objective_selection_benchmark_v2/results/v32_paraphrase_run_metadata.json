@@ -1,0 +1,27 @@
+{
+  "artifact": "phase12_v2_v32_run",
+  "created_at_utc": "2026-09-14T18:53:28.485488+00:00",
+  "fallback_count": 0,
+  "input_sha256": "5684aabccc0789d27465d7aac51c43093a4d781b8ea8f7d5d0021e7fa0e3e8d1",
+  "output_sha256": "a54b48d95f16b936f363105d7efe3dac9f9095a89f11b3410bd818cecdf2fea5",
+  "required_model": "llama3:8b",
+  "rows": 50,
+  "runtime": {
+    "fallback_used": false,
+    "legacy_phase10_ollama_version": "0.32.14",
+    "model": "llama3:8b",
+    "model_digest": "365c0bd3c000a25d28ddbf732fe1c6add414de7275464c4e4d1c3b5fcb5d8ad1",
+    "ollama_version": "0.34.0",
+    "reachable": true,
+    "runtime_lock_id": "objective_selection_v32_confirmatory_runtime_20260914",
+    "runtime_role": "phase11r_phase12v2_common_confirmatory_runtime",
+    "same_model_digest_as_phase10": true
+  },
+  "selector": "v32",
+  "selector_reporting_name": "Objective Selection V3.2",
+  "status_counts": {
+    "ambiguous": 22,
+    "malformed": 8,
+    "valid": 20
+  }
+}

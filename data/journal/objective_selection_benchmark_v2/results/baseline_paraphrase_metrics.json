@@ -1,0 +1,62 @@
+{
+  "all_variants_human_semantics_reviewed": true,
+  "by_family": {
+    "P01": {
+      "exact_match_rate": 0.0,
+      "n": 5,
+      "prediction_consistency_rate": 0.4
+    },
+    "P02": {
+      "exact_match_rate": 0.0,
+      "n": 5,
+      "prediction_consistency_rate": 0.4
+    },
+    "P03": {
+      "exact_match_rate": 0.0,
+      "n": 5,
+      "prediction_consistency_rate": 0.2
+    },
+    "P04": {
+      "exact_match_rate": 1.0,
+      "n": 5,
+      "prediction_consistency_rate": 1.0
+    },
+    "P05": {
+      "exact_match_rate": 0.0,
+      "n": 5,
+      "prediction_consistency_rate": 1.0
+    },
+    "P06": {
+      "exact_match_rate": 0.0,
+      "n": 5,
+      "prediction_consistency_rate": 1.0
+    },
+    "P07": {
+      "exact_match_rate": 0.8,
+      "n": 5,
+      "prediction_consistency_rate": 0.8
+    },
+    "P08": {
+      "exact_match_rate": 0.0,
+      "n": 5,
+      "prediction_consistency_rate": 1.0
+    },
+    "P09": {
+      "exact_match_rate": 0.4,
+      "n": 5,
+      "prediction_consistency_rate": 0.6
+    },
+    "P10": {
+      "exact_match_rate": 0.6,
+      "n": 5,
+      "prediction_consistency_rate": 0.6
+    }
+  },
+  "families": 10,
+  "paraphrase_error_rate_against_human_ground_truth": 0.72,
+  "paraphrase_evaluations": 50,
+  "paraphrase_exact_match_rate": 0.28,
+  "paraphrase_prediction_consistency_rate": 0.7,
+  "selector": "baseline",
+  "set_change_from_base_prediction_rate": 0.3
+}

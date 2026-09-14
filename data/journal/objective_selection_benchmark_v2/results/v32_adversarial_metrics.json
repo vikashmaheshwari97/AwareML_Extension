@@ -1,0 +1,101 @@
+{
+  "details": [
+    {
+      "actual_status": "malformed",
+      "case_id": "ADV01",
+      "expected_status": "ambiguous",
+      "selected_objectives": [],
+      "taxonomy": "malformed_failure"
+    },
+    {
+      "actual_status": "malformed",
+      "case_id": "ADV02",
+      "expected_status": "ambiguous",
+      "selected_objectives": [],
+      "taxonomy": "malformed_failure"
+    },
+    {
+      "actual_status": "ambiguous",
+      "case_id": "ADV03",
+      "expected_status": "ambiguous",
+      "selected_objectives": [],
+      "taxonomy": "sensible_abstention"
+    },
+    {
+      "actual_status": "malformed",
+      "case_id": "ADV04",
+      "expected_status": "ambiguous",
+      "selected_objectives": [],
+      "taxonomy": "malformed_failure"
+    },
+    {
+      "actual_status": "ambiguous",
+      "case_id": "ADV05",
+      "expected_status": "contradictory",
+      "selected_objectives": [],
+      "taxonomy": "wrong_rejection_status"
+    },
+    {
+      "actual_status": "valid",
+      "case_id": "ADV06",
+      "expected_status": "contradictory",
+      "selected_objectives": [
+        "Energy"
+      ],
+      "taxonomy": "unsupported_valid_selection"
+    },
+    {
+      "actual_status": "ambiguous",
+      "case_id": "ADV07",
+      "expected_status": "contradictory",
+      "selected_objectives": [],
+      "taxonomy": "wrong_rejection_status"
+    },
+    {
+      "actual_status": "ambiguous",
+      "case_id": "ADV08",
+      "expected_status": "contradictory",
+      "selected_objectives": [],
+      "taxonomy": "wrong_rejection_status"
+    },
+    {
+      "actual_status": "ambiguous",
+      "case_id": "ADV09",
+      "expected_status": "out_of_scope",
+      "selected_objectives": [],
+      "taxonomy": "wrong_rejection_status"
+    },
+    {
+      "actual_status": "ambiguous",
+      "case_id": "ADV10",
+      "expected_status": "out_of_scope",
+      "selected_objectives": [],
+      "taxonomy": "wrong_rejection_status"
+    },
+    {
+      "actual_status": "ambiguous",
+      "case_id": "ADV11",
+      "expected_status": "out_of_scope",
+      "selected_objectives": [],
+      "taxonomy": "wrong_rejection_status"
+    },
+    {
+      "actual_status": "ambiguous",
+      "case_id": "ADV12",
+      "expected_status": "out_of_scope",
+      "selected_objectives": [],
+      "taxonomy": "wrong_rejection_status"
+    }
+  ],
+  "invalid_nonempty_selection_rate": 0.08333333333333333,
+  "malformed_rate": 0.25,
+  "n": 12,
+  "selector": "v32",
+  "status_accuracy": 0.08333333333333333,
+  "taxonomy_counts": {
+    "malformed_failure": 3,
+    "sensible_abstention": 1,
+    "unsupported_valid_selection": 1,
+    "wrong_rejection_status": 7
+  }
+}
