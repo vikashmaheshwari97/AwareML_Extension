@@ -6,7 +6,7 @@ ROOT = Path(__file__).resolve().parents[1]
 def test_three_path_ui_module():
     text = (ROOT / "awareml/ui_v2/copilot_three_path.py").read_text(encoding="utf-8")
     assert "Historical aggregation · not machine learning" in text
-    assert "actual learned meta-recommender" in text
+    assert "That path uses learned models" in text
 
 def test_audit_module_present():
     assert (ROOT / "awareml/recommender/meta_logs_v2_audit.py").exists()

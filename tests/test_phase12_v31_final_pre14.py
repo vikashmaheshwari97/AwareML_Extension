@@ -96,17 +96,16 @@ def test_clean_human_written_derivative_contains_no_blank_scenarios():
     assert len(rows) == 6
 
 
-def test_copilot_v31_ui_and_state_safety_markers():
+def test_copilot_interactive_ui_and_state_safety_markers():
     text = (ROOT / "awareml" / "ui_v2" / "pages_copilot.py").read_text(encoding="utf-8")
-    helper = (ROOT / "awareml" / "ui_v2" / "copilot_v31_components.py").read_text(encoding="utf-8")
-    assert "HybridEvidenceGroundedObjectiveSelectorV31" in text
+    helper = (ROOT / "awareml" / "ui_v2" / "copilot_v33_components.py").read_text(encoding="utf-8")
+    assert "EvidenceGroundedObjectiveSelectorV33" in text
     assert "clear_previous_copilot_result(state)" in text
     assert "render_copilot_clarification(state)" in text
     assert "Objective clarification required" in helper
-    assert "Hybrid evidence-grounded V3.1 selection audit" in text
+    assert "Hybrid evidence-grounded V3.3 selection audit" in text
     assert "Objective-specific support" in helper
     assert "Copilot proposal failed:" not in text
-
 
 def test_existing_pre14_fairness_and_pareto_fixes_remain_present():
     specialist = (ROOT / "awareml" / "ui_v2" / "pages_specialist.py").read_text(encoding="utf-8")

@@ -5,9 +5,14 @@ UNIFIED = (ROOT / "awareml" / "ui_v2" / "copilot_unified.py").read_text(encoding
 PAGE = (ROOT / "awareml" / "ui_v2" / "pages_copilot.py").read_text(encoding="utf-8")
 
 
-def test_goal_tab_uses_unified_renderer():
+def test_goal_path_uses_unified_renderer():
     assert "from .copilot_unified import render_goal_copilot_unified_page" in PAGE
-    assert "with goal_tab:\n        render_goal_copilot_unified_page()" in PAGE
+    assert "active_path = render_copilot_workspace_header(state)" in PAGE
+    assert 'if active_path == "historical":' in PAGE
+    assert "render_historical_preference_prior_tab()" in PAGE
+    assert 'elif active_path == "dataset":' in PAGE
+    assert "render_dataset_aware_v2_tab()" in PAGE
+    assert "render_goal_copilot_unified_page()" in PAGE
 
 
 def test_active_goal_view_has_no_simple_research_switch():
@@ -34,12 +39,12 @@ def test_flow_cards_are_aligned_and_numbered():
     assert '"04"' in UNIFIED
 
 
-def test_hcai_is_rendered_as_equal_cards():
-    assert "Human-centred AI requirements" in UNIFIED
-    assert "awareml-hcai-card" in UNIFIED
-    assert "Drift sensitivity" in UNIFIED
-    assert "Fairness requirement" in UNIFIED
-    assert "Explainability" in UNIFIED
+def test_hcai_is_rendered_as_oversight_cards():
+    assert "Human-centred AI oversight" in UNIFIED
+    assert "Drift monitoring" in UNIFIED
+    assert "Fairness audit" in UNIFIED
+    assert "Explanation support" in UNIFIED
+    assert "HCAI oversight boundary" in UNIFIED
 
 
 def test_recommendation_sections_are_combined():

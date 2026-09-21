@@ -11,7 +11,7 @@ def test_header_has_three_evidence_levels():
     assert "AwareML Copilot Workspace" in WORKSPACE
     assert "Goal interpretation" in WORKSPACE
     assert "Historical preference prior" in WORKSPACE
-    assert "Dataset-aware ML Recommender V2" in WORKSPACE
+    assert "Dataset-aware ML Recommender" in WORKSPACE
     assert "Current evidence mode" in WORKSPACE
 
 
@@ -25,7 +25,7 @@ def test_no_dataset_goal_produces_framework_guidance():
 def test_dataset_mode_compares_evidence_paths():
     assert "Compare the available evidence paths" in WORKSPACE
     assert "GLOBAL HISTORICAL PRIOR" in WORKSPACE
-    assert "DATASET-AWARE ML RECOMMENDER V2" in WORKSPACE
+    assert "DATASET-AWARE ML RECOMMENDER" in WORKSPACE
     assert "Different · expected" in WORKSPACE
 
 

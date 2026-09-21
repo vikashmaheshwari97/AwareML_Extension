@@ -134,5 +134,7 @@ def test_ui_hotfix_markers_present():
     assert "return information_seeking_research_page()" in specialist
     assert "Participant mode" in study_labs
     assert "category=category" in study_labs
-    assert "Objective-selection reliability · frozen Phase 12" in copilot
+    assert "Objective-selection evidence status" in copilot
+    assert "Primary confirmatory evidence is the fresh V2 method replay" in copilot
+    assert "Hybrid evidence-grounded V3.3 selection audit" in copilot
     assert "will be evaluated systematically in Phase 12" not in copilot
