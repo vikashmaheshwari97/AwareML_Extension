@@ -155,7 +155,7 @@ def render_phase14_fairness_details(results):
             .format(names)
         )
 
-    st.markdown("### Calibration fairness · Phase 14")
+    st.markdown("### Calibration fairness")
     st.caption(
         "Probability-based fairness is reported only when valid class "
         "probabilities exist. Missing probability evidence remains N/A and is "
@@ -218,7 +218,7 @@ def render_phase14_fairness_details(results):
                 )
 
     st.download_button(
-        "Download Phase-14 fairness diagnostics",
+        "Download fairness diagnostics",
         data=diagnostic.to_csv(index=False).encode("utf-8"),
         file_name="phase14_fairness_diagnostics.csv",
         mime="text/csv",
@@ -451,4 +451,4 @@ def render_phase14_sustainability_details(results):
                 hide_index=True,
             )
         else:
-            st.caption("No registered Phase-14 repeatability runs yet.")
+            st.caption("No registered Repeatability runs yet.")

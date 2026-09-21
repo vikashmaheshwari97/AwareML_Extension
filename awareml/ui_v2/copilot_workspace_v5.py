@@ -127,30 +127,29 @@ def _css() -> None:
     )
 
 
-def render_copilot_workspace_header(state: Mapping[str, Any]) -> None:
+def render_copilot_workspace_header(state: Mapping[str, Any]) -> str:
     _css()
     has_dataset = _dataset_ready_from_state(state)
     has_goal = bool(
         state.get("copilot_context_free_interpretation")
         or state.get("copilot_proposal")
     )
+    active = str(state.get("copilot_workspace_path") or "goal")
+    if active not in {"goal", "historical", "dataset"}:
+        active = "goal"
 
-    if has_dataset:
-        mode_title = "Dataset-aware decision support"
-        mode_copy = (
-            "All three evidence levels are available. Goal Copilot interprets the goal; "
-            "the historical prior gives global context; ML Recommender V2 supplies the "
-            "dataset-specific framework prediction."
-        )
-        v2_status = "Ready · dataset + target available"
-    else:
-        mode_title = "Dataset-free planning"
-        mode_copy = (
-            "Goal interpretation and historical framework guidance are available now. "
-            "Add a dataset + target later to upgrade from a global historical starting "
-            "point to a dataset-specific ML prediction."
-        )
-        v2_status = "Waiting for dataset + target"
+    dataset_status = (
+        "Ready · dataset + target available"
+        if has_dataset else "Waiting for dataset + target"
+    )
+    mode_title = "Dataset-aware decision support" if has_dataset else "Dataset-free planning"
+    mode_copy = (
+        "Goal interpretation, the historical prior and dataset-aware recommendation "
+        "are available for the uploaded dataset."
+        if has_dataset else
+        "Goal interpretation and the historical prior work without a dataset. Upload "
+        "a dataset in Run Studio only when you want a dataset-specific recommendation."
+    )
 
     st.markdown(
         """
@@ -158,46 +157,40 @@ def render_copilot_workspace_header(state: Mapping[str, Any]) -> None:
           <div class="copv5-kicker">Human-centred evidence orchestration</div>
           <div class="copv5-title">AwareML Copilot Workspace</div>
           <div class="copv5-sub">
-            One deployment goal, three evidence levels. AwareML uses the strongest
-            evidence currently available and keeps recommendation provenance visible.
+            One deployment goal, three evidence levels. Goal interpretation is
+            dataset-free; dataset-aware ranking is activated only when a dataset
+            and target are available.
           </div>
         </div>
         """,
         unsafe_allow_html=True,
     )
 
-    cols = st.columns(3)
     cards = [
-        (
-            "01",
-            "Goal interpretation",
-            "Natural-language scenario → Accuracy / Runtime / Energy / CO₂ priorities plus separate HCAI requirements.",
-            "Ready" if has_goal else "Available now",
-        ),
-        (
-            "02",
-            "Historical preference prior",
-            "47 development datasets · 705 validated runs · stable 3-seed aggregation → dataset-free framework starting point.",
-            "Ready from current goal" if has_goal else "Available after goal interpretation",
-        ),
-        (
-            "03",
-            "Dataset-aware ML Recommender V2",
-            "Dataset meta-profile + frozen learned objective models → dataset-specific pre-run ranking of five frameworks.",
-            v2_status,
-        ),
+        ("goal", "01 · Goal interpretation",
+         "Natural-language goal → Accuracy / Runtime / Energy / CO₂ priorities, plus separate HCAI oversight requirements.",
+         "Ready"),
+        ("historical", "02 · Historical preference prior",
+         "47 development datasets · 705 validated runs · stable 3-seed aggregation → global framework starting point.",
+         "Ready from current goal" if has_goal else "Available"),
+        ("dataset", "03 · Dataset-aware ML Recommender",
+         "Dataset meta-profile + validated learned objective models → dataset-specific ranking of five frameworks.",
+         dataset_status),
     ]
-    for col, (number, title, copy, status) in zip(cols, cards):
+    cols = st.columns(3)
+    for col, (key, title, copy, status) in zip(cols, cards):
         with col:
-            st.markdown(
-                '<div class="copv5-path">'
-                '<div class="copv5-num">{}</div>'
-                '<div class="copv5-path-title">{}</div>'
-                '<div class="copv5-copy">{}</div>'
-                '<div class="copv5-status">{}</div>'
-                '</div>'.format(number, title, copy, status),
-                unsafe_allow_html=True,
-            )
+            with st.container(border=True):
+                if st.button(
+                    title,
+                    key="copilot_workspace_open_{}".format(key),
+                    use_container_width=True,
+                    type="primary" if active == key else "secondary",
+                ):
+                    state["copilot_workspace_path"] = key
+                    st.rerun()
+                st.caption(copy)
+                st.markdown("**{}{}**".format(status, " · Active" if active == key else ""))
 
     st.markdown(
         '<div class="copv5-current"><b>Current evidence mode: {}</b><br>{}</div>'.format(
@@ -205,7 +198,7 @@ def render_copilot_workspace_header(state: Mapping[str, Any]) -> None:
         ),
         unsafe_allow_html=True,
     )
-
+    return active
 
 def _historical_cards(result: Mapping[str, Any], ranking: pd.DataFrame) -> None:
     top = ranking.iloc[0]
@@ -300,7 +293,7 @@ def render_goal_framework_guidance(
             ),
             (
                 c2,
-                "Dataset-aware V2",
+                "Dataset-aware recommender",
                 "Next evidence level",
                 "Dataset meta-features answer what is predicted to work for this dataset.",
             ),
@@ -329,7 +322,7 @@ def render_goal_framework_guidance(
     st.markdown("## 2 · Compare the available evidence paths")
     st.caption(
         "The same priorities can produce different framework guidance because the "
-        "historical prior is global while ML Recommender V2 conditions on this dataset."
+        "historical prior is global while ML Recommender conditions on this dataset."
     )
 
     c1, c2, c3 = st.columns(3)
@@ -362,7 +355,7 @@ def render_goal_framework_guidance(
 
     if historical_winner != dataset_winner:
         st.info(
-            "The historical prior suggests **{}**, while ML Recommender V2 predicts **{}** "
+            "The historical prior suggests **{}**, while ML Recommender predicts **{}** "
             "for the loaded dataset. This is expected: the first is global evidence and "
             "the second uses dataset-specific meta-features.".format(
                 historical_winner, dataset_winner

@@ -35,7 +35,6 @@ FAIRNESS_OPTIONS = {
     "Demographic parity": "demographic_parity",
     "Equal opportunity": "equal_opportunity",
     "Equalized odds": "equalized_odds",
-    "Predictive parity": "predictive_parity",
     "Error-rate parity": "error_rate",
 }
 
@@ -213,27 +212,60 @@ def run_studio_page():
     left, right = st.columns([1.0, 1.55])
     with left:
         st.subheader("1 · Data")
-        source = st.segmented_control("Source", ["Synthetic drift", "Built-in real stream", "Upload CSV"], default="Synthetic drift", key="run_source")
-        if source == "Upload CSV":
-            up = st.file_uploader("CSV stream", type=["csv"], key="run_csv")
-            if up is not None:
+        st.caption(
+            "Upload the CSV dataset for this research session. AwareML no longer "
+            "creates a synthetic dataset automatically."
+        )
+
+        # Clear context that could only have come from the old automatic
+        # Synthetic-drift default.
+        if _state().get("dataset_name") == "Synthetic drift":
+            for key in (
+                "dataset", "dataset_name", "target", "sensitive", "run_results",
+                "ranking", "pre_run_recommendation", "pre_run_recommendation_meta",
+                "pre_run_objective", "v2_profile", "v2_candidates", "v2_ranking_meta",
+                "v2_profile_signature", "selected_framework", "copilot_proposal",
+                "copilot_ranked", "copilot_evidence", "copilot_meta", "copilot_review",
+                "active_experiment_id",
+            ):
+                _state().pop(key, None)
+
+        generation = int(st.session_state.get("run_upload_generation", 0))
+        if st.button(
+            "Start new dataset session",
+            use_container_width=True,
+            key="run_clear_dataset_context",
+        ):
+            for key in (
+                "dataset", "dataset_name", "target", "sensitive", "run_results",
+                "ranking", "pre_run_recommendation", "pre_run_recommendation_meta",
+                "pre_run_objective", "v2_profile", "v2_candidates", "v2_ranking_meta",
+                "v2_profile_signature", "selected_framework", "copilot_proposal",
+                "copilot_ranked", "copilot_evidence", "copilot_meta", "copilot_review",
+                "active_experiment_id",
+            ):
+                _state().pop(key, None)
+            st.session_state["run_upload_generation"] = generation + 1
+            st.rerun()
+
+        up = st.file_uploader(
+            "CSV stream",
+            type=["csv"],
+            key="run_csv_{}".format(generation),
+        )
+        if up is not None:
+            if _state().get("dataset") is None or _state().get("dataset_name") != up.name:
+                for key in (
+                    "run_results", "ranking", "pre_run_recommendation",
+                    "pre_run_recommendation_meta", "pre_run_objective", "v2_profile",
+                    "v2_candidates", "v2_ranking_meta", "v2_profile_signature",
+                    "selected_framework", "copilot_proposal", "copilot_ranked",
+                    "copilot_evidence", "copilot_meta", "copilot_review",
+                    "active_experiment_id",
+                ):
+                    _state().pop(key, None)
                 _state()["dataset"] = load_csv(up)
                 _state()["dataset_name"] = up.name
-        elif source == "Built-in real stream":
-            built_name = st.selectbox("Built-in stream", list(BUILTIN_STREAMS.keys()), key="run_builtin")
-            built_n = st.slider("Load first N samples", 500, 10000, 5000, 500, key="run_builtin_n")
-            if st.button("Load built-in stream", use_container_width=True, key="load_builtin"):
-                try:
-                    _state()["dataset"] = load_builtin_stream(built_name, built_n)
-                    _state()["dataset_name"] = built_name
-                    st.success(f"Loaded {built_name} in stream order.")
-                except Exception as exc:
-                    st.error(str(exc))
-        else:
-            n_demo = st.slider("Synthetic samples", 1000, 12000, 6000, 500, key="run_synth_n")
-            if _state().get("dataset") is None or _state().get("dataset_name") != "Synthetic drift" or len(_state().get("dataset", [])) != n_demo:
-                _state()["dataset"] = make_drift_stream(n_demo)
-                _state()["dataset_name"] = "Synthetic drift"
 
         df = _state().get("dataset")
         if isinstance(df, pd.DataFrame):

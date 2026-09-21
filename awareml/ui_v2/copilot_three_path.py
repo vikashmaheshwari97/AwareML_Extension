@@ -7,6 +7,8 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 
+from awareml.llm import OllamaClient
+
 from awareml.recommender.historical_preference import (
     HistoricalPreferenceRecommender,
     normalize_preference_weights,
@@ -220,7 +222,7 @@ def render_historical_preference_prior_tab() -> None:
             st.warning(warning)
 
     st.success(
-        "When a dataset is available, move to **Dataset-aware ML Recommender V2**. "
+        "When a dataset is available, move to **Dataset-aware ML Recommender**. "
         "That path uses learned models and can legitimately choose a different framework."
     )
 
@@ -263,15 +265,49 @@ def _render_model_quality() -> None:
         pass
 
 
+
+def _recommendation_explainer_prompt(ranked: pd.DataFrame, weights: Mapping[str, float], dataset_name: str, target: str) -> str:
+    top=ranked.sort_values("rank",ascending=True).head(5).copy() if "rank" in ranked.columns else ranked.head(5).copy()
+    rows=[]
+    for _,row in top.iterrows():
+        rows.append({"rank":int(row.get("rank",len(rows)+1)),"framework":str(row.get("framework")),"utility":None if pd.isna(row.get("utility")) else round(float(row.get("utility")),4),"accuracy":None if pd.isna(row.get("accuracy")) else round(float(row.get("accuracy")),4),"runtime_sec":None if pd.isna(row.get("runtime")) else round(float(row.get("runtime")),4),"energy_kwh":None if pd.isna(row.get("energy")) else round(float(row.get("energy")),7),"co2_kg":None if pd.isna(row.get("co2")) else round(float(row.get("co2")),7),"near_pareto":bool(row.get("near_pareto")) if row.get("near_pareto") is not None else None})
+    evidence={"dataset":dataset_name,"target":target,"objective_weights":dict(weights),"ranked_candidates":rows}
+    return "You are the AwareML Recommendation Explainer. Explain a ranking already produced by the ML meta-recommender. You are NOT allowed to choose, change, or re-rank frameworks. Use only the structured evidence below. Do not claim these values were observed from framework execution: they are pre-execution model predictions. Explain in 4 short parts: (1) recommendation, (2) why it ranks first under the active priorities, (3) strongest alternative/trade-off, (4) what must be validated after execution. Mention that utility is relative and not confidence. Never invent missing evidence.\n\nSTRUCTURED EVIDENCE:\n"+json.dumps(evidence,indent=2,sort_keys=True)
+
+def _render_grounded_recommendation_explainer(state: Dict[str, Any], ranked: pd.DataFrame, weights: Mapping[str, float], dataset_name: str, target: str, signature: str) -> None:
+    st.markdown("### LLaMA 3 8B recommendation explainer")
+    st.caption("The LLM explains the ML ranking after it has been produced. It cannot select or re-rank frameworks and it never receives raw dataset rows.")
+    top=ranked.sort_values("rank",ascending=True).iloc[0] if "rank" in ranked.columns else ranked.iloc[0]; winner=str(top["framework"])
+    c1,c2,c3=st.columns(3)
+    with c1:
+        with st.container(border=True): st.caption("RANKING SOURCE"); st.markdown("**ML meta-recommender**"); st.caption("Saved objective models + current dataset meta-profile")
+    with c2:
+        with st.container(border=True): st.caption("TOP RECOMMENDATION"); st.markdown("### {}".format(winner)); st.caption("Utility {:.4f} · relative ranking score".format(float(top["utility"])))
+    with c3:
+        with st.container(border=True): st.caption("LLM ROLE"); st.markdown("**Explain only**"); st.caption("Grounded summary · no ranking authority")
+    explanation_key="three_dataset_llm_explanation"; explanation_sig_key="three_dataset_llm_explanation_signature"
+    if state.get(explanation_sig_key)!=signature: state.pop(explanation_key,None)
+    if st.button("Explain this recommendation with LLaMA 3 8B",key="three_dataset_llm_explain",use_container_width=True):
+        try:
+            client=OllamaClient(model="llama3:8b",timeout_sec=90.0); status=client.status()
+            if not status.get("reachable"): raise RuntimeError(status.get("error") or "Ollama is not reachable.")
+            if status.get("resolved_model")!="llama3:8b": raise RuntimeError("Exact llama3:8b is required for the recommendation explainer; resolved model was {}.".format(status.get("resolved_model")))
+            text,meta=client.generate_text(_recommendation_explainer_prompt(ranked,weights,dataset_name,target)); state[explanation_key]={"text":text,"meta":meta}; state[explanation_sig_key]=signature; st.rerun()
+        except Exception as exc: st.error("Recommendation explanation could not be generated: {}".format(exc))
+    explanation=state.get(explanation_key)
+    if isinstance(explanation,dict) and state.get(explanation_sig_key)==signature:
+        with st.container(border=True):
+            st.markdown("**Grounded explanation**"); st.write(str(explanation.get("text") or "")); meta=explanation.get("meta") or {}; st.caption("Explanation source: {} · model: {} · ranking source remains ML meta-recommender.".format(meta.get("source") or "ollama",meta.get("model") or "llama3:8b"))
+
 def render_dataset_aware_v2_tab() -> None:
     state = ensure_research_state()
-    st.markdown("# Dataset-aware ML Recommender V2")
+    st.markdown("# Dataset-aware ML Recommender")
     st.markdown(
-        "Use this when a **dataset and target are available**. This is the actual learned meta-recommender."
+        "Use this when a **dataset and target are available**. The saved meta-models use the current dataset meta-profile to rank the five frameworks before framework execution."
     )
     st.success(
-        "**Learned models · dataset-specific pre-run prediction.** "
-        "The LLM does not choose the framework in this tab."
+        "**Dataset-aware model inference.** The meta-recommender uses fixed learned models; "
+        "the LLM may explain the result afterwards but does not choose the framework."
     )
 
     cards = st.columns(4)
@@ -287,8 +323,8 @@ def render_dataset_aware_v2_tab() -> None:
             "Load a dataset and choose its target in **Run Studio**. "
             "No framework execution is required before getting this prediction."
         )
-        st.markdown("### Frozen learned models")
-        _render_model_quality()
+        with st.expander("Research validation details", expanded=False):
+            _render_model_quality()
         st.info(
             "The 23 reserved datasets remain untouched for the final external evaluation. "
             "Do not use them for tuning before the Phase-14 protocol is frozen."
@@ -356,7 +392,7 @@ def render_dataset_aware_v2_tab() -> None:
         state["three_v2_meta"] = None
 
     st.markdown("## 3 · Predict the five-framework ranking")
-    if st.button("Run frozen ML Recommender V2", key="three_v2_run", use_container_width=True):
+    if st.button("Generate dataset-aware recommendation", key="three_v2_run", use_container_width=True):
         ranked, meta = load_v2_recommender().recommend_dataframe(
             df,
             target=str(target),
@@ -394,8 +430,8 @@ def render_dataset_aware_v2_tab() -> None:
     )
 
     st.info(
-        "V2 predicts **{}** for this dataset under **{}**. "
-        "These are learned pre-run predictions, not observed benchmark outcomes.".format(winner, _weights_text(weights))
+        "The meta-recommender predicts **{}** for this dataset under **{}**. "
+        "This is a pre-execution estimate from the dataset meta-profile, not an observed framework-run outcome.".format(winner, _weights_text(weights))
     )
     for warning_text in (meta or {}).get("warnings") or []:
         st.warning(warning_text)
@@ -414,15 +450,18 @@ def render_dataset_aware_v2_tab() -> None:
     compare = st.columns(3)
     compare[0].metric("Goal Copilot", "Priorities ready" if goal_weights is not None else "Not generated")
     compare[1].metric("Historical prior", str(hist.get("winner") or "Not generated"))
-    compare[2].metric("Dataset-aware V2", winner)
+    compare[2].metric("Dataset-aware recommender", winner)
     st.caption(
         "The historical prior and dataset-aware V2 may disagree. That is expected: the prior is global, while V2 conditions on this dataset."
     )
 
-    st.markdown("### Frozen learned-model evidence")
-    _render_model_quality()
-
-    st.info(
-        "**Phase-14 boundary:** freeze the model bundle, ranking rule, run protocol, preference profiles and metrics "
-        "before opening the reserved 23-dataset outcomes."
+    _render_grounded_recommendation_explainer(
+        state=state, ranked=ranked, weights=weights,
+        dataset_name=str(state.get("dataset_name") or "Loaded dataset"),
+        target=str(target), signature=sig,
     )
+
+    with st.expander("Research validation details", expanded=False):
+        st.caption("Development/LODO diagnostics document the saved meta-model bundle. They are not confidence scores for this individual recommendation.")
+        _render_model_quality()
+        st.info("Final held-out evaluation remains separate from this interactive recommendation path.")

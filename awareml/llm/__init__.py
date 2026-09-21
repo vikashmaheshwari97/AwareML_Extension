@@ -32,6 +32,10 @@ from .objective_selection_v31 import (
     HybridEvidenceGroundedObjectiveSelectorV31,
     SELECTOR_ID as OBJECTIVE_SELECTOR_V31_ID,
 )
+from .objective_selection_v33 import (
+    EvidenceGroundedObjectiveSelectorV33,
+    SELECTOR_ID as OBJECTIVE_SELECTOR_V33_ID,
+)
 from .review import ReviewStore, review_proposal
 from .schemas import (
     ConfigDiffItem,
@@ -71,6 +75,8 @@ __all__ = [
     "OBJECTIVE_SELECTOR_V3_ID",
     "HybridEvidenceGroundedObjectiveSelectorV31",
     "OBJECTIVE_SELECTOR_V31_ID",
+    "EvidenceGroundedObjectiveSelectorV33",
+    "OBJECTIVE_SELECTOR_V33_ID",
     "GoalSelectionError",
     "deterministic_objective_selection",
     "infer_hcai_requirements",

@@ -598,7 +598,7 @@ class GeneralEvidenceVerifier:
                     citation_valid=citation_valid,
                     reason=(
                         "Factual-looking statement falls outside the supported "
-                        "Phase-15 claim grammar or lacks resolvable evidence."
+                        "explanation-integrity claim grammar or lacks resolvable evidence."
                     ),
                 )
             )

@@ -140,6 +140,57 @@ def _hoyer_sparsity(v: np.ndarray) -> float:
     return float((np.sqrt(n) - (v.sum() / np.linalg.norm(v))) / (np.sqrt(n) - 1))
 
 
+
+# STREAMING_XAI_TARGET_V2
+def _is_streaming_explainability_target(model) -> bool:
+    """Use the streaming-specific XAI route only for AutoStreamML."""
+    return (
+        getattr(type(model), "__name__", "") in {"AutoStreamMLAdapter", "AutoStreamClassifier"}
+        or str(getattr(model, "name", "") or "") == "AutoStreamML"
+    )
+
+def _prediction_change_vectors(
+    model,
+    X: pd.DataFrame,
+    seed: int,
+    repeats: int = 3,
+) -> list[np.ndarray]:
+    baseline = np.asarray(_safe_predict(model, X), dtype=object).reshape(-1)
+    if len(baseline) != len(X):
+        raise ValueError("Prediction length mismatch in perturbation fallback.")
+
+    vectors = []
+    for rep in range(max(1, int(repeats))):
+        rng = np.random.default_rng(seed + 503 * rep)
+        scores = []
+
+        for col in X.columns:
+            original = X[col].to_numpy(copy=True)
+            changes = []
+
+            shuffled = X.copy()
+            shuffled[col] = rng.permutation(original)
+            pred = np.asarray(_safe_predict(model, shuffled), dtype=object).reshape(-1)
+            changes.append(float(np.mean(pred != baseline)))
+
+            numeric = pd.to_numeric(X[col], errors="coerce")
+            finite = numeric[np.isfinite(numeric)]
+            if len(finite):
+                for quantile in (0.10, 0.90):
+                    intervened = X.copy()
+                    intervened[col] = float(finite.quantile(quantile))
+                    pred = np.asarray(
+                        _safe_predict(model, intervened),
+                        dtype=object,
+                    ).reshape(-1)
+                    changes.append(float(np.mean(pred != baseline)))
+
+            scores.append(float(np.mean(changes)))
+
+        vectors.append(np.asarray(scores, dtype=float))
+
+    return vectors
+
 def _perm_vector(model, X: pd.DataFrame, y: pd.Series, seed: int, repeats: int = 3) -> np.ndarray:
     base = _safe_accuracy(y, _safe_predict(model, X))
     rng = np.random.default_rng(seed)
@@ -364,7 +415,7 @@ def explain_framework(
 ) -> dict[str, Any]:
     """Journal-oriented streaming explanation cascade.
 
-    Phase 3 attempts SHAP first, then LIME, then repeated permutation when
+    The automatic cascade uses SHAP/LIME for compatible batch estimators and streaming-safe permutation for streaming estimators when
     ``method_preference='auto'``. SHAP/LIME are only accepted when the framework
     exposes genuine class probabilities. Every attempted method is recorded;
     degenerate all-zero explanations are rejected instead of being shown as a
@@ -382,7 +433,16 @@ def explain_framework(
         selected_meta = {}
         vectors = None
 
-        for method in _method_order(method_preference):
+        # STREAMING_XAI_ORDER_V2
+        if (
+            str(method_preference or "auto").strip().lower() == "auto"
+            and _is_streaming_explainability_target(model)
+        ):
+            method_order = ["permutation"]
+        else:
+            method_order = _method_order(method_preference)
+
+        for method in method_order:
             try:
                 if method == "shap":
                     candidate, meta = _shap_vectors(model, X, y, seed)
@@ -405,6 +465,41 @@ def explain_framework(
                 break
             except Exception as exc:
                 attempts.append({"method": method, "status": "failed_or_degenerate", "reason": "%s: %s" % (type(exc).__name__, exc)})
+
+        # STREAMING_XAI_FINAL_FALLBACK_V2
+        if (
+            vectors is None
+            and str(method_preference or "auto").strip().lower() == "auto"
+            and _is_streaming_explainability_target(model)
+        ):
+            try:
+                candidate = _prediction_change_vectors(
+                    model,
+                    X,
+                    seed=seed + 7001,
+                    repeats=3,
+                )
+                _quality_from_vectors(candidate)
+                attempts.append({
+                    "method": "prediction-change/perturbation",
+                    "status": "ok",
+                })
+                selected_method = "prediction-change/perturbation"
+                selected_meta = {
+                    "metric": "fraction_of_predictions_changed",
+                    "model_agnostic": True,
+                    "interpretation": (
+                        "Diagnostic prediction sensitivity to feature perturbation; "
+                        "not SHAP and not a causal effect."
+                    ),
+                }
+                vectors = candidate
+            except Exception as exc:
+                attempts.append({
+                    "method": "prediction-change/perturbation",
+                    "status": "failed_or_degenerate",
+                    "reason": "%s: %s" % (type(exc).__name__, exc),
+                })
 
         if vectors is None or selected_method is None:
             return {
@@ -463,7 +558,7 @@ def explain_framework(
             "method_metadata": selected_meta,
             "diagnostic_note": (
                 "Explanation quality measures are perturbation/resampling diagnostics, not causal guarantees. "
-                "SHAP/LIME are used only with genuine class-probability APIs; permutation is the model-agnostic fallback."
+                "SHAP/LIME are used only with genuine class-probability APIs; streaming estimators use repeated permutation first, with prediction-change perturbation as a clearly labelled diagnostic fallback."
             ),
         }
     except Exception as exc:

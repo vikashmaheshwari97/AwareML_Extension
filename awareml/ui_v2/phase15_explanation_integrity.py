@@ -118,7 +118,7 @@ def _controlled_benchmark_tab():
     with st.expander("How to use this tab", expanded=True):
         st.markdown(
             """
-**Question answered by this tab:** *Does the Phase-15 evaluator itself behave correctly on cases where the ground truth is known?*
+**Question answered by this tab:** *Does the evaluator itself behave correctly on cases where the ground truth is known?*
 
 - **Known-correct** explanations should score very highly because every factual claim was constructed from the evidence.
 - **Known-incorrect** explanations are deliberately *mostly correct with one seeded error*. Their claim precision therefore does **not** need to be zero.
@@ -241,7 +241,7 @@ def _render_correctness_report(report):
         )
     else:
         st.info(
-            "No Phase-15 factual claims were extracted from this explanation."
+            "No factual claims were extracted from this explanation."
         )
 
 
@@ -462,7 +462,7 @@ def _live_probe_tab():
     st.warning(
         "Exploratory Live Dataset Probe · NOT frozen journal evidence. "
         "Use this page to inspect the active AwareML run. The controlled and "
-        "empirical Phase-15 benchmarks remain separate."
+        "empirical benchmarks remain separate."
     )
 
     with st.expander("How to use this page", expanded=True):
@@ -470,7 +470,7 @@ def _live_probe_tab():
             """
 **Normal workflow — only three steps**
 
-1. Click **Run complete Phase-15 live check**.
+1. Click **Run complete Explanation integrity live check**.
 2. Read the **Result summary** for Stage B, Stage E, Stage F XAI and Stage F conversational.
 3. Open a source only when it is marked **REVIEW** or **FAILED**.
 
@@ -936,24 +936,49 @@ def _stimulus_tab():
         st.json(manifest, expanded=False)
 
 
-def phase15_explanation_integrity_page():
-    hero(
-        "PHASE 15 · EXPLANATION INTEGRITY",
-        "Explanation Correctness & Faithfulness V2",
-        (
-            "Correctness asks whether explanation claims agree with structured "
-            "evidence. Faithfulness asks whether the explanation changes when "
-            "decision-relevant evidence changes. AwareML keeps these questions "
-            "separate."
-        ),
-        pills=phase_pills(),
-    )
+def phase15_explanation_integrity_page(show_header: bool = True):
+    if show_header:
+        hero(
+            "EXPLANATION INTEGRITY",
+            "Explanation Correctness & Faithfulness",
+            (
+                "Correctness asks whether explanation claims agree with structured "
+                "evidence. Faithfulness asks whether the explanation changes when "
+                "decision-relevant evidence changes. AwareML keeps these questions "
+                "separate."
+            ),
+            pills=phase_pills(),
+        )
 
-    st.caption(
-        "Three views, three different purposes: Controlled benchmark = validate "
-        "the evaluator; Live Dataset Probe = inspect the current AwareML run; "
-        "Track 2 stimulus bank = prepare the human trust-calibration study."
-    )
+    st.markdown("### Three research views · three different purposes")
+    purpose_cols = st.columns(3)
+    purpose_items = [
+        (
+            "01",
+            "Controlled benchmark",
+            "Validate the evaluator",
+            "Known controlled cases test whether correctness and faithfulness metrics behave as intended.",
+        ),
+        (
+            "02",
+            "Live Dataset Probe",
+            "Inspect the current AwareML run",
+            "Apply the same integrity checks to the active run without presenting exploratory results as frozen evidence.",
+        ),
+        (
+            "03",
+            "Track 2 stimulus bank",
+            "Prepare the human trust-calibration study",
+            "Review blinded participant stimuli and researcher-only labels used for the controlled human study.",
+        ),
+    ]
+    for col, (number, title, purpose, body) in zip(purpose_cols, purpose_items):
+        with col:
+            with st.container(border=True):
+                st.caption(number)
+                st.markdown("**{}**".format(title))
+                st.markdown("### {}".format(purpose))
+                st.caption(body)
 
     tabs = st.tabs([
         "Controlled benchmark",

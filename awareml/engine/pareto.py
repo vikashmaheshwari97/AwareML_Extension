@@ -36,7 +36,6 @@ COMPOSITE_FAIRNESS_GAP_KEYS = (
     "dp_diff",
     "equal_opportunity_diff",
     "equalized_odds_gap",
-    "predictive_parity_diff",
     "error_rate_gap",
 )
 
@@ -44,7 +43,6 @@ COMPOSITE_FAIRNESS_LABELS = {
     "dp_diff": "demographic parity",
     "equal_opportunity_diff": "equal opportunity",
     "equalized_odds_gap": "equalized odds",
-    "predictive_parity_diff": "predictive parity",
     "error_rate_gap": "error-rate parity",
 }
 

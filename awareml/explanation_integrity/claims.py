@@ -276,10 +276,30 @@ def _citation_numeric_claims(
 
 
 
+
+# FAIRNESS_CONTEXT_CARRY_FORWARD_V2
+def _is_fairness_context_sentence(sentence: str) -> bool:
+    # Deliberately narrow fairness/calibration discourse detector.
+    return bool(
+        re.search(
+            r"\b(?:"
+            r"fairness|"
+            r"dp(?:_diff)?|spd|"
+            r"demographic\s+parity|statistical\s+parity|"
+            r"equal[_\s]+opportunity|"
+            r"equalized[_\s]+odds|equalised[_\s]+odds|"
+            r"error[-_\s]+rate\s+parity|"
+            r"brier|ece|calibration"
+            r")\b",
+            str(sentence),
+            flags=re.IGNORECASE,
+        )
+    )
+
 class ClaimExtractor:
     """Deterministic claim extractor for AwareML explanation domains.
 
-    It deliberately focuses on the factual claim families required by Phase 15:
+    It deliberately focuses on the factual claim families required by the explanation-integrity protocol:
     objective metrics, fairness/calibration, SHAP values/ranking, and framework
     ranking. It does not use an LLM judge, which keeps correctness measurement
     independent of the explanation model under evaluation.
@@ -295,10 +315,29 @@ class ClaimExtractor:
         features = _features_from_evidence(evidence)
         claims: List[Claim] = []
 
+        # Only the immediately preceding fairness/calibration sentence may
+        # provide a missing framework name to the next fairness sentence.
+        last_fairness_entity: Optional[str] = None
+
         for sentence, start, end in _sentences(text):
             citations = _citation_keys(sentence)
-            entity = _find_entity(sentence, entities)
+            explicit_entity = _find_entity(sentence, entities)
             feature = _find_feature(sentence, features)
+            is_fairness_context = _is_fairness_context_sentence(sentence)
+
+            if explicit_entity is not None:
+                entity = explicit_entity
+                if is_fairness_context:
+                    last_fairness_entity = explicit_entity
+                else:
+                    last_fairness_entity = None
+            elif is_fairness_context and last_fairness_entity is not None:
+                entity = last_fairness_entity
+            else:
+                entity = None
+                if not is_fairness_context:
+                    last_fairness_entity = None
+
             sentence_claims = []
 
             # Exact evidence citations are the strongest available grounding
@@ -438,30 +477,43 @@ class ClaimExtractor:
                     )
                 )
 
-            # Metric numeric claims. Two common word orders are supported.
+            # CONTEXT_AWARE_NUMERIC_METRICS_V2
+            # Metric numeric claims. Explicit-entity and discourse-inherited
+            # entity cases use different surface grammars.
             for metric, metric_pattern in METRIC_TEXT.items():
                 patterns = []
-                if entity:
+
+                if explicit_entity:
                     patterns.extend([
                         (
-                            re.escape(entity)
+                            re.escape(explicit_entity)
                             + r".{0,320}?"
                             + metric_pattern
                             + r"(?:\s+(?:value|score|consumption))?"
-                            + r"\s*(?:=|:|is|was|of)?\s*\(?\s*(" + NUMBER_RE + r")"
+                            + r"\s*(?:=|:|is|was|were|of)?"
+                            + r"\s*(?:also\s+)?\(?\s*("
+                            + NUMBER_RE
+                            + r")"
                         ),
                         (
                             metric_pattern
                             + r"(?:\s+(?:value|score|consumption))?"
                             + r".{0,160}?"
-                            + re.escape(entity)
-                            + r".{0,30}?(?:=|:|is|was|of)?\s*\(?\s*(" + NUMBER_RE + r")"
+                            + re.escape(explicit_entity)
+                            + r".{0,30}?(?:=|:|is|was|were|of)?"
+                            + r"\s*(?:also\s+)?\(?\s*("
+                            + NUMBER_RE
+                            + r")"
                         ),
                     ])
                 else:
                     patterns.append(
                         metric_pattern
-                        + r"\s*(?:gap|value|score|consumption)?\s*(?:=|:|is|was|of)?\s*\(?\s*(" + NUMBER_RE + r")"
+                        + r"\s*(?:gap|value|score|consumption)?"
+                        + r"\s*(?:=|:|is|was|were|of)?"
+                        + r"\s*(?:also\s+)?\(?\s*("
+                        + NUMBER_RE
+                        + r")"
                     )
 
                 numeric_match = None

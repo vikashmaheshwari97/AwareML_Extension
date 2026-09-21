@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import json
+
 from typing import Any, Dict, Mapping, Optional, Sequence, Tuple
 
 import pandas as pd
@@ -9,7 +11,7 @@ from awareml.llm import (
     CopilotService,
     GoalParser,
     GroundedCopilotChat,
-    HybridEvidenceGroundedObjectiveSelectorV31,
+    EvidenceGroundedObjectiveSelectorV33,
     OllamaClient,
     ReviewStore,
 )
@@ -206,7 +208,7 @@ def _render_step_cards() -> None:
     items = [
         ("01", "Understand", "AwareML interprets the natural-language deployment goal and identifies the objectives implied by the wording."),
         ("02", "Weight", "Selected objectives receive equal preference weight under the documented equal-selected policy."),
-        ("03", "Predict", "ML Recommender V2 ranks the five AutoML frameworks from dataset meta-features and the active objective weights."),
+        ("03", "Predict", "ML Recommender ranks the five AutoML frameworks from dataset meta-features and the active objective weights."),
         ("04", "You decide", "You review the interpretation and recommendation, then approve, adjust or reject the plan."),
     ]
     cols = st.columns(4)
@@ -216,7 +218,7 @@ def _render_step_cards() -> None:
                 '<div class="awareml-flow-card"><div class="awareml-step">{}</div><div class="awareml-card-title">{}</div><div class="awareml-card-copy">{}</div></div>'.format(number,title,body),
                 unsafe_allow_html=True,
             )
-    st.caption("Responsibility boundary: the LLM interprets the goal; ML Recommender V2 produces the framework ranking; the human makes the final decision.")
+    st.caption("Responsibility boundary: the LLM interprets the goal; ML Recommender produces the framework ranking; the human makes the final decision.")
 
 def _render_context_strip(has_dataset: bool, has_observed_run: bool, state: Mapping[str, Any]) -> None:
     cols = st.columns(3)
@@ -233,7 +235,7 @@ def _render_context_strip(has_dataset: bool, has_observed_run: bool, state: Mapp
     with cols[1]:
         with st.container(border=True):
             st.caption("DECISION ENGINE")
-            st.markdown("**LLaMA 3 8B → ML Recommender V2**")
+            st.markdown("**LLaMA 3 8B → ML Recommender**")
             st.caption("Objective weighting: equal_selected_v1")
     with cols[2]:
         with st.container(border=True):
@@ -269,63 +271,41 @@ def _render_understanding(interpretation: Any, parse_meta: Mapping[str, Any], st
     hcai=_as_dict(data.get("hcai_requirements"))
     if hcai:
         from awareml.llm.objective_selection import infer_hcai_evidence
-
         scenario_text=str(state.get("copilot_goal") or "")
         hcai_evidence=infer_hcai_evidence(scenario_text)
-
-        st.markdown("### Human-centred AI requirements")
-        st.caption(
-            "These controls are separate from recommender objective weights so responsible-AI oversight stays explicit. "
-            "Each card shows whether its value is scenario-supported, an AwareML baseline, or not requested."
-        )
-
-        drift_e=_as_dict(hcai_evidence.get("drift"))
-        fairness_e=_as_dict(hcai_evidence.get("fairness"))
-        explain_e=_as_dict(hcai_evidence.get("explainability"))
-
-        def _hcai_status(item):
+        st.markdown("### Human-centred AI oversight")
+        st.caption("These controls do not change the four-objective recommender utility. They define how the selected plan should be monitored, audited and explained.")
+        drift_e=_as_dict(hcai_evidence.get("drift")); fairness_e=_as_dict(hcai_evidence.get("fairness")); explain_e=_as_dict(hcai_evidence.get("explainability"))
+        sensitive=state.get("sensitive")
+        drift_level=str(hcai.get("drift_sensitivity") or "moderate").title()
+        fairness_required=bool(hcai.get("fairness_required"))
+        explain_level=str(hcai.get("explainability_level") or "moderate").title()
+        def _evidence_label(item):
             status=str(item.get("status") or "")
-            if status=="scenario_supported":
-                return "Scenario-supported"
-            if status=="platform_baseline":
-                return "AwareML baseline"
-            if status=="not_requested":
-                return "Not requested"
-            return status.replace("_"," ").title() or "N/A"
-
-        items=[
-            ("Drift sensitivity", str(hcai.get("drift_sensitivity") or "Not specified").title(), drift_e),
-            ("Fairness requirement", "Required" if hcai.get("fairness_required") else "Not requested", fairness_e),
-            ("Explainability", str(hcai.get("explainability_level") or "Not specified").title(), explain_e),
+            return {"scenario_supported":"Scenario-supported","platform_baseline":"AwareML baseline","not_requested":"Not requested"}.get(status,status.replace("_"," ").title() or "N/A")
+        cards=st.columns(3)
+        content=[
+            ("Drift monitoring",drift_level,_evidence_label(drift_e),"Purpose: detect changes in the streaming data or model behaviour.","Plan: keep drift monitoring enabled; review alerts and recovery behaviour after execution.",drift_e),
+            ("Fairness audit","Required" if fairness_required else "Not requested",_evidence_label(fairness_e),"Purpose: check whether model quality or errors differ across protected groups.",("Plan: audit the selected sensitive attribute '{}' after execution.".format(sensitive) if sensitive else "Plan: select a sensitive attribute before enabling a group fairness audit."),fairness_e),
+            ("Explanation support",explain_level,_evidence_label(explain_e),"Purpose: make the recommendation and post-run model behaviour inspectable.","Plan: use the configured explanation method and preserve evidence provenance.",explain_e),
         ]
-
-        cols=st.columns(3)
-        for col,(name,value,item) in zip(cols,items):
+        for col,(name,value,status,purpose,plan,item) in zip(cards,content):
             with col:
                 with st.container(border=True):
-                    st.markdown("**{}**".format(name))
-                    st.markdown("### {}".format(value))
-                    st.caption(_hcai_status(item))
-                    if item.get("evidence"):
-                        st.caption("Evidence: “{}”".format(item.get("evidence")))
-                    if item.get("reason"):
-                        st.write(str(item.get("reason")))
+                    st.caption(name.upper()); st.markdown("### {}".format(value)); st.write("**Evidence state:** {}".format(status))
+                    if item.get("evidence"): st.caption("Scenario cue: “{}”".format(item.get("evidence")))
+                    st.write(purpose); st.caption(plan)
+        with st.expander("HCAI oversight boundary", expanded=False):
+            st.write("Accuracy, Runtime, Energy and CO₂ are the optimization objectives passed to the ML Recommender. Drift, fairness and explainability remain separate oversight/configuration controls so they stay visible without becoming extra utility dimensions.")
 
-        with st.expander("Why HCAI requirements are separate from objective weighting", expanded=False):
-            st.write(
-                "Accuracy, Runtime, Energy and CO₂ are the four optimization objectives that receive weights "
-                "and are passed to ML Recommender V2. Fairness, drift and explainability are HCAI oversight "
-                "and configuration requirements in the current journal protocol; they remain visible without "
-                "becoming extra recommender-utility dimensions."
-            )
     return selected
 
 def _render_decision_provenance(has_dataset: bool) -> None:
     with st.expander("How the recommendation is produced", expanded=False):
         rows=[
-            {"Stage":"Goal interpretation","Source":"LLaMA 3 8B + V3.1 evidence guard","Role":"Infers Accuracy / Runtime / Energy / CO₂ from the user's wording."},
+            {"Stage":"Goal interpretation","Source":"LLaMA 3 8B + V3.3 hybrid evidence guard","Role":"Infers Accuracy / Runtime / Energy / CO₂ from the user's wording."},
             {"Stage":"Objective weighting","Source":"equal_selected_v1","Role":"Assigns equal weight to selected objectives."},
-            {"Stage":"Framework prediction","Source":"ML Recommender V2","Role":"Ranks five frameworks from the dataset meta-profile." if has_dataset else "Waits for dataset + target because framework behavior is dataset-dependent."},
+            {"Stage":"Framework prediction","Source":"ML Recommender","Role":"Ranks five frameworks from the dataset meta-profile." if has_dataset else "Waits for dataset + target because framework behavior is dataset-dependent."},
             {"Stage":"Configuration synthesis","Source":"Configuration synthesizer","Role":"Maps the recommended framework to supported implementation defaults."},
             {"Stage":"Decision authority","Source":"Human review","Role":"Accept, correct, edit or reject the plan."},
         ]
@@ -356,7 +336,7 @@ def _render_objective_review(
             default=list(selected),
             key="goal_v2_corrected_objectives_{}".format(step_number),
             help=(
-                "If a dataset is loaded, saving this correction reranks ML Recommender V2 "
+                "If a dataset is loaded, saving this correction reranks ML Recommender "
                 "using the same dataset meta-profile without asking LLaMA again."
             ),
         )
@@ -389,7 +369,7 @@ def _render_objective_review(
                 new_top = apply_human_objective_override(state, final_set)
                 if new_top:
                     state["copilot_unified_flash"] = (
-                        "Priority correction saved. ML Recommender V2 reranked the "
+                        "Priority correction saved. ML Recommender reranked the "
                         "same dataset profile and now predicts {} as #1.".format(new_top)
                     )
                 else:
@@ -456,102 +436,63 @@ def _render_post_approval_state(state: Mapping[str, Any]) -> None:
         st.warning("This plan was rejected. Revise the deployment goal, priorities or configuration before approving another plan.")
 
 
-def _render_final_plan_review(
-    state: Dict[str, Any],
-    proposal: Mapping[str, Any],
-) -> None:
+def _render_final_plan_review(state: Dict[str, Any], proposal: Mapping[str, Any]) -> None:
     st.markdown("## 5 · Final plan decision")
-    st.caption(
-        "Approve the plan, make limited execution edits, or reject it. "
-        "The decision is stored in the append-only Copilot review log."
-    )
-
-    proposal_obj = state.get("copilot_proposal")
+    st.caption("Approve, refine or reject the recommendation. Advanced edits are configuration changes only: they do not silently re-rank the recommended framework.")
+    proposal_obj=state.get("copilot_proposal")
     if proposal_obj is None:
-        st.warning("No dataset-aware proposal is available to review.")
-        return
-
-    config = _as_dict(_as_dict(proposal).get("proposed_config"))
-
-    mode = st.segmented_control(
-        "What do you want to do with this plan?",
-        ["Approve plan", "Approve with edits", "Reject plan"],
-        default="Approve plan",
-        key="goal_v2_final_review_mode",
-    ) or "Approve plan"
-
-    edits = None
-    if mode == "Approve with edits":
-        c1, c2 = st.columns(2)
-        with c1:
-            window = st.number_input(
-                "Window size",
-                min_value=50,
-                max_value=100000,
-                value=int(config.get("window_size", 1000)),
-                step=50,
-                key="goal_v2_review_window",
-            )
-        with c2:
-            budget = st.number_input(
-                "Time budget (seconds)",
-                min_value=1.0,
-                max_value=86400.0,
-                value=float(config.get("time_budget_sec", 60.0)),
-                step=5.0,
-                key="goal_v2_review_budget",
-            )
-        edits = {
-            "window_size": int(window),
-            "time_budget_sec": float(budget),
-        }
-
-    note = st.text_input(
-        "Final review note (optional)",
-        key="goal_v2_final_review_note",
-        placeholder="Example: Approved for the next streaming benchmark run.",
-    )
-
-    if st.button(
-        "Save final plan decision",
-        type="primary",
-        key="goal_v2_save_final_review",
-    ):
-        decision_map = {
-            "Approve plan": "approved",
-            "Approve with edits": "approved_with_edits",
-            "Reject plan": "rejected",
-        }
+        st.warning("No dataset-aware proposal is available to review."); return
+    config=_as_dict(_as_dict(proposal).get("proposed_config"))
+    mode=st.segmented_control("Decision",["Approve plan","Approve with edits","Reject plan"],default="Approve plan",key="goal_v2_final_review_mode") or "Approve plan"
+    edits=None; edit_validation_ok=True
+    if mode=="Approve with edits":
+        st.markdown("### Advanced plan controls")
+        st.caption("Edit only the configuration you intend to execute. Every accepted change is stored in the append-only human-review audit trail.")
+        with st.expander("Execution and drift controls",expanded=True):
+            c1,c2=st.columns(2)
+            with c1: window=st.number_input("Window size",min_value=50,max_value=100000,value=int(config.get("window_size",1000)),step=50,key="goal_v2_review_window")
+            with c2: budget=st.number_input("Time budget (seconds)",min_value=1.0,max_value=86400.0,value=float(config.get("time_budget_sec",60.0)),step=5.0,key="goal_v2_review_budget")
+            drift_cfg=_as_dict(config.get("drift")); d1,d2,d3=st.columns(3)
+            with d1: drift_enabled=st.toggle("Enable drift monitoring",value=bool(drift_cfg.get("monitoring_enabled",True)),key="goal_v2_review_drift_enabled")
+            detector_options=["ADWIN","None"]; current_detector=str(drift_cfg.get("detector") or "ADWIN")
+            with d2: detector=st.selectbox("Drift detector",detector_options,index=detector_options.index(current_detector) if current_detector in detector_options else 0,disabled=not drift_enabled,key="goal_v2_review_drift_detector")
+            sens_options=["low","moderate","high"]; current_sens=str(drift_cfg.get("sensitivity") or "moderate").lower()
+            with d3: drift_sensitivity=st.selectbox("Drift sensitivity",sens_options,index=sens_options.index(current_sens) if current_sens in sens_options else 1,disabled=not drift_enabled,key="goal_v2_review_drift_sensitivity")
+        with st.expander("Framework hyperparameters",expanded=False):
+            params=_as_dict(config.get("framework_parameters")); params_text=st.text_area("Framework parameters (JSON)",value=json.dumps(params,indent=2,sort_keys=True),height=170,key="goal_v2_review_framework_parameters",help="Only parameters supported by the selected framework should be changed.")
+            try:
+                parsed_params=json.loads(params_text or "{}")
+                if not isinstance(parsed_params,dict): raise ValueError("Framework parameters must be a JSON object.")
+            except Exception as exc:
+                parsed_params={}; edit_validation_ok=False; st.error("Invalid framework-parameter JSON: {}".format(exc))
+        with st.expander("Fairness and explainability controls",expanded=True):
+            fairness_cfg=_as_dict(config.get("fairness")); explain_cfg=_as_dict(config.get("explainability")); f1,f2=st.columns(2)
+            with f1:
+                fairness_enabled=st.toggle("Enable fairness audit",value=bool(fairness_cfg.get("requested",False)),key="goal_v2_review_fairness_enabled")
+                fairness_metrics=["composite","demographic_parity","equal_opportunity","equalized_odds","predictive_parity","group_ece"]; current_metric=str(fairness_cfg.get("metric") or "composite")
+                fairness_metric=st.selectbox("Fairness metric",fairness_metrics,index=fairness_metrics.index(current_metric) if current_metric in fairness_metrics else 0,disabled=not fairness_enabled,key="goal_v2_review_fairness_metric")
+                sensitive=state.get("sensitive"); st.caption("Sensitive attribute: {}".format(sensitive or "not selected in Run Studio"))
+                if fairness_enabled and not sensitive: st.warning("A group fairness audit requires a sensitive attribute before execution.")
+            with f2:
+                levels=["low","moderate","high"]; current_level=str(explain_cfg.get("level") or "moderate").lower(); explain_level=st.selectbox("Explainability level",levels,index=levels.index(current_level) if current_level in levels else 1,key="goal_v2_review_explainability_level")
+                methods=["auto","SHAP","LIME","permutation"]; current_method=str(explain_cfg.get("method") or "auto"); explain_method=st.selectbox("Explanation method",methods,index=methods.index(current_method) if current_method in methods else 0,key="goal_v2_review_explainability_method")
+        with st.expander("Sustainability measurement",expanded=False):
+            sustain_cfg=_as_dict(config.get("sustainability")); s1,s2=st.columns(2)
+            with s1: track_energy=st.toggle("Track energy",value=bool(sustain_cfg.get("track_energy",True)),key="goal_v2_review_track_energy")
+            with s2: track_co2=st.toggle("Track CO₂",value=bool(sustain_cfg.get("track_co2",True)),key="goal_v2_review_track_co2")
+        fairness_status="enabled" if fairness_enabled and state.get("sensitive") else "requires_sensitive_attribute" if fairness_enabled else "disabled"
+        edits={"window_size":int(window),"time_budget_sec":float(budget),"framework_parameters":parsed_params,"drift":{**_as_dict(config.get("drift")),"monitoring_enabled":bool(drift_enabled),"detector":detector if drift_enabled else None,"sensitivity":drift_sensitivity},"fairness":{**_as_dict(config.get("fairness")),"requested":bool(fairness_enabled),"status":fairness_status,"sensitive_attribute":state.get("sensitive"),"metric":fairness_metric,"audit_only":True},"explainability":{**_as_dict(config.get("explainability")),"level":explain_level,"method":explain_method},"sustainability":{**_as_dict(config.get("sustainability")),"enabled":bool(track_energy or track_co2),"track_energy":bool(track_energy),"track_co2":bool(track_co2)}}
+    note=st.text_input("Final review note (optional)",key="goal_v2_final_review_note",placeholder="Example: Approved with fairness audit and SHAP explanations enabled.")
+    if st.button("Save final plan decision",type="primary",key="goal_v2_save_final_review",disabled=(mode=="Approve with edits" and not edit_validation_ok)):
+        decision_map={"Approve plan":"approved","Approve with edits":"approved_with_edits","Reject plan":"rejected"}
         try:
-            review = review_proposal(
-                proposal_obj,
-                decision=decision_map[mode],
-                edits=edits,
-                note=note or None,
-            )
-            ReviewStore(
-                ROOT / "artifacts" / "copilot" / "reviews.jsonl"
-            ).append(proposal_obj, review)
-            state["copilot_review"] = review.model_dump()
-            state["copilot_unified_flash"] = (
-                "Final plan decision saved: {}.".format(
-                    review.decision.replace("_", " ").title()
-                )
-            )
-            st.rerun()
-        except Exception as exc:
-            st.error("The final plan decision could not be saved: {}".format(exc))
-
-    saved = _as_dict(state.get("copilot_review"))
-    if saved:
-        st.caption(
-            "Saved final decision: {}".format(
-                str(saved.get("decision") or "").replace("_", " ").title()
-            )
-        )
-
+            review=review_proposal(proposal_obj,decision=decision_map[mode],edits=edits,note=note or None)
+            ReviewStore(ROOT/"artifacts"/"copilot"/"reviews.jsonl").append(proposal_obj,review)
+            state["copilot_review"]=review.model_dump(); state["copilot_unified_flash"]="Final plan decision saved: {}.".format(review.decision.replace("_"," ").title()); st.rerun()
+        except Exception as exc: st.error("The final plan decision could not be saved: {}".format(exc))
+    saved=_as_dict(state.get("copilot_review"))
+    if saved: st.caption("Saved final decision: {}".format(str(saved.get("decision") or "").replace("_"," ").title()))
     _render_post_approval_state(state)
-
 
 def _render_plan(proposal: Mapping[str, Any], state: Dict[str, Any], parse_meta: Mapping[str, Any], has_observed_run: bool) -> None:
     proposal=_as_dict(proposal); config=_as_dict(proposal.get("proposed_config")); interpretation=_as_dict(proposal.get("interpretation"))
@@ -563,7 +504,7 @@ def _render_plan(proposal: Mapping[str, Any], state: Dict[str, Any], parse_meta:
     if has_observed_run:
         st.markdown('<div class="awareml-decision-banner"><b>Observed benchmark available.</b><br>This recommendation remains the dataset-aware prediction path from the scenario and meta-profile. Measured post-run evidence is available separately in Decision Lab and Streaming Observatory for validation.</div>',unsafe_allow_html=True)
     else:
-        st.markdown('<div class="awareml-decision-banner"><b>Dataset-aware recommendation.</b><br>ML Recommender V2 combines the active priorities with the dataset meta-profile to rank the five candidate frameworks.</div>',unsafe_allow_html=True)
+        st.markdown('<div class="awareml-decision-banner"><b>Dataset-aware recommendation.</b><br>ML Recommender combines the active priorities with the dataset meta-profile to rank the five candidate frameworks.</div>',unsafe_allow_html=True)
     cards=st.columns(4); card_data=[("Recommended framework",framework),("Predicted rank","#{} of 5".format(rank)),("Ranking utility","—" if utility is None else "{:.4f}".format(float(utility))),("Review status",review_status)]
     for col,(label,value) in zip(cards,card_data):
         with col:
@@ -579,7 +520,7 @@ def _render_plan(proposal: Mapping[str, Any], state: Dict[str, Any], parse_meta:
             st.markdown("**Dataset context**"); st.write(str(state.get("dataset_name") or "Loaded dataset")); st.caption("Target: {}".format(state.get("target") or "not selected"))
     with basis[2]:
         with st.container(border=True):
-            st.markdown("**Decision source**"); st.write("ML Recommender V2"); st.caption("The LLM interprets the goal; it does not choose the framework.")
+            st.markdown("**Decision source**"); st.write("ML Recommender"); st.caption("The LLM interprets the goal; it does not choose the framework.")
     rationale=humanize_rationale_text(clean_pre_run_rationale(proposal.get("rationale")))
     drift=_as_dict(config.get("drift")); fairness=_as_dict(config.get("fairness")); xai=_as_dict(config.get("explainability")); sustain=_as_dict(config.get("sustainability")); fairness_constraint,fairness_audit=_fairness_plan_text(fairness,state)
     st.markdown("### Recommendation evidence and execution plan")
@@ -588,9 +529,9 @@ def _render_plan(proposal: Mapping[str, Any], state: Dict[str, Any], parse_meta:
         with st.container(border=True):
             st.markdown("**Why this framework is ranked first**")
             if utility is None:
-                st.write("ML Recommender V2 compared all five frameworks using the dataset meta-profile and the active priorities ({}). {} is currently predicted rank #1.".format(_priority_summary(selected,weights),framework))
+                st.write("ML Recommender compared all five frameworks using the dataset meta-profile and the active priorities ({}). {} is currently predicted rank #1.".format(_priority_summary(selected,weights),framework))
             else:
-                st.write("ML Recommender V2 compared all five frameworks using the dataset meta-profile and the active priorities ({}). {} has the highest current ranking utility ({:.4f}) and is predicted rank #1.".format(_priority_summary(selected,weights),framework,float(utility)))
+                st.write("ML Recommender compared all five frameworks using the dataset meta-profile and the active priorities ({}). {} has the highest current ranking utility ({:.4f}) and is predicted rank #1.".format(_priority_summary(selected,weights),framework,float(utility)))
             if rationale: st.caption(rationale)
             evidence=_prediction_table(framework,selected,weights,ranked)
             if not evidence.empty:
@@ -608,7 +549,7 @@ def _render_plan(proposal: Mapping[str, Any], state: Dict[str, Any], parse_meta:
     with st.expander("Technical recommendation evidence",expanded=False):
         st.markdown("**Evidence provenance**")
         provenance=pd.DataFrame([
-            {"Evidence layer":"Goal interpretation","Source":"LLaMA 3 8B + V3.1 evidence guard","Used for":"Objective selection only"},{"Evidence layer":"Objective weights","Source":"equal_selected_v1","Used for":"Preference weighting"},{"Evidence layer":"Dataset evidence","Source":"Dataset meta-profile","Used for":"ML Recommender V2 prediction"},{"Evidence layer":"Framework recommendation","Source":"ML Recommender V2","Used for":"Ranked framework recommendation"},{"Evidence layer":"Human oversight","Source":"Objective + plan review logs","Used for":"Correction / approval / rejection"},
+            {"Evidence layer":"Goal interpretation","Source":"LLaMA 3 8B + V3.3 hybrid evidence guard","Used for":"Objective selection only"},{"Evidence layer":"Objective weights","Source":"equal_selected_v1","Used for":"Preference weighting"},{"Evidence layer":"Dataset evidence","Source":"Dataset meta-profile","Used for":"ML Recommender prediction"},{"Evidence layer":"Framework recommendation","Source":"ML Recommender","Used for":"Ranked framework recommendation"},{"Evidence layer":"Human oversight","Source":"Objective + plan review logs","Used for":"Correction / approval / rejection"},
         ]); st.dataframe(provenance,use_container_width=True,hide_index=True)
         st.markdown("**Grounded recommendation rationale**"); st.write(rationale or "No additional rationale was returned.")
         keys=list(proposal.get("evidence_keys") or [])
@@ -627,22 +568,21 @@ def _render_plan(proposal: Mapping[str, Any], state: Dict[str, Any], parse_meta:
 
 def render_goal_copilot_unified_page() -> None:
     state=ensure_research_state(); has_dataset=bool(dataset_ready()); has_observed_run=bool(state.get("run_results")); state.pop("copilot_view_mode",None); _render_css()
-    hero("HUMAN-CENTRIC AI","Copilot Workspace","Describe what the streaming AutoML system should achieve. AwareML interprets your priorities, uses dataset evidence when available, and keeps the final decision under human control.",pills=phase_pills())
     flash=state.pop("copilot_unified_flash",None)
     if flash: st.success(str(flash))
-    _render_step_cards(); _render_context_strip(has_dataset,has_observed_run,state)
+    _render_step_cards()  # navigation cards already expose dataset/evidence readiness
     st.markdown("## Describe your deployment goal")
     goal=st.text_area("Streaming AutoML scenario",value=state.get("copilot_goal") or "Suitable for deployment in a low-impact edge environment while still providing strong performance.",height=135,key="goal_v3_text",placeholder="Example: The service will run on a battery-powered edge device and needs dependable predictions with a small environmental footprint.")
     state["copilot_goal"]=goal
     c1,c2=st.columns([.65,.35])
     with c1:
-        use_llm=st.toggle("Use LLaMA 3 8B objective interpretation",value=True,key="goal_v3_use_llm"); st.caption("Optimization objectives used by ML Recommender V2: Accuracy · Runtime · Energy · CO₂. Fairness, drift and explainability are tracked separately as HCAI oversight requirements; they do not receive recommender utility weight in the current journal protocol.")
+        use_llm=st.toggle("Use hybrid evidence-grounded LLaMA 3 8B selector V3.3",value=True,key="goal_v3_use_llm"); st.caption("Optimization objectives used by ML Recommender: Accuracy · Runtime · Energy · CO₂. Fairness, drift and explainability are tracked separately as HCAI oversight requirements; they do not receive recommender utility weight in the current journal protocol.")
     with c2:
-        st.caption("Recommendation source"); st.markdown("**ML Recommender V2** when dataset context is available")
+        st.caption("Recommendation source"); st.markdown("**ML Recommender** when dataset context is available")
     if st.button("Generate Copilot plan",type="primary",use_container_width=True,key="goal_v3_generate"):
         _clear_scenario_state(state)
         try:
-            service=CopilotService(recommender=(load_v2_recommender() if has_dataset else None),goal_parser=GoalParser(selector=HybridEvidenceGroundedObjectiveSelectorV31()),chat=GroundedCopilotChat(client=OllamaClient(model=EXACT_MODEL)),review_store=ReviewStore(ROOT / "artifacts" / "copilot" / "reviews.jsonl"))
+            service=CopilotService(recommender=(load_v2_recommender() if has_dataset else None),goal_parser=GoalParser(selector=EvidenceGroundedObjectiveSelectorV33(root=ROOT)),chat=GroundedCopilotChat(client=OllamaClient(model=EXACT_MODEL)),review_store=ReviewStore(ROOT / "artifacts" / "copilot" / "reviews.jsonl"))
             if has_dataset:
                 proposal,ranked,evidence,meta=service.propose_from_dataframe(goal=goal,df=state["dataset"],target=state["target"],sensitive_attribute=state.get("sensitive"),current_config=None,use_llm=use_llm); state["copilot_proposal"]=proposal; state["copilot_ranked"]=ranked; state["copilot_evidence"]=evidence; state["copilot_meta"]=meta; state["copilot_review"]=None; state.pop("copilot_context_free_interpretation",None); state.pop("copilot_context_free_meta",None); state["copilot_unified_flash"]="Dataset-aware Goal Copilot plan generated. Review the interpreted priorities and evidence-backed recommendation below."
             else:

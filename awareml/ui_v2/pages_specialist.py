@@ -11,7 +11,7 @@ import plotly.graph_objects as go
 import streamlit as st
 
 from awareml.engine.pareto import METRIC_SPECS
-from awareml.llm import GroundedChat, ollama_status
+from awareml.llm import GroundedChat, OllamaClient, ollama_status
 from awareml.recommender import RecommendationService
 from awareml.studies import StudyStore, TrustCalibrationStudy, classify_follow_up
 from awareml.studies.information_seeking import THINK_ALOUD_PROMPTS
@@ -40,7 +40,6 @@ FAIRNESS_OPTIONS = {
     "Demographic parity": "demographic_parity",
     "Equal opportunity": "equal_opportunity",
     "Equalized odds": "equalized_odds",
-    "Predictive parity": "predictive_parity",
     "Error-rate parity": "error_rate",
 }
 
@@ -48,7 +47,6 @@ FAIRNESS_POINT_KEYS = {
     "Demographic parity": "dp_diff",
     "Equal opportunity": "equal_opportunity_diff",
     "Equalized odds": "equalized_odds_gap",
-    "Predictive parity": "predictive_parity_diff",
     "Error-rate parity": "error_rate_gap",
     "Group Brier-score gap": "group_brier_score_gap",
     "Group ECE gap": "group_ece_gap",
@@ -365,6 +363,135 @@ def drift_temporal_v2_page():
         plot(fig, "r95_drift_heat")
 
 
+# GROUNDED_FAIRNESS_EXPLAINER_V2
+def _render_grounded_fairness_explainer(state, results, fair, common_labels):
+    st.markdown("### LLM-Assisted Fairness Explainer")
+    st.caption(
+        "Explains the current fairness evidence in plain language. The LLM does "
+        "not recompute metrics, alter results, or select the framework."
+    )
+
+    eligible = fair[
+        (~fair["Prediction behavior"].isin(["constant", "near_constant"]))
+        & fair["Comparable mean gap"].notna()
+    ].copy().sort_values("Comparable mean gap")
+    excluded = fair[
+        fair["Prediction behavior"].isin(["constant", "near_constant"])
+    ]["Framework"].astype(str).tolist()
+
+    best_name = None if eligible.empty else str(eligible.iloc[0]["Framework"])
+    best_gap = None if eligible.empty else float(eligible.iloc[0]["Comparable mean gap"])
+
+    calibration = {}
+    for result in results:
+        values = result.get("fairness") or {}
+        calibration[str(result.get("framework"))] = {
+            "brier": values.get("group_brier_score_gap"),
+            "ece": values.get("group_ece_gap"),
+            "status": values.get("calibration_status"),
+            "probability_behavior": values.get("probability_behavior_status"),
+        }
+
+    def fallback_text():
+        parts = []
+        if best_name is not None:
+            parts.append(
+                "Among frameworks with non-degenerate predictions, {} has the lowest "
+                "comparable mean disparity ({:.4f}) across {}. Lower means the measured "
+                "group rates are closer on average; it does not prove absolute fairness."
+                .format(best_name, best_gap, ", ".join(common_labels))
+            )
+        else:
+            parts.append(
+                "No framework currently has enough comparable, non-degenerate fairness "
+                "evidence for a cross-framework disparity comparison."
+            )
+        if excluded:
+            parts.append(
+                "{} is excluded from the lowest-disparity comparison because its predictions "
+                "are constant or near-constant. Zero-looking parity gaps can then be mechanical "
+                "rather than evidence of a useful fair classifier.".format(", ".join(excluded))
+            )
+        if best_name and best_name in calibration:
+            brier = calibration[best_name].get("brier")
+            ece = calibration[best_name].get("ece")
+            parts.append(
+                "For calibration, {} has Group Brier-score gap {} and Group ECE gap {}. "
+                "Lower gaps mean group calibration errors are closer, but these values should "
+                "be read together with predictive quality and group support.".format(
+                    best_name,
+                    "N/A" if brier is None else "{:.4f}".format(float(brier)),
+                    "N/A" if ece is None else "{:.4f}".format(float(ece)),
+                )
+            )
+        parts.append(
+            "A human reviewer should also inspect the sensitive attribute, positive label, "
+            "group support, worst-window behaviour and predictive performance. Different "
+            "fairness criteria capture different notions of disparity."
+        )
+        return "\n\n".join(parts)
+
+    evidence = []
+    for _, row in fair.iterrows():
+        evidence.append(
+            "{} | comparable_mean_gap={} | worst_gap={} | prediction_behavior={} | eligibility={}".format(
+                row.get("Framework"), row.get("Comparable mean gap"),
+                row.get("Worst available gap"), row.get("Prediction behavior"),
+                row.get("Fairness winner eligibility"),
+            )
+        )
+    for name, values in calibration.items():
+        evidence.append(
+            "{} calibration | brier_gap={} | ece_gap={} | status={} | probability_behavior={}".format(
+                name, values.get("brier"), values.get("ece"), values.get("status"),
+                values.get("probability_behavior"),
+            )
+        )
+
+    with st.container(border=True):
+        a, b, c = st.columns(3)
+        a.markdown("**Evidence source**"); a.caption("Current fairness and calibration records")
+        b.markdown("**LLM role**"); b.caption("Explain only · no metric authority")
+        c.markdown("**Privacy boundary**"); c.caption("Structured evidence only · no raw rows")
+
+        if st.button("Explain the fairness results", key="fairness_llm_assisted_explain", use_container_width=True):
+            answer = None
+            source = "deterministic-fallback"
+            state.pop("fairness_llm_assisted_error", None)
+            try:
+                status = ollama_status()
+                if status.get("reachable") and "llama3:8b" in (status.get("models") or []):
+                    client = OllamaClient(model="llama3:8b", timeout_sec=90.0)
+                    prompt = (
+                        "You are the AwareML Fairness Explainer. Explain only the structured "
+                        "evidence below to a non-expert. Do not recompute metrics or invent causes. "
+                        "Use four short parts: what is being compared; which eligible framework "
+                        "has the lowest comparable mean disparity and why this is not proof of "
+                        "absolute fairness; calibration interpretation using Brier/ECE gaps; and "
+                        "human-review cautions. Explain that lower disparity gaps are better and "
+                        "why constant/near-constant predictors are excluded. Do not discuss "
+                        "predictive parity. Treat missing values as unavailable, never zero.\n\n"
+                        "COMMON CRITERIA: {}\nSENSITIVE ATTRIBUTE: {}\nPOSITIVE LABEL: {}\n"
+                        "STRUCTURED EVIDENCE:\n{}"
+                    ).format(
+                        ", ".join(common_labels), state.get("sensitive"),
+                        state.get("positive_label"), "\n".join(evidence),
+                    )
+                    answer, _meta = client.generate_text(prompt)
+                    source = "local-ollama"
+            except Exception as exc:
+                state["fairness_llm_assisted_error"] = "{}: {}".format(type(exc).__name__, exc)
+            if not answer:
+                answer = fallback_text()
+            state["fairness_llm_assisted_explanation"] = {"answer": answer, "source": source}
+            st.rerun()
+
+        saved = state.get("fairness_llm_assisted_explanation")
+        if isinstance(saved, dict) and saved.get("answer"):
+            st.markdown("**Plain-language explanation**")
+            st.write(saved["answer"])
+            st.caption("Explanation source: {} · structured evidence only.".format(saved.get("source") or "deterministic-fallback"))
+
 def fairness_v2_page():
     hero(
         "STREAMING FAIRNESS",
@@ -387,8 +514,7 @@ def fairness_v2_page():
         "Demographic parity": "dp_diff",
         "Equal opportunity": "equal_opportunity_diff",
         "Equalized odds": "equalized_odds_gap",
-        "Predictive parity": "predictive_parity_diff",
-        "Error-rate parity": "error_rate_gap",
+            "Error-rate parity": "error_rate_gap",
     }
     rows = []
     for r in results:
@@ -560,6 +686,8 @@ def fairness_v2_page():
 
     render_phase14_fairness_details(results)
 
+    _render_grounded_fairness_explainer(state, results, fair, common_labels)
+
     if not common_labels:
         st.warning(
             "No fairness criterion is available for every framework, so a comparable "
@@ -609,13 +737,14 @@ def fairness_v2_page():
 
     st.info("Fairness metrics are complementary criteria, not interchangeable definitions of fairness. Report the sensitive attribute, positive label, group support, temporal aggregation and worst-window behavior.")
 
-def explainability_v2_page():
-    hero(
-        "EXPLANATION DIAGNOSTICS",
-        "Explainability Lab",
-        "Separate model performance from explanation availability while preserving model-level, hyperparameter-level and system-level explanation context.",
-        pills=phase_pills(),
-    )
+def explainability_v2_page(show_header: bool = True):
+    if show_header:
+        hero(
+            "EXPLANATION DIAGNOSTICS",
+            "Explainability Lab",
+            "Separate model performance from explanation availability while preserving model-level, hyperparameter-level and system-level explanation context.",
+            pills=phase_pills(),
+        )
     results = result_dicts()
     if not results:
         empty_state("Run evidence required", "Run a benchmark first.")
@@ -673,7 +802,7 @@ def explainability_v2_page():
             d2.metric("Unique predicted labels", str(pred.get("unique_predicted_labels", "N/A")))
             d3.metric("Majority prediction fraction", fmt(pred.get("majority_prediction_fraction"), 3))
             d4.metric("Near-constant prediction", str(pred.get("near_constant_prediction", "N/A")))
-            st.info("For AutoStreamML, this should be diagnosed as an adapter/method-availability issue before Phase 10; the UI should not manufacture a non-zero feature importance.")
+            st.info("For AutoStreamML, this is treated as an adapter/method-availability issue; AwareML does not manufacture a non-zero feature importance.")
         else:
             cards = st.columns(5)
             cards[0].metric("Stability", fmt(e.get("stability"), 3))
@@ -798,7 +927,7 @@ def sustainability_v2_page():
     sdf = pd.DataFrame(rows)
 
     st.info(
-        "Phase 14 records CPU/GPU/RAM, country/region, CodeCarbon version, "
+        "records CPU/GPU/RAM, country/region, CodeCarbon version, "
         "carbon intensity, measurement duration, warm-up, repetition metadata "
         "and failure reasons. Missing measurements remain N/A rather than zero."
     )

@@ -120,7 +120,7 @@ def render_phase15_live_batch(
     timeout_sec=300,
     network_retries=1,
 ):
-    st.markdown("### Phase-15 live check")
+    st.markdown("### Explanation integrity live check")
     st.caption(
         "Recommended workflow: run all four explanation sources together, "
         "read the summary, and inspect details only when a source is marked "
@@ -170,7 +170,7 @@ def render_phase15_live_batch(
         )
 
         if st.button(
-            "Run complete Phase-15 live check",
+            "Run complete Explanation integrity live check",
             key="p15_live_v9_batch_run",
             type="primary",
             use_container_width=True,
@@ -197,7 +197,7 @@ def render_phase15_live_batch(
 
             except Exception as exc:
                 st.error(
-                    "The Phase-15 live check could not start: {}: {}"
+                    "The Explanation integrity live check could not start: {}: {}"
                     .format(type(exc).__name__, exc)
                 )
 
@@ -476,7 +476,7 @@ def render_phase15_live_batch(
         st.caption("Saved exploratory run: {}".format(saved))
 
     st.download_button(
-        "Download complete Phase-15 live JSON",
+        "Download complete live integrity JSON",
         data=json.dumps(
             result,
             indent=2,

@@ -10,17 +10,18 @@ from .page_utils import fmt, phase_pills, plot
 
 
 
-def faithfulness_lab_page():
-    hero(
-        "EXPLANATION FAITHFULNESS",
-        "Faithfulness Lab",
-        (
-            "Inspect the Phase-8 counterfactual evidence experiments, rationale "
-            "sensitivity and AwareML Evidence Fidelity (AEF) without confusing "
-            "external evidence interventions with internal LLM attention attribution."
-        ),
-        pills=phase_pills(),
-    )
+def faithfulness_lab_page(show_header: bool = True):
+    if show_header:
+        hero(
+            "EXPLANATION FAITHFULNESS",
+            "Faithfulness Lab",
+            (
+                "Inspect the counterfactual evidence experiments, rationale "
+                "sensitivity and AwareML Evidence Fidelity (AEF) without confusing "
+                "external evidence interventions with internal LLM attention attribution."
+            ),
+            pills=phase_pills(),
+        )
 
     report = load_phase8_report()
     cases = load_phase8_cases()
@@ -28,8 +29,8 @@ def faithfulness_lab_page():
 
     if not report:
         empty_state(
-            "Phase-8 artifacts not found",
-            "Complete and freeze Phase 8 before using the Faithfulness Lab.",
+            "artifacts not found",
+            "Complete and freeze before using the Faithfulness Lab.",
         )
         return
 
@@ -37,7 +38,7 @@ def faithfulness_lab_page():
     ollama = report.get("ollama") or {}
 
     st.warning(
-        "This page shows the frozen **Phase-8 development/meta faithfulness benchmark**. "
+        "This page shows the frozen **development/meta faithfulness benchmark**. "
         "It is intentionally kept separate from the currently uploaded dataset so that "
         "the validation benchmark remains stable and comparable across demonstrations."
     )
@@ -81,7 +82,7 @@ def faithfulness_lab_page():
     st.markdown(
         """
         <div class="r9-callout">
-          <b>Method boundary:</b> Phase 8 uses external evidence interventions,
+          <b>Method boundary:</b> uses external evidence interventions,
           reranking and evidence-citation analysis. It does not claim access to
           Ollama attention tensors, PE-LRP, or hidden-state causal traces.
         </div>
@@ -95,7 +96,7 @@ def faithfulness_lab_page():
     section(
         "Counterfactual evidence explorer",
         (
-            "Pick one of the frozen Phase-8 development datasets. "
+            "Pick one of the frozen development datasets. "
             "A scenario such as accuracy_evidence_flip deliberately changes one "
             "objective's recommendation evidence and then reruns only the ranking/explanation, "
             "not the AutoML benchmark."

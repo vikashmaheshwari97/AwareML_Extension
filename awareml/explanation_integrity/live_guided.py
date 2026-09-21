@@ -10,7 +10,7 @@ from .schemas import EvidenceCase
 from .verifier import GeneralEvidenceVerifier
 
 
-LIVE_GUIDED_PROMPT_VERSION = "phase15_live_guided_prompt_v3"
+LIVE_GUIDED_PROMPT_VERSION = "phase15_live_guided_prompt_v4"
 
 
 class LiveGroundingError(RuntimeError):
@@ -622,6 +622,51 @@ ANSWER:
 
         return True, None
 
+    # XAI_EXACT_GROUNDING_REPAIR_V2
+    def _xai_exact_repair_prompt(self, case):
+        if case.source_stage != "F_XAI":
+            return None
+
+        candidates = [
+            row for row in self._facts(case)
+            if len(row) >= 3
+            and row[2]
+            and (
+                "generic feature importance" in str(row[0])
+                or "SHAP value" in str(row[0])
+            )
+        ]
+        if not candidates:
+            return None
+
+        label, value, key = candidates[0]
+        label = str(label)
+        value = _fmt(value)
+
+        if label.endswith(" generic feature importance"):
+            feature = label[:-len(" generic feature importance")]
+            sentence = "{} has generic feature importance {} [{}].".format(
+                feature,
+                value,
+                key,
+            )
+        elif label.endswith(" SHAP value"):
+            feature = label[:-len(" SHAP value")]
+            sentence = "{} has SHAP value {} [{}].".format(
+                feature,
+                value,
+                key,
+            )
+        else:
+            sentence = "{} is {} [{}].".format(label, value, key)
+
+        return (
+            "Return exactly the single evidence-grounded sentence below and nothing else. "
+            "Preserve the numeric value and evidence key exactly. Do not add another "
+            "number or another claim. Never relabel generic feature importance as SHAP.\\n\\n"
+            + sentence
+        )
+
     def generate(self, case):
         text, meta = self._call(self._prompt(case))
         ok, reason = self._grounded(case, text)
@@ -639,11 +684,21 @@ ANSWER:
             meta.update(dict(second_meta or {}))
             ok, reason = self._grounded(case, text)
 
+        xai_exact_repair = False
+        if not ok and case.source_stage == "F_XAI":
+            exact_prompt = self._xai_exact_repair_prompt(case)
+            if exact_prompt:
+                xai_exact_repair = True
+                text, third_meta = self._call(exact_prompt)
+                meta.update(dict(third_meta or {}))
+                ok, reason = self._grounded(case, text)
+
         meta["source"] = self.source
         meta["model"] = meta.get("model") or self.model
         meta["prompt_version"] = self.prompt_version
         meta["guided_live_mode"] = True
         meta["corrective_reprompt"] = bool(repaired)
+        meta["xai_exact_grounding_repair"] = bool(xai_exact_repair)
 
         if not ok:
             raise LiveGroundingError(

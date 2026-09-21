@@ -104,15 +104,21 @@ class AutoStreamMLAdapter(BaseStreamingFramework):
         return scaler | model
 
     def _build(self):
-        self.candidates = [
-            self._make_candidate(i) for i in range(self.budget)
-        ]
+        self.candidates = [self._make_candidate(i) for i in range(self.budget)]
         self.scores = [metrics.Accuracy() for _ in self.candidates]
         self.best_idx = 0
-        self.ensemble = self.candidates[: self.ensemble_size]
+        count = min(self.ensemble_size, len(self.candidates))
+        self.ensemble = [clone_model(self.candidates[i]) for i in range(count)]
+        self.ensemble_scores = [metrics.Accuracy() for _ in self.ensemble]
         self.counter = 0
 
     def predict_one(self, x: dict[str, float]) -> Any:
+        probability = self.predict_proba_one(x)
+        if probability:
+            try:
+                return max(probability.items(), key=lambda item: (float(item[1]), str(item[0])))[0]
+            except Exception:
+                pass
         votes = Counter()
         for model in self.ensemble:
             try:
@@ -124,10 +130,7 @@ class AutoStreamMLAdapter(BaseStreamingFramework):
         if votes:
             return votes.most_common(1)[0][0]
         try:
-            return self._numeric_call(
-                self.candidates[self.best_idx].predict_one,
-                x,
-            )
+            return self._numeric_call(self.candidates[self.best_idx].predict_one, x)
         except Exception:
             return None
 
@@ -136,45 +139,27 @@ class AutoStreamMLAdapter(BaseStreamingFramework):
         for model in self.ensemble:
             try:
                 fn = getattr(model, "predict_proba_one", None)
-                if fn is None:
-                    continue
-                value = self._numeric_call(fn, x)
+                value = self._numeric_call(fn, x) if fn is not None else None
                 value = self._validated_probability_dict(value)
                 if value:
                     probs.append(value)
             except Exception:
                 continue
-
-        if not probs:
-            try:
-                fn = getattr(
-                    self.candidates[self.best_idx],
-                    "predict_proba_one",
-                    None,
-                )
-                value = (
-                    self._numeric_call(fn, x)
-                    if fn is not None
-                    else None
-                )
-                return self._validated_probability_dict(value)
-            except Exception:
-                return None
-
-        labels = set()
-        for prob in probs:
-            labels.update(prob.keys())
-
-        out = {
-            label: float(
-                np.mean([
-                    float(prob.get(label, 0.0) or 0.0)
-                    for prob in probs
-                ])
-            )
-            for label in labels
-        }
-        return self._validated_probability_dict(out)
+        if probs:
+            labels = set()
+            for prob in probs:
+                labels.update(prob.keys())
+            out = {
+                label: float(np.mean([float(prob.get(label, 0.0) or 0.0) for prob in probs]))
+                for label in labels
+            }
+            return self._validated_probability_dict(out)
+        try:
+            fn = getattr(self.candidates[self.best_idx], "predict_proba_one", None)
+            value = self._numeric_call(fn, x) if fn is not None else None
+            return self._validated_probability_dict(value)
+        except Exception:
+            return None
 
     def learn_one(self, x: dict[str, float], y: Any) -> None:
         for i, model in enumerate(self.candidates):
@@ -185,41 +170,38 @@ class AutoStreamMLAdapter(BaseStreamingFramework):
                 self._numeric_call(model.learn_one, x, y)
             except Exception:
                 continue
+        self.best_idx = int(np.argmax([safe_metric_value(metric) for metric in self.scores]))
 
-        self.best_idx = int(
-            np.argmax([
-                safe_metric_value(metric)
-                for metric in self.scores
-            ])
-        )
+        for i, model in enumerate(self.ensemble):
+            try:
+                pred = self._numeric_call(model.predict_one, x)
+                if pred is not None:
+                    self.ensemble_scores[i].update(y, pred)
+                self._numeric_call(model.learn_one, x, y)
+            except Exception:
+                continue
+
         self.counter += 1
         if self.counter % self.exploration_window == 0:
             self._refresh_neighborhood()
 
     def _refresh_neighborhood(self):
         best = clone_model(self.candidates[self.best_idx])
-        ranked = np.argsort([
-            safe_metric_value(metric)
-            for metric in self.scores
-        ])[::-1]
-        keep = [
-            clone_model(self.candidates[i])
-            for i in ranked[: min(2, len(ranked))]
-        ]
-        fresh = [
-            self._make_candidate(self.counter + i)
-            for i in range(self.budget - len(keep))
-        ]
+        if self.ensemble and len(self.ensemble) >= self.ensemble_size:
+            scores = [safe_metric_value(metric) for metric in self.ensemble_scores]
+            worst_idx = int(np.argmin(scores))
+            self.ensemble.pop(worst_idx)
+            self.ensemble_scores.pop(worst_idx)
+        self.ensemble.append(clone_model(best))
+        self.ensemble = self.ensemble[-self.ensemble_size:]
+        self.ensemble_scores = [metrics.Accuracy() for _ in self.ensemble]
+
+        ranked = np.argsort([safe_metric_value(metric) for metric in self.scores])[::-1]
+        keep = [clone_model(self.candidates[i]) for i in ranked[: min(2, len(ranked))]]
+        fresh = [self._make_candidate(self.counter + i) for i in range(self.budget - len(keep))]
         self.candidates = keep + fresh
         self.scores = [metrics.Accuracy() for _ in self.candidates]
         self.best_idx = 0
-        self.ensemble = [best] + [
-            clone_model(model)
-            for model in self.candidates[
-                : max(0, self.ensemble_size - 1)
-            ]
-        ]
-        self.ensemble = self.ensemble[: self.ensemble_size]
 
     def reset(self) -> None:
         self._rng = random.Random(self.seed)

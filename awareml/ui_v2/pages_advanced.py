@@ -6,12 +6,10 @@ from awareml.ui import pages as legacy_pages
 
 from .components import hero
 from .page_utils import phase_pills
-from .phase15_explanation_integrity import phase15_explanation_integrity_page
 from .pages_specialist import (
     decision_lab_v2_page,
     drift_temporal_v2_page,
     fairness_v2_page,
-    explainability_v2_page,
     sustainability_v2_page,
     trust_calibration_v2_page,
     information_seeking_v2_page,
@@ -32,8 +30,6 @@ def advanced_labs_page():
         "Decision Lab · observed post-run ranking": decision_lab_v2_page,
         "Drift & Temporal Lab": drift_temporal_v2_page,
         "Fairness Lab": fairness_v2_page,
-        "Explainability Lab": explainability_v2_page,
-        "Explanation Integrity": phase15_explanation_integrity_page,
         "Sustainability Lab": sustainability_v2_page,
         "Trust Calibration": trust_calibration_v2_page,
         "Information-Seeking Study": information_seeking_v2_page,

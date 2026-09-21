@@ -5,13 +5,15 @@ import streamlit as st
 from awareml.llm import (
     CopilotService,
     EvidenceGroundedObjectiveSelectorV3,
-    HybridEvidenceGroundedObjectiveSelectorV31,
+    EvidenceGroundedObjectiveSelectorV33,
     GoalParser,
     GroundedCopilotChat,
     OllamaClient,
     ReviewStore,
     StrictJournalOllamaClient,
 )
+
+from awareml.llm.confirmatory_runtime_v32 import ConfirmatoryOllamaClientV32
 
 from .components import (
     evidence_chips,
@@ -22,11 +24,7 @@ from .components import (
 )
 from .data import load_v2_recommender
 from .page_utils import dataset_ready, fmt, phase_pills
-from .research_evidence import (
-    load_phase12_objective_selection_reliability,
-    load_phase12_v3_posthoc_diagnostic,
-    load_phase12_v31_posthoc_diagnostic,
-)
+from .phase12_v2_evidence import load_phase12_v2_confirmatory_evidence
 from .state import ROOT, ensure_research_state
 from .copilot_three_path import render_historical_preference_prior_tab, render_dataset_aware_v2_tab
 from .copilot_historical import render_historical_meta_recommender_tab
@@ -38,11 +36,11 @@ from .pre14_usability import (
     render_accessible_objective_interpretation,
     render_copilot_plan_summary,
 )
-from .copilot_v31_components import (
+from .copilot_v33_components import (
     clear_previous_copilot_result,
     render_copilot_clarification,
     set_copilot_clarification,
-    v31_audit_rows,
+    v33_audit_rows,
 )
 
 
@@ -102,134 +100,59 @@ def _render_objective_interpretation(interpretation, parse_meta, state):
         )
     )
 
-    phase12 = load_phase12_objective_selection_reliability(ROOT)
-    if phase12:
-        st.warning(
-            "These objectives are the model's interpretation of the scenario, not "
-            "human ground truth. In the frozen Phase-12 benchmark, {} achieved "
-            "Micro-F1 {:.3f} and {:.1%} exact-set match, with a dominant adversarial "
-            "failure tendency of {}. Human review is therefore required.".format(
-                phase12.get("model") or "LLaMA 3 8B",
-                float(phase12.get("micro_f1") or 0.0),
-                float(phase12.get("exact_match_rate") or 0.0),
-                str(phase12.get("primary_failure_tendency") or "not available").replace("_", " "),
+    phase12_v2 = load_phase12_v2_confirmatory_evidence(ROOT)
+    if phase12_v2:
+        baseline_ev = dict(phase12_v2.get("baseline") or {})
+        st.markdown("### Objective-selection evidence status")
+        st.success(
+            "Primary confirmatory evidence is the fresh V2 method replay on the "
+            "frozen Phase-12-v2 benchmark (n={}). V3.1 remains development/post-hoc "
+            "evidence only; V3.3 is an interactive development successor.".format(
+                phase12_v2.get("benchmark_cases") or "N/A"
             )
         )
-        with st.expander("Objective-selection reliability · frozen Phase 12", expanded=False):
-            status_panel(
-                {
-                    "Benchmark cases": str(phase12.get("benchmark_cases") or "N/A"),
-                    "Micro-F1": fmt(phase12.get("micro_f1"), 3),
-                    "Macro-F1": fmt(phase12.get("macro_f1"), 3),
-                    "Exact-set match": (
-                        "{:.1%}".format(float(phase12.get("exact_match_rate")))
-                        if phase12.get("exact_match_rate") is not None
-                        else "N/A"
-                    ),
-                    "Paraphrase consistency": (
-                        "{:.1%}".format(float(phase12.get("paraphrase_consistency_rate")))
-                        if phase12.get("paraphrase_consistency_rate") is not None
-                        else "N/A"
-                    ),
-                    "Paraphrase set-change": (
-                        "{:.1%}".format(float(phase12.get("paraphrase_set_change_rate")))
-                        if phase12.get("paraphrase_set_change_rate") is not None
-                        else "N/A"
-                    ),
-                    "Primary failure tendency": str(
-                        phase12.get("primary_failure_tendency") or "N/A"
-                    ).replace("_", " "),
-                    "Benchmark status": str(phase12.get("release_status") or "N/A"),
-                }
+        status_panel(
+            {
+                "Primary evidence": "V2 fresh replay",
+                "Evidence role": baseline_ev.get("role") or "Primary confirmatory evidence",
+                "Exact-set match": (
+                    "{:.2%}".format(float(baseline_ev.get("exact_match_rate")))
+                    if baseline_ev.get("exact_match_rate") is not None else "N/A"
+                ),
+                "Micro precision": fmt(baseline_ev.get("micro_precision"), 3),
+                "Micro recall": fmt(baseline_ev.get("micro_recall"), 3),
+                "Micro-F1": fmt(baseline_ev.get("micro_f1"), 3),
+                "Macro-F1": fmt(baseline_ev.get("macro_f1"), 3),
+            }
+        )
+        with st.expander("Evidence roles and version history", expanded=False):
+            st.markdown(
+                """
+                **V2 fresh replay** — Primary confirmatory evidence on the fresh frozen Phase-12-v2 benchmark.
+
+                **V3.1** — Development/post-hoc only. Its earlier perfect diagnostic result is not an independent confirmatory claim.
+
+                **V3.2** — Fresh confirmatory candidate. It strongly suppressed unsupported additions but under-selected heavily on the fresh benchmark.
+
+                **V3.3** — Interactive development successor. It combines V3.2-style strict validation of LLM additions with V3.1-style controlled semantic recovery. It is not yet confirmatory evidence.
+                """
             )
             st.caption(
-                "This is aggregate calibration evidence from the frozen benchmark, "
-                "not a confidence score for the current sentence. The Phase-12 "
-                "artifact is read-only and is not modified by this UI."
+                "Frozen Phase-12-v2 results are read-only. Interactive V3.3 use does "
+                "not alter benchmark ground truth or frozen manifests."
             )
     else:
         st.warning(
-            "These objectives are the model's interpretation of the scenario, not "
-            "human ground truth. Frozen Phase-12 calibration evidence is not "
-            "available locally, so human review remains required."
+            "The finalized Phase-12-v2 manifest is not available or its checksum "
+            "does not validate. AwareML will not present fresh confirmatory metrics "
+            "until Phase-12-v2 is finalized and audited."
         )
-
-    v3_diag = load_phase12_v3_posthoc_diagnostic(ROOT)
-    if v3_diag:
-        st.info(
-            "An evidence-grounded V3 improvement diagnostic is available locally. "
-            "These V3 numbers are POST-HOC development evidence on the already-inspected "
-            "Phase-12 cases; they do not replace the frozen v1 journal result. A fresh "
-            "independently annotated benchmark is still required for a new final claim."
-        )
-        with st.expander("V3 improvement diagnostic · post-hoc development only", expanded=False):
-            status_panel(
-                {
-                    "Micro precision": fmt(v3_diag.get("micro_precision"), 3),
-                    "Micro recall": fmt(v3_diag.get("micro_recall"), 3),
-                    "Micro-F1": fmt(v3_diag.get("micro_f1"), 3),
-                    "Macro-F1": fmt(v3_diag.get("macro_f1"), 3),
-                    "Exact-set match": (
-                        "{:.1%}".format(float(v3_diag.get("exact_match_rate")))
-                        if v3_diag.get("exact_match_rate") is not None
-                        else "N/A"
-                    ),
-                    "Paraphrase consistency": (
-                        "{:.1%}".format(float(v3_diag.get("paraphrase_consistency_rate")))
-                        if v3_diag.get("paraphrase_consistency_rate") is not None
-                        else "not run"
-                    ),
-                    "Adversarial over-selection": (
-                        "{} / {}".format(
-                            v3_diag.get("adversarial_over_selection_count"),
-                            v3_diag.get("adversarial_cases"),
-                        )
-                        if v3_diag.get("adversarial_cases") is not None
-                        else "not run"
-                    ),
-                    "Evidence role": "post-hoc development diagnostic",
-                }
-            )
-
-    v31_diag = load_phase12_v31_posthoc_diagnostic(ROOT)
-    if v31_diag:
-        st.markdown("### V3.1 development checkpoint")
-        st.info(
-            "V3.1 is a recall-balanced hybrid improvement candidate. These values are POST-HOC development evidence "
-            "on already-inspected Phase-12 material and are not a new independent journal result."
-        )
-        with st.expander("V3.1 diagnostic · development only", expanded=False):
-            status_panel(
-                {
-                    "Micro precision": fmt(v31_diag.get("micro_precision"), 3),
-                    "Micro recall": fmt(v31_diag.get("micro_recall"), 3),
-                    "Micro-F1": fmt(v31_diag.get("micro_f1"), 3),
-                    "Macro-F1": fmt(v31_diag.get("macro_f1"), 3),
-                    "Exact-set match": (
-                        "{:.1%}".format(float(v31_diag.get("exact_match_rate")))
-                        if v31_diag.get("exact_match_rate") is not None else "N/A"
-                    ),
-                    "Paraphrase consistency": (
-                        "{:.1%}".format(float(v31_diag.get("paraphrase_consistency_rate")))
-                        if v31_diag.get("paraphrase_consistency_rate") is not None else "not run"
-                    ),
-                    "Paraphrase denominator": (
-                        "{} comparisons".format(v31_diag.get("paraphrase_evaluations"))
-                        if v31_diag.get("paraphrase_evaluations") is not None else "not run"
-                    ),
-                    "Adversarial over-selection": (
-                        "{} / {}".format(v31_diag.get("adversarial_over_selection_count"), v31_diag.get("adversarial_cases"))
-                        if v31_diag.get("adversarial_cases") is not None else "not run"
-                    ),
-                    "Evidence role": "post-hoc development diagnostic",
-                }
-            )
 
     evidence_audit = dict(parse_meta.get("evidence_audit") or {})
     decisions = dict(evidence_audit.get("decisions") or {})
     if decisions:
-        st.markdown("**Hybrid evidence-grounded V3.1 selection audit**")
-        st.dataframe(v31_audit_rows(evidence_audit), use_container_width=True, hide_index=True)
+        st.markdown("**Hybrid evidence-grounded V3.3 selection audit**")
+        st.dataframe(v33_audit_rows(evidence_audit), use_container_width=True, hide_index=True)
         recovered = list(evidence_audit.get("semantic_recovered_objectives") or [])
         if recovered:
             st.info(
@@ -238,7 +161,7 @@ def _render_objective_interpretation(interpretation, parse_meta, state):
             )
         st.caption(
             "The audit separates: (1) what LLaMA proposed, (2) whether an evidence phrase was grounded, "
-            "(3) whether the scenario contains objective-specific semantic support, and (4) the final V3.1 decision. "
+            "(3) whether the scenario contains objective-specific semantic support, and (4) the final V3.3 decision. "
             "Broad phrases such as sustained deployment or generic sustainability are not decisive by themselves."
         )
 
@@ -450,7 +373,7 @@ def _goal_copilot_workspace_page():
         unsafe_allow_html=True,
     )
 
-    journal_status = StrictJournalOllamaClient().status()
+    journal_status = ConfirmatoryOllamaClientV32(root=ROOT).status()
     exact_model = "llama3:8b"
 
     left, right = st.columns([1.05, 0.95])
@@ -481,13 +404,14 @@ def _goal_copilot_workspace_page():
         state["copilot_goal"] = goal
 
         use_llm = st.toggle(
-            "Use hybrid evidence-grounded LLaMA 3 8B selector V3.1",
+            "Use hybrid evidence-grounded LLaMA 3 8B selector V3.3",
             value=True,
             key="r11_copilot_llm",
             help=(
-                "V3 keeps the exact locked LLaMA runtime but adds evidence-grounded, "
-                "conservative objective filtering. The frozen Phase-12 v1 benchmark "
-                "remains unchanged for reproducibility."
+                "V3.3 uses the Phase-11R/Phase-12-v2 common LLaMA runtime. LLM-selected "
+                "objectives face strict V3.2 evidence validation, while strong "
+                "scenario-local cues can recover omissions using the V3.1 recovery idea. "
+                "V3.3 is interactive development logic, not confirmatory evidence."
             ),
         )
 
@@ -496,10 +420,10 @@ def _goal_copilot_workspace_page():
             "Fairness, drift and explainability are handled separately as HCAI requirements."
         )
 
-        with st.expander("How V3.1 balances trust and recall", expanded=False):
+        with st.expander("How V3.3 balances evidence validation and recall", expanded=False):
             st.markdown(
                 """
-                **V3.1 uses two transparent evidence sources.** The locked LLaMA proposes objectives, while an
+                **V3.3 uses two transparent evidence paths.** The locked LLaMA proposes objectives, while an
                 objective-specific semantic layer checks the scenario itself. Unsupported LLaMA additions are rejected;
                 strong explicit cues can recover an objective the LLaMA omitted. Generic phrases such as *sustained
                 deployment* do not count as evidence on their own. Every proposal still passes through human review.
@@ -518,7 +442,7 @@ def _goal_copilot_workspace_page():
                 rationale_client = OllamaClient(model=exact_model)
                 service = CopilotService(
                     recommender=(load_v2_recommender() if has_dataset else None),
-                    goal_parser=GoalParser(selector=HybridEvidenceGroundedObjectiveSelectorV31()),
+                    goal_parser=GoalParser(selector=EvidenceGroundedObjectiveSelectorV33(root=ROOT)),
                     chat=GroundedCopilotChat(client=rationale_client),
                     review_store=ReviewStore(
                         ROOT / "artifacts" / "copilot" / "reviews.jsonl"
@@ -583,7 +507,7 @@ def _goal_copilot_workspace_page():
         status_panel(
             {
                 "Journal objective model": exact_model,
-                "Interactive objective selector": "hybrid evidence-grounded V3.1",
+                "Interactive objective selector": "hybrid evidence-grounded V3.3 (development)",
                 "Exact model lock": (
                     "PASS" if journal_status.get("reachable") else "NOT READY"
                 ),
@@ -759,7 +683,7 @@ def _goal_copilot_workspace_page():
             rationale_client = OllamaClient(model=exact_model)
             service = CopilotService(
                 recommender=load_v2_recommender(),
-                goal_parser=GoalParser(selector=HybridEvidenceGroundedObjectiveSelectorV31()),
+                goal_parser=GoalParser(selector=EvidenceGroundedObjectiveSelectorV33(root=ROOT)),
                 chat=GroundedCopilotChat(client=rationale_client),
                 review_store=ReviewStore(
                     ROOT / "artifacts" / "copilot" / "reviews.jsonl"
@@ -800,16 +724,11 @@ def _render_objective_interpretation(interpretation, parse_meta, state):
 # PRE14_THREE_PATH_COPILOT_WRAPPER
 def copilot_workspace_page():
     state = ensure_research_state()
-    render_copilot_workspace_header(state)
+    active_path = render_copilot_workspace_header(state)
 
-    goal_tab, prior_tab, v2_tab = st.tabs([
-        "1 · Goal Copilot",
-        "2 · Historical Preference Prior",
-        "3 · Dataset-aware ML Recommender V2",
-    ])
-    with goal_tab:
-        render_goal_copilot_unified_page()
-    with prior_tab:
+    if active_path == "historical":
         render_historical_preference_prior_tab()
-    with v2_tab:
+    elif active_path == "dataset":
         render_dataset_aware_v2_tab()
+    else:
+        render_goal_copilot_unified_page()
