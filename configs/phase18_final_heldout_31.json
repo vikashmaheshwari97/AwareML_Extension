@@ -1,0 +1,85 @@
+{
+  "schema_version": "2.5",
+  "phase": 18,
+  "protocol_id": "phase18_final_heldout_31_v1",
+  "reference_repository": "vikashmaheshwari97/AwareML_Extension",
+  "reference_commit": "25f8a226335428252c500e22c48d233e876ac2c4",
+  "dataset_directory": "data/Testing Datasets",
+  "dataset_inventory": "configs/phase18_dataset_inventory_31.csv",
+  "excluded_from_primary": [
+    {
+      "dataset_id": "adult_binary_stream",
+      "reason": "exact SHA256 overlap with V2 development dataset adult"
+    }
+  ],
+  "cohorts": {
+    "historical_23": 23,
+    "extension_8": 8,
+    "combined": 31
+  },
+  "task_policy": {
+    "native_classification": 15,
+    "ordinal_quantile_max5": 16,
+    "ordinal_transform": "For explicitly declared rows only, compute the 20/40/60/80 percentiles of the source target before any framework outcome is generated; remove duplicate thresholds; apply np.digitize(..., right=True); source target is dropped from features; frozen transform parameters are hashed.",
+    "scientific_label": "derived classification task; not the original regression target"
+  },
+  "frameworks": [
+    "AutoStreamML",
+    "AutoClass",
+    "EvoAutoML",
+    "OAML",
+    "ChaCha"
+  ],
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "execution": {
+    "evaluation": "prequential_test_then_train",
+    "max_samples": 30000,
+    "window_size": 1000,
+    "time_budget_sec_per_framework": 60.0,
+    "track_sustainability": true,
+    "sensitive_feature_policy": "audit_only",
+    "missing_prediction_policy": "incorrect",
+    "xai_method": "auto",
+    "xai_max_rows": 250,
+    "fairness_calibration_bins": 10
+  },
+  "expected_counts": {
+    "datasets": 31,
+    "frameworks": 5,
+    "seeds": 3,
+    "framework_runs": 465,
+    "aggregated_dataset_framework_rows": 155,
+    "preferences_per_dataset": 100,
+    "preference_cases": 3100
+  },
+  "preferences": {
+    "objectives": [
+      "accuracy",
+      "runtime",
+      "energy",
+      "co2"
+    ],
+    "k_prime_values": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "k_prime_sampling": "uniform",
+    "active_subset_sampling": "uniform_without_replacement",
+    "weight_distribution": "Dirichlet(1_active)",
+    "global_seed": 42,
+    "freeze_before_outcomes": true
+  },
+  "recommender": {
+    "use_frozen_v2_only": true,
+    "active_marker": "data/meta/active_recommender_v2.txt",
+    "training_snapshot": "data/meta/snapshots/recommender_train_v2.parquet",
+    "primary_preference_evaluation": "frozen_v2_predicted_scale_only",
+    "secondary_evaluation": "historical_cikm_compatible_real_minmax"
+  }
+}

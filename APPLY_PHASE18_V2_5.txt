@@ -1,0 +1,1 @@
+Apply ZIP over repo root, validate, preflight, inspect 31/31 PASS, then freeze with REVIEWED_31_DATASET_TASK_POLICY.
