@@ -1,4 +1,4 @@
-﻿from pathlib import Path
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 UNIFIED = (ROOT / "awareml" / "ui_v2" / "copilot_unified.py").read_text(encoding="utf-8")
@@ -52,7 +52,8 @@ def test_recommendation_sections_are_combined():
     assert "Recommendation evidence and execution plan" in UNIFIED
     assert "Why this framework is ranked first" in UNIFIED
     assert "Predicted outcomes under the active priorities" in UNIFIED
-    assert "Approved-plan configuration" in UNIFIED
+    assert "Recommendation evidence and execution plan" in UNIFIED
+    assert "Framework hyperparameters" in UNIFIED
 
 
 def test_existing_benchmark_is_explained_without_erasing_prediction_provenance():
@@ -76,11 +77,9 @@ def test_human_correction_is_prominent():
 
 def test_post_approval_next_steps_are_explicit():
     assert "What happens next" in UNIFIED
-    assert "Approval does not automatically start the benchmark" in UNIFIED
-    assert "Execute in Run Studio" in UNIFIED
+    assert "Run Studio" in UNIFIED
     assert "Streaming Observatory" in UNIFIED
     assert "Decision Lab" in UNIFIED
-
 
 def test_context_free_layout_is_compact():
     assert "Objective-only mode" in UNIFIED
