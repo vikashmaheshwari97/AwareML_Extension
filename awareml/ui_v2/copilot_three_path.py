@@ -23,6 +23,11 @@ from awareml.recommender.v2_ranking import normalize_weights
 from .data import load_v2_recommender
 from .pre14_usability import copilot_weights_from_state
 from .state import ROOT, dataset_signature, ensure_research_state
+from .phase18_validation_evidence import render_phase18_heldout_validation
+from .recommender_research_grade import (
+    render_dataset_aware_research_layer,
+    render_historical_prior_research_layer,
+)
 
 
 HIST_PRESETS = {
@@ -168,10 +173,10 @@ def render_historical_preference_prior_tab() -> None:
         c1, c2, c3, c4 = st.columns(4)
         c1.metric("Historical starting point", winner)
         c2.metric("Validated default algorithm", str(result.get("algorithm") or "N/A"))
-        c3.metric("Historical preference score", "{:.3f}".format(float(top["historical_utility"])))
+        c3.metric("Cross-dataset preference score", "{:.3f}".format(float(top["historical_utility"])))
         c4.metric("Cross-dataset wins", "{} / {}".format(int(top["win_count"]), int(top["support_datasets"])))
         st.caption(
-            "The score is a normalized historical ranking score, not a probability or confidence score."
+            "The cross-dataset preference score is a normalized development-evidence ranking score under the current priorities; it is not a probability or confidence score."
         )
         st.write(
             "**Why this starting point?** Across the 47 development datasets, {} has the highest aggregate score "
@@ -187,11 +192,13 @@ def render_historical_preference_prior_tab() -> None:
         chart = ranking.sort_values("historical_utility", ascending=True)
         fig = px.bar(
             chart, x="historical_utility", y="framework", orientation="h",
-            text="historical_utility", title="Historical preference ranking",
+            text="historical_utility", title="Cross-dataset preference ranking",
         )
         fig.update_traces(texttemplate="%{text:.3f}", textposition="inside")
         fig.update_layout(height=320, showlegend=False)
+        fig.update_xaxes(title="Cross-dataset preference score")
         st.plotly_chart(fig, use_container_width=True, key="three_hist_chart")
+        render_historical_prior_research_layer(ranking, weights)
 
     st.markdown("### Why can the same framework keep winning?")
     sensitivity = _sensitivity()
@@ -253,7 +260,7 @@ def _render_model_quality() -> None:
             "Spearman": q.get("spearman"),
         })
     st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
-    st.caption("Development/LODO diagnostics only; not the final 23-dataset held-out result.")
+    st.caption("Development/LODO diagnostics describe model development only. Final 31-dataset held-out evidence is shown separately below.")
     rq = quality.get("runtime") or {}
     try:
         if float(rq.get("top1_accuracy")) < 0.50:
@@ -314,7 +321,7 @@ def render_dataset_aware_v2_tab() -> None:
     cards[0].metric("Development datasets", "47")
     cards[1].metric("Training profiles", "235")
     cards[2].metric("Underlying runs", "705")
-    cards[3].metric("Reserved final-test datasets", "23")
+    cards[3].metric("Final held-out datasets", "31")
 
     df = state.get("dataset")
     target = state.get("target")
@@ -326,9 +333,10 @@ def render_dataset_aware_v2_tab() -> None:
         with st.expander("Research validation details", expanded=False):
             _render_model_quality()
         st.info(
-            "The 23 reserved datasets remain untouched for the final external evaluation. "
-            "Do not use them for tuning before the Phase-14 protocol is frozen."
+            "The final external evaluation has now been completed on 31 held-out datasets. "
+            "Those outcomes remain separate from this interactive recommendation path and are never used to adapt the current recommendation."
         )
+        render_phase18_heldout_validation(expanded=False, collapsible=True)
         return
 
     warning = _target_guard(df, str(target))
@@ -419,7 +427,11 @@ def render_dataset_aware_v2_tab() -> None:
 
     top = ranked.iloc[0]
     winner = str(top["framework"])
-    st.markdown("## Dataset-specific pre-run recommendation")
+    st.markdown("## Dataset-specific pre-execution recommendation")
+    st.caption(
+        "Pre-execution means the five AutoML frameworks have not yet been run on this dataset. "
+        "The frozen meta-models are executing inference now on the dataset meta-profile; the predicted framework outcomes are then reranked under your preferences."
+    )
     x1, x2, x3, x4 = st.columns(4)
     x1.metric("Predicted framework", winner)
     x2.metric("Predicted rank", "#1 of {}".format(len(ranked)))
@@ -446,6 +458,10 @@ def render_dataset_aware_v2_tab() -> None:
     table = ranked[[c for c in cols if c in ranked.columns]].copy()
     st.dataframe(table, use_container_width=True, hide_index=True)
 
+    render_dataset_aware_research_layer(
+        state=state, ranked=ranked, weights=weights, meta=meta
+    )
+
     hist = state.get("copilot_auto_historical_result") or state.get("historical_meta_result") or state.get("three_hist_result") or {}
     compare = st.columns(3)
     compare[0].metric("Goal Copilot", "Priorities ready" if goal_weights is not None else "Not generated")
@@ -462,6 +478,17 @@ def render_dataset_aware_v2_tab() -> None:
     )
 
     with st.expander("Research validation details", expanded=False):
-        st.caption("Development/LODO diagnostics document the saved meta-model bundle. They are not confidence scores for this individual recommendation.")
+        st.caption(
+            "Development/LODO diagnostics document how the frozen objective models behaved during development. "
+            "They are model-development diagnostics, not confidence scores for this individual recommendation."
+        )
+        st.markdown("#### Development / LODO diagnostics")
         _render_model_quality()
-        st.info("Final held-out evaluation remains separate from this interactive recommendation path.")
+        st.info(
+            "The final held-out evaluation is intentionally kept separate from development/LODO diagnostics and from the current interactive recommendation."
+        )
+
+    render_phase18_heldout_validation(
+        expanded=False,
+        collapsible=True,
+    )

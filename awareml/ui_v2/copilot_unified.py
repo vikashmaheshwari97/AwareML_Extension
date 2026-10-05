@@ -32,6 +32,12 @@ from .pre14_usability import (
     persist_objective_review,
 )
 from .state import ROOT, ensure_research_state
+from .recommender_research_grade import (
+    render_final_review_research_layer,
+    render_framework_parameter_reference,
+    render_goal_recommendation_research_layer,
+    render_priority_review_preview,
+)
 
 
 CANONICAL_OBJECTIVES = ("Accuracy", "Runtime", "Energy", "CO2")
@@ -318,7 +324,7 @@ def _render_objective_review(
 ) -> None:
     st.markdown("## {} · Review the priorities".format(step_number))
     st.caption(
-        "The objective interpretation is advisory. Confirm it, correct it, or reject it."
+        "AwareML has translated your deployment goal into optimization priorities. Review this interpretation before it affects the recommendation. You remain the decision-maker: accept it as-is, revise the objectives, or reject the interpretation and return to the goal."
     )
 
     choice = st.segmented_control(
@@ -341,8 +347,10 @@ def _render_objective_review(
             ),
         )
 
+    render_priority_review_preview(selected, corrected)
+
     note = st.text_input(
-        "Review note (optional)",
+        "Why are you accepting or changing these priorities? (optional)",
         key="goal_v2_objective_review_note_{}".format(step_number),
         placeholder="Example: Energy also matters because the service must preserve battery life.",
     )
@@ -422,11 +430,12 @@ def _render_post_approval_state(state: Mapping[str, Any]) -> None:
     if decision in {"approved","approved_with_edits"}:
         st.success("Plan approved{}.".format(" with recorded edits" if decision=="approved_with_edits" else ""))
         st.markdown("### What happens next")
-        cols=st.columns(3)
+        cols=st.columns(4)
         items=[
-            ("1 · Decision recorded","The approval is stored in the append-only Copilot review log for auditability."),
-            ("2 · Execute in Run Studio","Approval does not automatically start the benchmark. Use the approved settings in Run Studio when ready."),
-            ("3 · Validate after execution","Inspect measured behavior in Streaming Observatory and compare post-run outcomes in Decision Lab."),
+            ("1 · Decision recorded","The approval and any configuration changes are stored in the append-only Copilot review log."),
+            ("2 · Stage the approved plan","Use the handoff control below to transfer only settings that Run Studio can represent safely."),
+            ("3 · Execute deliberately","Review the staged Run Studio controls, then start the benchmark yourself. Approval never auto-runs a framework."),
+            ("4 · Validate predicted vs observed","After execution, compare measured performance, drift, fairness, XAI and sustainability evidence against the pre-execution recommendation."),
         ]
         for col,(title,body) in zip(cols,items):
             with col:
@@ -459,6 +468,7 @@ def _render_final_plan_review(state: Dict[str, Any], proposal: Mapping[str, Any]
             sens_options=["low","moderate","high"]; current_sens=str(drift_cfg.get("sensitivity") or "moderate").lower()
             with d3: drift_sensitivity=st.selectbox("Drift sensitivity",sens_options,index=sens_options.index(current_sens) if current_sens in sens_options else 1,disabled=not drift_enabled,key="goal_v2_review_drift_sensitivity")
         with st.expander("Framework hyperparameters",expanded=False):
+            render_framework_parameter_reference(str(config.get("framework") or "N/A"))
             params=_as_dict(config.get("framework_parameters")); params_text=st.text_area("Framework parameters (JSON)",value=json.dumps(params,indent=2,sort_keys=True),height=170,key="goal_v2_review_framework_parameters",help="Only parameters supported by the selected framework should be changed.")
             try:
                 parsed_params=json.loads(params_text or "{}")
@@ -491,7 +501,9 @@ def _render_final_plan_review(state: Dict[str, Any], proposal: Mapping[str, Any]
             state["copilot_review"]=review.model_dump(); state["copilot_unified_flash"]="Final plan decision saved: {}.".format(review.decision.replace("_"," ").title()); st.rerun()
         except Exception as exc: st.error("The final plan decision could not be saved: {}".format(exc))
     saved=_as_dict(state.get("copilot_review"))
-    if saved: st.caption("Saved final decision: {}".format(str(saved.get("decision") or "").replace("_"," ").title()))
+    if saved:
+        st.caption("Saved final decision: {}".format(str(saved.get("decision") or "").replace("_"," ").title()))
+        render_final_review_research_layer(state, saved)
     _render_post_approval_state(state)
 
 def _render_plan(proposal: Mapping[str, Any], state: Dict[str, Any], parse_meta: Mapping[str, Any], has_observed_run: bool) -> None:
@@ -538,11 +550,12 @@ def _render_plan(proposal: Mapping[str, Any], state: Dict[str, Any], parse_meta:
                 st.markdown("**Predicted outcomes under the active priorities**"); st.dataframe(evidence,use_container_width=True,hide_index=True)
     with right:
         with st.container(border=True):
-            st.markdown("**Approved-plan configuration**")
+            st.markdown("**Proposed execution configuration**")
             rows=[
                 {"Setting":"Framework","Value":framework},{"Setting":"Algorithm","Value":algorithm},{"Setting":"Window size","Value":config.get("window_size","N/A")},{"Setting":"Time budget","Value":"{} s".format(config.get("time_budget_sec","N/A"))},{"Setting":"Drift monitoring","Value":drift.get("detector") or "N/A"},{"Setting":"Fairness constraint","Value":fairness_constraint},{"Setting":"Explainability","Value":xai.get("method") or xai.get("level") or "N/A"},{"Setting":"Energy / CO₂ tracking","Value":"Enabled" if sustain.get("track_energy") or sustain.get("track_co2") else "Not requested"},
             ]
             st.dataframe(pd.DataFrame(rows),use_container_width=True,hide_index=True); st.caption("Fairness audit: {}".format(fairness_audit))
+    render_goal_recommendation_research_layer(ranked, weights, framework)
     if not ranked.empty and {"framework","utility"}.issubset(ranked.columns):
         with st.expander("Compare all predicted alternatives",expanded=False):
             top=ranked.sort_values("rank",ascending=True).head(5).copy() if "rank" in ranked.columns else ranked.sort_values("utility",ascending=False).head(5).copy(); cols=[c for c in ("rank","framework","utility") if c in top.columns]; top=top[cols].rename(columns={"rank":"Predicted rank","framework":"Framework","utility":"Ranking utility"}); st.dataframe(top,use_container_width=True,hide_index=True)

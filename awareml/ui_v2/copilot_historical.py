@@ -157,7 +157,7 @@ def _ranking_display(ranking: pd.DataFrame) -> pd.DataFrame:
         columns={
             "rank": "Rank",
             "framework": "Framework",
-            "historical_utility": "Historical preference score",
+            "historical_utility": "Cross-dataset preference score",
             "win_rate": "Cross-dataset win rate",
             "top3_rate": "Top-3 rate",
             "utility_iqr": "Utility IQR",
@@ -212,10 +212,10 @@ def _render_result(state: Dict[str, Any]) -> None:
     cards = st.columns(4)
     cards[0].metric("Historical recommendation", winner)
     cards[1].metric("Validated default algorithm", algorithm)
-    cards[2].metric("Historical preference score", "{:.3f}".format(float(top["historical_utility"])))
+    cards[2].metric("Cross-dataset preference score", "{:.3f}".format(float(top["historical_utility"])))
     cards[3].metric("Cross-dataset wins", "{} / {}".format(int(top["win_count"]), int(top["support_datasets"])))
     st.caption(
-        "Historical preference score is a normalized cross-dataset ranking score under your current priorities. It is not a probability or model confidence."
+        "Cross-dataset preference score is a normalized development-evidence ranking score under your current priorities. It is not a probability or model confidence."
     )
 
     left, right = st.columns([1.05, 0.95])
@@ -285,8 +285,8 @@ def _render_result(state: Dict[str, Any]) -> None:
         y="framework",
         orientation="h",
         text="historical_utility",
-        labels={"historical_utility": "Historical preference score", "framework": "Framework"},
-        title="Preference-only historical ranking",
+        labels={"historical_utility": "Cross-dataset preference score", "framework": "Framework"},
+        title="Preference-only cross-dataset ranking",
     )
     fig.update_traces(texttemplate="%{text:.3f}", textposition="inside")
     fig.update_layout(height=330, margin=dict(l=80, r=20, t=48, b=48), showlegend=False)

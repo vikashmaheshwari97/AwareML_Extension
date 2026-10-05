@@ -206,7 +206,7 @@ def _historical_cards(result: Mapping[str, Any], ranking: pd.DataFrame) -> None:
     values = [
         ("Framework starting point", str(top["framework"])),
         ("Historical rank", "#1 of {}".format(len(ranking))),
-        ("Historical preference score", "{:.3f}".format(float(top["historical_utility"]))),
+        ("Cross-dataset preference score", "{:.3f}".format(float(top["historical_utility"]))),
         (
             "Cross-dataset wins",
             "{} / {}".format(int(top["win_count"]), int(top["support_datasets"])),
@@ -331,7 +331,7 @@ def render_goal_framework_guidance(
             st.caption("GLOBAL HISTORICAL PRIOR")
             st.markdown("### {}".format(historical_winner))
             st.write(
-                "Historical score: **{:.3f}**".format(
+                "Cross-dataset preference score: **{:.3f}**".format(
                     float(ranking.iloc[0]["historical_utility"])
                 )
             )

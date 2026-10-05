@@ -1,0 +1,22 @@
+{
+  "schema_version": "phase18_ui_evidence_v1",
+  "source_note": "User-supplied 31-dataset held-out evaluation evidence packaged unchanged for read-only researcher UI display.",
+  "datasets": 31,
+  "preference_cases": 3100,
+  "objective_winner_rows": 124,
+  "files": {
+    "phase18_predicted_vs_observed_objective_winners.csv": {
+      "sha256": "bd42e464b1c4030f7c3d547933c79528d92c9812e915468bf2ce0e2b68187912",
+      "physical_lines": 125
+    },
+    "phase18_preference_eval_primary_3100.csv": {
+      "sha256": "91b044ea352fdb8353f600dc97544d2c932d347be18aa0c6b22fa04bdb1e71a4",
+      "physical_lines": 3100
+    },
+    "phase18_preference_summary_by_dataset.csv": {
+      "sha256": "e348a00c8c9fcd35cf8a1d5758182eb6b4ba864f9e89814977ee0dfe95d1d22d",
+      "physical_lines": 31
+    }
+  },
+  "mutation_policy": "read_only_no_retraining_no_tuning"
+}

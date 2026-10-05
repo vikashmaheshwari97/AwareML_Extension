@@ -1,14 +1,28 @@
 from pathlib import Path
 
 import pandas as pd
+import pytest
 
 from awareml.ui_v2.phase18_validation_evidence import phase18_validation_snapshot
 from awareml.ui_v2.recommender_research_grade import _handoff_mapping, _preference_stability
 
 ROOT = Path(__file__).resolve().parents[1]
 
+PHASE18_UI_EVIDENCE = ROOT / "data" / "journal" / "phase18_ui_evidence"
+
+def _require_local_phase18_evidence():
+    required = [
+        PHASE18_UI_EVIDENCE / "phase18_preference_eval_primary_3100.csv",
+        PHASE18_UI_EVIDENCE / "phase18_predicted_vs_observed_objective_winners.csv",
+        PHASE18_UI_EVIDENCE / "phase18_preference_summary_by_dataset.csv",
+    ]
+    if not all(path.exists() for path in required):
+        pytest.skip("Phase-18 UI evidence CSVs are intentionally local-only.")
+
+
 
 def test_phase18_packaged_evidence_exact_aggregate():
+    _require_local_phase18_evidence()
     snap = phase18_validation_snapshot()
     assert snap["datasets"] == 31
     assert snap["preference_cases"] == 3100
@@ -21,6 +35,7 @@ def test_phase18_packaged_evidence_exact_aggregate():
 
 
 def test_phase18_objective_winner_rates():
+    _require_local_phase18_evidence()
     snap = phase18_validation_snapshot()
     rows = {row["objective"]: row for row in snap["objective_winners"]}
     assert int(rows["accuracy"]["matches"]) == 29

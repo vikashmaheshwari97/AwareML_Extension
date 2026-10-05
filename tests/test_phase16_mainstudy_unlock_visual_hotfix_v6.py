@@ -9,10 +9,10 @@ def test_visual_module_uses_safe_research_views():
     source = path.read_text(encoding="utf-8")
     ast.parse(source)
     assert "Likert response distribution" in source
-    assert "Each expertise group forms a line" in source
-    assert "Trust by explanation source" in source
-    assert ".mark_line(point=True" in source
-    assert ".mark_circle" in source
+    assert "Novice / practitioner / expert comparison" in source
+    assert "Trust discrimination by explanation source" in source
+    assert "plotly.graph_objects" in source
+    assert "go.Heatmap" in source
 
 
 def test_ui_no_longer_uses_problematic_analysis_json_renderer():

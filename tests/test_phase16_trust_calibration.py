@@ -158,6 +158,15 @@ def finalized_protocol(required_n: int = 2) -> dict:
         "instructions": "Final instructions",
         "consent_text": "Final consent",
     }
+    protocol["secondary_poststudy"] = {
+        "status": "final",
+        "role": "Secondary exploratory human-agency outcomes.",
+        "items": [
+            {"id": "critical_evaluation", "construct": "human_agency", "text": "Critical evaluation"},
+            {"id": "freedom_to_override", "construct": "human_agency", "text": "Freedom to override"},
+            {"id": "final_control", "construct": "human_agency", "text": "Final decision control"},
+        ],
+    }
     return protocol
 
 
@@ -295,10 +304,10 @@ def test_reverse_coded_multi_item_trust_score():
     assert score == 7.0
 
 
-def test_design_freeze_gate_blocks_pending_morten():
+def test_design_freeze_gate_blocks_unfinalized_research_requirements():
     errors = validate_protocol_for_design_freeze(draft_protocol())
     joined = " ".join(errors)
-    assert "Morten gate" in joined
+    assert "trust_measure.status must be 'final'" in joined
     assert "power_calculation" in joined
 
 

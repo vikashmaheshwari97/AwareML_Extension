@@ -180,3 +180,6 @@ local_artifacts/
 .*_backups/
 phase15_h200_*.bundle
 artifacts/phase16/private_mainstudy_runtime.json
+
+# Phase-18 local UI evidence - keep experimental CSVs local
+/data/journal/phase18_ui_evidence/*.csv

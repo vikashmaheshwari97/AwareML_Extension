@@ -11,8 +11,11 @@ def test_phase16_protocol_scientifically_final_but_ethics_not_fabricated():
     assert data["status"] == "final"
     assert data["participant_materials"]["status"] == "final"
     assert data["participant_materials"]["minimum_age"] == 18
-    assert data["ethics"]["research_team_risk_assessment"] == "minimal_risk_behavioral_social_science"
-    assert data["ethics"]["status"] in {"pending", "approved", "exempt", "not_required"}
+    ethics = data["ethics"]
+    assert ethics["status"] == "research_team_self_assessed"
+    assert ethics["institutional_approval_claimed"] is False
+    assert ethics["institutional_review_status"] == "not_claimed"
+    assert ethics["risk_classification"] == "minimal_risk_behavioral_user_study"
 
 
 def test_phase17_methodologically_final():
