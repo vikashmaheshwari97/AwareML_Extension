@@ -12,6 +12,9 @@ from typing import Any, Dict, Optional
 import pandas as pd
 import streamlit as st
 
+from awareml.studies.study_runtime import bootstrap_study_runtime
+bootstrap_study_runtime()
+
 from awareml.studies.trust import (
     ALLOWED_DECISION_ACTIONS,
     ALLOWED_EXPERTISE_GROUPS,
@@ -26,6 +29,11 @@ from awareml.studies.trust import (
 from awareml.studies.trust_analysis import analyze_phase16_store
 
 from .components import hero, section
+from .phase16_research_visuals import render_trust_calibration_visuals
+from .phase16_secondary_questionnaire import (
+    render_phase16_secondary_participant,
+    render_phase16_secondary_researcher,
+)
 
 
 PARTICIPANT_STATE_PREFIX = "p16_participant"
@@ -250,6 +258,18 @@ def _mode_display_name(mode: str) -> str:
 
 
 PARTICIPANT_PRESENTATION_VERSION = "readable_evidence_v1"
+
+_PHASE16_SOURCE_STAGE_LABELS = {
+    "B": "Framework recommendation",
+    "E": "Fairness explanation",
+    "F_CHAT": "Conversational explanation",
+    "F_XAI": "Feature-attribution explanation",
+}
+
+def _friendly_phase16_source_stage(value: Any) -> str:
+    key = str(value or "")
+    return _PHASE16_SOURCE_STAGE_LABELS.get(key, key.replace("_", " ").title())
+
 _EVIDENCE_TAG_RE = re.compile(r"\s*\[(?:evidence\.)[^\]]+\]")
 
 
@@ -397,7 +417,8 @@ def _render_reference_evidence(reference: Dict[str, Any]) -> None:
         return
     st.markdown(
         '<div class="tc-design"><strong>Reference evidence.</strong> '
-        'Use these values as the factual information available for this item. Compare the AI explanation with this evidence. '
+        'Use these values as the factual information available for this item. Compare every visible claim in the AI explanation with this evidence. '
+        'A conflicting number, framework ranking, feature claim, fairness value, or an additional claim that is not supported by the reference is evidence that the explanation is not fully supported. '
         '<b>The panel does not tell you whether the explanation is correct.</b></div>',
         unsafe_allow_html=True,
     )
@@ -426,7 +447,7 @@ def _render_participant_help() -> None:
             **1. Check factual agreement.** Compare the numbers, ranking, feature or fairness claims in the explanation with the reference evidence.  
             **2. Rate trust separately from writing style.** An explanation can sound polished and still be wrong.  
             **3. Rate fluency only as writing quality.** Do not use fluency as a synonym for correctness.  
-            **4. Choose an action.** **Accept** means you would rely on it as shown; **Override** means you would use the system but correct/change the recommendation before acting; **Reject** means you would not rely on it.  
+            **4. Choose an action.** **Accept** means you would rely on it as shown. **Override** means you would keep using the system but correct a specific mismatch (for example a wrong metric, framework ranking, or feature claim) before acting. You do not edit the text in this study; Override records that intended action. **Reject** means the mismatch makes you unwilling to rely on the explanation.  
             There are no "good participant" answers. We want your own judgment.
             """
         )
@@ -449,11 +470,14 @@ def _final_collection_blockers(study: TrustCalibrationStudy) -> list:
         "trust_measure.scoring_rule is required": "Record the trust-scale scoring rule.",
         "power_calculation.status must be 'final' (Morten gate)": "Finalize the statistical power / sample-size calculation.",
         "power_calculation.required_completed_participants must be a positive integer": "Set the required number of completed participants from the power calculation.",
-        "ethics.status must be approved, exempt, or not_required before final collection": "Record the institutional ethics determination.",
+        "ethics.status must be approved, exempt, not_required, or research_team_self_assessed before final collection": "Complete the ethics/governance status.",
         "ethics.reference is required for approved/exempt status": "Record the ethics approval/exemption reference.",
         "participant_materials.status must be 'final'": "Finalize participant information, instructions and consent materials.",
         "participant_materials.consent_text is required": "Add the finalized consent text.",
         "participant_materials.instructions is required": "Add the finalized participant instructions.",
+        "secondary_poststudy.status must be final": "Review and finalize the secondary Human Agency / study-experience questionnaire.",
+        "secondary_poststudy.items must contain the finalized human-agency items": "Add the finalized Human Agency questionnaire items.",
+        "secondary_poststudy.role must document that these are secondary measures": "Document the secondary role of the Human Agency questionnaire.",
     }
     for blocker in blockers:
         friendly.append(mapping.get(blocker, blocker.replace("_", " ")))
@@ -519,6 +543,7 @@ def _display_status(value: Any) -> str:
     mapping = {
         "pending_morten": "Pending finalization",
         "pending": "Pending determination",
+        "research_team_self_assessed": "Finalized",
         "draft": "Draft",
         "frozen": "Ready",
         "ready": "Ready",
@@ -568,7 +593,7 @@ def _render_researcher_unlock() -> bool:
     )
     if not configured_key:
         st.info(
-            "Researcher access requires a private deployment key after the study design is frozen. Configure AWAREML_STUDY_RESEARCHER_KEY before Main Study deployment."
+            "Enter the Researcher Workspace key to unlock the researcher console."
         )
         return False
     using_local_pilot_key = (
@@ -641,7 +666,7 @@ def _participant_registration(study: TrustCalibrationStudy, collection_mode: str
         with c1:
             participant_code = st.text_input(
                 "Participant / session code",
-                help="Use the anonymous code provided by the study team. The raw code is not stored in the study database.",
+                help="Use the anonymous code provided by the study team. Returning participants use the same code; the originally registered experience group is retained. The raw code is not stored in the study database.",
             )
             expertise_group = st.selectbox("Experience group", list(ALLOWED_EXPERTISE_GROUPS))
         with c2:
@@ -655,10 +680,19 @@ def _participant_registration(study: TrustCalibrationStudy, collection_mode: str
             track2_separate = st.checkbox(
                 "I confirm that I did not help author the scenario bank used to create these study explanations."
             )
-        consented = st.checkbox("I have read the study information and consent to participate.")
+        adult_eligible = st.checkbox("I confirm that I am at least 18 years old.")
+        consent_participation = st.checkbox("I voluntarily consent to participate in this research study.")
+        consent_data = st.checkbox("I consent to the processing of my study responses as described in the participant information.")
+        consented = bool(adult_eligible and consent_participation and consent_data)
         start = st.form_submit_button("Start / resume study", type="primary", use_container_width=True)
 
     if start:
+        if not adult_eligible:
+            st.error("Main Study participation is limited to adults aged 18 or older.")
+            return None
+        if not consent_participation or not consent_data:
+            st.error("Both participation consent and data-processing consent are required.")
+            return None
         try:
             registration = study.register(
                 participant_code=participant_code,
@@ -788,11 +822,21 @@ def render_phase16_participant_study(
     progress = study.participant_progress(participant_hash, mode)
     trial = study.current_trial(participant_hash, mode)
     if trial is None:
+        if not render_phase16_secondary_participant(
+            study.store.path,
+            participant_hash,
+            mode,
+        ):
+            return
         st.markdown(
-            '<div class="tc-success"><b>Study complete.</b><br>Thank you. Your responses have been stored under a pseudonymous participant identifier.</div>',
+            '<div class="tc-success"><b>Study complete.</b><br>Thank you. Your trial responses and final questionnaire have been stored under a pseudonymous participant identifier.</div>',
             unsafe_allow_html=True,
         )
         st.progress(1.0)
+        debrief_text = str((study.protocol.get("participant_materials") or {}).get("debrief_text") or "").strip()
+        if debrief_text:
+            with st.expander("Study debrief", expanded=True):
+                st.write(debrief_text)
         if dashboard_embedded:
             c1, c2 = st.columns(2)
             with c1:
@@ -835,7 +879,11 @@ def render_phase16_participant_study(
     scale_mid = int(round((scale_min + scale_max) / 2.0))
     trust_items = trust_measure_items(protocol, mode)
 
-    section("Your response", "Compare the explanation with the reference evidence first. Then rate trust, correctness, writing quality and your intended action.")
+    section("Your evaluation", "Compare the explanation with the reference evidence first. Then rate trust, factual correctness, fluency, confident-sounding language and your intended action.")
+    st.caption(
+        "Terminology note: in the validated trust statements below, ‘AI assistant’ means the system that produced "
+        "the explanation shown above. It does not refer to the separate AwareML Copilot workspace."
+    )
     with st.form("p16_trial_form_{}".format(trial["item_id"])):
         ratings: Dict[str, int] = {}
         for item in trust_items:
@@ -980,7 +1028,10 @@ def _fmt_num(value: Any, digits: int = 3) -> str:
         return "N/A"
 
 
-def _render_analysis_summary(result: Dict[str, Any]) -> None:
+def _render_analysis_summary(
+    result: Dict[str, Any],
+    responses: Optional[pd.DataFrame] = None,
+) -> None:
     status = str(result.get("status") or "")
     if status != "ok":
         st.info(
@@ -990,7 +1041,7 @@ def _render_analysis_summary(result: Dict[str, Any]) -> None:
             )
         )
         with st.expander("Analysis details", expanded=False):
-            st.json(_analysis_ui_result(result), expanded=False)
+            st.write(_analysis_ui_result(result))
         return
 
     primary = result.get("primary_calibration") or {}
@@ -1029,9 +1080,12 @@ def _render_analysis_summary(result: Dict[str, Any]) -> None:
             },
         ]
     )
+    render_trust_calibration_visuals(result, responses=responses)
+
+    st.markdown("#### Condition summary table")
     st.dataframe(summary_frame, use_container_width=True, hide_index=True)
     with st.expander("Complete analysis details", expanded=False):
-        st.json(_analysis_ui_result(result), expanded=False)
+        st.write(_analysis_ui_result(result))
 
 
 def _render_researcher_console(study: TrustCalibrationStudy) -> None:
@@ -1082,14 +1136,14 @@ def _render_researcher_console(study: TrustCalibrationStudy) -> None:
         )
 
     row2 = st.columns(3)
-    ethics_ready = str(ethics_cfg.get("status") or "").lower() in {"approved", "exempt", "not_required"}
+    ethics_ready = str(ethics_cfg.get("status") or "").lower() in {"approved", "exempt", "not_required", "research_team_self_assessed"}
     materials_ready = str(materials_cfg.get("status") or "").lower() == "final"
     design_frozen = FINAL_DESIGN_MANIFEST.exists()
     with row2[0]:
         _metric_card(
             "Ethics",
             "Resolved" if ethics_ready else "Pending determination",
-            "Approval, exemption or not-required decision",
+            "Internal minimal-risk self-assessment recorded",
             "ok" if ethics_ready else "warn",
         )
     with row2[1]:
@@ -1146,7 +1200,10 @@ def _render_researcher_console(study: TrustCalibrationStudy) -> None:
 
     st.markdown(
         '<div class="tc-design"><strong>Stimulus diversity review before Main Study.</strong> '
+        'Participant judgeability is also checked before Main Study. '
         'The current assignment is explicitly balanced for correct/incorrect conditions and explanation source stages. '
+        'Because the readable participant view intentionally removes technical provenance tags, citation-only invalid variants are excluded from participant assignment: their visible text would otherwise be indistinguishable from the correct variant. '
+        'The frozen Phase-15 bank is not edited; only participant eligibility is filtered. '
         'Framework identity and explanation method (for example SHAP versus LIME) are not currently separate balancing constraints. '
         'If broader framework/method coverage is required for the journal study, decide that with the research team before the design is frozen.</div>',
         unsafe_allow_html=True,
@@ -1175,16 +1232,36 @@ def _render_researcher_console(study: TrustCalibrationStudy) -> None:
         reference_evidence=preview_reference,
     )
 
-    with st.expander("Researcher-only ground truth", expanded=False):
-        stimulus_ids = sorted(study.bank.stimuli)
-        selected = st.selectbox("Stimulus record", stimulus_ids, key="p16_researcher_stimulus")
-        stimulus = study.bank.get(selected)
-        gt1, gt2, gt3 = st.columns(3)
-        gt1.metric("Condition", str(stimulus.correctness_condition).title())
-        gt2.metric("Source", str(stimulus.source_stage))
-        gt3.metric("Error type", "None" if stimulus.error_type is None else str(stimulus.error_type).replace("_", " ").title())
-        st.caption("Internal stimulus ID: {} · Pair: {}".format(stimulus.stimulus_id, stimulus.pair_id))
-        st.code(str(stimulus.explanation_sha256 or "No explanation hash"), language=None)
+    with st.expander("Researcher-only ground truth for current preview", expanded=False):
+        if not preview_stimulus_id:
+            st.warning("The ground-truth record for the current preview item could not be resolved.")
+        else:
+            stimulus = study.bank.get(preview_stimulus_id)
+            st.caption("This panel follows the selected Preview item automatically. It is researcher-only and must never be shown to participants.")
+            gt1, gt2, gt3 = st.columns(3)
+            gt1.metric("Condition", str(stimulus.correctness_condition).title())
+            gt2.metric("Source", _friendly_phase16_source_stage(stimulus.source_stage))
+            gt3.metric("Error type", "None" if stimulus.error_type is None else str(stimulus.error_type).replace("_", " ").title())
+            st.caption("Internal stimulus ID: {} · Pair: {}".format(stimulus.stimulus_id, stimulus.pair_id))
+
+            researcher_row = _load_researcher_stimulus_rows(study).get(str(stimulus.stimulus_id)) or {}
+            verified_reference = researcher_row.get("evidence_summary") or {}
+            if verified_reference:
+                st.markdown("**Verified reference evidence for this exact item**")
+                st.json(verified_reference, expanded=False)
+
+            if stimulus.correctness_condition == "correct":
+                st.success("Ground truth: known-correct stimulus. No injected error is present.")
+            else:
+                readable_error = str(stimulus.error_type or "unspecified").replace("_", " ")
+                st.error("Ground truth: known-incorrect stimulus · injected error: **{}**.".format(readable_error))
+                if str(stimulus.error_type or "") == "invalid_citation":
+                    st.warning("This is a citation-only manipulation. Because the participant presentation removes technical evidence tags, this pair is excluded from new participant assignments by the Phase-16 judgeability filter.")
+
+            st.markdown("**Raw frozen source explanation (researcher only)**")
+            st.code(str(stimulus.explanation or ""), language=None)
+            st.caption("Explanation SHA-256")
+            st.code(str(stimulus.explanation_sha256 or "No explanation hash"), language=None)
 
     section(
         "Collection status",
@@ -1287,9 +1364,14 @@ def _render_researcher_console(study: TrustCalibrationStudy) -> None:
     if not can_analyze:
         st.info("No {} analysis is available yet because there are no completed participants in this dataset.".format(dataset_label))
     elif st.session_state.get(analysis_key):
-        _render_analysis_summary(st.session_state[analysis_key])
+        _render_analysis_summary(
+            st.session_state[analysis_key],
+            responses=responses,
+        )
     else:
         st.caption("Run the analysis above to calculate the current {} diagnostics.".format(dataset_label))
+
+    render_phase16_secondary_researcher(study.store.path, mode)
 
     with st.expander("How to start Main Study", expanded=False):
         st.markdown(
@@ -1350,7 +1432,7 @@ def _render_access_choice(study: TrustCalibrationStudy) -> None:
     with right:
         _access_card(
             "Researcher Workspace",
-            "Inspect study readiness, verified stimuli, restricted ground truth, collection status, exports and calibration analysis. A researcher key is required.",
+            "Inspect study readiness, verified stimuli, restricted ground truth, collection status, exports and calibration analysis. Enter the Researcher Workspace key when prompted.",
             "Protected access",
         )
         if st.button("Open researcher workspace", key="trust_enter_researcher", use_container_width=True):

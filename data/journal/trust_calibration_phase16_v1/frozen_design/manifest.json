@@ -1,0 +1,33 @@
+{
+  "artifact": "phase16_trust_calibration_design_v1",
+  "central_rq": "Does user trust track actual explanation correctness, or merely how fluent/confident the explanation sounds?",
+  "files": {
+    "phase15_stimulus_manifest.json": {
+      "sha256": "2e151e7f1aaeac025f53a4ada9946830791465bb7480f909d57334e52849f59e",
+      "size_bytes": 972
+    },
+    "protocol.json": {
+      "sha256": "15274f607d46552a64448515cab82f210303684e642709c2e9e8b7983e174c5b",
+      "size_bytes": 14584
+    }
+  },
+  "frozen_utc": "2026-10-05T17:01:21.671821+00:00",
+  "schema_version": "phase16_trust_calibration_v1",
+  "source_stimulus_bank": {
+    "manifest_sha256": "2e151e7f1aaeac025f53a4ada9946830791465bb7480f909d57334e52849f59e",
+    "root": "data\\journal\\trust_stimulus_bank_v1\\frozen",
+    "summary": {
+      "correct": 24,
+      "incorrect": 24,
+      "manifest_sha256": "2e151e7f1aaeac025f53a4ada9946830791465bb7480f909d57334e52849f59e",
+      "pairs": 24,
+      "stages": {
+        "B": 6,
+        "E": 6,
+        "F_CHAT": 6,
+        "F_XAI": 6
+      }
+    }
+  },
+  "status": "frozen"
+}

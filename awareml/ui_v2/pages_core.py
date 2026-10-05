@@ -6,11 +6,16 @@ import streamlit as st
 from awareml.ui import pages as legacy_pages
 
 from .components import empty_state, hero, metric_card, section, status_panel
+from .command_center_upgrade import render_command_center_upgrade
 from .data import compute_active_recommendation, load_phase8_report, normalized_preferences
 from .dataset_advisor import render_dataset_advisor
 from .plots import decision_space_3d, decision_space_3d_normalized, ranking_bar
 from .state import ensure_research_state, phase_status, result_dicts
 from .page_utils import dataset_ready, fmt, phase_pills, plot, results_frame
+from .recommender_research_grade import (
+    render_decision_space_research_layer,
+    render_run_studio_handoff,
+)
 from .pre14_usability import (
     preference_context,
     quick_framework_selector,
@@ -21,154 +26,7 @@ from .pre14_usability import (
 
 
 def command_center_page():
-    state = ensure_research_state()
-    status = phase_status()
-    faith = load_phase8_report()
-
-    hero(
-        "PHASE 9 · RESEARCH UI V2",
-        "AwareML Research OS",
-        (
-            "One integrated command center for streaming AutoML, "
-            "multi-objective recommendation, human review, responsible-AI "
-            "evidence, grounded Copilot interaction, faithfulness analysis, "
-            "and reproducible export."
-        ),
-        pills=phase_pills(),
-    )
-
-    cols = st.columns(4)
-    with cols[0]:
-        metric_card(
-            "FRAMEWORKS",
-            "5",
-            "AutoStreamML · AutoClass · EvoAutoML · OAML · ChaCha",
-        )
-    with cols[1]:
-        metric_card(
-            "ML RECOMMENDER",
-            "READY" if status["phase6"]["ready"] else "OFF",
-            "Frozen objective-specific V2 models",
-            "good" if status["phase6"]["ready"] else "warn",
-        )
-    with cols[2]:
-        metric_card(
-            "COPILOT",
-            "READY" if status["phase7"]["ready"] else "OFF",
-            "Goal → reviewable configuration → evidence",
-            "good" if status["phase7"]["ready"] else "warn",
-        )
-    with cols[3]:
-        aef = (
-            ((faith.get("deterministic") or {}).get("mean_evidence_fidelity_score"))
-            if faith
-            else None
-        )
-        metric_card(
-            "FAITHFULNESS",
-            "{:.3f}".format(float(aef)) if aef is not None else "N/A",
-            "Development/meta AEF",
-            "good" if status["phase8"]["ready"] else "warn",
-        )
-
-    section(
-        "Research pipeline",
-        "The interface follows the same evidence flow used by the frozen backend.",
-    )
-    st.markdown(
-        """
-        <div class="r9-panel">
-          <div class="r9-pipeline">
-            <div class="r9-pipeline-node">Dataset<br>context</div>
-            <div class="r9-pipeline-arrow">→</div>
-            <div class="r9-pipeline-node">ML recommender<br>predictions</div>
-            <div class="r9-pipeline-arrow">→</div>
-            <div class="r9-pipeline-node">Human review<br>& configuration</div>
-            <div class="r9-pipeline-arrow">→</div>
-            <div class="r9-pipeline-node">Streaming<br>experiment</div>
-          </div>
-          <div class="r9-pipeline" style="margin-top:8px">
-            <div class="r9-pipeline-node">Performance<br>& drift</div>
-            <div class="r9-pipeline-arrow">→</div>
-            <div class="r9-pipeline-node">Fairness · XAI<br>· sustainability</div>
-            <div class="r9-pipeline-arrow">→</div>
-            <div class="r9-pipeline-node">Grounded<br>Copilot</div>
-            <div class="r9-pipeline-arrow">→</div>
-            <div class="r9-pipeline-node">Faithfulness<br>& export</div>
-          </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
-    section(
-        "Active research context",
-        "No decorative benchmark values are synthesized. Decision visuals appear only from active measured/predicted evidence.",
-    )
-    left, right = st.columns([1.05, 1.45])
-
-    with left:
-        if not dataset_ready():
-            empty_state(
-                "No active dataset yet",
-                (
-                    "Open Run Studio and load a stream. The dataset, target "
-                    "and experiment state then propagate across every workspace."
-                ),
-            )
-        else:
-            df, target = state["dataset"], state["target"]
-            n_features = max(0, df.shape[1] - 1)
-            classes = int(df[target].dropna().nunique())
-            status_panel({
-                "Dataset": state.get("dataset_name") or "active dataset",
-                "Rows": "{:,}".format(len(df)),
-                "Features": str(n_features),
-                "Classes": str(classes),
-                "Target": str(target),
-                "Sensitive attribute": str(state.get("sensitive") or "not selected"),
-            })
-
-            if st.button("Refresh pre-run recommendation", type="primary", key="cc_refresh"):
-                compute_active_recommendation(force=True)
-                st.rerun()
-
-    with right:
-        ranked = state.get("v2_candidates")
-        if ranked is None and dataset_ready():
-            try:
-                ranked, _, _ = compute_active_recommendation()
-            except Exception as exc:
-                st.warning("Pre-run recommender unavailable: {}".format(exc))
-
-        if isinstance(ranked, pd.DataFrame) and not ranked.empty:
-            plot(
-                decision_space_3d(
-                    ranked,
-                    selected_framework=state.get("selected_framework"),
-                ),
-                "cc_3d",
-                height=500,
-            )
-            st.caption(
-                "Interactive 3D decision space · X=Accuracy ↑ · Y=Runtime ↓ · "
-                "Z=Energy ↓ · marker size=CO₂ · white outline=selected framework · "
-                "green outline=ε-Pareto candidate (ε=0.05)."
-            )
-        else:
-            empty_state(
-                "Decision space waiting for context",
-                (
-                    "Load an active dataset to obtain Phase-6 predicted "
-                    "framework outcomes and canonical ε-Pareto ranking (ε=0.05)."
-                ),
-            )
-
-    if result_dicts():
-        section("Current experiment snapshot", "Observed values from the active benchmark run.")
-        st.dataframe(results_frame(), use_container_width=True, hide_index=True)
-
-
+    return render_command_center_upgrade()
 
 def decision_space_page():
     state = ensure_research_state()
@@ -340,6 +198,10 @@ def decision_space_page():
         hide_index=True,
     )
 
+    render_decision_space_research_layer(
+        ranked, state.get("preference_weights") or {}, meta
+    )
+
     if profile is not None:
         with st.expander("Profile context used by the frozen recommender", expanded=False):
             st.json(profile, expanded=False)
@@ -389,6 +251,7 @@ def run_studio_v2_page():
 
     advisor_slot = st.container()
 
+    render_run_studio_handoff(state)
     legacy_pages.run_studio_page()
 
     with advisor_slot:

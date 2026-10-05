@@ -12,7 +12,7 @@ from typing import Any, Dict, Iterable, List, Optional, Sequence, Tuple
 
 
 PHASE16_SCHEMA_VERSION = "phase16_trust_calibration_v1"
-RANDOMIZATION_VERSION = "phase16_balanced_within_subject_v1"
+RANDOMIZATION_VERSION = "phase16_balanced_within_subject_v2_judgeable"
 DEFAULT_STIMULUS_ROOT = Path("data/journal/trust_stimulus_bank_v1/frozen")
 DEFAULT_PROTOCOL_PATH = Path("data/journal/trust_calibration_phase16_v1/design/protocol.json")
 DEFAULT_DB_PATH = Path("artifacts/phase16/trust_calibration.sqlite")
@@ -20,6 +20,14 @@ FINAL_DESIGN_MANIFEST = Path("data/journal/trust_calibration_phase16_v1/frozen_d
 ALLOWED_COLLECTION_MODES = ("pilot", "final")
 ALLOWED_EXPERTISE_GROUPS = ("Novice / student", "Practitioner", "ML / AutoML expert")
 ALLOWED_DECISION_ACTIONS = ("Accept", "Override", "Reject")
+
+# The readable Phase-16 participant presentation intentionally removes technical
+# [evidence.*] provenance tags. An "invalid_citation" manipulation therefore
+# becomes invisible to participants: the visible claim can be identical in the
+# correct and incorrect variants. Such pairs remain in the frozen Phase-15 bank
+# for audit/reproducibility, but are not eligible for Phase-16 participant
+# assignment under the current readable presentation.
+PARTICIPANT_UNJUDGEABLE_ERROR_TYPES = frozenset({"invalid_citation"})
 
 
 class Phase16Error(RuntimeError):
@@ -141,11 +149,12 @@ def validate_protocol_for_design_freeze(protocol: Dict[str, Any]) -> List[str]:
     ethics = protocol.get("ethics") or {}
     materials = protocol.get("participant_materials") or {}
     design = protocol.get("design") or {}
+    secondary = protocol.get("secondary_poststudy") or {}
 
     if str(protocol.get("status", "")).lower() != "final":
         errors.append("protocol.status must be 'final'")
     if trust_measure.get("status") != "final":
-        errors.append("trust_measure.status must be 'final' (Morten gate)")
+        errors.append("trust_measure.status must be 'final' (finalized research-team instrument required)")
     items = trust_measure.get("items") or []
     if not items:
         errors.append("trust_measure.items must contain the finalized validated trust item(s)")
@@ -157,13 +166,13 @@ def validate_protocol_for_design_freeze(protocol: Dict[str, Any]) -> List[str]:
         errors.append("trust_measure.scoring_rule is required")
 
     if power.get("status") != "final":
-        errors.append("power_calculation.status must be 'final' (Morten gate)")
+        errors.append("power_calculation.status must be 'final' (finalized power calculation required)")
     required_n = power.get("required_completed_participants")
     if not isinstance(required_n, int) or required_n <= 0:
         errors.append("power_calculation.required_completed_participants must be a positive integer")
 
-    if ethics.get("status") not in {"approved", "exempt", "not_required"}:
-        errors.append("ethics.status must be approved, exempt, or not_required before final collection")
+    if ethics.get("status") not in {"approved", "exempt", "not_required", "research_team_self_assessed"}:
+        errors.append("ethics.status must be approved, exempt, not_required, or research_team_self_assessed before final collection")
     if ethics.get("status") in {"approved", "exempt"} and not ethics.get("reference"):
         errors.append("ethics.reference is required for approved/exempt status")
 
@@ -186,6 +195,14 @@ def validate_protocol_for_design_freeze(protocol: Dict[str, Any]) -> List[str]:
     if design.get("track1_authors_excluded") is not True:
         errors.append("design.track1_authors_excluded must be true")
 
+    if str(secondary.get("status") or "").lower() != "final":
+        errors.append("secondary_poststudy.status must be final")
+    secondary_items = secondary.get("items") or []
+    if len(secondary_items) < 3:
+        errors.append("secondary_poststudy.items must contain the finalized human-agency items")
+    if not secondary.get("role"):
+        errors.append("secondary_poststudy.role must document that these are secondary measures")
+
     return errors
 
 
@@ -194,7 +211,7 @@ def trust_measure_items(protocol: Dict[str, Any], collection_mode: str) -> List[
     items = list(measure.get("items") or [])
     if collection_mode == "final":
         if measure.get("status") != "final":
-            raise ProtocolGateError("Final collection requires Morten's finalized trust measure.")
+            raise ProtocolGateError("Final collection requires the finalized trust measure.")
         items = [item for item in items if not item.get("pilot_only")]
     if not items:
         raise ProtocolGateError("No trust-rating items are available for {} mode.".format(collection_mode))
@@ -394,6 +411,10 @@ class BalancedWithinSubjectRandomizer:
     def _select_pairs(self, participant_hash: str, n_items: int) -> List[str]:
         stages: Dict[str, List[str]] = {}
         for pair_id, variants in self.bank.pairs.items():
+            incorrect_variant = variants.get("incorrect")
+            error_type = "" if incorrect_variant is None else str(incorrect_variant.error_type or "")
+            if error_type in PARTICIPANT_UNJUDGEABLE_ERROR_TYPES:
+                continue
             stage = variants["correct"].source_stage
             stages.setdefault(stage, []).append(pair_id)
         stage_names = sorted(stages)
@@ -1015,6 +1036,51 @@ class TrustCalibrationStudy:
             )
         participant_hash = self.participant_hash(participant_code, mode)
         n_items = self._n_items()
+
+        # Returning participants may resume with the same anonymous code.
+        # The original expertise metadata is retained; it is not rewritten.
+        # Study-defining attributes must still match the current frozen design.
+        existing = self.store.get_participant(mode, participant_hash)
+        if existing is not None:
+            expected_design = {
+                "n_items": n_items,
+                "randomization_version": RANDOMIZATION_VERSION,
+                "protocol_sha256": self.protocol_sha256,
+                "stimulus_manifest_sha256": self.stimulus_manifest_sha256,
+            }
+            mismatches = [
+                key for key, expected in expected_design.items()
+                if existing.get(key) != expected
+            ]
+            if mismatches:
+                raise Phase16Error(
+                    "This participant code belongs to a session created under a different "
+                    "Phase-16 design ({}). Use a new participant code rather than mixing "
+                    "protocol/stimulus/randomization versions.".format(", ".join(mismatches))
+                )
+
+            self.store.log_event(
+                mode,
+                "participant_resumed",
+                {
+                    "stored_expertise_group": existing.get("expertise_group"),
+                    "requested_expertise_group": expertise_group,
+                    "stored_expertise_self_rating": existing.get("expertise_self_rating"),
+                    "requested_expertise_self_rating": int(expertise_self_rating),
+                    "completed": bool(existing.get("completed_at")),
+                },
+                participant_hash=participant_hash,
+            )
+            return ParticipantRegistration(
+                participant_hash=participant_hash,
+                collection_mode=mode,
+                expertise_group=str(existing.get("expertise_group")),
+                expertise_self_rating=int(existing.get("expertise_self_rating")),
+                n_items=int(existing.get("n_items")),
+                consented=bool(existing.get("consented")),
+                track1_author_attested_separate=bool(existing.get("track1_author_attested_separate")),
+            )
+
         assignment = self.randomizer.build(participant_hash, n_items)
         registration = ParticipantRegistration(
             participant_hash=participant_hash,

@@ -5,6 +5,9 @@ import streamlit as st
 
 load_dotenv()
 
+from awareml.studies.study_runtime import bootstrap_study_runtime
+bootstrap_study_runtime()
+
 from awareml.ui.theme import inject_theme
 from awareml.ui_v2.runtime_hygiene import configure_runtime_hygiene
 from awareml.ui_v2.state import ensure_research_state, phase_status
@@ -15,7 +18,7 @@ from awareml.ui_v2.pages import PAGE_REGISTRY_V2
 configure_runtime_hygiene()
 
 st.set_page_config(
-    page_title="AwareML Research OS",
+    page_title="AwareML Dashboard",
     page_icon="◈",
     layout="wide",
     initial_sidebar_state="expanded",
@@ -34,7 +37,7 @@ with st.sidebar:
           <div class="r9-brand-mark">◈</div>
           <div>
             <div class="r9-brand-title">AwareML</div>
-            <div class="r9-brand-sub">Research OS</div>
+            <div class="r9-brand-sub">Dashboard</div>
           </div>
         </div>
         """,
@@ -78,7 +81,7 @@ with st.sidebar:
               <div class="r9-eyebrow">DATASET CONTEXT</div>
               <div class="r9-side-meta">
                 Load a stream in Run Studio. The same context is reused
-                across every Research OS workspace.
+                across every AwareML workspace.
               </div>
             </div>
             """,

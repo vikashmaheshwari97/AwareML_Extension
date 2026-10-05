@@ -9,7 +9,7 @@ from .pages_advanced import advanced_labs_page
 
 
 PAGE_REGISTRY_V2 = {
-    "Command Center": command_center_page,
+    "Command Centre": command_center_page,
     "Run Studio": run_studio_v2_page,
     "3D Decision Space": decision_space_page,
     "Streaming Observatory": streaming_observatory_page,

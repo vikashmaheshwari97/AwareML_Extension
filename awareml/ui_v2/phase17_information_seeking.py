@@ -13,6 +13,9 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 
+from awareml.studies.study_runtime import bootstrap_study_runtime
+bootstrap_study_runtime()
+
 from awareml.llm import GroundedChat
 from awareml.studies.information_seeking import (
     CATEGORY_DESCRIPTIONS,
@@ -414,10 +417,10 @@ def _participant_page(results: List[Dict[str, Any]], ranking: List[Dict[str, Any
             key="p17_expertise_score",
             help="1 = very limited experience; 5 = highly experienced.",
         )
-        consent = st.checkbox(
-            "I have read the study information and consent to participate.",
-            key="p17_consent",
-        )
+        adult_eligible = st.checkbox("I confirm that I am at least 18 years old.", key="p17_adult_eligible")
+        consent_participation = st.checkbox("I voluntarily consent to participate in the Information-Seeking activity.", key="p17_consent_participation")
+        consent_data = st.checkbox("I consent to the processing of my study responses as described in the study information.", key="p17_consent_data")
+        consent = bool(adult_eligible and consent_participation and consent_data)
         if mode == "pilot":
             st.warning(
                 "Pilot Study. These responses are used to test the study workflow and are stored separately from Main Study data."
@@ -430,8 +433,10 @@ def _participant_page(results: List[Dict[str, Any]], ranking: List[Dict[str, Any
         ):
             if not str(code or "").strip():
                 st.error("Enter the anonymous participant/session code.")
-            elif not consent:
-                st.error("Consent is required before starting.")
+            elif not adult_eligible:
+                st.error("Main Study participation is limited to adults aged 18 or older.")
+            elif not consent_participation or not consent_data:
+                st.error("Both participation consent and data-processing consent are required.")
             else:
                 st.session_state["p17_session_code"] = str(code).strip()
                 st.session_state["p17_started"] = True
@@ -1102,7 +1107,8 @@ def information_seeking_research_page():
         protocol = _protocol()
         target = protocol.get("participant_target") or {}
         cards = st.columns(4)
-        cards[0].metric("Suggested sample", "{}–{}".format(target.get("suggested_min", 10), target.get("suggested_max", 15)))
+        final_target = target.get("final_target")
+        cards[0].metric("Main Study target" if isinstance(final_target, int) else "Suggested sample", str(final_target) if isinstance(final_target, int) else "{}–{}".format(target.get("suggested_min", 10), target.get("suggested_max", 15)))
         cards[1].metric("Follow-up categories", "5 + other")
         cards[2].metric("Qualitative coding", "Required")
         cards[3].metric("Classifier role", "Assistive only")

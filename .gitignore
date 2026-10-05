@@ -179,3 +179,4 @@ local_artifacts/
 .*_backup/
 .*_backups/
 phase15_h200_*.bundle
+artifacts/phase16/private_mainstudy_runtime.json
