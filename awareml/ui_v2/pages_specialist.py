@@ -33,6 +33,33 @@ from .phase14_integrated_sections import (
     render_phase14_fairness_details,
     render_phase14_sustainability_details,
 )
+from .pareto_frontier import render_sustainability_accuracy_pareto
+from .advanced_visuals import (
+    temporal_fairness_envelope_figure,
+    temporal_fairness_robustness_figure,
+)
+from .research_visuals_v5 import (
+    utility_decomposition_figure,
+    desirability_profile_figure,
+    correlation_arc_figure,
+    correlation_pair_ranking,
+    fairness_window_evidence_figure,
+    fairness_rank_bump_figure,
+    fairness_robustness_frontier,
+    system_xai_ranked_panels,
+    system_xai_rank_bump,
+    sustainability_resource_scoreboard,
+    sustainability_rank_bump,
+    sustainability_efficiency_frontier,
+    carbon_intensity_consistency_figure,
+)
+from .fairness_dynamics import (
+    fairness_series_frame,
+    replay_fairness_audit,
+    fairness_debt_summary,
+    fairness_dynamics_figure,
+)
+from awareml.llm.xai_grounded_summary import grounded_xai_summary
 
 
 FAIRNESS_OPTIONS = {
@@ -76,25 +103,22 @@ def _robust_unit(series: pd.Series, direction: str) -> pd.Series:
     return unit if direction == "max" else 1.0 - unit
 
 
-def _ollama_controls(prefix: str):
+def _resolved_ollama_model() -> tuple[str, dict]:
+    """Resolve a local model without exposing a separate XAI toggle.
+
+    Explainability uses the same explainer interaction pattern as Fairness Lab:
+    a button requests an explanation; Ollama is used when available and the
+    deterministic grounded fallback is used otherwise.
+    """
     status = ollama_status()
     models = status.get("models") or []
-    enabled = st.toggle(
-        "Use local Ollama for the grounded answer",
-        value=False,
-        key=f"{prefix}_enabled",
-    )
-    default = _state().get("ollama_model") or status.get("resolved_model") or (models[0] if models else "llama3.1:8b")
-    model = default
-    if enabled and models:
-        model = st.selectbox(
-            "Ollama model",
-            models,
-            index=models.index(default) if default in models else 0,
-            key=f"{prefix}_model",
-        )
-        _state()["ollama_model"] = model
-    return enabled, model, status
+    preferred = _state().get("ollama_model") or status.get("resolved_model") or "llama3:8b"
+    if preferred not in models and "llama3:8b" in models:
+        preferred = "llama3:8b"
+    elif preferred not in models and models:
+        preferred = models[0]
+    _state()["ollama_model"] = preferred
+    return str(preferred), status
 
 
 def decision_lab_v2_page():
@@ -226,35 +250,39 @@ def decision_lab_v2_page():
         norm[name] = score
         contrib[name] = score * float(weights_dict.get(name, 0.0))
 
-    left, right = st.columns([1.35, 1])
+    section(
+        "Decision fingerprint",
+        "A reviewer-facing decomposition of the observed decision: exact weighted utility is shown as stacked contributions, while the adjacent profile shows each framework's direction-aligned run-relative desirability before weighting. No bubble-size encoding is used.",
+    )
+    left, right = st.columns([1.15, 1])
     with left:
-        long = contrib.melt(id_vars="framework", var_name="Objective", value_name="Weighted contribution")
-        fig = px.bar(
-            long,
-            x="framework",
-            y="Weighted contribution",
-            color="Objective",
-            barmode="stack",
-            title="Utility contribution by objective",
-            color_discrete_sequence=["#2563eb", "#0ea5e9", "#10b981", "#14b8a6", "#f59e0b", "#8b5cf6"],
+        fig = utility_decomposition_figure(contrib, frame)
+        apply_research_layout(
+            fig, height=455, legend="bottom",
+            title="Weighted utility decomposition · exact contribution by objective",
+            bottom_margin=104,
         )
-        apply_research_layout(fig, height=420, legend="bottom", title="Utility contribution by objective", bottom_margin=96)
-        fig.update_layout(margin=dict(l=52, r=22, t=52, b=100), xaxis_title="Framework")
-        plot(fig, "r95_decision_contrib")
+        plot(fig, "r110_decision_utility_decomposition")
+        st.caption(
+            "Each horizontal bar sums the exact objective contributions used by Decision Lab. Segment length—not area—encodes contribution, so the ranking is quantitatively readable."
+        )
     with right:
-        heat = norm.set_index("framework")
-        fig = px.imshow(
-            heat,
-            text_auto=".2f",
-            zmin=0,
-            zmax=1,
-            aspect="auto",
-            color_continuous_scale="Viridis",
-            title="Observed objective desirability · higher is better",
+        fig = desirability_profile_figure(norm)
+        apply_research_layout(
+            fig, height=455, legend="bottom",
+            title="Objective desirability profiles · direction aligned",
+            bottom_margin=104,
         )
-        apply_research_layout(fig, height=420, legend="none", title="Observed objective desirability · higher is better", bottom_margin=54)
-        fig.update_layout(margin=dict(l=72, r=42, t=54, b=62), coloraxis_colorbar=dict(len=0.78, thickness=12))
-        plot(fig, "r95_decision_heat")
+        plot(fig, "r110_decision_desirability_profile")
+        st.caption(
+            "Runtime, Energy and CO₂ are direction-flipped only for this 0–1 visualization so higher always means more desirable. The star on a profile marks that framework's strongest relative objective; no aggregate score is created here."
+        )
+
+    section(
+        "Interactive Pareto Frontier",
+        "Accuracy versus a combined run-relative Energy + CO₂ burden. The 2D frontier is visual; the canonical Near-Pareto flag remains the multi-objective ε-dominance result.",
+    )
+    render_sustainability_accuracy_pareto(frame, key="r95_decision_sustainability_pareto")
 
     section("Observed ranking table", "This is the auditable post-run ranking used by this page.")
     fairness_table_label = (
@@ -286,12 +314,53 @@ def decision_lab_v2_page():
         hide_index=True,
     )
 
-    section("Objective correlation", "Use this to detect redundant objectives such as Energy and CO₂. Correlation is descriptive, not causal.")
+    section(
+        "Objective relationships",
+        "Objective dependence is shown in two complementary views: an arc diagram exposes structure and sign, while the ranked pair panel preserves exact Spearman values. This is descriptive evidence, not a causal graph.",
+    )
     if corr is not None and not corr.empty:
-        fig = px.imshow(corr, text_auto=".2f", zmin=-1, zmax=1, color_continuous_scale="RdBu_r", aspect="auto")
-        apply_research_layout(fig, height=430, legend="none", bottom_margin=78)
-        fig.update_layout(margin=dict(l=82, r=52, t=30, b=90), coloraxis_colorbar=dict(len=0.78, thickness=12))
-        plot(fig, "r95_decision_corr")
+        c1, c2 = st.columns([1.18, 1])
+        with c1:
+            fig = correlation_arc_figure(corr, threshold=0.20)
+            apply_research_layout(
+                fig, height=470, legend="bottom",
+                title="Objective dependence arcs · thickness = |Spearman ρ|",
+                bottom_margin=86,
+            )
+            plot(fig, "r110_decision_corr_arcs")
+            st.caption(
+                "Positive relationships arc upward; inverse relationships arc downward. Only |ρ| ≥ 0.20 is drawn to avoid a fully connected visual hairball."
+            )
+        with c2:
+            fig = correlation_pair_ranking(corr)
+            apply_research_layout(
+                fig, height=470, legend="none",
+                title="Strongest objective pairs · exact Spearman ρ",
+                bottom_margin=62,
+            )
+            plot(fig, "r110_decision_corr_pairs")
+            st.caption(
+                "Pairs are ordered by relationship strength. Values near ±1 indicate strong redundancy/opposition and deserve attention when setting simultaneous preference weights."
+            )
+
+        strongest = []
+        labels = list(corr.columns)
+        for i, a in enumerate(labels):
+            for b in labels[i + 1:]:
+                try:
+                    rho = float(corr.loc[a, b])
+                except Exception:
+                    continue
+                if np.isfinite(rho):
+                    strongest.append((abs(rho), rho, str(a), str(b)))
+        strongest.sort(reverse=True)
+        if strongest:
+            _, rho, a, b = strongest[0]
+            st.info(
+                "Strongest observed relationship: **{} ↔ {}** with Spearman ρ={:.2f}. Very strong objective correlation can cause effective double-weighting when both objectives receive large preference weights.".format(a, b, rho)
+            )
+        with st.expander("Exact objective-correlation matrix", expanded=False):
+            st.dataframe(corr.style.format("{:.2f}"), use_container_width=True)
 
 
 def drift_temporal_v2_page():
@@ -610,40 +679,44 @@ def fairness_v2_page():
         "{}/{}".format(int(numeric.notna().sum().sum()), int(numeric.size)),
     )
 
-    section("Aggregate fairness profile", "Heatmap gives the complete criterion matrix; the adjacent chart summarizes mean and worst disparity without a crowded legend.")
-    left, right = st.columns([1.28, 1])
+    section(
+        "Aggregate fairness profile",
+        "Paper-style evidence view for the active dataset. Small points are the framework's actual stream-window fairness gaps; the larger diamond is the recorded run-level gap. This adapts the visual grammar of the attached FairStream figure without pretending that one dashboard run contains multiple datasets.",
+    )
+    fig = fairness_window_evidence_figure(results, metric_map)
+    apply_research_layout(
+        fig, height=690, legend="bottom",
+        title="Fairness evidence across stream windows · window observations + run aggregate",
+        bottom_margin=100,
+    )
+    plot(fig, "r110_fair_window_evidence")
+    st.caption(
+        "The FairStream paper plots datasets as rows because it aggregates a multi-dataset experiment. This interactive AwareML page is scoped to the currently active dataset, so rows are frameworks and the repeated evidence points are real stream windows. Diamonds are run-level recorded gaps; lower is better."
+    )
+
+    left, right = st.columns([1.08, 1])
     with left:
-        heat = fair.set_index("Framework")[list(metric_map)]
-        arr = heat.to_numpy(dtype=float)
-        vmax = float(np.nanmax(arr)) if np.isfinite(arr).any() else 1.0
-        fig = px.imshow(
-            heat, text_auto=False, zmin=0, zmax=max(0.05, vmax), aspect="auto",
-            color_continuous_scale="YlOrRd", title="Disparity matrix · lower is better"
+        fig = fairness_rank_bump_figure(fair, list(metric_map))
+        apply_research_layout(
+            fig, height=440, legend="bottom",
+            title="Fairness rank stability across definitions",
+            bottom_margin=102,
         )
-        heat_text = heat.applymap(
-            lambda value: "N/A" if pd.isna(value) else "{:.3f}".format(float(value))
+        plot(fig, "r110_fair_rank_bump")
+        st.caption(
+            "Rank 1 is the lowest observed disparity within each fairness definition. Crossing lines expose frameworks whose apparent fairness depends strongly on the chosen criterion."
         )
-        fig.update_traces(text=heat_text.to_numpy(), texttemplate="%{text}")
-        apply_research_layout(fig, height=410, legend="none", title="Disparity matrix · lower is better", bottom_margin=64)
-        fig.update_layout(margin=dict(l=90, r=50, t=54, b=78), coloraxis_colorbar=dict(len=0.78, thickness=12, title="Gap"))
-        plot(fig, "r96_fair_heat")
     with right:
-        summary = fair[[
-            "Framework", "Comparable mean gap", "Worst available gap"
-        ]].melt(
-            id_vars="Framework", var_name="Summary", value_name="Gap"
-        ).dropna()
-        fig = px.bar(
-            summary, x="Gap", y="Framework", color="Summary", barmode="group", orientation="h",
-            color_discrete_map={
-                "Comparable mean gap": "#2563eb",
-                "Worst available gap": "#ef4444",
-            },
-            title="Comparable mean vs worst available disparity"
+        fig = fairness_robustness_frontier(fair, list(metric_map))
+        apply_research_layout(
+            fig, height=440, legend="none",
+            title="Cross-criterion robustness frontier · mean vs worst gap",
+            bottom_margin=62,
         )
-        apply_research_layout(fig, height=410, legend="bottom", title="Mean vs worst observed disparity", bottom_margin=92)
-        fig.update_layout(margin=dict(l=96, r=24, t=54, b=94), legend=dict(orientation="h", y=-0.20, x=0.5, xanchor="center"))
-        plot(fig, "r96_fair_summary")
+        plot(fig, "r110_fair_robustness_frontier")
+        st.caption(
+            "The preferred region is the lower-left: low average disparity and low worst-criterion disparity. Diamond/outlined points are nondominated in this two-dimensional robustness view; this does not replace the individual fairness definitions."
+        )
 
     section(
         "All fairness metrics",
@@ -701,14 +774,29 @@ def fairness_v2_page():
             )
         )
 
-    section("Temporal fairness", "Select one criterion. A separate event strip shows drift and explicitly recorded refit/retrain events without covering the fairness trajectories.")
-    criterion = st.selectbox("Temporal fairness criterion", list(FAIRNESS_POINT_KEYS), key="r95_fair_metric")
+    section(
+        "Temporal fairness",
+        "Select one criterion. Predictive drift and fairness drift are intentionally separated: a model can keep similar accuracy while its group disparity changes over time.",
+    )
+    criterion = st.selectbox("Temporal fairness criterion", list(FAIRNESS_POINT_KEYS), key="r100_fair_metric")
     key = FAIRNESS_POINT_KEYS[criterion]
-    plot(temporal_metric_figure(results, key, f"{criterion} over stream windows", "Gap ↓"), "r95_fair_temporal")
+    fig = temporal_fairness_envelope_figure(results, key, criterion)
+    apply_research_layout(
+        fig, height=500, legend="bottom",
+        title=f"{criterion} dynamics · observed trajectories + median/IQR envelope",
+        bottom_margin=104,
+    )
+    plot(fig, "r101_fair_temporal_envelope")
+    st.caption(
+        "The shaded band is the cross-framework interquartile range at each observed stream position; "
+        "the dashed line is the cross-framework median. Predictive-drift/refit markers are intentionally omitted "
+        "from this fairness plot to avoid conflating predictive drift with fairness change."
+    )
 
     temp_rows = []
     for r in results:
         vals = [pt.get(key) for pt in (r.get("points") or []) if pt.get(key) is not None]
+        vals = [float(v) for v in vals if v is not None and np.isfinite(float(v))]
         if vals:
             temp_rows.append({
                 "Framework": r.get("framework"),
@@ -718,24 +806,134 @@ def fairness_v2_page():
                 "Temporal volatility": float(np.std(vals)),
                 "Windows": len(vals),
             })
-    if temp_rows:
-        tdf = pd.DataFrame(temp_rows).sort_values("Worst-window gap")
-        c1, c2 = st.columns([1.25, 1])
+    tdf = pd.DataFrame(temp_rows).sort_values("Worst-window gap") if temp_rows else pd.DataFrame()
+    if not tdf.empty:
+        c1, c2 = st.columns([1.05, 1])
         with c1:
             st.dataframe(tdf, use_container_width=True, hide_index=True)
         with c2:
-            fig = px.bar(
-                tdf.sort_values("Worst-window gap", ascending=True),
-                x="Worst-window gap", y="Framework", orientation="h", color="Framework",
-                color_discrete_map=FRAMEWORK_COLORS,
-                title="Worst observed fairness window · lower is better",
-                text_auto=".3f",
+            fig = temporal_fairness_robustness_figure(tdf)
+            apply_research_layout(
+                fig, height=430, legend="bottom",
+                title="Temporal robustness profile · mean → P95 → worst + volatility",
+                bottom_margin=104,
             )
-            apply_research_layout(fig, height=340, legend="none", title="Worst observed fairness window · lower is better", bottom_margin=52)
-            fig.update_layout(margin=dict(l=96, r=30, t=54, b=54))
-            plot(fig, "r95_fair_worst")
+            plot(fig, "r101_fair_temporal_robustness")
+            st.caption(
+                "Mean, P95 and worst-window gaps are shown explicitly on one axis; temporal volatility is shown on its own axis. "
+                "This replaces the previous bubble-size risk encoding with quantitatively readable positions."
+            )
+
+    section(
+        "Fairness drift & accumulated debt · FairStream-inspired audit",
+        "Replays the already-observed AwareML fairness windows through an adaptive audit envelope and the FairStream debt equation. This is post-run diagnostic evidence only: it does not change AwareML model selection or claim that FairStream controlled this run.",
+    )
+    series = fairness_series_frame(results, key)
+    if series.empty:
+        st.info("No window-level values are available for this fairness criterion, so drift/debt auditing is unavailable.")
+    else:
+        frameworks = series["Framework"].drop_duplicates().astype(str).tolist()
+        worst_default = frameworks[0]
+        if not tdf.empty:
+            worst_default = str(tdf.sort_values("Worst-window gap", ascending=False).iloc[0]["Framework"])
+        c0, c1, c2 = st.columns([1.2, 1, 1])
+        with c0:
+            audit_framework = st.selectbox(
+                "Framework for fairness-dynamics deep dive",
+                frameworks,
+                index=frameworks.index(worst_default) if worst_default in frameworks else 0,
+                key="r100_fair_audit_framework",
+            )
+        with c1:
+            audit_upper = st.slider(
+                "Initial audit envelope u₀",
+                0.02, 0.25, 0.10, 0.01,
+                key="r100_fair_audit_upper",
+                help="Reference upper fairness gap for the post-run audit. It is not injected into the original benchmark.",
+            )
+        with c2:
+            debt_decay = st.slider(
+                "Debt persistence λ",
+                0.0, 1.0, 0.90, 0.05,
+                key="r100_fair_debt_decay",
+                help="Dₜ = λDₜ₋₁ + max(0, cₜ-uₜ). Higher λ remembers violations longer.",
+            )
+        with st.expander("Fairness-change sensitivity", expanded=False):
+            a, b = st.columns(2)
+            with a:
+                warning_threshold = st.slider("Warning |Δ gap|", 0.005, 0.10, 0.02, 0.005, key="r100_fair_warn")
+            with b:
+                drift_threshold = st.slider("Fairness-change |Δ gap|", 0.01, 0.20, 0.04, 0.005, key="r100_fair_drift")
+            st.caption("Defaults mirror the scale used by FairStream's fairness-drift implementation. These AwareML flags are descriptive threshold events, not a substitute for a full statistical fairness-drift experiment.")
+        audit = replay_fairness_audit(
+            series,
+            initial_upper=float(audit_upper),
+            debt_decay=float(debt_decay),
+            warning_threshold=float(warning_threshold),
+            drift_threshold=float(drift_threshold),
+        )
+        selected_audit = audit[audit["Framework"].astype(str).eq(str(audit_framework))].sort_values("Sample")
+        if not selected_audit.empty:
+            m1, m2, m3, m4 = st.columns(4)
+            m1.metric("Windows audited", str(len(selected_audit)))
+            m2.metric("Envelope violations", str(int((selected_audit["Violation"] > 0).sum())))
+            m3.metric("Fairness-change flags", str(int((selected_audit["Event"] == "fairness_change").sum())))
+            m4.metric("Peak fairness debt", fmt(selected_audit["Debt"].max(), 3))
+            fig = fairness_dynamics_figure(audit, audit_framework)
+            apply_research_layout(fig, height=720, legend="bottom", title="FairStream-inspired fairness dynamics audit · observed AwareML windows", bottom_margin=100)
+            plot(fig, "r100_fair_dynamics")
+            if len(selected_audit) < 10:
+                st.warning(
+                    "Only {} fairness windows are available for {} under the current run. The violation/debt replay is still auditable, but this is a short temporal record; run more of the stream before making a statistical fairness-drift claim.".format(
+                        len(selected_audit), audit_framework
+                    )
+                )
+        summary = fairness_debt_summary(audit)
+        if not summary.empty:
+            with st.expander("Cross-framework fairness debt summary", expanded=True):
+                st.dataframe(summary, use_container_width=True, hide_index=True)
+        st.caption(
+            "Interpretation boundary: FairStream treats fairness drift φₜ and predictive-performance drift ψₜ as separate signals. Therefore zero confirmed predictive drift in Streaming Observatory does not imply temporally constant fairness."
+        )
 
     st.info("Fairness metrics are complementary criteria, not interchangeable definitions of fairness. Report the sensitive attribute, positive label, group support, temporal aggregation and worst-window behavior.")
+
+def _render_grounded_xai_explainer(state, results, framework):
+    st.markdown("### LLM-Assisted Explainability Explainer")
+    st.caption(
+        "Explains the selected framework's current XAI evidence in plain language. "
+        "The LLM does not recompute attribution values, change metrics, or infer hidden model reasoning."
+    )
+    model, status = _resolved_ollama_model()
+    with st.container(border=True):
+        a, b, c = st.columns(3)
+        a.markdown("**Evidence source**"); a.caption("Current benchmark + XAI diagnostics")
+        b.markdown("**LLM role**"); b.caption("Explain only · no metric authority")
+        c.markdown("**Privacy boundary**"); c.caption("Structured evidence only · no raw rows")
+        if status.get("reachable"):
+            st.caption("Local Ollama detected · model: {}".format(model))
+        else:
+            st.caption("Local Ollama is not reachable; the same button will use the deterministic grounded explanation.")
+        if st.button("Explain the XAI results", key="xai_llm_assisted_explain", use_container_width=True):
+            answer, meta = grounded_xai_summary(results, framework, model=model, use_llm=True)
+            state["xai_llm_assisted_explanation"] = {
+                "framework": framework,
+                "answer": answer,
+                "source": meta.get("source"),
+                "model": meta.get("model") or model,
+                "warning": meta.get("warning"),
+            }
+            st.rerun()
+        saved = state.get("xai_llm_assisted_explanation")
+        if isinstance(saved, dict) and saved.get("framework") == framework and saved.get("answer"):
+            st.markdown("**Plain-language explanation**")
+            st.markdown(saved["answer"])
+            st.caption("Explanation source: {} · model: {} · structured evidence only.".format(
+                saved.get("source") or "deterministic-fallback", saved.get("model") or model
+            ))
+            if saved.get("warning"):
+                st.caption("Local Ollama fallback reason: {}".format(saved.get("warning")))
+
 
 def explainability_v2_page(show_header: bool = True):
     if show_header:
@@ -750,11 +948,6 @@ def explainability_v2_page(show_header: bool = True):
         empty_state("Run evidence required", "Run a benchmark first.")
         return
 
-    use_llm, model, status = _ollama_controls("r96_xai")
-    st.caption(
-        "Local Ollama can summarize only the structured benchmark/XAI evidence shown on this page. Raw dataset rows are not sent."
-    )
-
     coverage = []
     for r in results:
         e = r.get("explainability") or {}
@@ -765,6 +958,8 @@ def explainability_v2_page(show_header: bool = True):
             "Fidelity": e.get("fidelity"),
             "Stability": e.get("stability"),
             "Consistency": e.get("consistency"),
+            "Sensitivity": e.get("sensitivity"),
+            "Sparsity": e.get("sparsity"),
             "Replay warning": bool(e.get("replay_warning")),
         })
     cdf = pd.DataFrame(coverage)
@@ -776,6 +971,8 @@ def explainability_v2_page(show_header: bool = True):
     e = r.get("explainability") or {}
     pred = r.get("prediction_diagnostics") or {}
     params = r.get("parameters") or {}
+
+    _render_grounded_xai_explainer(_state(), results, fw)
 
     model_tab, hyper_tab, system_tab = st.tabs([
         "Model-level explanations", "Hyperparameter-level context", "System-level explainability"
@@ -826,18 +1023,6 @@ def explainability_v2_page(show_header: bool = True):
                 st.dataframe(pd.DataFrame(attempts), use_container_width=True, hide_index=True)
             st.json(e.get("method_metadata") or {}, expanded=False)
 
-        if use_llm:
-            chat = GroundedChat(model=model)
-            facts = chat.build_facts(results, _state().get("ranking"))
-            question = (
-                f"Summarize the explanation evidence for {fw}. Distinguish predictive performance from XAI availability, "
-                "and do not claim a feature is important unless the structured evidence supports it."
-            )
-            answer, meta = chat.answer(question, facts, use_llm=True)
-            st.markdown("**Grounded Ollama summary**")
-            st.write(answer)
-            st.caption("Source: {} · model: {}".format(meta.get("source"), meta.get("model")))
-
     with hyper_tab:
         st.markdown(
             "**Purpose:** show the model/backend configuration that produced this run. This is context for reproducibility, not a causal claim that each parameter caused the observed outcome."
@@ -864,23 +1049,104 @@ def explainability_v2_page(show_header: bool = True):
         }
         st.dataframe(pd.DataFrame([context]), use_container_width=True, hide_index=True)
 
+        numeric_params = []
+        for key, value in sorted(params.items()):
+            if isinstance(value, bool):
+                continue
+            try:
+                fv = float(value)
+            except Exception:
+                continue
+            if np.isfinite(fv):
+                numeric_params.append({"Parameter": str(key), "Value": fv, "Display magnitude": np.log10(abs(fv) + 1.0)})
+        if numeric_params:
+            hp = pd.DataFrame(numeric_params).head(24)
+            fig = px.bar(
+                hp.sort_values("Display magnitude"),
+                x="Display magnitude", y="Parameter", orientation="h",
+                hover_data={"Value": True, "Display magnitude": ":.3f"},
+                title="Recorded numeric configuration · log display scale",
+            )
+            fig.update_traces(marker_color=FRAMEWORK_COLORS.get(fw, "#2563eb"))
+            apply_research_layout(fig, height=max(360, 26 * len(hp)), legend="none", title="Recorded numeric configuration · log display scale", bottom_margin=58)
+            fig.update_layout(margin=dict(l=155, r=30, t=54, b=60), xaxis_title="log10(|value| + 1) · display only")
+            plot(fig, "r96_xai_hyperparameter_numeric")
+            st.caption("This chart visualizes recorded configuration magnitude for readability. It is not hyperparameter importance and makes no causal claim about the observed outcome.")
+
+        outcome_rows = []
+        for rr in results:
+            outcome_rows.append({
+                "Framework": rr.get("framework"),
+                "Accuracy": rr.get("accuracy"),
+                "Macro-F1": rr.get("f1_macro"),
+                "Runtime (s)": rr.get("runtime_sec"),
+                "Energy (kWh)": rr.get("energy_kwh"),
+                "CO₂ (kg)": rr.get("co2_kg"),
+            })
+        odf = pd.DataFrame(outcome_rows)
+        if not odf.empty:
+            fig = px.scatter(
+                odf, x="Runtime (s)", y="Accuracy", color="Framework", size="Macro-F1",
+                hover_data=["Energy (kWh)", "CO₂ (kg)"],
+                color_discrete_map=FRAMEWORK_COLORS,
+                title="Configuration outcome context · current run",
+            )
+            apply_research_layout(fig, height=390, legend="right", title="Configuration outcome context · current run", bottom_margin=58)
+            plot(fig, "r96_xai_hyper_outcome")
+
     with system_tab:
         st.markdown(
             "**Purpose:** compare explanation availability and quality across the five frameworks rather than interpreting one model in isolation."
         )
-        st.dataframe(cdf, use_container_width=True, hide_index=True)
-        metrics = cdf[["Framework", "Fidelity", "Stability", "Consistency"]].melt(
-            id_vars="Framework", var_name="XAI metric", value_name="Score"
-        ).dropna()
-        if not metrics.empty:
-            fig = px.bar(
-                metrics, x="Score", y="Framework", color="XAI metric", barmode="group", orientation="h",
-                color_discrete_map={"Fidelity": "#2563eb", "Stability": "#10b981", "Consistency": "#8b5cf6"},
-                title="Cross-framework XAI quality · available methods only",
+        valid_system = cdf[cdf["XAI status"].eq("ok")].copy()
+        x1, x2, x3, x4 = st.columns(4)
+        x1.metric("XAI evidence available", "{}/{}".format(len(valid_system), len(cdf)))
+        x2.metric("Distinct XAI methods", str(int(valid_system["Method used"].nunique())) if not valid_system.empty else "0")
+        if not valid_system.empty:
+            cons = pd.to_numeric(valid_system["Consistency"], errors="coerce")
+            sens = pd.to_numeric(valid_system["Sensitivity"], errors="coerce")
+            x3.metric("Highest consistency", fmt(cons.max(), 3) if cons.notna().any() else "N/A")
+            x4.metric("Lowest sensitivity", fmt(sens.min(), 3) if sens.notna().any() else "N/A")
+        else:
+            x3.metric("Highest consistency", "N/A")
+            x4.metric("Lowest sensitivity", "N/A")
+        st.caption("Diagnostics are descriptive. Compare like methods and window sizes; fidelity here is a deletion accuracy drop, not a universal explanation score.")
+        if not valid_system.empty:
+            fig = system_xai_ranked_panels(valid_system)
+            apply_research_layout(
+                fig, height=650, legend="none",
+                title="System-level XAI diagnostics · exact metric-wise evidence",
+                bottom_margin=56,
             )
-            apply_research_layout(fig, height=410, legend="bottom", title="Cross-framework XAI quality · available methods only", bottom_margin=94)
-            fig.update_layout(margin=dict(l=105, r=24, t=54, b=96))
-            plot(fig, "r96_xai_system")
+            plot(fig, "r110_xai_system_ranked_panels")
+            st.caption(
+                "Each diagnostic has its own quantitative axis. Fidelity, Stability and Consistency are read higher-is-better; Sensitivity is lower-is-better; Sparsity is descriptive and deliberately has no universal winner direction."
+            )
+
+            fig = system_xai_rank_bump(valid_system)
+            apply_research_layout(
+                fig, height=430, legend="bottom",
+                title="Directional XAI rank flow · where framework strengths change",
+                bottom_margin=104,
+            )
+            plot(fig, "r110_xai_system_rank_flow")
+            st.caption(
+                "This rank-flow view uses only diagnostics with an explicit direction. It intentionally excludes Sparsity from ranking because more sparse is not universally better. No overall XAI score is manufactured."
+            )
+
+            with st.expander("Metric semantics and exact system values", expanded=False):
+                exact = valid_system[["Framework", "Method used", "Fidelity", "Stability", "Consistency", "Sensitivity", "Sparsity", "Replay warning"]].copy()
+                st.dataframe(exact, use_container_width=True, hide_index=True)
+                st.markdown(
+                    """
+- **Deletion fidelity ↑:** observed replay accuracy drop after deleting important features; context-dependent, not a universal faithfulness score.
+- **Stability ↑:** similar explanations under repeated/replayed evaluation.
+- **Consistency ↑:** agreement of repeated explanation estimates under the configured method.
+- **Sensitivity ↓:** smaller perturbation-driven explanation change is more stable.
+- **Sparsity:** concentration/compactness of the explanation; direction is task-dependent.
+                    """
+                )
+
         unavailable = cdf[cdf["XAI status"] != "ok"]["Framework"].tolist()
         if unavailable:
             st.warning("XAI unavailable/degenerate for: {}. These are availability diagnostics, not failed benchmark runs.".format(", ".join(unavailable)))
@@ -938,60 +1204,71 @@ def sustainability_v2_page():
     cards[2].metric("Total measured energy", fmt(pd.to_numeric(sdf["Energy kWh"], errors="coerce").sum(min_count=1), 6, " kWh"))
     cards[3].metric("Total measured CO₂", fmt(pd.to_numeric(sdf["CO₂ kg"], errors="coerce").sum(min_count=1), 6, " kg"))
 
-    st.dataframe(sdf, use_container_width=True, hide_index=True)
+    with st.expander("Measurement provenance & exact values", expanded=False):
+        st.dataframe(sdf, use_container_width=True, hide_index=True)
     measured = sdf.dropna(subset=["Energy kWh", "CO₂ kg"], how="all")
     if measured.empty:
         st.warning("No measured energy/CO₂ values are available for this run.")
         return
 
-    c1, c2 = st.columns(2)
-    with c1:
-        e = measured.dropna(subset=["Energy kWh"]).sort_values("Energy kWh", ascending=True)
-        fig = go.Figure(go.Bar(
-            x=e["Energy kWh"], y=e["Framework"], orientation="h",
-            marker_color=_colors(e),
-            text=[f"{v:.3e}" for v in e["Energy kWh"]], textposition="outside",
-            hovertemplate="%{y}<br>Energy %{x:.6g} kWh<extra></extra>",
-        ))
-        apply_research_layout(fig, height=350, legend="none", title="Measured energy · lower is better", bottom_margin=52)
-        fig.update_layout(margin=dict(l=102, r=70, t=54, b=54))
-        plot(fig, "r95_sustain_energy")
-    with c2:
-        c = measured.dropna(subset=["CO₂ kg"]).sort_values("CO₂ kg", ascending=True)
-        fig = go.Figure(go.Bar(
-            x=c["CO₂ kg"], y=c["Framework"], orientation="h",
-            marker_color=_colors(c),
-            text=[f"{v:.3e}" for v in c["CO₂ kg"]], textposition="outside",
-            hovertemplate="%{y}<br>CO₂ %{x:.6g} kg<extra></extra>",
-        ))
-        apply_research_layout(fig, height=350, legend="none", title="Measured CO₂ · lower is better", bottom_margin=52)
-        fig.update_layout(margin=dict(l=102, r=70, t=54, b=54))
-        plot(fig, "r95_sustain_co2")
+    section(
+        "Measured resource profile",
+        "Runtime, Energy and CO₂ are shown on separate quantitative axes so reviewers can compare exact measurements without bubble area, mixed units or hidden normalization.",
+    )
+    fig = sustainability_resource_scoreboard(sdf)
+    apply_research_layout(
+        fig, height=440, legend="none",
+        title="Measured resource scoreboard · exact lower-is-better evidence",
+        bottom_margin=62,
+    )
+    plot(fig, "r110_sustain_resource_scoreboard")
 
-    section("Efficiency relationships", "These plots are descriptive across the current run and should not be interpreted causally.")
-    left, right = st.columns(2)
+    section(
+        "Efficiency structure",
+        "The rank-flow panel reveals whether a framework is consistently efficient across Runtime, Energy and CO₂. The frontier panel then isolates the measured Runtime–Energy trade-off without collapsing the resources into one score.",
+    )
+    left, right = st.columns([1, 1.08])
     with left:
-        both = measured.dropna(subset=["Runtime s", "Energy kWh"])
-        fig = px.scatter(
-            both, x="Runtime s", y="Energy kWh", color="Framework", size="Samples",
-            color_discrete_map=FRAMEWORK_COLORS, hover_data=["CO₂ kg"], title="Runtime vs measured energy",
+        fig = sustainability_rank_bump(sdf)
+        apply_research_layout(
+            fig, height=430, legend="bottom",
+            title="Resource-efficiency rank flow",
+            bottom_margin=102,
         )
-        apply_research_layout(fig, height=400, legend="bottom", title="Runtime vs measured energy", bottom_margin=92)
-        fig.update_layout(margin=dict(l=58, r=24, t=54, b=94))
-        plot(fig, "r95_sustain_runtime_energy")
+        plot(fig, "r110_sustain_rank_flow")
+        st.caption(
+            "Rank 1 is best (lowest measured resource use) on each axis. Parallel lines indicate consistent efficiency; crossings expose resource-specific trade-offs."
+        )
     with right:
-        both = measured.dropna(subset=["Energy kWh", "CO₂ kg"])
-        corr = both[["Energy kWh", "CO₂ kg"]].corr(method="spearman").iloc[0, 1] if len(both) >= 2 else np.nan
-        fig = px.scatter(
-            both, x="Energy kWh", y="CO₂ kg", color="Framework", text="Framework",
-            color_discrete_map=FRAMEWORK_COLORS,
-            title="Energy vs CO₂ · Spearman ρ={}".format("N/A" if not np.isfinite(corr) else f"{corr:.2f}"),
+        fig = sustainability_efficiency_frontier(sdf)
+        apply_research_layout(
+            fig, height=430, legend="none",
+            title="Runtime–Energy efficiency frontier · measured evidence",
+            bottom_margin=62,
         )
-        fig.update_traces(textposition="top center")
-        apply_research_layout(fig, height=400, legend="none", title="Energy vs CO₂ · Spearman ρ={}".format("N/A" if not np.isfinite(corr) else f"{corr:.2f}"), bottom_margin=58)
-        fig.update_layout(margin=dict(l=62, r=50, t=54, b=60))
-        plot(fig, "r95_sustain_energy_co2")
-        st.caption("ρ≈1 means energy and CO₂ rank frameworks almost identically; weighting both heavily can double-count the same efficiency signal.")
+        plot(fig, "r110_sustain_efficiency_frontier")
+        st.caption(
+            "Outlined diamonds are nondominated in Runtime and Energy. The star is the run-relative 2D resource compromise (closest Pareto point to the minimum-runtime/minimum-energy ideal); it is not a new AutoML recommendation."
+        )
+
+    intensity = sdf.copy()
+    intensity["Energy kWh"] = pd.to_numeric(intensity["Energy kWh"], errors="coerce")
+    intensity["CO₂ kg"] = pd.to_numeric(intensity["CO₂ kg"], errors="coerce")
+    if ((intensity["Energy kWh"] > 0) & intensity["CO₂ kg"].notna()).any():
+        section(
+            "Carbon-accounting consistency",
+            "Observed CO₂/Energy intensity is compared with the carbon-intensity metadata recorded by the measurement backend. This makes the Energy–CO₂ relationship auditable instead of showing another redundant scatter plot.",
+        )
+        fig = carbon_intensity_consistency_figure(sdf)
+        apply_research_layout(
+            fig, height=390, legend="bottom",
+            title="Carbon intensity audit · reported metadata vs observed CO₂/Energy",
+            bottom_margin=96,
+        )
+        plot(fig, "r110_sustain_carbon_intensity")
+        st.caption(
+            "Observed intensity = measured CO₂ ÷ measured Energy, expressed in gCO₂/kWh. A short reported-to-observed segment indicates internally consistent accounting; differences should be interpreted with CodeCarbon's measurement scope and metadata."
+        )
 
     render_phase14_sustainability_details(results)
 
