@@ -24,6 +24,7 @@ from .metrics import (
     PredictionDiagnosticsTracker,
 )
 from .uncertainty import bootstrap_mean_ci
+from .drift_controller import HybridDriftController, adapt_framework
 
 
 def _normalize_importance(raw: Any) -> dict[str, float]:
@@ -190,7 +191,13 @@ def _run_one(
         calibration_bins=cfg.fairness_calibration_bins,
         degenerate_prediction_threshold=cfg.prediction_near_constant_threshold,
     )
-    detector = ADWIN() if ADWIN is not None else None
+    detector = HybridDriftController(
+        mode=getattr(cfg, "drift_detector_mode", "adwin"),
+        window_size=cfg.window_size,
+        warmup_samples=getattr(cfg, "drift_warmup_samples", None),
+        min_separation=getattr(cfg, "drift_min_separation", None),
+        performance_drop=getattr(cfg, "drift_performance_drop", 0.03),
+    )
     points: list[MetricPoint] = []
     drift_events: list[int] = []
     drift_scores: dict[int, Optional[float]] = {}
@@ -198,6 +205,10 @@ def _run_one(
     window_f1: list[float] = []
     recent_X = deque(maxlen=min(300, cfg.window_size))
     recent_y = deque(maxlen=min(300, cfg.window_size))
+    replay_capacity = max(1, int(getattr(cfg, "drift_replay_size", None) or cfg.window_size))
+    recent_training = deque(maxlen=replay_capacity)
+    refit_events: list[dict[str, Any]] = []
+    adaptation_failures: list[dict[str, Any]] = []
     instrumentation_overhead = 0.0
 
     sustain = SustainabilitySession(
@@ -350,16 +361,19 @@ def _run_one(
             rolling.update(y, pred)
 
             drift = False
+            signal = None
             if detector is not None and pred is not None:
                 try:
                     error = 0.0 if pred == y else 1.0
-                    detector.update(error)
-                    drift = bool(
-                        getattr(detector, "drift_detected", False)
-                        or getattr(detector, "change_detected", False)
+                    signal = detector.update(
+                        error,
+                        rolling_accuracy=rolling.accuracy if rolling.n else None,
+                        sample_index=i + 1,
                     )
+                    drift = bool(signal.detected)
                 except Exception:
                     drift = False
+                    signal = None
             if drift:
                 sample_no = i + 1
                 drift_events.append(sample_no)
@@ -379,6 +393,19 @@ def _run_one(
                     baseline_accuracy=rolling_before,
                     immediate_accuracy=rolling.accuracy if rolling.n else None,
                 )
+                action = adapt_framework(
+                    framework,
+                    recent_training,
+                    sample_index=sample_no,
+                    policy=getattr(cfg, "drift_action_policy", "monitor_only"),
+                    replay_size=int(getattr(cfg, "drift_replay_size", None) or cfg.window_size),
+                    trigger_sources=(signal.sources if signal is not None else []),
+                )
+                if action is not None:
+                    if action.get("status") == "ok":
+                        refit_events.append(action)
+                    else:
+                        adaptation_failures.append(action)
 
             if cfg.sensitive_attribute and cfg.sensitive_attribute in row.index:
                 fairness.update(
@@ -389,6 +416,7 @@ def _run_one(
                 )
 
             framework.learn_one(x, y)
+            recent_training.append((dict(x), y))
             processed += 1
             recent_X.append(x)
             recent_y.append(y)
@@ -427,7 +455,14 @@ def _run_one(
             p95_prediction_latency_ms=latency.p95_ms,
             instrumentation_overhead_sec=instrumentation_overhead,
             drift_events=drift_events,
-            drift_summary=recovery.summary(),
+            refit_events=refit_events,
+            drift_summary={
+                **recovery.summary(),
+                "detector": detector.summary(),
+                "refit_events": list(refit_events),
+                "adaptation_failures": list(adaptation_failures),
+                "drift_action_policy": getattr(cfg, "drift_action_policy", "monitor_only"),
+            },
             points=points,
             fairness=fairness.compute() if cfg.sensitive_attribute else {"status": "not_requested"},
             prediction_diagnostics=prediction_diagnostics.summary(),
@@ -498,6 +533,10 @@ def _run_one(
         "rolling_macro_f1": f1_ci,
     }
     drift_summary = recovery.summary()
+    drift_summary["detector"] = detector.summary()
+    drift_summary["refit_events"] = list(refit_events)
+    drift_summary["adaptation_failures"] = list(adaptation_failures)
+    drift_summary["drift_action_policy"] = getattr(cfg, "drift_action_policy", "monitor_only")
 
     try:
         parameters = framework.get_params()
@@ -519,6 +558,7 @@ def _run_one(
         energy_kwh=sustainability.get("energy_kwh"),
         co2_kg=sustainability.get("co2_kg"),
         drift_events=drift_events,
+        refit_events=refit_events,
         drift_summary=drift_summary,
         points=points,
         fairness=fair_final,
@@ -542,7 +582,7 @@ def _run_one(
             experiment_store.append_drift_event(DriftEventRecord(
                 experiment_id=experiment_id,
                 sample_index=int(ep["sample_index"]),
-                detector="ADWIN" if detector is not None else "none",
+                detector=(detector.summary().get("name") if detector is not None else "none"),
                 score=drift_scores.get(int(ep["sample_index"])),
                 performance_before=ep.get("baseline_accuracy"),
                 performance_after=ep.get("min_accuracy_after"),

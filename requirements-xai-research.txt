@@ -1,0 +1,6 @@
+# OPTIONAL isolated environment only: Python 3.11+, never install into the pinned main environment.
+# Torch/CUDA wheel choice depends on your machine. Install torch using its official instructions first.
+transformers>=4.45,<5
+numpy>=1.24,<3
+scipy>=1.10,<2
+pandas>=1.5,<3

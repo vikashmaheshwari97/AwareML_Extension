@@ -183,3 +183,11 @@ artifacts/phase16/private_mainstudy_runtime.json
 
 # Phase-18 local UI evidence - keep experimental CSVs local
 /data/journal/phase18_ui_evidence/*.csv
+
+# Repository documentation policy
+*.md
+!/README.md
+
+# Ignore TXT artifacts except dependency requirement files
+*.txt
+!requirements*.txt

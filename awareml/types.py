@@ -35,12 +35,8 @@ class RunConfig:
     positive_label: Any = 1
     track_sustainability: bool = False
 
-    # Fairness audit policy. ``audit_only`` keeps the protected attribute for
-    # group metrics but removes it from model inputs; ``include`` reproduces
-    # experiments where the model can directly use the protected attribute.
     sensitive_feature_policy: str = "audit_only"
 
-    # Phase 2 instrumentation controls.
     missing_prediction_policy: str = "incorrect"
     fairness_min_group_n: int = 10
     drift_recovery_tolerance: float = 0.02
@@ -48,15 +44,21 @@ class RunConfig:
     drift_min_assessment_samples: Optional[int] = None
     capture_native_xai_snapshots: bool = True
 
-    # Phase 3/3.1 XAI controls. "auto" = SHAP -> LIME -> repeated permutation.
+    # Temporal upgrade. Defaults preserve historical script behaviour; Run
+    # Studio explicitly selects the enhanced interactive policy.
+    drift_detector_mode: str = "adwin"  # adwin | hybrid
+    drift_action_policy: str = "monitor_only"  # monitor_only | adaptive_replay
+    drift_warmup_samples: Optional[int] = None
+    drift_min_separation: Optional[int] = None
+    drift_performance_drop: float = 0.03
+    drift_replay_size: Optional[int] = None
+
     xai_method: str = "auto"
     xai_max_rows: int = 250
     xai_replay_warning_threshold: float = 0.05
 
-    # Prediction-quality safeguard used when interpreting fairness gaps.
     prediction_near_constant_threshold: float = 0.95
 
-    # Phase 14 fairness-calibration and sustainability protocol controls.
     fairness_calibration_bins: int = 10
     sustainability_region: Optional[str] = None
     sustainability_warmup_sec: float = 0.0
@@ -102,6 +104,7 @@ class FrameworkResult:
     p95_prediction_latency_ms: Optional[float] = None
     instrumentation_overhead_sec: float = 0.0
     drift_events: list[int] = field(default_factory=list)
+    refit_events: list[dict[str, Any]] = field(default_factory=list)
     drift_summary: dict[str, Any] = field(default_factory=dict)
     points: list[MetricPoint] = field(default_factory=list)
     fairness: dict[str, Any] = field(default_factory=dict)

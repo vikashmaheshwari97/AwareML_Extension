@@ -55,6 +55,7 @@ def explanation_integrity_lab_page():
     if selected == "Faithfulness Benchmark":
         faithfulness_lab_page(show_header=False)
     elif selected == "Explainability Diagnostics":
-        explainability_v2_page(show_header=False)
+        from .pages_multilevel_explainability import integrated_explainability_page
+        integrated_explainability_page()
     else:
         phase15_explanation_integrity_page(show_header=False)

@@ -101,7 +101,21 @@ def _safe_probability_matrix(model, X: pd.DataFrame, classes: list[Any]) -> tupl
                 arr = np.asarray([[float(r.get(label, 0.0) or 0.0) for label in classes] for r in raw], dtype=float)
             else:
                 arr = np.asarray(raw, dtype=float)
+                # sklearn probability columns follow classes_, not label encounter order.
+                model_classes = getattr(model, "classes_", None)
+                if model_classes is not None and arr.ndim == 2:
+                    if len(model_classes) != len(classes):
+                        return None, "incomplete_class_axis"
+                    aligned = np.zeros((len(X), len(classes)), dtype=float)
+                    for j, label in enumerate(classes):
+                        matches = [i for i, known in enumerate(model_classes) if _labels_equal(label, known)]
+                        if not matches:
+                            return None, "class_alignment_unavailable"
+                        aligned[:, j] = arr[:, matches[0]]
+                    arr = aligned
             if arr.ndim == 2 and arr.shape == (len(X), len(classes)):
+                if not np.isfinite(arr).all() or (arr < 0).any() or (arr.sum(axis=1) <= 0).any():
+                    return None, "invalid_probabilities"
                 rowsum = arr.sum(axis=1, keepdims=True)
                 rowsum[rowsum <= 0] = 1.0
                 return np.clip(arr / rowsum, 0.0, 1.0), "predict_proba"
@@ -118,6 +132,8 @@ def _safe_probability_matrix(model, X: pd.DataFrame, classes: list[Any]) -> tupl
                     return None, "predict_proba_one_unavailable"
                 matrix.append([float(proba.get(label, 0.0) or 0.0) for label in classes])
             arr = np.asarray(matrix, dtype=float)
+            if not np.isfinite(arr).all() or (arr < 0).any() or (arr.sum(axis=1) <= 0).any():
+                return None, "invalid_probabilities"
             rowsum = arr.sum(axis=1, keepdims=True)
             rowsum[rowsum <= 0] = 1.0
             return np.clip(arr / rowsum, 0.0, 1.0), "predict_proba_one"
@@ -246,7 +262,7 @@ def _shap_vectors(
 ) -> tuple[list[np.ndarray], dict[str, Any]]:
     if shap is None:
         raise RuntimeError("SHAP is not installed.")
-    classes = _unique_labels(y)
+    classes = list(model.classes_) if getattr(model, "classes_", None) is not None else _unique_labels(y)
     probe, provenance = _safe_probability_matrix(model, X.head(min(3, len(X))), classes)
     if probe is None:
         raise RuntimeError("SHAP requires class probabilities; %s." % provenance)
@@ -287,7 +303,7 @@ def _lime_vectors(
 ) -> tuple[list[np.ndarray], dict[str, Any]]:
     if LimeTabularExplainer is None:
         raise RuntimeError("LIME is not installed.")
-    classes = _unique_labels(y)
+    classes = list(model.classes_) if getattr(model, "classes_", None) is not None else _unique_labels(y)
     probe, provenance = _safe_probability_matrix(model, X.head(min(3, len(X))), classes)
     if probe is None:
         raise RuntimeError("LIME requires class probabilities; %s." % provenance)
@@ -528,6 +544,14 @@ def explain_framework(
         degraded_acc = _safe_accuracy(y, _safe_predict(model, xd))
         fidelity = float(max(0.0, base_acc - degraded_acc))
 
+        # New diagnostics are additive: frozen legacy scores and their consumers
+        # keep their existing meaning. Failures remain explicit, never zero-filled.
+        from .xai_metrics import intervention_diagnostics
+        try:
+            multilevel = intervention_diagnostics(model, X, y, mean_v, categorical_features)
+        except Exception as diagnostic_error:
+            multilevel = {"status": "unavailable", "reason": str(diagnostic_error)}
+
         replay_gap = None
         replay_warning = None
         if reference_accuracy is not None:
@@ -542,6 +566,7 @@ def explain_framework(
         return {
             "status": "ok",
             "method": selected_method,
+            "multilevel_diagnostics": multilevel,
             "feature_importance": importance,
             "stability": quality.get("stability"),
             "fidelity": fidelity,

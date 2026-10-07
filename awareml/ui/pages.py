@@ -401,6 +401,52 @@ def run_studio_page():
                 key="run_drift_assessment",
                 help="Recovery cannot be declared before this many post-drift samples have been observed.",
             )
+            drift_detector_label = st.selectbox(
+                "Drift detector",
+                ["Hybrid · ADWIN + Page-Hinkley + degradation confirmation", "ADWIN · compatibility mode"],
+                index=0,
+                key="run_drift_detector_mode",
+                help="Hybrid mode adds gradual-change detection, warm-up and minimum-separation controls. ADWIN compatibility mode preserves the historical single-detector behaviour for protocol comparisons.",
+            )
+            drift_detector_mode = "hybrid" if drift_detector_label.startswith("Hybrid") else "adwin"
+            drift_action_label = st.selectbox(
+                "After confirmed drift",
+                ["Adaptive reset + recent-window replay", "Monitor only · no explicit reset/refit"],
+                index=0,
+                key="run_drift_action_policy",
+                help="Adaptive replay is an AwareML wrapper action: reset the framework and replay a bounded recent labelled buffer. It is recorded separately from upstream-native adaptation.",
+            )
+            drift_action_policy = "adaptive_replay" if drift_action_label.startswith("Adaptive") else "monitor_only"
+            d1, d2, d3 = st.columns(3)
+            with d1:
+                drift_warmup_samples = st.number_input(
+                    "Detector warm-up samples", 20, 10000,
+                    max(100, min(500, int(window))), 20,
+                    key="run_drift_warmup_samples",
+                    disabled=drift_detector_mode == "adwin",
+                    help="Hybrid mode suppresses confirmed alerts until this many labelled observations have been seen.",
+                )
+            with d2:
+                drift_min_separation = st.number_input(
+                    "Minimum drift separation", 1, 10000,
+                    max(50, int(window) // 2), 10,
+                    key="run_drift_min_separation",
+                    disabled=drift_detector_mode == "adwin",
+                    help="Prevents bursts of duplicate alerts from one sustained change episode.",
+                )
+            with d3:
+                drift_performance_drop = st.slider(
+                    "Performance-drop confirmation", 0.0, 0.20, 0.03, 0.005,
+                    key="run_drift_performance_drop",
+                    disabled=drift_detector_mode == "adwin",
+                    help="Hybrid confirmation threshold for the fast-vs-slow rolling-accuracy gap.",
+                )
+            drift_replay_size = st.number_input(
+                "Replay samples after drift", 50, 5000,
+                max(100, min(1000, int(window))), 50,
+                key="run_drift_replay_size",
+                disabled=drift_action_policy == "monitor_only",
+            )
         oaml_mode = st.selectbox(
             "OAML execution mode",
             ["online", "gama"],
@@ -437,6 +483,12 @@ def run_studio_page():
                 "xai_method": xai_method,
                 "xai_max_rows": int(xai_max_rows),
                 "drift_min_assessment_samples": int(drift_assessment),
+                "drift_detector_mode": drift_detector_mode,
+                "drift_action_policy": drift_action_policy,
+                "drift_warmup_samples": int(drift_warmup_samples),
+                "drift_min_separation": int(drift_min_separation),
+                "drift_performance_drop": float(drift_performance_drop),
+                "drift_replay_size": int(drift_replay_size),
             },
         }, sort_keys=False, allow_unicode=True)
         st.download_button(
@@ -502,6 +554,12 @@ def run_studio_page():
             xai_method=xai_method,
             xai_max_rows=int(xai_max_rows),
             drift_min_assessment_samples=int(drift_assessment),
+            drift_detector_mode=drift_detector_mode,
+            drift_action_policy=drift_action_policy,
+            drift_warmup_samples=int(drift_warmup_samples),
+            drift_min_separation=int(drift_min_separation),
+            drift_performance_drop=float(drift_performance_drop),
+            drift_replay_size=int(drift_replay_size),
         )
         progress = st.progress(0.0, text="Preparing benchmark…")
         status = st.empty()

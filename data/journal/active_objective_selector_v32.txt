@@ -1,1 +1,0 @@
-objective_selection_v32/manifest.json

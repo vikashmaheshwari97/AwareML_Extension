@@ -1,1 +1,0 @@
-copilot_v1/manifest.json

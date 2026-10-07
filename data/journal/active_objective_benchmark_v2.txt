@@ -1,1 +1,0 @@
-objective_selection_benchmark_v2/frozen/manifest.json
