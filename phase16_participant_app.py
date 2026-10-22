@@ -6,7 +6,7 @@ import streamlit as st
 load_dotenv()
 
 from awareml.ui.theme import inject_theme
-from awareml.ui_v2.phase16_trust_calibration import render_phase16_participant_study
+from awareml.ui_v2.phase16_morten_v2 import render_phase16_participant_study
 from awareml.ui_v2.theme import inject_research_theme
 from awareml.ui_v2.layout_polish import inject_layout_polish
 

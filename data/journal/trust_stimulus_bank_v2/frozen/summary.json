@@ -1,0 +1,25 @@
+{
+  "schema_version": "trust_stimulus_bank_v2_1",
+  "total_stimuli": 40,
+  "matched_pairs": 20,
+  "conditions": {
+    "known_correct": 20,
+    "known_incorrect": 20
+  },
+  "unique_track1_scenarios": 20,
+  "framework_pair_counts": {
+    "AutoStreamML": 4,
+    "AutoClass": 4,
+    "EvoAutoML": 4,
+    "OAML": 4,
+    "ChaCha": 4
+  },
+  "source_stage_pair_counts": {
+    "OBJ_FIT": 5,
+    "COMPARE": 5,
+    "TRADEOFF": 5,
+    "F_CHAT": 5
+  },
+  "participant_design": "Every participant sees all 20 matched pair families once; one blinded variant per pair; 10 correct + 10 incorrect.",
+  "coherence_rule": "Scenario frozen objective labels determine the task and the scenario-relevant reference metrics. Fairness/XAI are not injected into Track-1 scenarios unless separately validated."
+}

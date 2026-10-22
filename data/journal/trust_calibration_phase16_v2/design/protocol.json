@@ -1,0 +1,247 @@
+{
+  "artifact": "phase16_trust_calibration_protocol_v2_1",
+  "schema_version": "phase16_trust_calibration_v2_1",
+  "phase": 16,
+  "track": 2,
+  "status": "final",
+  "revision_basis": "Prof. Morten methodological review v2.1: scenario-task-evidence coherence and restored research-grade researcher analytics.",
+  "central_rq": "Does user trust track actual explanation correctness, or merely how fluent/confident the explanation sounds?",
+  "design": {
+    "within_subject": true,
+    "randomized": true,
+    "blinded": true,
+    "items_per_participant": 20,
+    "conditions": [
+      "correct",
+      "incorrect"
+    ],
+    "condition_ratio": [
+      0.5,
+      0.5
+    ],
+    "all_twenty_pair_families_seen_by_every_participant": true,
+    "one_variant_per_pair_per_participant": true,
+    "counterbalance_arms": [
+      "A",
+      "B"
+    ],
+    "counterbalance_rule": "Arms are assigned alternately at registration; Arm B receives the complementary correctness variant for every matched pair.",
+    "target_completed_participants": 34,
+    "recruitment_target": 40,
+    "pair_evaluations_at_target": "Each matched trial family is evaluated once by every completed participant: 34 evaluations at the minimum target and 40 if all recruited participants complete.",
+    "framework_balance": "5 frameworks × 4 explanation types = 20 matched trial families; each framework appears in four trial families.",
+    "source_stage_balance": {
+      "OBJ_FIT": 5,
+      "COMPARE": 5,
+      "TRADEOFF": 5,
+      "F_CHAT": 5
+    },
+    "scenario_source": "Track-1 scenario benchmark",
+    "unique_scenarios_per_participant": 20,
+    "evidence_scope": "Controlled trust-calibration evidence values contextualized by Track-1 scenarios; not actual per-scenario framework benchmark outcomes.",
+    "max_same_condition_run": 3,
+    "trial_order_definition": "Trial position 1–20 after participant-specific randomization; assignment is stored so a resumed participant continues the same sequence.",
+    "track1_authors_excluded": true,
+    "explanation_types": [
+      "Objective-fit explanation",
+      "Comparative explanation",
+      "Trade-off explanation",
+      "Conversational decision explanation"
+    ],
+    "scenario_task_alignment_rule": "Each trial task is generated from that scenario's scenario objective labels. Trust Calibration does not inject fairness or XAI claims into scenarios whose frozen objective labels contain only Accuracy/Runtime/Energy/CO2.",
+    "controlled_evidence_note": "Framework values in Trust Calibration are controlled reference evidence for correctness manipulation, not claims of actual framework performance on the textual scenario."
+  },
+  "eligibility": {
+    "minimum_age": 18,
+    "track2_groups": [
+      "University / CS student",
+      "Practitioner",
+      "ML / AutoML expert"
+    ],
+    "expertise_construct": "Machine Learning / AutoML knowledge and experience",
+    "expertise_scale": {
+      "min": 1,
+      "max": 7,
+      "anchors": {
+        "1": "No knowledge / experience",
+        "4": "Moderate knowledge / experience",
+        "7": "Extensive knowledge / experience"
+      }
+    }
+  },
+  "trust_measure": {
+    "status": "final",
+    "instrument_name": "Short Trust in Automation Scale (S-TIAS)",
+    "citation": "McGrath MJ, Lack O, Tisch J, Duenser A (2025). Measuring trust in artificial intelligence: validation of an established scale and its short form. Frontiers in Artificial Intelligence 8:1582880. doi:10.3389/frai.2025.1582880",
+    "scale_min": 1,
+    "scale_max": 7,
+    "scale_min_label": "Not at all",
+    "scale_max_label": "Extremely",
+    "scoring_rule": "mean_after_reverse_coding",
+    "items": [
+      {
+        "id": "stias_confident",
+        "text": "I am confident in the AI assistant.",
+        "reverse": false
+      },
+      {
+        "id": "stias_reliable",
+        "text": "The AI assistant is reliable.",
+        "reverse": false
+      },
+      {
+        "id": "stias_trust",
+        "text": "I can trust the AI assistant.",
+        "reverse": false
+      }
+    ],
+    "administration": "Repeated after each explanation; no default response is preselected.",
+    "normative_interpretation": "No high/low trust cutoff is imposed. Report mean, SD, distribution and correct-vs-incorrect within-participant differences."
+  },
+  "diagnostic_ratings": [
+    {
+      "id": "perceived_correctness",
+      "text": "How likely is the explanation to be factually correct?",
+      "scale": [
+        1,
+        7
+      ],
+      "anchors": {
+        "1": "Not at all likely",
+        "7": "Extremely likely"
+      }
+    },
+    {
+      "id": "fluency_rating",
+      "text": "How fluent is the explanation?",
+      "scale": [
+        1,
+        7
+      ],
+      "anchors": {
+        "1": "Not at all fluent",
+        "7": "Extremely fluent"
+      }
+    },
+    {
+      "id": "perceived_confidence",
+      "text": "How confident does the explanation sound?",
+      "scale": [
+        1,
+        7
+      ],
+      "anchors": {
+        "1": "Not at all confident",
+        "7": "Extremely confident"
+      }
+    }
+  ],
+  "interaction": {
+    "initial_evaluation_locked_before_optional_evidence_seeking": true,
+    "optional_evidence_question_field": true,
+    "evidence_responses": "Deterministic and grounded in the complete five-framework controlled reference table. Framework-specific rank/metric questions must be answered directly; unsupported fairness/XAI requests must be identified as unavailable rather than invented.",
+    "decision_actions": [
+      "Accept",
+      "Override",
+      "Reject"
+    ],
+    "override_requires_structured_correction": true,
+    "override_targets": [
+      "Framework / ranking",
+      "Accuracy",
+      "Runtime",
+      "Energy",
+      "CO₂",
+      "Fairness",
+      "Feature / SHAP",
+      "Unsupported statement",
+      "Other"
+    ]
+  },
+  "secondary_poststudy": {
+    "status": "final",
+    "role": "Secondary exploratory human-agency and study-experience outcomes; not the primary trust-calibration measure.",
+    "scale_min": 1,
+    "scale_max": 7,
+    "items": [
+      {
+        "id": "critical_evaluation",
+        "construct": "human_agency",
+        "text": "I felt able to critically evaluate the recommendation provided by AwareML."
+      },
+      {
+        "id": "freedom_to_override",
+        "construct": "human_agency",
+        "text": "I felt free to reject or override AwareML's recommendation when I disagreed with it."
+      },
+      {
+        "id": "final_control",
+        "construct": "human_agency",
+        "text": "I understood that I remained responsible for the final decision about whether to rely on the AwareML recommendation."
+      },
+      {
+        "id": "rely_or_question",
+        "construct": "calibrated_reliance_support",
+        "text": "The explanations helped me judge when to rely on the recommendation and when to question it."
+      },
+      {
+        "id": "evidence_checking",
+        "construct": "calibrated_reliance_support",
+        "text": "I compared the AI explanation with the reference evidence before deciding whether to rely on it."
+      },
+      {
+        "id": "explanation_usefulness",
+        "construct": "explainability",
+        "text": "The explanations were useful for understanding why the system made its recommendation."
+      },
+      {
+        "id": "interface_usability",
+        "construct": "usability",
+        "text": "The AwareML study interface made it easy to compare an explanation with its supporting evidence."
+      },
+      {
+        "id": "real_world_support_trust",
+        "construct": "global_reliance",
+        "text": "I would trust AwareML to support me in a real-world streaming AutoML decision."
+      }
+    ],
+    "open_comment": true,
+    "validation_note": "Custom secondary items; do not describe them as a validated psychometric instrument."
+  },
+  "power_calculation": {
+    "status": "final",
+    "method": "Two-sided paired-samples planning calculation for participant-level correct-minus-incorrect trust difference.",
+    "effect_size_assumption": "Cohen dz = 0.50 (medium paired effect; planning assumption, not estimated from the Pilot).",
+    "alpha": 0.05,
+    "target_power": 0.8,
+    "required_completed_participants": 34,
+    "recruitment_target": 40,
+    "attrition_allowance": "Approximately 15%; recruit up to 40 to obtain at least 34 complete records.",
+    "expertise_comparison_role": "secondary_descriptive"
+  },
+  "analysis_plan": {
+    "primary_estimand": "Within-participant mean S-TIAS trust(correct) minus mean S-TIAS trust(incorrect).",
+    "report_condition_mean_and_sd": true,
+    "report_participant_level_distribution": true,
+    "report_pair_level_exposure_counts": true,
+    "report_framework_and_source_stage_coverage": true,
+    "trial_order_analysis": "Trial position is explicitly 1–20; report trust-vs-order and response-time-vs-order associations.",
+    "expertise_analysis": "Secondary/descriptive; report means and SD by expertise group, not confirmatory unless separately powered.",
+    "override_analysis": "Report Override frequency, correction-target distribution and availability of correction text. Do not automatically label free-text corrections as correct without coding.",
+    "evidence_seeking_analysis": "Report optional evidence-question counts after the initial ratings are locked.",
+    "researcher_visualization": "Researcher workspace includes condition trust/decision charts, participant paired trust profiles, exposure audits, framework/explanation-type coverage, trial-order diagnostics, evidence-seeking and override summaries."
+  },
+  "participant_materials": {
+    "status": "final",
+    "estimated_duration": "Approximately 35–50 minutes for Trust Calibration. The optional Information-Seeking activity adds approximately 10–15 minutes; verify these estimates in the revised pilot before recruitment.",
+    "instructions": "You will evaluate 20 blinded AI explanation items drawn from Track-1 scenarios. Each scenario has priorities among Accuracy, Runtime, Energy and CO₂. The task, AI explanation and reference evidence are aligned to those same priorities. First complete the trust and diagnostic ratings; those initial ratings are then locked. You may optionally ask for additional grounded evidence before making your final Accept, Override or Reject decision. If you choose Override, specify what you would correct before acting. Correctness labels remain hidden and there are no preferred participant answers.",
+    "consent_text": "Participant Information — AwareML Human Study\n\nPurpose: This study examines whether users calibrate trust in AI-generated explanations and how they seek evidence before relying on an AutoML recommendation.\n\nWhat you will do: You will evaluate 20 blinded explanation items. Each item uses a scenario from the Track-1 scenario benchmark and controlled trust-calibration reference evidence. You will rate trust, factual correctness, fluency and confident-sounding language, may ask for additional grounded evidence, and then choose Accept, Override or Reject. An optional Information-Seeking activity may follow.\n\nEstimated duration: approximately 35–50 minutes for Trust Calibration; the optional Information-Seeking activity adds approximately 10–15 minutes. These timings should be confirmed in the revised pilot before recruitment.\n\nEligibility: age 18 or older. Participation is voluntary. People who authored the Track-1 scenario/stimulus bank should not take part.\n\nResponses are stored under pseudonymous identifiers. Main Study raw response data must not be sent to external generative-AI services. Results will be reported in aggregate form.",
+    "debrief_text": "Thank you. The study deliberately mixed correct and incorrect explanation variants while hiding the condition. This was necessary to test whether trust and reliance follow factual support rather than fluent or confident presentation. The reference values were controlled study evidence contextualized by Track-1 scenarios, not claims of actual per-scenario framework performance."
+  },
+  "ethics": {
+    "status": "research_team_self_assessed",
+    "institutional_approval_claimed": false,
+    "institutional_review_status": "not_claimed",
+    "risk_classification": "minimal_risk_behavioral_user_study"
+  }
+}

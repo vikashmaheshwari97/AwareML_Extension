@@ -1,0 +1,12 @@
+{
+  "artifact": "information_seeking_v2_1_frozen_design",
+  "status": "frozen",
+  "files": {
+    "protocol.json": {
+      "sha256": "b8b25d0e1d6656f3f65e0bb3737008051ab8510ea2d4db202c107ad695318bd8"
+    },
+    "coding_scheme.json": {
+      "sha256": "34b19e75a26ec102b0a17dfacd8de69241a0d566e53ff2095d2bacb9e7bf36b6"
+    }
+  }
+}

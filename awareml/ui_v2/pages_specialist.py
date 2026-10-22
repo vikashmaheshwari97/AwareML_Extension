@@ -48,10 +48,6 @@ from .research_visuals_v5 import (
     fairness_robustness_frontier,
     system_xai_ranked_panels,
     system_xai_rank_bump,
-    sustainability_resource_scoreboard,
-    sustainability_rank_bump,
-    sustainability_efficiency_frontier,
-    carbon_intensity_consistency_figure,
 )
 from .fairness_dynamics import (
     fairness_series_frame,
@@ -60,6 +56,12 @@ from .fairness_dynamics import (
     fairness_dynamics_figure,
 )
 from awareml.llm.xai_grounded_summary import grounded_xai_summary
+from .responsible_ai_visuals_v6_3 import (
+    sustainability_decision_matrix,
+    accuracy_energy_frontier,
+    carbon_contribution_waterfall,
+    resource_tradeoff_statement,
+)
 
 
 FAIRNESS_OPTIONS = {
@@ -1151,131 +1153,227 @@ def explainability_v2_page(show_header: bool = True):
         if unavailable:
             st.warning("XAI unavailable/degenerate for: {}. These are availability diagnostics, not failed benchmark runs.".format(", ".join(unavailable)))
 
+from .sustainability_observatory_v6_6 import (
+    accuracy_cost_table,
+    carbon_accounting_figure,
+    efficiency_ratio_figure,
+    extract_resource_timeline,
+    resource_signature_figure,
+    resource_timeline_figure,
+    sustainability_frame,
+    sustainability_leaders,
+    tradeoff_atlas_figure,
+    tradeoff_sentence,
+)
+
+
 def sustainability_v2_page():
     hero(
-        "MEASURED RESOURCE EVIDENCE",
+        "SUSTAINABILITY OBSERVATORY",
         "Sustainability Lab",
-        "Compare measured runtime, energy and CO₂ without converting missing measurements into zeros.",
+        (
+            "Inspect measured energy, CO₂ emissions, runtime and accuracy trade-offs "
+            "as auditable resource evidence—not as a decorative sustainability score."
+        ),
         pills=phase_pills(),
     )
+
     results = result_dicts()
     if not results:
-        empty_state("Run evidence required", "Run a benchmark with CodeCarbon measurement enabled.")
+        empty_state(
+            "Run evidence required",
+            "Run a benchmark with CodeCarbon measurement enabled.",
+        )
         return
 
-    rows = []
-    for r in results:
-        s = r.get("sustainability") or {}
-        rows.append({
-            "Framework": r.get("framework"),
-            "Status": s.get("status"),
-            "Energy kWh": r.get("energy_kwh"),
-            "CO₂ kg": r.get("co2_kg"),
-            "Runtime s": r.get("runtime_sec"),
-            "Samples": r.get("samples"),
-            "Measurement duration s": s.get("duration_sec"),
-            "Backend": s.get("measurement_backend"),
-            "CodeCarbon": s.get("codecarbon_version"),
-            "CPU": s.get("cpu"),
-            "GPU": s.get("gpu"),
-            "RAM GB": s.get("ram_gb"),
-            "Physical CPUs": s.get("physical_cpus"),
-            "Country": s.get("country_iso"),
-            "Region": s.get("region"),
-            "Carbon intensity gCO2/kWh": s.get(
-                "carbon_intensity_g_per_kwh"
-            ),
-            "Warm-up s": s.get("warmup_sec"),
-            "Repetition": s.get("repetition_id"),
-            "Repetitions planned": s.get("repetitions_planned"),
-            "Failure reason": s.get("measurement_failure_reason"),
-        })
-    sdf = pd.DataFrame(rows)
-
-    st.info(
-        "records CPU/GPU/RAM, country/region, CodeCarbon version, "
-        "carbon intensity, measurement duration, warm-up, repetition metadata "
-        "and failure reasons. Missing measurements remain N/A rather than zero."
-    )
-
-    cards = st.columns(4)
-    cards[0].metric("Energy measured", f"{int(sdf['Energy kWh'].notna().sum())}/{len(sdf)}")
-    cards[1].metric("CO₂ measured", f"{int(sdf['CO₂ kg'].notna().sum())}/{len(sdf)}")
-    cards[2].metric("Total measured energy", fmt(pd.to_numeric(sdf["Energy kWh"], errors="coerce").sum(min_count=1), 6, " kWh"))
-    cards[3].metric("Total measured CO₂", fmt(pd.to_numeric(sdf["CO₂ kg"], errors="coerce").sum(min_count=1), 6, " kg"))
-
-    with st.expander("Measurement provenance & exact values", expanded=False):
-        st.dataframe(sdf, use_container_width=True, hide_index=True)
-    measured = sdf.dropna(subset=["Energy kWh", "CO₂ kg"], how="all")
+    sdf = sustainability_frame(results)
+    measured = sdf.dropna(subset=["Energy kWh", "CO₂ kg", "Runtime s"], how="all")
     if measured.empty:
-        st.warning("No measured energy/CO₂ values are available for this run.")
+        st.warning("No measured sustainability evidence is available for this run.")
         return
 
-    section(
-        "Measured resource profile",
-        "Runtime, Energy and CO₂ are shown on separate quantitative axes so reviewers can compare exact measurements without bubble area, mixed units or hidden normalization.",
-    )
-    fig = sustainability_resource_scoreboard(sdf)
-    apply_research_layout(
-        fig, height=440, legend="none",
-        title="Measured resource scoreboard · exact lower-is-better evidence",
-        bottom_margin=62,
-    )
-    plot(fig, "r110_sustain_resource_scoreboard")
+    leaders = sustainability_leaders(sdf)
+    total_energy = pd.to_numeric(sdf["Energy kWh"], errors="coerce").sum(min_count=1)
+    total_co2 = pd.to_numeric(sdf["CO₂ kg"], errors="coerce").sum(min_count=1)
 
-    section(
-        "Efficiency structure",
-        "The rank-flow panel reveals whether a framework is consistently efficient across Runtime, Energy and CO₂. The frontier panel then isolates the measured Runtime–Energy trade-off without collapsing the resources into one score.",
+    st.markdown(
+        """
+        <div class="r9-callout">
+          <b>Measured evidence only.</b> Runtime, Energy and CO₂ come from the active benchmark.
+          Missing values remain N/A. Run-relative ratios and Pareto markers are visualization aids;
+          they do not create a new sustainability score.
+        </div>
+        """,
+        unsafe_allow_html=True,
     )
-    left, right = st.columns([1, 1.08])
-    with left:
-        fig = sustainability_rank_bump(sdf)
-        apply_research_layout(
-            fig, height=430, legend="bottom",
-            title="Resource-efficiency rank flow",
-            bottom_margin=102,
-        )
-        plot(fig, "r110_sustain_rank_flow")
-        st.caption(
-            "Rank 1 is best (lowest measured resource use) on each axis. Parallel lines indicate consistent efficiency; crossings expose resource-specific trade-offs."
-        )
-    with right:
-        fig = sustainability_efficiency_frontier(sdf)
-        apply_research_layout(
-            fig, height=430, legend="none",
-            title="Runtime–Energy efficiency frontier · measured evidence",
-            bottom_margin=62,
-        )
-        plot(fig, "r110_sustain_efficiency_frontier")
-        st.caption(
-            "Outlined diamonds are nondominated in Runtime and Energy. The star is the run-relative 2D resource compromise (closest Pareto point to the minimum-runtime/minimum-energy ideal); it is not a new AutoML recommendation."
-        )
 
-    intensity = sdf.copy()
-    intensity["Energy kWh"] = pd.to_numeric(intensity["Energy kWh"], errors="coerce")
-    intensity["CO₂ kg"] = pd.to_numeric(intensity["CO₂ kg"], errors="coerce")
-    if ((intensity["Energy kWh"] > 0) & intensity["CO₂ kg"].notna()).any():
+    cards = st.columns(6)
+    cards[0].metric(
+        "Energy measured",
+        "{}/{}".format(int(sdf["Energy kWh"].notna().sum()), len(sdf)),
+    )
+    cards[1].metric(
+        "CO₂ measured",
+        "{}/{}".format(int(sdf["CO₂ kg"].notna().sum()), len(sdf)),
+    )
+    cards[2].metric("Experiment energy", fmt(total_energy, 6, " kWh"))
+    cards[3].metric("Experiment CO₂", fmt(total_co2, 6, " kg"))
+    cards[4].metric("Lowest energy", leaders.get("energy") or "N/A")
+    cards[5].metric("Lowest CO₂", leaders.get("co2") or "N/A")
+
+    st.info("Decision signal: **{}**".format(tradeoff_sentence(sdf)))
+
+    tabs = st.tabs(
+        [
+            "Resource overview",
+            "Efficiency trade-offs",
+            "Carbon accounting",
+            "Measurement diagnostics",
+        ]
+    )
+
+    with tabs[0]:
         section(
-            "Carbon-accounting consistency",
-            "Observed CO₂/Energy intensity is compared with the carbon-intensity metadata recorded by the measurement backend. This makes the Energy–CO₂ relationship auditable instead of showing another redundant scatter plot.",
+            "Measured resource signature",
+            (
+                "Exact Runtime, Energy and CO₂ values are displayed as aligned Cleveland-style "
+                "dot plots. Line length encodes the measured value; the diamond marks the run minimum."
+            ),
         )
-        fig = carbon_intensity_consistency_figure(sdf)
-        apply_research_layout(
-            fig, height=390, legend="bottom",
-            title="Carbon intensity audit · reported metadata vs observed CO₂/Energy",
-            bottom_margin=96,
+        fig = resource_signature_figure(sdf)
+        plot(fig, "r126_sustain_resource_signature")
+
+        section(
+            "Relative resource burden",
+            (
+                "Every framework is compared with the best observed value for each resource. "
+                "A value of 1.0× means the run minimum; 2.0× means twice that measured resource use."
+            ),
         )
-        plot(fig, "r110_sustain_carbon_intensity")
+        fig = efficiency_ratio_figure(sdf)
+        plot(fig, "r126_sustain_efficiency_ratios")
+
+        timeline = extract_resource_timeline(results)
+        if not timeline.empty:
+            section(
+                "Measured resource timeline",
+                "Shown only because genuine per-step/window sustainability telemetry exists in this run.",
+            )
+            plot(
+                resource_timeline_figure(timeline),
+                "r126_sustain_resource_timeline",
+            )
+        else:
+            st.info(
+                "Energy timeline not drawn: the current CodeCarbon evidence contains run-level totals, "
+                "not genuine per-window energy/CO₂ telemetry. A synthetic curve would be visually attractive "
+                "but scientifically unsupported."
+            )
+
+    with tabs[1]:
+        section(
+            "Accuracy–resource trade-off atlas",
+            (
+                "Accuracy is compared separately with Runtime, Energy and CO₂. "
+                "Diamond markers are nondominated within each two-objective view."
+            ),
+        )
+        fig = tradeoff_atlas_figure(sdf)
+        plot(fig, "r126_sustain_tradeoff_atlas")
         st.caption(
-            "Observed intensity = measured CO₂ ÷ measured Energy, expressed in gCO₂/kWh. A short reported-to-observed segment indicates internally consistent accounting; differences should be interpreted with CodeCarbon's measurement scope and metadata."
+            "A point is nondominated when no other framework is at least as accurate while also using no more of that resource. "
+            "The three panels intentionally stay separate because seconds, kWh and kg CO₂ are not interchangeable."
         )
 
-    render_phase14_sustainability_details(results)
+        section(
+            "Exact trade-off ledger",
+            (
+                "This table makes the reviewer-facing statement auditable: how much accuracy is lost relative "
+                "to the run leader, and how many times the minimum Runtime, Energy and CO₂ each framework uses."
+            ),
+        )
+        ledger = accuracy_cost_table(sdf)
+        st.dataframe(
+            ledger.style.format(
+                {
+                    "Accuracy": "{:.4f}",
+                    "Accuracy gap to best (pp)": "{:.2f}",
+                    "Runtime s": "{:.3f}",
+                    "Runtime × best": "{:.2f}×",
+                    "Energy kWh": "{:.6g}",
+                    "Energy × best": "{:.2f}×",
+                    "CO₂ kg": "{:.6g}",
+                    "CO₂ × best": "{:.2f}×",
+                },
+                na_rep="N/A",
+            ),
+            use_container_width=True,
+            hide_index=True,
+        )
 
+    with tabs[2]:
+        section(
+            "Energy → CO₂ accounting",
+            (
+                "The left panel checks the measured Energy–CO₂ relation against the run's observed carbon intensity. "
+                "The right panel shows which frameworks contribute most to total experiment Energy and CO₂."
+            ),
+        )
+        fig = carbon_accounting_figure(sdf)
+        plot(fig, "r126_sustain_carbon_accounting")
+
+        valid = sdf.copy()
+        valid["Energy kWh"] = pd.to_numeric(valid["Energy kWh"], errors="coerce")
+        valid["CO₂ kg"] = pd.to_numeric(valid["CO₂ kg"], errors="coerce")
+        mask = (valid["Energy kWh"] > 0) & valid["CO₂ kg"].notna()
+        observed = (valid.loc[mask, "CO₂ kg"] / valid.loc[mask, "Energy kWh"]) * 1000.0
+        metadata = pd.to_numeric(
+            valid["Carbon intensity gCO₂/kWh"], errors="coerce"
+        ).dropna()
+
+        c1, c2, c3, c4 = st.columns(4)
+        c1.metric(
+            "Median observed intensity",
+            "N/A" if observed.empty else "{:.1f} gCO₂/kWh".format(float(observed.median())),
+        )
+        c2.metric(
+            "Observed intensity spread",
+            "N/A" if observed.empty else "{:.2f} gCO₂/kWh".format(float(observed.max() - observed.min())),
+        )
+        c3.metric(
+            "Median reported intensity",
+            "N/A" if metadata.empty else "{:.1f} gCO₂/kWh".format(float(metadata.median())),
+        )
+        if not observed.empty and not metadata.empty:
+            diff = abs(float(observed.median()) - float(metadata.median()))
+            c4.metric("Median accounting difference", "{:.2f} gCO₂/kWh".format(diff))
+        else:
+            c4.metric("Median accounting difference", "N/A")
+
+        st.caption(
+            "Observed carbon intensity = measured CO₂ ÷ measured Energy, expressed in gCO₂/kWh. "
+            "When all frameworks share one regional intensity, aligned points are expected rather than a visualization failure."
+        )
+
+    with tabs[3]:
+        section(
+            "Measurement provenance & exact values",
+            (
+                "Hardware, CodeCarbon version, region, carbon intensity, measurement duration, "
+                "warm-up and repetition metadata remain available for audit."
+            ),
+        )
+        st.dataframe(sdf, use_container_width=True, hide_index=True)
+
+        # Preserve the existing advanced Phase-14 diagnostics without mixing them into
+        # the reviewer-facing overview.
+        render_phase14_sustainability_details(results)
 
 def trust_calibration_v2_page():
-    return trust_calibration_research_page()
-
+    from .phase16_morten_v2 import phase16_trust_calibration_page_v2
+    return phase16_trust_calibration_page_v2()
 
 def information_seeking_v2_page():
-    return information_seeking_research_page()
+    from .phase17_morten_v2 import information_seeking_research_page_v2
+    return information_seeking_research_page_v2()
+

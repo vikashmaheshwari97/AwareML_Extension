@@ -1,0 +1,75 @@
+{
+  "artifact": "information_seeking_protocol_v2_1",
+  "schema_version": "information_seeking_v2_1",
+  "track": 3,
+  "status": "final",
+  "revision_basis": "Prof. Morten methodological review v2.1: scenario-to-decision connection plus restored research-grade researcher visualization.",
+  "central_rq": "How do participants seek, revisit and combine evidence before deciding whether to rely on an AwareML recommendation?",
+  "participant_target": {
+    "final_target": 12,
+    "role": "qualitative/descriptive complement; not powered for confirmatory subgroup inference"
+  },
+  "eligibility": {
+    "minimum_age": 18,
+    "required_background": "Sufficient ML / AutoML familiarity to interpret comparative framework evidence.",
+    "groups": [
+      "University / CS student",
+      "Practitioner",
+      "ML / AutoML expert"
+    ],
+    "expertise_scale": {
+      "min": 1,
+      "max": 7,
+      "anchors": {
+        "1": "No knowledge / experience",
+        "4": "Moderate knowledge / experience",
+        "7": "Extensive knowledge / experience"
+      }
+    },
+    "track1_authors_excluded": true
+  },
+  "study_context": {
+    "main_policy": "Use one saved standardized measured AwareML context and one explicitly selected Track-1 scenario for all Main Study participants.",
+    "scenario_source": "Track-1 scenario benchmark",
+    "dashboard_connection": "Participant view presents scenario, observed ranking and the same evidence families used in the AwareML dashboard.",
+    "raw_dataset_rows_saved": false,
+    "scenario_evidence_contract": "The Track-1 scenario supplies decision priorities. The saved AwareML context supplies measured benchmark evidence. The study does not claim that the benchmark dataset is literally the textual scenario.",
+    "researcher_alignment_attestation_required": true
+  },
+  "measurements": [
+    "whether_follow_up_occurred",
+    "number_of_follow_ups",
+    "first_follow_up_category",
+    "time_before_first_follow_up",
+    "total_time_to_final_decision",
+    "evidence_view_sequence",
+    "total_evidence_views",
+    "unique_evidence_areas",
+    "repeated_evidence_access_count",
+    "complete_timestamped_interaction_sequence",
+    "requested_topics",
+    "recommendation_accepted_overridden_rejected",
+    "override_correction",
+    "final_decision_confidence",
+    "participant_rationale"
+  ],
+  "analysis": {
+    "manual_qualitative_coding_required": true,
+    "automated_classifier_role": "analysis_assist_only",
+    "descriptive_statistics": "Report means and SDs for behavioral measures.",
+    "interaction_pattern_clustering": "Exploratory deterministic clustering of behavioral features; report cluster profiles and cluster-by-expertise table.",
+    "sample_size_logic": "Pre-specified target of 12 (>10) for a qualitative/descriptive complement; no statistical power claim is made.",
+    "verbalization_prompts": "Use the term verbalization prompts rather than think-aloud prompts.",
+    "researcher_visualization": "Research-grade descriptive workspace with category, evidence-access, repeated-access and revisit views, decision, timing, interaction-depth, sequence, cluster and manual-theme views."
+  },
+  "participant_materials": {
+    "estimated_duration": "Approximately 10–15 minutes for the Information-Seeking activity; verify in the revised pilot before recruitment.",
+    "instructions": "You will start from one standardized Track-1 scenario and one standardized measured AwareML recommendation. Inspect only the evidence you genuinely need, revisit evidence if useful, ask grounded follow-up questions, and stop when you have enough information. Finish by choosing Accept, Override or Reject and explaining your decision.",
+    "consent_text": "Information-Seeking activity — AwareML Human Study\n\nThis activity studies how people inspect and revisit evidence before acting on an AutoML recommendation. Estimated duration is approximately 10–15 minutes and should be confirmed in the revised pilot. Participants must be 18 or older and have enough ML/AutoML familiarity to interpret comparative framework evidence. Participation is voluntary and responses are stored under a pseudonymous code."
+  },
+  "response_policy": {
+    "mode": "deterministic_grounded_multi_topic_router",
+    "external_llm_for_raw_responses": false
+  },
+  "session_order": "Trust Calibration first; Information-Seeking second where the participant is part of the qualitative sub-sample."
+}

@@ -1,0 +1,24 @@
+{
+  "artifact": "trust_stimulus_bank_v2_1",
+  "schema_version": "trust_stimulus_bank_v2_1",
+  "status": "frozen",
+  "scope": "Morten-review v2.1: scenario→task→explanation→evidence coherence using only Track-1 frozen objectives Accuracy/Runtime/Energy/CO2.",
+  "files": {
+    "stimuli_researcher.json": {
+      "sha256": "d66016f35d87bafa556f8048f75f3499c5e3cff4548fb826739d1acb11127c3a",
+      "size_bytes": 293069
+    },
+    "stimuli_participant.json": {
+      "sha256": "4637722beaf6a19e64ade3881e8c1d18cbbe77ef832e106371d14106abd9f342",
+      "size_bytes": 134975
+    },
+    "summary.json": {
+      "sha256": "af6a97cdd1ce32f779ee4ccc068b1956ccfda3f1df4fd9c0e9ec903dc3a6600d",
+      "size_bytes": 783
+    },
+    "scenario_map.csv": {
+      "sha256": "38ee47b15d68ca0d910a947d10e6fa6057beec2329eb8d6493bd16076aba4be3",
+      "size_bytes": 7297
+    }
+  }
+}

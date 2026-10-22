@@ -1,0 +1,54 @@
+{
+  "artifact": "information_seeking_qualitative_coding_scheme_v2",
+  "status": "final",
+  "principle": "Manual qualitative coding is authoritative; automated categories and clusters are analysis aids only.",
+  "codes": [
+    {
+      "id": "verification_seeking",
+      "label": "Verification seeking",
+      "definition": "Seeks measurements, sources, evidence or provenance to verify the recommendation."
+    },
+    {
+      "id": "uncertainty_reduction",
+      "label": "Uncertainty reduction",
+      "definition": "Seeks information mainly to reduce uncertainty before deciding."
+    },
+    {
+      "id": "comparison_search",
+      "label": "Comparison search",
+      "definition": "Compares frameworks or asks counterfactual questions."
+    },
+    {
+      "id": "skeptical_challenge",
+      "label": "Skeptical challenge",
+      "definition": "Explicitly questions or disputes the recommendation/explanation."
+    },
+    {
+      "id": "terminology_clarification",
+      "label": "Terminology clarification",
+      "definition": "Asks what a metric, term or explanation means."
+    },
+    {
+      "id": "evidence_revisiting",
+      "label": "Evidence revisiting",
+      "definition": "Returns to an evidence area previously inspected before deciding."
+    },
+    {
+      "id": "information_sufficiency",
+      "label": "Information sufficiency",
+      "definition": "Stops because the available information is judged sufficient."
+    },
+    {
+      "id": "decision_revision",
+      "label": "Decision revision",
+      "definition": "New information causes a change, override or rejection of the initial recommendation."
+    }
+  ],
+  "coding_instructions": [
+    "Code participant behavior and rationale, not the automated classifier label.",
+    "Multiple codes may apply.",
+    "Record a coder note for borderline cases.",
+    "Use de-identified quotations only.",
+    "If two coders are used, adjudicate disagreements using an agreed procedure."
+  ]
+}

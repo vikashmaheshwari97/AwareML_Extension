@@ -1,0 +1,14 @@
+{
+  "artifact": "phase16_trust_calibration_v2_1_frozen_design",
+  "status": "frozen",
+  "revision": "morten_review_v2_1",
+  "files": {
+    "protocol.json": {
+      "sha256": "beab0fced3a95aeb2cb4256f0b02221cbb7e5e603a93187ec473f91549bc37cc"
+    }
+  },
+  "source_stimulus_bank": {
+    "path": "data/journal/trust_stimulus_bank_v2/frozen",
+    "manifest_sha256": "63eb99aa6daddf4128664ca2c43a684ccf819c0089957104efae11c8b47d7cab"
+  }
+}
