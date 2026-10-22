@@ -26,6 +26,7 @@ from awareml.recommender.evaluation import grouped_benchmark
 from awareml.studies import StudyStore, TrustCalibrationStudy, classify_follow_up
 from awareml.studies.information_seeking import THINK_ALOUD_PROMPTS
 from awareml.types import ObjectiveWeights, RunConfig
+from awareml.ui_v2.framework_control import render_framework_configuration
 from awareml.analysis.repeatability_registry import canonical_dataframe_sha256
 from .theme import hero
 
@@ -447,19 +448,29 @@ def run_studio_page():
                 key="run_drift_replay_size",
                 disabled=drift_action_policy == "monitor_only",
             )
-        oaml_mode = st.selectbox(
-            "OAML execution mode",
-            ["online", "gama"],
-            index=0,
-            key="run_oaml_mode",
-            help="online = River 0.8 streaming path. gama = GAMA search on a warm-up window with periodic refits and River fallback.",
-        )
         selected = st.multiselect(
             "Frameworks",
             ["AutoStreamML", "AutoClass", "EvoAutoML", "OAML", "ChaCha"],
             default=["AutoStreamML", "AutoClass", "EvoAutoML", "OAML", "ChaCha"],
             key="run_frameworks",
         )
+
+        with st.expander("Framework algorithms & hyperparameters", expanded=False):
+            framework_configs = render_framework_configuration(
+                selected,
+                seed=int(seed),
+                key_prefix="run_fwcfg",
+                state=_state(),
+                persist=True,
+            )
+        _state()["framework_configs"] = framework_configs
+        _state()["window_size"] = int(window)
+        # v6.1: OAML execution mode now lives inside the OAML framework tab.
+        oaml_mode = str(
+            ((framework_configs.get("OAML") or {}).get("global") or {}).get("mode", "online")
+        ).lower()
+        if oaml_mode not in {"online", "gama"}:
+            oaml_mode = "online"
 
         # Human-readable experiment configuration inspired by LLM+AutoML systems,
         # but generated deterministically so it is reproducible and auditable.
@@ -477,6 +488,7 @@ def run_studio_page():
                 "seed": int(seed),
             },
             "frameworks": selected,
+            "framework_configuration": framework_configs,
             "oaml_mode": oaml_mode,
             "measure_energy_co2": bool(track),
             "research_instrumentation": {
@@ -560,6 +572,7 @@ def run_studio_page():
             drift_min_separation=int(drift_min_separation),
             drift_performance_drop=float(drift_performance_drop),
             drift_replay_size=int(drift_replay_size),
+            framework_configs=framework_configs,
         )
         progress = st.progress(0.0, text="Preparing benchmark…")
         status = st.empty()

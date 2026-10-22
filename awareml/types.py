@@ -34,9 +34,9 @@ class RunConfig:
     time_budget_sec: float = 60.0
     positive_label: Any = 1
     track_sustainability: bool = False
+    framework_configs: dict[str, dict[str, Any]] = field(default_factory=dict)
 
     sensitive_feature_policy: str = "audit_only"
-
     missing_prediction_policy: str = "incorrect"
     fairness_min_group_n: int = 10
     drift_recovery_tolerance: float = 0.02
@@ -44,10 +44,8 @@ class RunConfig:
     drift_min_assessment_samples: Optional[int] = None
     capture_native_xai_snapshots: bool = True
 
-    # Temporal upgrade. Defaults preserve historical script behaviour; Run
-    # Studio explicitly selects the enhanced interactive policy.
-    drift_detector_mode: str = "adwin"  # adwin | hybrid
-    drift_action_policy: str = "monitor_only"  # monitor_only | adaptive_replay
+    drift_detector_mode: str = "adwin"
+    drift_action_policy: str = "monitor_only"
     drift_warmup_samples: Optional[int] = None
     drift_min_separation: Optional[int] = None
     drift_performance_drop: float = 0.03
@@ -56,9 +54,7 @@ class RunConfig:
     xai_method: str = "auto"
     xai_max_rows: int = 250
     xai_replay_warning_threshold: float = 0.05
-
     prediction_near_constant_threshold: float = 0.95
-
     fairness_calibration_bins: int = 10
     sustainability_region: Optional[str] = None
     sustainability_warmup_sec: float = 0.0
@@ -114,6 +110,7 @@ class FrameworkResult:
     uncertainty: dict[str, Any] = field(default_factory=dict)
     sustainability: dict[str, Any] = field(default_factory=dict)
     parameters: dict[str, Any] = field(default_factory=dict)
+    parameter_history: list[dict[str, Any]] = field(default_factory=list)
     experiment_id: Optional[str] = None
     error: Optional[str] = None
 

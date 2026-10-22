@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+# AWAREML_PHASE17_MAIN_CONTEXT_HOTFIX_V6_5_2
+
 import hashlib
 import hmac
 import html
@@ -16,7 +18,6 @@ import streamlit as st
 from awareml.studies.study_runtime import bootstrap_study_runtime
 bootstrap_study_runtime()
 
-from awareml.llm import GroundedChat
 from awareml.studies.information_seeking import (
     CATEGORY_DESCRIPTIONS,
     CATEGORY_LABELS,
@@ -307,7 +308,7 @@ def _process_question(
             "requested_topics": requested_topics,
             "target_frameworks": target_frameworks,
             "classifier_role": "analysis_assist_only",
-            "grounding_mode": "phase17_multi_topic_grounding_v1",
+            "grounding_mode": "phase17_multi_topic_grounding_v2",
             "turn": turn,
             "time_since_session_start_sec": elapsed,
             "answer_source": "deterministic-grounded-multi-topic",
@@ -354,7 +355,12 @@ def _participant_page(results: List[Dict[str, Any]], ranking: List[Dict[str, Any
                     st.session_state.pop(key, None)
             st.session_state["p17_access"] = "home"
             st.rerun()
-        if c2.button("Start another Pilot session", use_container_width=True):
+        restart_label = (
+            "Start another Main Study session"
+            if mode == "final"
+            else "Start another Pilot Study session"
+        )
+        if c2.button(restart_label, use_container_width=True):
             for key in list(st.session_state.keys()):
                 if key.startswith("p17_") and key not in {"p17_access"}:
                     st.session_state.pop(key, None)
@@ -459,7 +465,7 @@ def _participant_page(results: List[Dict[str, Any]], ranking: List[Dict[str, Any
                         "ranking_sha256": _ranking_digest(ranking),
                         "study_context_source": context_source,
                         "study_context_sha256": (saved_context or {}).get("sha256_without_self"),
-                        "response_mode": "deterministic_grounded_multi_topic_router",
+                        "response_mode": "deterministic_grounded_multi_topic_router_v2",
                     },
                 )
                 st.rerun()
@@ -487,6 +493,13 @@ def _participant_page(results: List[Dict[str, Any]], ranking: List[Dict[str, Any
         ),
         unsafe_allow_html=True,
     )
+
+    if mode == "final":
+        context_id = str((saved_context or {}).get("sha256_without_self") or _ranking_digest(ranking))[:12]
+        st.caption(
+            "Standardized Main Study context · the same measured run is intentionally used across participants for comparability. "
+            "Context ID: {}. The top framework changes only if the research team deliberately replaces and re-freezes the study context before data collection.".format(context_id)
+        )
 
     section(
         "Explore evidence",
@@ -557,7 +570,7 @@ def _participant_page(results: List[Dict[str, Any]], ranking: List[Dict[str, Any
                         )
                     )
                 else:
-                    st.caption("Grounded response from the current measured study context.")
+                    st.caption("Grounded plain-language response from the standardized measured study context.")
     question = st.chat_input(
         "Ask for evidence, compare alternatives, challenge the recommendation, or request clarification..."
     )
@@ -700,7 +713,13 @@ def _researcher_page(current_results=None, current_ranking=None) -> None:
 
     section(
         "Study evidence context",
-        "For Pilot testing you may use the current session directly. For repeated participant sessions, save one standardized measured context so participants do not need to rerun the benchmark.",
+        (
+            "Main Study uses one standardized measured context so every participant starts from the same "
+            "recommendation and evidence. Initialize it once from the agreed five-framework run before participant collection."
+            if mode == "final"
+            else "For Pilot testing you may use the current session directly. For repeated participant sessions, "
+            "save one standardized measured context so participants do not need to rerun the benchmark."
+        ),
     )
     saved_context = load_study_context(mode)
     if saved_context:
@@ -721,18 +740,73 @@ def _researcher_page(current_results=None, current_ranking=None) -> None:
 
     current_results = list(current_results or [])
     current_ranking = list(current_ranking or [])
-    if current_results and current_ranking:
+
+    expected_frameworks = {"AutoStreamML", "AutoClass", "EvoAutoML", "OAML", "ChaCha"}
+    observed_frameworks = {
+        str(row.get("framework") or row.get("Framework") or "")
+        for row in current_results
+    }
+    observed_frameworks.discard("")
+    five_framework_ready = (
+        expected_frameworks.issubset(observed_frameworks)
+        and bool(current_ranking)
+    )
+
+    if mode == "final" and saved_context:
+        saved_results = list(saved_context.get("results") or [])
+        saved_ranking = list(saved_context.get("ranking") or [])
+        saved_top, _ = _top_context(saved_results, saved_ranking)
+        saved_top_name = str((saved_top or {}).get("framework") or "N/A")
+        context_id = str(saved_context.get("sha256_without_self") or "")[:12] or "unavailable"
+        st.success(
+            "Main Study context initialized and ready · {} frameworks · top recommendation: {} · context ID: {}.".format(
+                len(saved_results), saved_top_name, context_id
+            )
+        )
+        st.caption(
+            "Participant sessions now use this saved context even if you run another benchmark elsewhere in AwareML. "
+            "This preserves comparability across Main Study participants."
+        )
+    elif mode == "final":
+        if five_framework_ready:
+            st.success(
+                "Current five-framework benchmark and observed Decision Lab ranking are ready to initialize the Main Study context."
+            )
+            if st.button(
+                "Initialize standardized Main Study context from current run",
+                type="primary",
+                use_container_width=True,
+                key="p17_save_study_context_final",
+            ):
+                save_study_context("final", current_results, current_ranking)
+                st.success(
+                    "Main Study context initialized. Participant Study can now use the same measured recommendation "
+                    "and evidence for every participant."
+                )
+                st.rerun()
+        elif current_results or current_ranking:
+            missing_frameworks = sorted(expected_frameworks - observed_frameworks)
+            st.warning(
+                "The current dashboard state is not yet a complete five-framework Main Study context. "
+                "Missing framework results: {}. Also make sure Decision Lab has been opened once so the observed ranking exists.".format(
+                    ", ".join(missing_frameworks) if missing_frameworks else "none"
+                )
+            )
+        else:
+            st.info(
+                "No current five-framework benchmark is available to initialize the Main Study context. "
+                "Run the benchmark, open Decision Lab once, then return here."
+            )
+    elif current_results and current_ranking:
         if st.button(
-            "Save current measured run as {} study context".format(
-                "Pilot" if mode == "pilot" else "Main"
-            ),
+            "Save current measured run as Pilot study context",
             type="primary",
             use_container_width=True,
-            key="p17_save_study_context_{}".format(mode),
+            key="p17_save_study_context_pilot",
         ):
-            saved = save_study_context(mode, current_results, current_ranking)
+            save_study_context("pilot", current_results, current_ranking)
             st.success(
-                "Standardized study context saved. New participant sessions on this deployment can use it without rerunning Run Studio."
+                "Standardized Pilot study context saved. New Pilot participant sessions can use it without rerunning Run Studio."
             )
             st.rerun()
     else:
@@ -1079,13 +1153,23 @@ def information_seeking_research_page():
                 """,
                 unsafe_allow_html=True,
             )
+            participant_ready = not (
+                mode == "final" and context_source == "missing_final_context"
+            )
             if st.button(
                 "Enter participant study",
                 type="primary",
                 use_container_width=True,
                 key="p17_enter_participant",
+                disabled=not participant_ready,
             ):
                 _set_access("participant")
+            if not participant_ready:
+                st.warning(
+                    "Main Study participant access is waiting for one standardized measured context. "
+                    "Your completed benchmark is not lost: open Researcher Workspace and initialize "
+                    "the current five-framework run once."
+                )
         with c2:
             st.markdown(
                 """
@@ -1112,19 +1196,28 @@ def information_seeking_research_page():
         cards[1].metric("Follow-up categories", "5 + other")
         cards[2].metric("Qualitative coding", "Required")
         cards[3].metric("Classifier role", "Assistive only")
-        if context_source == "current_session":
+        if mode == "final" and context_source == "missing_final_context":
+            st.warning(
+                "Main Study context is not initialized yet. The five-framework benchmark may already be "
+                "available in AwareML, but final participant sessions deliberately use one saved standardized "
+                "context. Open Researcher Workspace and initialize the current measured run once."
+            )
+        elif context_source == "current_session":
             st.success(
-                "Participant context ready from the current AwareML session. For repeated participants, the researcher can save this measured run as a standardized Pilot context."
+                "Participant context is available from the current AwareML session. "
+                "For repeated Pilot sessions, the researcher can save this run as a standardized Pilot context."
             )
         elif context_source == "saved_study_context":
             st.success(
-                "Participant context ready from the saved standardized {} study context. Participants do not need to run the dashboard first.".format(
+                "Participant context ready from the saved standardized {} study context. "
+                "Participants do not need to rerun the dashboard first.".format(
                     "Pilot" if mode == "pilot" else "Main"
                 )
             )
         else:
             st.info(
-                "Participant context is not ready. Researcher workflow: Run Studio → run the agreed five-framework benchmark → open Decision Lab once → return to Information-Seeking Study. For repeated participants, save that run in Researcher Workspace."
+                "Participant context is not ready. Researcher workflow: Run Studio → run the agreed "
+                "five-framework benchmark → open Decision Lab once → return to Information-Seeking Study."
             )
         return
 
@@ -1133,10 +1226,25 @@ def information_seeking_research_page():
         if st.button("Back to study home", key="p17_back_participant"):
             _set_access("home")
         if not results:
-            empty_state(
-                "Study context required",
-                "Researcher setup: Run Studio → run the agreed five-framework benchmark → open Decision Lab once → return here. The researcher can then save the measured run as a standardized Pilot context so later participants do not need to rerun AwareML.",
-            )
+            if mode == "final":
+                empty_state(
+                    "Main Study context required",
+                    "The five-framework benchmark can already be complete while participant access remains blocked. "
+                    "For Main Study comparability, the researcher must initialize that measured run once as the "
+                    "standardized Main Study context.",
+                )
+                if st.button(
+                    "Open Researcher Workspace to initialize Main Study context",
+                    use_container_width=True,
+                    key="p17_missing_context_researcher",
+                ):
+                    _set_access("researcher")
+            else:
+                empty_state(
+                    "Study context required",
+                    "Researcher setup: Run Studio → run the agreed five-framework benchmark → open Decision Lab once → "
+                    "return here. The researcher can then save the measured run as a standardized Pilot context.",
+                )
             return
         if top is None:
             empty_state(

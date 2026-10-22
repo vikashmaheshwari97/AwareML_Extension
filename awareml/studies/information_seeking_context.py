@@ -109,9 +109,28 @@ def resolve_study_context(
     current_results: List[Dict[str, Any]],
     current_ranking: List[Dict[str, Any]],
 ) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]], str, Optional[Dict[str, Any]]]:
+    """Resolve the evidence context used by the Information-Seeking Study.
+
+    Main Study deliberately prefers the saved standardized context so every
+    participant sees the same measured recommendation. A live dashboard run must
+    not silently replace the Main Study stimulus. Pilot mode can still use the
+    current session directly for iterative testing.
+    """
+    normalized_mode = "final" if str(mode).lower() == "final" else "pilot"
+    saved = load_study_context(normalized_mode)
+
+    if normalized_mode == "final":
+        if saved:
+            return (
+                list(saved.get("results") or []),
+                list(saved.get("ranking") or []),
+                "saved_study_context",
+                saved,
+            )
+        return [], [], "missing_final_context", None
+
     if current_results and current_ranking:
         return current_results, current_ranking, "current_session", None
-    saved = load_study_context(mode)
     if saved:
         return (
             list(saved.get("results") or []),

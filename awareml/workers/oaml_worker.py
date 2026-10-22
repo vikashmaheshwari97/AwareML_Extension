@@ -47,12 +47,24 @@ class OAMLWorker:
         self.seed = int(seed)
         self.grace_period = int(grace_period)
         self.mode = mode if mode in {"online", "gama"} else "online"
+        self.online_algorithm = os.getenv(
+            "AWAREML_OAML_ONLINE_ALGORITHM", "HoeffdingAdaptiveTreeClassifier"
+        ).strip() or "HoeffdingAdaptiveTreeClassifier"
         self.gama_time_budget = max(2, int(os.getenv("AWAREML_OAML_GAMA_BUDGET", "5")))
         self.warmup_size = max(20, int(os.getenv("AWAREML_OAML_GAMA_WARMUP", "50")))
         self.refit_interval = max(self.warmup_size, int(os.getenv("AWAREML_OAML_GAMA_REFIT", "500")))
         self._build()
 
     def _new_river_model(self):
+        requested = self.online_algorithm
+        if requested == "HoeffdingTreeClassifier":
+            return tree.HoeffdingTreeClassifier(grace_period=self.grace_period), requested
+        if requested == "HoeffdingAdaptiveTreeClassifier":
+            try:
+                return tree.HoeffdingAdaptiveTreeClassifier(grace_period=self.grace_period), requested
+            except Exception:
+                return tree.HoeffdingTreeClassifier(grace_period=self.grace_period), "HoeffdingTreeClassifier"
+        # Safe fallback: never pretend an unsupported worker algorithm ran.
         try:
             return tree.HoeffdingAdaptiveTreeClassifier(grace_period=self.grace_period), "HoeffdingAdaptiveTreeClassifier"
         except Exception:
@@ -93,7 +105,6 @@ class OAMLWorker:
             self.gama_error = None
         except Exception as exc:
             self.gama_error = f"{type(exc).__name__}: {exc}"
-            # Keep the River learner alive; failure is exposed in params/backend.
 
     def predict_one(self, x: dict):
         if self.mode == "gama" and self.gama_fitted and self.gama_model is not None:
@@ -130,7 +141,10 @@ class OAMLWorker:
         if self.detector is not None and pred is not None:
             try:
                 self.detector.update(0.0 if pred == y else 1.0)
-                drifted = bool(getattr(self.detector, "drift_detected", False) or getattr(self.detector, "change_detected", False))
+                drifted = bool(
+                    getattr(self.detector, "drift_detected", False)
+                    or getattr(self.detector, "change_detected", False)
+                )
                 if drifted:
                     self.local_drift_events += 1
             except Exception:
@@ -170,6 +184,7 @@ class OAMLWorker:
             "gama_warmup": self.warmup_size,
             "gama_refit_interval": self.refit_interval,
             "grace_period": self.grace_period,
+            "requested_online_model": self.online_algorithm,
             "online_model": self.online_model_name,
             "local_drift_events": self.local_drift_events,
             "seen": self.seen,
@@ -188,25 +203,38 @@ def main():
         if not raw:
             continue
         try:
-            req = json.loads(raw); cmd = req.get("cmd")
+            req = json.loads(raw)
+            cmd = req.get("cmd")
             if cmd == "init":
-                worker = OAMLWorker(seed=req.get("seed", 42), grace_period=req.get("grace_period", 100), mode=req.get("mode", "online"))
-                respond({"ok": True, "params": worker.params()}); continue
+                worker = OAMLWorker(
+                    seed=req.get("seed", 42),
+                    grace_period=req.get("grace_period", 100),
+                    mode=req.get("mode", "online"),
+                )
+                respond({"ok": True, "params": worker.params()})
+                continue
             if worker is None:
                 raise RuntimeError("Worker not initialized")
-            if cmd == "predict": respond({"ok": True, "prediction": _jsonable(worker.predict_one(req.get("x", {})))})
+            if cmd == "predict":
+                respond({"ok": True, "prediction": _jsonable(worker.predict_one(req.get("x", {})))})
             elif cmd == "predict_batch":
                 rows = req.get("rows", []) or []
                 respond({"ok": True, "predictions": [_jsonable(worker.predict_one(x)) for x in rows]})
-            elif cmd == "predict_proba": respond({"ok": True, "proba": worker.predict_proba_one(req.get("x", {}))})
+            elif cmd == "predict_proba":
+                respond({"ok": True, "proba": worker.predict_proba_one(req.get("x", {}))})
             elif cmd == "predict_proba_batch":
                 rows = req.get("rows", []) or []
                 respond({"ok": True, "probas": [worker.predict_proba_one(x) for x in rows]})
-            elif cmd == "learn": worker.learn_one(req.get("x", {}), req.get("y")); respond({"ok": True})
-            elif cmd == "reset": worker._build(); respond({"ok": True})
-            elif cmd == "params": respond({"ok": True, "params": worker.params()})
-            elif cmd == "close": respond({"ok": True}); break
-            else: respond({"ok": False, "error": f"Unknown command: {cmd}"})
+            elif cmd == "learn":
+                worker.learn_one(req.get("x", {}), req.get("y")); respond({"ok": True})
+            elif cmd == "reset":
+                worker._build(); respond({"ok": True})
+            elif cmd == "params":
+                respond({"ok": True, "params": worker.params()})
+            elif cmd == "close":
+                respond({"ok": True}); break
+            else:
+                respond({"ok": False, "error": f"Unknown command: {cmd}"})
         except Exception as exc:
             respond({"ok": False, "error": f"{type(exc).__name__}: {exc}"})
 

@@ -203,6 +203,7 @@ def _run_one(
     drift_scores: dict[int, Optional[float]] = {}
     window_acc: list[float] = []
     window_f1: list[float] = []
+    parameter_history: list[dict[str, Any]] = []
     recent_X = deque(maxlen=min(300, cfg.window_size))
     recent_y = deque(maxlen=min(300, cfg.window_size))
     replay_capacity = max(1, int(getattr(cfg, "drift_replay_size", None) or cfg.window_size))
@@ -260,6 +261,21 @@ def _run_one(
         points.append(point)
         window_acc.append(rolling.accuracy if rolling.n else metrics.accuracy)
         window_f1.append(rolling.f1_macro if rolling.n else metrics.f1_macro)
+
+        # v6: record the configuration that was actually active at this window.
+        # This supports observational hyperparameter analysis without inferring
+        # historical states from the final configuration.
+        try:
+            active_params = framework.get_params() or {}
+        except Exception:
+            active_params = {}
+        parameter_history.append({
+            "sample": int(sample_index),
+            "rolling_accuracy": rolling.accuracy if rolling.n else metrics.accuracy,
+            "rolling_f1_macro": rolling.f1_macro if rolling.n else metrics.f1_macro,
+            "active_algorithm": active_params.get("active_algorithm") or active_params.get("online_model") or active_params.get("model"),
+            "parameters": active_params,
+        })
 
         if experiment_store is None or experiment_id is None:
             return
@@ -471,6 +487,7 @@ def _run_one(
             energy_kwh=sustainability.get("energy_kwh"),
             co2_kg=sustainability.get("co2_kg"),
             parameters=parameters,
+            parameter_history=list(parameter_history),
             experiment_id=experiment_id,
             error=f"{type(e).__name__}: {e}",
         )
@@ -568,6 +585,7 @@ def _run_one(
         uncertainty=unc,
         sustainability=sustainability,
         parameters=parameters,
+        parameter_history=list(parameter_history),
         experiment_id=experiment_id,
     )
 
@@ -741,7 +759,7 @@ def run_benchmark(
     n_features = max(0, len(df.columns) - 1)
     n_classes = int(df[config.target].nunique(dropna=True))
 
-    for fw in create_frameworks(frameworks, seed=config.seed):
+    for fw in create_frameworks(frameworks, seed=config.seed, configs=getattr(config, "framework_configs", None)):
         exp_id = None
         if store is not None and make_id is not None:
             exp_id = make_id(
