@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from awareml.resource_paths import resolve_text_resource
+
 """Evidence-grounded objective selector V3.2.
 
 This module is a confirmatory successor to the post-hoc V3.1 development
@@ -318,6 +320,7 @@ class EvidenceGroundedObjectiveSelectorV32:
         self.prompt_path = prompt_path or (
             self.root / "prompts" / "objective_selection_evidence_grounded_v32.txt"
         )
+        self.prompt_path = resolve_text_resource(self.prompt_path)
         if not self.prompt_path.exists():
             raise JournalModelLockError(
                 "V3.2 evidence-grounded prompt is missing: {}".format(self.prompt_path)

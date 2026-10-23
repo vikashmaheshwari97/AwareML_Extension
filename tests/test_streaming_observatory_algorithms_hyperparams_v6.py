@@ -60,7 +60,7 @@ def test_framework_catalog_restores_legacy_choices_without_faking_evo_selection(
 
 
 def test_temporal_comparison_uses_quantitative_lines_not_heatmap():
-    from awareml.ui_v2.temporal_visuals_v6 import temporal_comparison_figure
+    from awareml.ui_v2.temporal_visuals_v6 import temporal_deviation_figure, temporal_rank_flow_figure
 
     results = [
         {"framework": "A", "points": [
@@ -74,9 +74,10 @@ def test_temporal_comparison_uses_quantitative_lines_not_heatmap():
             {"sample": 300, "rolling_accuracy": .68},
         ]},
     ]
-    fig = temporal_comparison_figure(results)
-    assert len(fig.data) == 4
-    assert not any(getattr(trace, "type", None) == "heatmap" for trace in fig.data)
+    for figure in (temporal_deviation_figure, temporal_rank_flow_figure):
+        fig = figure(results)
+        assert len(fig.data) == 2
+        assert all(trace.type == "scatter" and list(trace.x) == [100, 200, 300] for trace in fig.data)
 
 
 def test_hyperparameter_association_uses_recorded_history_only():

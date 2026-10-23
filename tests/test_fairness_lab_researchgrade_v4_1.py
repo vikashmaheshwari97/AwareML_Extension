@@ -71,8 +71,8 @@ def test_temporal_fairness_uses_distribution_envelope_and_robustness_forest():
 
 def test_fairness_page_no_longer_uses_old_bubble_views():
     source = (Path(__file__).resolve().parents[1] / "awareml" / "ui_v2" / "pages_specialist.py").read_text(encoding="utf-8")
-    assert "r101_fair_ranked_small_multiples" in source
-    assert "r101_fair_cross_criterion_interval" in source
+    assert "r110_fair_window_evidence" in source
+    assert "r110_fair_robustness_frontier" in source
     assert "r101_fair_temporal_envelope" in source
     assert "r101_fair_temporal_robustness" in source
     assert "r100_fair_bubble_matrix" not in source

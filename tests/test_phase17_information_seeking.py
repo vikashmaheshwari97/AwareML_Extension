@@ -185,4 +185,4 @@ def test_participant_ui_hides_classifier_label_and_supports_saved_context():
     assert "Optional example follow-up questions" in ui
     assert "save_study_context" in ui
     assert "resolve_study_context" in ui
-    assert "Participants do not need to run the dashboard first" in ui
+    assert "Participants do not need to rerun the dashboard first" in ui

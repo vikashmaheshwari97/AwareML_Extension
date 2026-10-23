@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from awareml.resource_paths import resolve_text_resource
+
 import re
 from pathlib import Path
 from typing import List, Optional
@@ -369,6 +371,7 @@ class JournalObjectiveSelector:
         protocol = self.client.protocol
         self.root = self.client.root
         self.prompt_path = self.root / protocol["journal_llm"]["prompt_file"]
+        self.prompt_path = resolve_text_resource(self.prompt_path)
         self.template = self.prompt_path.read_text(encoding="utf-8")
 
     def render_prompt(self, scenario: str) -> str:

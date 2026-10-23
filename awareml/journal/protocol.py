@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from awareml.resource_paths import resolve_text_resource
+
 import ast
 import hashlib
 import json
@@ -61,7 +63,7 @@ def utc_now() -> str:
 
 def sha256_file(path: Path) -> str:
     h = hashlib.sha256()
-    with path.open("rb") as fh:
+    with resolve_text_resource(path).open("rb") as fh:
         for block in iter(lambda: fh.read(1024 * 1024), b""):
             h.update(block)
     return h.hexdigest()
@@ -212,7 +214,7 @@ def _validate_objective_lock(root: Path) -> Dict[str, Any]:
             "Objective-selection schema enum must use literal journal labels."
         )
 
-    prompt = (root / PROMPT_PATH).read_text(encoding="utf-8")
+    prompt = resolve_text_resource(root / PROMPT_PATH).read_text(encoding="utf-8")
     for label in CANONICAL_OBJECTIVE_LABELS:
         if label not in prompt:
             raise ProtocolError(

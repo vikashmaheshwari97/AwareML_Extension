@@ -130,8 +130,8 @@ def test_ui_hotfix_markers_present():
     # V3 delegates the research-grade human-study pages out of the specialist
     # wrapper. Verify both the delegation and the participant-facing controls
     # in their canonical implementation file.
-    assert "return trust_calibration_research_page()" in specialist
-    assert "return information_seeking_research_page()" in specialist
+    assert "return phase16_trust_calibration_page_v2()" in specialist
+    assert "return information_seeking_research_page_v2()" in specialist
     assert "Participant mode" in study_labs
     assert "category=category" in study_labs
     assert "Objective-selection evidence status" in copilot
