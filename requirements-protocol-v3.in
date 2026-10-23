@@ -1,0 +1,9 @@
+# Additional packages for the existing CPython 3.8 AwareML main environment.
+# Keep requirements.txt and the isolated Evo/OAML environments unchanged.
+setuptools==75.3.2
+psutil==6.1.1
+codecarbon==3.0.7
+pytest==8.3.5
+matplotlib==3.7.5
+FLAML==2.3.4
+vowpalwabbit==9.10.0

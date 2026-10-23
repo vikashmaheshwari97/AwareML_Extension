@@ -168,7 +168,8 @@ class AutoStreamMLAdapter(BaseStreamingFramework):
                 if pred is not None:
                     self.scores[i].update(y, pred)
                 self._numeric_call(model.learn_one, x, y)
-            except Exception:
+            except Exception as exc:
+                self._research_failure(exc)
                 continue
         self.best_idx = int(np.argmax([safe_metric_value(metric) for metric in self.scores]))
 
@@ -178,7 +179,8 @@ class AutoStreamMLAdapter(BaseStreamingFramework):
                 if pred is not None:
                     self.ensemble_scores[i].update(y, pred)
                 self._numeric_call(model.learn_one, x, y)
-            except Exception:
+            except Exception as exc:
+                self._research_failure(exc)
                 continue
 
         self.counter += 1

@@ -1,0 +1,36 @@
+{
+  "dataset_family": [
+    "AGGRAWAL",
+    "Adult",
+    "Airlines",
+    "Electricity",
+    "ForestCover",
+    "Hyperplane",
+    "Insects",
+    "LED",
+    "Mixed",
+    "MovingSquares",
+    "RandomRBF",
+    "RandomTree",
+    "Rialto",
+    "SEA",
+    "SINE",
+    "STAGGER",
+    "Shuttle",
+    "Waveform",
+    "unknown"
+  ],
+  "drift_type": [
+    "abrupt",
+    "drift",
+    "gradual",
+    "mixed",
+    "unknown"
+  ],
+  "source_type": [
+    "real",
+    "real_or_external",
+    "synthetic",
+    "synthetic_or_generator"
+  ]
+}
