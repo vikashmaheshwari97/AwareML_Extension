@@ -175,7 +175,7 @@ def evaluation_evidence(kind, directory=None):
     path = Path(os.environ.get(variable) or default).resolve()
     if not (path / "evaluation.json").exists():
         return None
-    data = json.loads((path / "evaluation.json").read_text())
+    data = json.loads((path / "evaluation.json").read_text(encoding="utf-8"))
     if data["bundle_manifest_sha256"] != status["evidence_id"] or data["portfolio"] != status["manifest"]["portfolio"]:
         raise ValueError("Evaluation does not match the active bundle.")
     expected_role = {"development": "nested_LODO_development_four_predeclared_profiles",

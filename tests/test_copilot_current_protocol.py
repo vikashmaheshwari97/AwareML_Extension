@@ -28,7 +28,7 @@ def make_bundle(path, frameworks=PRIMARY, cohort="dev"):
     frame.to_csv(path / "development_aggregates.csv", index=False)
     frozen = {"mode": "production", "hardware_issues": []}
     collection = {"collection_sha256": digest(frozen), "frozen": frozen}
-    (path / "training_collection.json").write_text(json.dumps(collection))
+    (path / "training_collection.json").write_text(json.dumps(collection), encoding="utf-8")
     models = {}
     for target in OBJECTIVES:
         model = FrameworkMean().fit(frame, frame[TARGETS[target] + "_mean"])
@@ -50,7 +50,7 @@ def make_bundle(path, frameworks=PRIMARY, cohort="dev"):
 
 
 def save_manifest(path, manifest):
-    (path / "manifest.json").write_text(json.dumps({"bundle_sha256": digest(manifest), "frozen": manifest}))
+    (path / "manifest.json").write_text(json.dumps({"bundle_sha256": digest(manifest), "frozen": manifest}), encoding="utf-8")
 
 
 @pytest.fixture
@@ -99,7 +99,7 @@ def test_external_outcomes_cannot_become_historical_prior(tmp_path):
 
 
 def test_bundle_tampering_blocks_all_inference(bundle):
-    with (bundle / "development_aggregates.csv").open("a") as handle:
+    with (bundle / "development_aggregates.csv").open("a", encoding="utf-8") as handle:
         handle.write("tamper")
     assert bridge.bundle_status()["state"] == "invalid_bundle"
     with pytest.raises(RuntimeError, match="Artifact changed"):
@@ -112,7 +112,7 @@ def test_bundle_tampering_blocks_all_inference(bundle):
     ("profile_size", 10000),
 ])
 def test_non_deployable_schema_is_rejected(bundle, key, value):
-    manifest = json.loads((bundle / "manifest.json").read_text())["frozen"]
+    manifest = json.loads((bundle / "manifest.json").read_text(encoding="utf-8"))["frozen"]
     manifest[key] = value
     save_manifest(bundle, manifest)
     assert not bridge.bundle_status()["ready"]
@@ -188,17 +188,17 @@ def test_mismatched_external_report_is_not_presented_as_completed(bundle):
     path = bundle.parent / (bundle.name + "_external_evaluation")
     path.mkdir()
     (path / "evaluation.json").write_text(json.dumps({
-        "bundle_manifest_sha256": "another model", "portfolio": "primary"}))
+        "bundle_manifest_sha256": "another model", "portfolio": "primary"}), encoding="utf-8")
     with pytest.raises(ValueError, match="does not match"):
         bridge.evaluation_evidence("external")
 
 
 def test_current_sidebar_route_has_no_separate_version_page():
     root = Path(__file__).resolve().parents[1]
-    pages = (root / "awareml/ui_v2/pages.py").read_text()
+    pages = (root / "awareml/ui_v2/pages.py").read_text(encoding="utf-8")
     assert '"Meta-Recommender V3":' not in pages
     assert '"Copilot Workspace"' in pages
-    active = (root / "awareml/ui_v2/copilot_unified.py").read_text()
+    active = (root / "awareml/ui_v2/copilot_unified.py").read_text(encoding="utf-8")
     assert "propose_current(service,state,goal,use_llm)" in active
     assert "load_v2_recommender" not in active
 
