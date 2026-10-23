@@ -6,7 +6,6 @@ from .pages_copilot import copilot_workspace_page
 from .pages_explanation_integrity import explanation_integrity_lab_page
 from .pages_export import export_center_page
 from .pages_advanced import advanced_labs_page
-from .meta_recommender_v3 import render_meta_recommender_v3
 
 
 PAGE_REGISTRY_V2 = {
@@ -15,7 +14,6 @@ PAGE_REGISTRY_V2 = {
     "3D Decision Space": decision_space_page,
     "Responsible AI": responsible_ai_page,
     "Copilot Workspace": copilot_workspace_page,
-    "Meta-Recommender V3": render_meta_recommender_v3,
     "Explanation Integrity Lab": explanation_integrity_lab_page,
     "Export Center": export_center_page,
     "Advanced Labs": advanced_labs_page,

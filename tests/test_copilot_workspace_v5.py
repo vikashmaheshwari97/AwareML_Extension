@@ -5,6 +5,7 @@ WORKSPACE = (ROOT / "awareml" / "ui_v2" / "copilot_workspace_v5.py").read_text(e
 PAGES = (ROOT / "awareml" / "ui_v2" / "pages_copilot.py").read_text(encoding="utf-8")
 UNIFIED = (ROOT / "awareml" / "ui_v2" / "copilot_unified.py").read_text(encoding="utf-8")
 THREE = (ROOT / "awareml" / "ui_v2" / "copilot_three_path.py").read_text(encoding="utf-8")
+CURRENT = (ROOT / "awareml/ui_v2/copilot_recommender.py").read_text(encoding="utf-8")
 
 
 def test_header_has_three_evidence_levels():
@@ -16,17 +17,18 @@ def test_header_has_three_evidence_levels():
 
 
 def test_no_dataset_goal_produces_framework_guidance():
-    assert "Framework guidance from the evidence available now" in WORKSPACE
-    assert "Historical starting point · no dataset required." in WORKSPACE
-    assert "HistoricalPreferenceRecommender" in WORKSPACE
-    assert "47-dataset / 705-run" in WORKSPACE
+    assert "render_current_goal_guidance" in WORKSPACE
+    assert "Framework guidance from the evidence available now" in CURRENT
+    assert "Historical starting point · no dataset required." in CURRENT
+    assert "historical_prior" in CURRENT
+    assert "705" not in WORKSPACE
 
 
 def test_dataset_mode_compares_evidence_paths():
-    assert "Compare the available evidence paths" in WORKSPACE
-    assert "GLOBAL HISTORICAL PRIOR" in WORKSPACE
-    assert "DATASET-AWARE ML RECOMMENDER" in WORKSPACE
-    assert "Different · expected" in WORKSPACE
+    assert "Compare the available evidence paths" in CURRENT
+    assert "Global historical prior" in CURRENT
+    assert "Dataset-aware ML Recommender" in CURRENT
+    assert "score magnitudes are not directly comparable" in CURRENT
 
 
 def test_pages_use_new_workspace_header():

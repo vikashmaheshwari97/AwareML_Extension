@@ -11,7 +11,7 @@ def test_goal_path_uses_unified_renderer():
     assert 'if active_path == "historical":' in PAGE
     assert "render_historical_preference_prior_tab()" in PAGE
     assert 'elif active_path == "dataset":' in PAGE
-    assert "render_dataset_aware_v2_tab()" in PAGE
+    assert "render_dataset_aware_tab()" in PAGE
     assert "render_goal_copilot_unified_page()" in PAGE
 
 

@@ -21,7 +21,9 @@ def main():
     assert cfg["profile_size"] == 1000 and cfg["max_samples"] == 100000
     assert cfg["track_energy"] and cfg["tracking_mode"] == "machine"
     assert cfg["safety_timeout_sec"] == 7200
-    assert "Meta-Recommender V3" in (ROOT / "awareml/ui_v2/pages.py").read_text()
+    assert "Copilot Workspace" in (ROOT / "awareml/ui_v2/pages.py").read_text()
+    assert "render_dataset_aware_tab()" in (ROOT / "awareml/ui_v2/pages_copilot.py").read_text()
+    assert (ROOT / "awareml/ui_v2/recommender_bridge.py").is_file()
     checks.append({"check": "default protocol and application route", "status": "pass"})
     print(json.dumps({"status": "pass", "checks": checks,
                       "benchmark_results_created": False,
