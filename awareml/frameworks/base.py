@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
+import os
 from typing import Any, Optional
 import numpy as np
 import pandas as pd
@@ -12,6 +13,13 @@ class BaseStreamingFramework(ABC):
     def __init__(self, seed: int = 42):
         self.seed = int(seed)
         self.backend = "unknown"
+        self.research_error_count = 0
+        self.research_strict = os.getenv("AWAREML_V3_STRICT", "0") == "1"
+
+    def _research_failure(self, error: Exception) -> None:
+        self.research_error_count += 1
+        if self.research_strict:
+            raise RuntimeError("{} backend error: {}".format(self.name, error)) from error
 
     @abstractmethod
     def predict_one(self, x: dict[str, float]) -> Any:
@@ -52,7 +60,8 @@ class BaseStreamingFramework(ABC):
         return out
 
     def get_params(self) -> dict:
-        return {"seed": self.seed, "backend": self.backend}
+        return {"seed": self.seed, "backend": self.backend,
+                "research_error_count": self.research_error_count}
 
     def native_feature_importance(self) -> Optional[dict[str, float]]:
         return None

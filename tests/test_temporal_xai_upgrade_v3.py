@@ -64,8 +64,8 @@ def test_streaming_observatory_is_consolidated_inside_advanced_labs():
     advanced = (ROOT / "awareml/ui_v2/pages_advanced.py").read_text(encoding="utf-8")
     observatory = (ROOT / "awareml/ui_v2/pages_observatory.py").read_text(encoding="utf-8")
     assert '"Streaming Observatory":' not in top
-    assert "Streaming Observatory · temporal analytics" in advanced
-    assert "Post-drift accuracy & drift-loss recovery" in observatory
+    assert '"Drift & Temporal Lab": streaming_observatory_page' in advanced
+    assert "Post-change accuracy & recovery" in observatory
     assert "Detector health & adaptation" in observatory
 
 
@@ -92,9 +92,9 @@ def test_ollama_default_is_llama3_8b_and_grounded_summary_is_multilevel():
     specialist = (ROOT / "awareml/ui_v2/pages_specialist.py").read_text(encoding="utf-8")
     assert '"llama3:8b"' in config
     assert "llama3.1:8b" not in config
-    assert "Model-level evidence" in summary
-    assert "Hyperparameter/context evidence" in summary
-    assert "System-level comparison" in summary
+    assert "What the current explanation says" in summary
+    assert "parameters" in summary
+    assert "System-level context" in summary
     assert "llama3:8b" in specialist
 
 

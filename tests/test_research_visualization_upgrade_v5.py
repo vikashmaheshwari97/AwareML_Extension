@@ -163,8 +163,8 @@ def test_pages_specialist_uses_v5_visuals():
         "r110_decision_corr_arcs",
         "r110_fair_window_evidence",
         "r110_xai_system_ranked_panels",
-        "r110_sustain_resource_scoreboard",
-        "r110_sustain_carbon_intensity",
+        "r126_sustain_resource_signature",
+        "r126_sustain_carbon_accounting",
     ]
     for token in required:
         assert token in source

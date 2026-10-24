@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from awareml.resource_paths import resolve_text_resource
+
 """Interactive Objective Selection V3.3 development selector.
 
 V3.3 is deliberately NOT a replacement for the frozen Phase-12-v2 confirmatory
@@ -102,6 +104,7 @@ class EvidenceGroundedObjectiveSelectorV33:
         self.prompt_path = prompt_path or (
             self.root / "prompts" / "objective_selection_evidence_grounded_v33.txt"
         )
+        self.prompt_path = resolve_text_resource(self.prompt_path)
         if not self.prompt_path.exists():
             raise JournalModelLockError(
                 "V3.3 evidence-grounded prompt is missing: {}".format(

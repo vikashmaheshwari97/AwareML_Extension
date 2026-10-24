@@ -122,7 +122,7 @@ def test_strict_json_writer(tmp_path):
 
 
 def test_readme_states_derived_tasks_are_not_original_regression_targets():
-    text=(ROOT/"PHASE18_V2_5_31_DATASET_PROTOCOL.md").read_text(encoding="utf-8")
+    text=(ROOT/"docs/stream_protocol_v3/phase18_v2_5_31_dataset_protocol.html").read_text(encoding="utf-8")
     assert "derived classification tasks" in text
     assert "not the original regression targets" in text
     assert "adult_binary_stream" in text

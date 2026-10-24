@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import os
 import sys
 from typing import Any
 
@@ -43,6 +44,8 @@ class EvoWorker:
         try:
             return self.model.predict_one(x)
         except Exception:
+            if os.getenv("AWAREML_V3_STRICT", "0") == "1":
+                raise
             return None
 
     def predict_proba_one(self, x: dict):

@@ -72,10 +72,10 @@ def test_advanced_drift_lab_uses_canonical_streaming_observatory():
 
 def test_observatory_restores_primary_jsd_timeline_and_no_heatmap_call():
     text = Path("awareml/ui_v2/pages_observatory.py").read_text(encoding="utf-8")
-    assert "Why can a stream show zero confirmed predictive drift?" in text
-    assert "r122_distribution_shift_trend" in text
-    assert "r122_jsd_density" in text
-    assert "r122_jsd_feature_rank" in text
+    assert "Zero confirmed predictive drift is scientifically possible." in text
+    assert "r120_distribution_shift_trend" in text
+    assert "r120_jsd_density" in text
+    assert "r120_jsd_feature_rank" in text
     assert "render_window_research_comparison" in text
 
     temporal = Path("awareml/ui_v2/temporal_visuals_v6.py").read_text(encoding="utf-8")

@@ -122,10 +122,10 @@ def test_pages_remove_old_sustainability_and_snapshot_bar_layouts():
     assert "sustainability_resource_scoreboard(sdf)" not in specialist
     assert "sustainability_rank_bump(sdf)" not in specialist
     assert "carbon_intensity_consistency_figure(sdf)" not in specialist
-    assert "Framework sustainability matrix" in specialist
-    assert "Accuracy–Energy efficient frontier" in specialist
-    assert "Energy → CO₂ contribution waterfall" in specialist
-    assert 'on_select="rerun"' in observatory
-    assert "Group × metric fairness matrix" in observatory
+    assert "resource_signature_figure" in specialist
+    assert "tradeoff_atlas_figure" in specialist
+    assert "carbon_accounting_figure" in specialist
+    assert 'key="rai_v64_framework"' in observatory
+    assert "group_metric_profile_figure(fair)" in observatory
     assert "Fairness–performance frontier" in observatory
     assert "rai_metric_bar(" not in observatory

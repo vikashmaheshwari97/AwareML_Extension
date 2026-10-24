@@ -33,7 +33,7 @@ def test_phase10_schema_uses_literal_objective_labels():
 
 def test_phase10_prompt_is_selection_not_weight_generation():
     prompt = (
-        ROOT / "prompts/journal_objective_selection_v1.txt"
+        ROOT / "prompts/journal_objective_selection_v1.prompt"
     ).read_text(encoding="utf-8")
     for label in CANONICAL_OBJECTIVE_LABELS:
         assert label in prompt

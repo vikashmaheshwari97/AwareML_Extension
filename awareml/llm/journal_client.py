@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from awareml.resource_paths import resolve_text_resource
+
 import hashlib
 import json
 import os
@@ -61,7 +63,7 @@ class StrictJournalOllamaClient:
         self._verify_static_hashes()
 
     def _load_protocol(self) -> Dict[str, Any]:
-        marker = self.root / "data" / "journal" / "active_protocol.txt"
+        marker = resolve_text_resource(self.root / "data" / "journal" / "active_protocol.txt")
         if not marker.exists():
             raise JournalModelLockError(
                 "Phase-10 active journal protocol marker is missing."
@@ -93,7 +95,7 @@ class StrictJournalOllamaClient:
             ("prompt_file", "prompt_sha256"),
             ("schema_file", "schema_sha256"),
         ):
-            path = self.root / llm[file_key]
+            path = resolve_text_resource(self.root / llm[file_key])
             if not path.exists():
                 raise JournalModelLockError(
                     "Frozen journal {} is missing: {}".format(file_key, path)

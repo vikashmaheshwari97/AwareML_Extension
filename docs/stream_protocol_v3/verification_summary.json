@@ -1,0 +1,78 @@
+{
+  "schema": "awareml_v3_software_verification",
+  "research_results_created": false,
+  "automated_tests": [
+    {
+      "name": "Python 3.8.20 main pinned stack and selected regression checks",
+      "tests": 44,
+      "passed": 43,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1,
+      "skip_reasons": [
+        "Phase 6.5 has not been frozen yet."
+      ]
+    },
+    {
+      "name": "Python 3.12 V3 software compatibility checks",
+      "tests": 28,
+      "passed": 28,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "skip_reasons": []
+    }
+  ],
+  "native_adapter_smoke": {
+    "status": "pass",
+    "completed_tasks": 10,
+    "rows_per_task": 160,
+    "classes": [
+      2,
+      3
+    ],
+    "seed": 42,
+    "energy_tracking": false,
+    "main_python": "3.8.20",
+    "main_river": "0.10.1",
+    "OAML_river": "0.8.0",
+    "EvOAutoML": "0.0.14",
+    "Evo_scikit_learn": "1.0.2",
+    "Evo_pandas": "1.3.5"
+  },
+  "installer_checks": [
+    "preflight without writes",
+    "Windows CRLF matching",
+    "payload hashes",
+    "original-byte backup and rollback",
+    "idempotent install",
+    "local conflict refusal",
+    "frozen artifact preservation"
+  ],
+  "UI_check": "Streamlit AppTest passed with no exception and expected training-pending message",
+  "target_system_tests_pending": [
+    "actual Windows installation",
+    "Rocket exclusive-node Slurm allocation",
+    "physical CodeCarbon measurement validation",
+    "full benchmark campaign",
+    "production model training and performance evaluation"
+  ],
+  "actual_development_preparation": {
+    "status": "pass",
+    "datasets": 47,
+    "prepared_tasks": 1175,
+    "profiles_from_first": 1000,
+    "seeds": [
+      42,
+      43,
+      44,
+      45,
+      46
+    ],
+    "same_sample_count_for_all_frameworks_per_dataset": true,
+    "source_and_frozen_file_hashes_valid": true,
+    "measured_framework_runs_executed": 0,
+    "campaign_sha256": "1758a78d4fc778f7fdf8d7b916280db76affafee6f97a779119b29d0223c4a45",
+    "note": "Preparation verification only. No new framework outcomes or V3 performance results."
+  }
+}

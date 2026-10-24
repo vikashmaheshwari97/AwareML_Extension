@@ -52,6 +52,11 @@ class RecommendationService:
                 )
         return frame, recs, corr, warnings
 
+    def recommend_v3_dataframe(self, df, target, weights=None, bundle_directory=None):
+        """Use an explicitly trained V3 bundle, preserving frozen V2 callers."""
+        from awareml.protocol_v3.service import V3Recommender
+        return V3Recommender(bundle_directory).recommend_dataframe(df, target, weights)
+
     def _get_v2(self) -> V2Recommender:
         if self._v2 is None:
             path = Path(self.v2_manifest) if self.v2_manifest else None

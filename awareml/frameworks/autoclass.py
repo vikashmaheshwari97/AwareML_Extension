@@ -80,7 +80,8 @@ class AutoClassAdapter(BaseStreamingFramework):
                 repeats = max(1, int(self._np_rng.poisson(2)))
                 for _ in range(repeats):
                     model.learn_one(x, y)
-            except Exception:
+            except Exception as exc:
+                self._research_failure(exc)
                 continue
         self.best_idx = int(np.argmax([safe_metric_value(m) for m in self.scores]))
         self.counter += 1

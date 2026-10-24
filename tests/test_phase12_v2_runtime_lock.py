@@ -24,7 +24,7 @@ def test_confirmatory_lock_preserves_model_digest_but_versions_runtime_separatel
 
 def test_confirmatory_generation_contract_matches_phase10_protocol():
     lock = json.loads(LOCK.read_text(encoding="utf-8"))
-    active = (ROOT / "data" / "journal" / "active_protocol.txt").read_text(encoding="utf-8").strip()
+    active = (ROOT / "data" / "journal" / "active_protocol.ref").read_text(encoding="utf-8").strip()
     protocol = json.loads((ROOT / "data" / "journal" / active).read_text(encoding="utf-8"))
     assert lock["generation"] == protocol["journal_llm"]["generation"]
 

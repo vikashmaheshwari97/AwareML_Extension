@@ -23,11 +23,13 @@ from .copilot_v31_components import (
     render_copilot_clarification,
     set_copilot_clarification,
 )
-from .data import load_v2_recommender
+from .recommender_bridge import (
+    bundle_status, load_current_recommender, propose_current,
+    sync_copilot_evidence, apply_current_objective_override,
+)
 from .page_utils import dataset_ready, phase_pills
 from .copilot_workspace_v5 import render_goal_framework_guidance
 from .pre14_usability import (
-    apply_human_objective_override,
     clean_pre_run_rationale,
     persist_objective_review,
 )
@@ -213,8 +215,8 @@ def _render_step_cards() -> None:
     st.markdown("## How Goal Copilot works")
     items = [
         ("01", "Understand", "AwareML interprets the natural-language deployment goal and identifies the objectives implied by the wording."),
-        ("02", "Weight", "Selected objectives receive equal preference weight under the documented equal-selected policy."),
-        ("03", "Predict", "ML Recommender ranks the five AutoML frameworks from dataset meta-features and the active objective weights."),
+        ("02", "Weight", "Selected objectives receive equal initial weight. You review and can correct these priorities before approving a plan."),
+        ("03", "Predict", "The trained models use an observed labeled prefix to predict outcomes and rank the active framework portfolio under your priorities."),
         ("04", "You decide", "You review the interpretation and recommendation, then approve, adjust or reject the plan."),
     ]
     cols = st.columns(4)
@@ -311,7 +313,7 @@ def _render_decision_provenance(has_dataset: bool) -> None:
         rows=[
             {"Stage":"Goal interpretation","Source":"LLaMA 3 8B + V3.3 hybrid evidence guard","Role":"Infers Accuracy / Runtime / Energy / CO₂ from the user's wording."},
             {"Stage":"Objective weighting","Source":"equal_selected_v1","Role":"Assigns equal weight to selected objectives."},
-            {"Stage":"Framework prediction","Source":"ML Recommender","Role":"Ranks five frameworks from the dataset meta-profile." if has_dataset else "Waits for dataset + target because framework behavior is dataset-dependent."},
+            {"Stage":"Framework prediction","Source":"ML Recommender","Role":"Ranks the trained framework portfolio from the observed labeled prefix." if has_dataset else "Requires a trained model bundle and an observed labeled dataset prefix."},
             {"Stage":"Configuration synthesis","Source":"Configuration synthesizer","Role":"Maps the recommended framework to supported implementation defaults."},
             {"Stage":"Decision authority","Source":"Human review","Role":"Accept, correct, edit or reject the plan."},
         ]
@@ -369,12 +371,12 @@ def _render_objective_review(
                 selected_seen=list(selected),
                 corrected=(final_set if choice == "Correct priorities" else None),
                 note=note or None,
-                source="copilot_unified_view_v2",
+                source="copilot_prefix_model_review",
             )
             state["copilot_objective_review_persisted"] = record
 
             if choice == "Correct priorities":
-                new_top = apply_human_objective_override(state, final_set)
+                new_top = apply_current_objective_override(state, final_set)
                 if new_top:
                     state["copilot_unified_flash"] = (
                         "Priority correction saved. ML Recommender reranked the "
@@ -410,7 +412,7 @@ def _render_objective_review(
 def _render_context_free_next_step() -> None:
     st.markdown("## 4 · Next step")
     st.info(
-        "Your objectives are ready. To obtain a framework recommendation, load a dataset and choose its target, then generate the Goal Copilot proposal again."
+        "Your objectives are ready. To obtain a framework recommendation, load a labeled classification dataset, choose its target, and use an available trained model bundle. Then generate the Goal Copilot proposal again."
     )
     with st.container(border=True):
         st.markdown("**What becomes available with a dataset**")
@@ -418,7 +420,7 @@ def _render_context_free_next_step() -> None:
             "Recommended framework · predicted rank · objective outcomes · top alternatives · supported configuration"
         )
         st.caption(
-            "Goal Copilot does not invent a framework when no dataset context is available."
+            "Framework guidance is withheld until the required model and dataset evidence are available."
         )
 
 
@@ -516,12 +518,13 @@ def _render_plan(proposal: Mapping[str, Any], state: Dict[str, Any], parse_meta:
     if has_observed_run:
         st.markdown('<div class="awareml-decision-banner"><b>Observed benchmark available.</b><br>This recommendation remains the dataset-aware prediction path from the scenario and meta-profile. Measured post-run evidence is available separately in Decision Lab and Streaming Observatory for validation.</div>',unsafe_allow_html=True)
     else:
-        st.markdown('<div class="awareml-decision-banner"><b>Dataset-aware recommendation.</b><br>ML Recommender combines the active priorities with the dataset meta-profile to rank the five candidate frameworks.</div>',unsafe_allow_html=True)
-    cards=st.columns(4); card_data=[("Recommended framework",framework),("Predicted rank","#{} of 5".format(rank)),("Ranking utility","—" if utility is None else "{:.4f}".format(float(utility))),("Review status",review_status)]
+        st.markdown('<div class="awareml-decision-banner"><b>Dataset-aware recommendation.</b><br>ML Recommender combines the active priorities with the dataset meta-profile to rank the active framework portfolio using the observed labeled prefix.</div>',unsafe_allow_html=True)
+    cards=st.columns(4); card_data=[("Recommended framework",framework),("Predicted rank","#{} of {}".format(rank, len(ranked))),("Ranking utility","—" if utility is None else "{:.4f}".format(float(utility))),("Review status",review_status)]
     for col,(label,value) in zip(cards,card_data):
         with col:
             st.markdown('<div class="awareml-summary-card"><div class="awareml-summary-label">{}</div><div class="awareml-summary-value">{}</div></div>'.format(label,value),unsafe_allow_html=True)
-    st.caption("Ranking utility is a relative preference score among the five frameworks under the current weights. It is not a probability, correctness score or model confidence.")
+    st.caption("Ranking utility is a relative preference score among the active candidate frameworks under the current weights. It is not a probability, correctness score or model confidence.")
+    st.caption("Predictions refer to the frozen sample-cap benchmark. Interactive Run Studio settings below are reviewed separately and do not change the trained prediction scope.")
     st.markdown("### Decision basis")
     basis=st.columns(3)
     with basis[0]:
@@ -533,7 +536,7 @@ def _render_plan(proposal: Mapping[str, Any], state: Dict[str, Any], parse_meta:
     with basis[2]:
         with st.container(border=True):
             st.markdown("**Decision source**"); st.write("ML Recommender"); st.caption("The LLM interprets the goal; it does not choose the framework.")
-    rationale=humanize_rationale_text(clean_pre_run_rationale(proposal.get("rationale")))
+    rationale=humanize_rationale_text(clean_pre_run_rationale(proposal.get("rationale"))).replace("ML Recommender V2", "Dataset-aware ML Recommender")
     drift=_as_dict(config.get("drift")); fairness=_as_dict(config.get("fairness")); xai=_as_dict(config.get("explainability")); sustain=_as_dict(config.get("sustainability")); fairness_constraint,fairness_audit=_fairness_plan_text(fairness,state)
     st.markdown("### Recommendation evidence and execution plan")
     left,right=st.columns([1.05,.95])
@@ -541,9 +544,9 @@ def _render_plan(proposal: Mapping[str, Any], state: Dict[str, Any], parse_meta:
         with st.container(border=True):
             st.markdown("**Why this framework is ranked first**")
             if utility is None:
-                st.write("ML Recommender compared all five frameworks using the dataset meta-profile and the active priorities ({}). {} is currently predicted rank #1.".format(_priority_summary(selected,weights),framework))
+                st.write("ML Recommender compared the active candidate frameworks using the dataset meta-profile and the active priorities ({}). {} is currently predicted rank #1.".format(_priority_summary(selected,weights),framework))
             else:
-                st.write("ML Recommender compared all five frameworks using the dataset meta-profile and the active priorities ({}). {} has the highest current ranking utility ({:.4f}) and is predicted rank #1.".format(_priority_summary(selected,weights),framework,float(utility)))
+                st.write("ML Recommender compared the active candidate frameworks using the dataset meta-profile and the active priorities ({}). {} has the highest current ranking utility ({:.4f}) and is predicted rank #1.".format(_priority_summary(selected,weights),framework,float(utility)))
             if rationale: st.caption(rationale)
             evidence=_prediction_table(framework,selected,weights,ranked)
             if not evidence.empty:
@@ -552,7 +555,7 @@ def _render_plan(proposal: Mapping[str, Any], state: Dict[str, Any], parse_meta:
         with st.container(border=True):
             st.markdown("**Proposed execution configuration**")
             rows=[
-                {"Setting":"Framework","Value":framework},{"Setting":"Algorithm","Value":algorithm},{"Setting":"Window size","Value":config.get("window_size","N/A")},{"Setting":"Time budget","Value":"{} s".format(config.get("time_budget_sec","N/A"))},{"Setting":"Drift monitoring","Value":drift.get("detector") or "N/A"},{"Setting":"Fairness constraint","Value":fairness_constraint},{"Setting":"Explainability","Value":xai.get("method") or xai.get("level") or "N/A"},{"Setting":"Energy / CO₂ tracking","Value":"Enabled" if sustain.get("track_energy") or sustain.get("track_co2") else "Not requested"},
+                {"Setting":"Framework","Value":framework},{"Setting":"Algorithm","Value":algorithm},{"Setting":"Window size","Value":config.get("window_size","N/A")},{"Setting":"Interactive Run Studio budget","Value":"{} s".format(config.get("time_budget_sec","N/A"))},{"Setting":"Drift monitoring","Value":drift.get("detector") or "N/A"},{"Setting":"Fairness constraint","Value":fairness_constraint},{"Setting":"Explainability","Value":xai.get("method") or xai.get("level") or "N/A"},{"Setting":"Energy / CO₂ tracking","Value":"Enabled" if sustain.get("track_energy") or sustain.get("track_co2") else "Not requested"},
             ]
             st.dataframe(pd.DataFrame(rows),use_container_width=True,hide_index=True); st.caption("Fairness audit: {}".format(fairness_audit))
     render_goal_recommendation_research_layer(ranked, weights, framework)
@@ -580,7 +583,7 @@ def _render_plan(proposal: Mapping[str, Any], state: Dict[str, Any], parse_meta:
     _render_objective_review(state,selected,step_number=4); _render_final_plan_review(state,proposal)
 
 def render_goal_copilot_unified_page() -> None:
-    state=ensure_research_state(); has_dataset=bool(dataset_ready()); has_observed_run=bool(state.get("run_results")); state.pop("copilot_view_mode",None); _render_css()
+    state=ensure_research_state(); model_status=sync_copilot_evidence(state); has_dataset=bool(dataset_ready()); can_rank=has_dataset and model_status["ready"]; has_observed_run=bool(state.get("run_results")); state.pop("copilot_view_mode",None); _render_css()
     flash=state.pop("copilot_unified_flash",None)
     if flash: st.success(str(flash))
     _render_step_cards()  # navigation cards already expose dataset/evidence readiness
@@ -589,19 +592,19 @@ def render_goal_copilot_unified_page() -> None:
     state["copilot_goal"]=goal
     c1,c2=st.columns([.65,.35])
     with c1:
-        use_llm=st.toggle("Use hybrid evidence-grounded LLaMA 3 8B selector V3.3",value=True,key="goal_v3_use_llm"); st.caption("Optimization objectives used by ML Recommender: Accuracy · Runtime · Energy · CO₂. Fairness, drift and explainability are tracked separately as HCAI oversight requirements; they do not receive recommender utility weight in the current journal protocol.")
+        use_llm=st.toggle("Use LLaMA 3 8B for goal interpretation",value=True,key="goal_v3_use_llm"); st.caption("Optimization objectives used by ML Recommender: Accuracy · Runtime · Energy · CO₂. Fairness, drift and explainability are tracked separately as HCAI oversight requirements; they do not receive recommender utility weight in the current journal protocol.")
     with c2:
-        st.caption("Recommendation source"); st.markdown("**ML Recommender** when dataset context is available")
+        st.caption("Recommendation source"); st.markdown("**Dataset-aware ML Recommender**"); st.caption("Ready for an observed prefix" if model_status["ready"] else model_status["message"])
     if st.button("Generate Copilot plan",type="primary",use_container_width=True,key="goal_v3_generate"):
         _clear_scenario_state(state)
         try:
-            service=CopilotService(recommender=(load_v2_recommender() if has_dataset else None),goal_parser=GoalParser(selector=EvidenceGroundedObjectiveSelectorV33(root=ROOT)),chat=GroundedCopilotChat(client=OllamaClient(model=EXACT_MODEL)),review_store=ReviewStore(ROOT / "artifacts" / "copilot" / "reviews.jsonl"))
-            if has_dataset:
-                proposal,ranked,evidence,meta=service.propose_from_dataframe(goal=goal,df=state["dataset"],target=state["target"],sensitive_attribute=state.get("sensitive"),current_config=None,use_llm=use_llm); state["copilot_proposal"]=proposal; state["copilot_ranked"]=ranked; state["copilot_evidence"]=evidence; state["copilot_meta"]=meta; state["copilot_review"]=None; state.pop("copilot_context_free_interpretation",None); state.pop("copilot_context_free_meta",None); state["copilot_unified_flash"]="Dataset-aware Goal Copilot plan generated. Review the interpreted priorities and evidence-backed recommendation below."
+            service=CopilotService(recommender=(load_current_recommender() if can_rank else None),goal_parser=GoalParser(selector=EvidenceGroundedObjectiveSelectorV33(root=ROOT)),chat=GroundedCopilotChat(client=OllamaClient(model=EXACT_MODEL)),review_store=ReviewStore(ROOT / "artifacts" / "copilot" / "reviews.jsonl"))
+            if can_rank:
+                proposal,ranked,evidence,meta=propose_current(service,state,goal,use_llm); state["copilot_proposal"]=proposal; state["copilot_ranked"]=ranked; state["copilot_evidence"]=evidence; state["copilot_meta"]=meta; state["copilot_review"]=None; state.pop("copilot_context_free_interpretation",None); state.pop("copilot_context_free_meta",None); state["copilot_unified_flash"]="Dataset-aware Goal Copilot plan generated. Review the interpreted priorities and evidence-backed recommendation below."
             else:
                 interpretation,meta=service.interpret_goal(goal,use_llm=use_llm); state["copilot_context_free_interpretation"]=interpretation; state["copilot_context_free_meta"]=meta
                 for key in ("copilot_proposal","copilot_ranked","copilot_evidence","copilot_meta","copilot_review"): state.pop(key,None)
-                state["copilot_unified_flash"]="Goal interpreted. Add dataset context when you want a framework recommendation."
+                state["copilot_unified_flash"]="Goal interpreted. Framework ranking requires a trained model bundle and an observed labeled dataset prefix."
             st.rerun()
         except Exception as exc:
             error_name=type(exc).__name__; message="AwareML could not identify a sufficiently supported objective set from this wording." if error_name=="GoalSelectionError" else "AwareML could not generate a new proposal from this scenario."; detail="Add clearer deployment priorities such as prediction reliability, response speed, battery or power limits, or environmental impact." if error_name=="GoalSelectionError" else "Review the wording and model/runtime status before retrying."; set_copilot_clarification(state,message=message,detail=detail,error_type=error_name); st.rerun()

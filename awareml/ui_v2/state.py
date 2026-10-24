@@ -52,7 +52,9 @@ def _manifest_status(active_marker: Path) -> Dict[str, Any]:
 
 
 def phase_status() -> Dict[str, Any]:
+    from .recommender_bridge import bundle_status
     return {
+        "dataset_recommender": bundle_status(),
         "phase6": _manifest_status(ROOT / "data" / "meta" / "active_recommender_v2.txt"),
         "phase7": _manifest_status(ROOT / "data" / "llm" / "active_copilot.txt"),
         "phase8": _manifest_status(ROOT / "data" / "llm" / "active_faithfulness.txt"),

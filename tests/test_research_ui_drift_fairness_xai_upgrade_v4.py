@@ -128,4 +128,4 @@ def test_explainability_uses_explainer_pattern_not_old_toggle():
     source = (Path(__file__).resolve().parents[1] / "awareml" / "ui_v2" / "pages_specialist.py").read_text(encoding="utf-8")
     assert "LLM-Assisted Explainability Explainer" in source
     assert "Use local Ollama for the grounded answer" not in source
-    assert "System XAI evidence map" in source
+    assert "System-level XAI diagnostics" in source

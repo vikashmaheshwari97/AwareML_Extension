@@ -1,0 +1,61 @@
+{
+  "source_commit": "5e3d506896c9de247b96333cfc431ff5a5110da7",
+  "recovered_files": [
+    {
+      "historical_path": "prompts/journal_objective_selection_v1.txt",
+      "restored_path": "prompts/journal_objective_selection_v1.prompt",
+      "historical_blob_sha256": "066e5f08ef5e168d0374eb4ce7506e1f94ea1ccc7dd2194a9900b38077924749"
+    },
+    {
+      "historical_path": "prompts/objective_selection_evidence_grounded_v3.txt",
+      "restored_path": "prompts/objective_selection_evidence_grounded_v3.prompt",
+      "historical_blob_sha256": "24a0c19a3c32a28b6c46888ef012324e49bc0d362c4bca5ec59b43ec6ff3b8bb"
+    },
+    {
+      "historical_path": "prompts/objective_selection_evidence_grounded_v31.txt",
+      "restored_path": "prompts/objective_selection_evidence_grounded_v31.prompt",
+      "historical_blob_sha256": "719aa1cee7ebd95b237dea4abc5290135b888183056958fb740a2974e1a3efbf"
+    },
+    {
+      "historical_path": "prompts/objective_selection_evidence_grounded_v32.txt",
+      "restored_path": "prompts/objective_selection_evidence_grounded_v32.prompt",
+      "historical_blob_sha256": "586bb2113444b3607f3a930d682a81c3209dd14668a88713c660bb627194b6b8"
+    },
+    {
+      "historical_path": "prompts/objective_selection_evidence_grounded_v33.txt",
+      "restored_path": "prompts/objective_selection_evidence_grounded_v33.prompt",
+      "historical_blob_sha256": "34b52fce8b7ba97b962753f26d9326e08a57b73de18dc32ec8684e2702dcccc4"
+    },
+    {
+      "historical_path": "data/journal/active_protocol.txt",
+      "restored_path": "data/journal/active_protocol.ref",
+      "historical_blob_sha256": "ac2ef141996ac88c512e0366a5c8ea8b282cf46cbfddbc09eedf2a7002889f18"
+    },
+    {
+      "historical_path": "docs/ethics/CONSENT_RECORD_MAIN_STUDY.md",
+      "restored_path": "docs/ethics/CONSENT_RECORD_MAIN_STUDY.html",
+      "historical_blob_sha256": "aa35b5d50b368d6d24687e864b5c203115eee4d538c59b7b06e40d7cb476c42e"
+    },
+    {
+      "historical_path": "docs/ethics/PARTICIPANT_DEBRIEF_MAIN_STUDY.md",
+      "restored_path": "docs/ethics/PARTICIPANT_DEBRIEF_MAIN_STUDY.html",
+      "historical_blob_sha256": "dd4aef3a4ca16c20c35b6c8b2fca280d957737740c015b95f49ef9d3946d387f"
+    },
+    {
+      "historical_path": "docs/ethics/PARTICIPANT_INFORMATION_MAIN_STUDY.md",
+      "restored_path": "docs/ethics/PARTICIPANT_INFORMATION_MAIN_STUDY.html",
+      "historical_blob_sha256": "85938262b8ecc6c713fd4d32d253fdad0cff556e4fa0d879a5044c0866e5e4d0"
+    },
+    {
+      "historical_path": "docs/ethics/PHASE16_17_ETHICS_SELF_ASSESSMENT.md",
+      "restored_path": "docs/ethics/PHASE16_17_ETHICS_SELF_ASSESSMENT.html",
+      "historical_blob_sha256": "986ba8d02025f4a8e5f9337fc2c58dc1e5cc8c89aa22a6e21e1782e1ebd834ce"
+    },
+    {
+      "historical_path": "PHASE18_V2_5_31_DATASET_PROTOCOL.md",
+      "restored_path": "docs/stream_protocol_v3/phase18_v2_5_31_dataset_protocol.html",
+      "historical_blob_sha256": "d5f4c049568e1392b2f3c6b4db83dfae60b5a466fa907ec4106cd6604d46bdb9"
+    }
+  ],
+  "frozen_study_contents_or_manifests_rewritten": false
+}

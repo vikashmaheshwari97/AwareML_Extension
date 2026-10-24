@@ -26,7 +26,7 @@ from .data import load_v2_recommender
 from .page_utils import dataset_ready, fmt, phase_pills
 from .phase12_v2_evidence import load_phase12_v2_confirmatory_evidence
 from .state import ROOT, ensure_research_state
-from .copilot_three_path import render_historical_preference_prior_tab, render_dataset_aware_v2_tab
+from .copilot_recommender import render_historical_preference_prior_tab, render_dataset_aware_tab
 from .copilot_historical import render_historical_meta_recommender_tab
 from .copilot_workspace_v5 import render_copilot_workspace_header, render_goal_framework_guidance
 from .copilot_unified import render_goal_copilot_unified_page
@@ -729,6 +729,6 @@ def copilot_workspace_page():
     if active_path == "historical":
         render_historical_preference_prior_tab()
     elif active_path == "dataset":
-        render_dataset_aware_v2_tab()
+        render_dataset_aware_tab()
     else:
         render_goal_copilot_unified_page()

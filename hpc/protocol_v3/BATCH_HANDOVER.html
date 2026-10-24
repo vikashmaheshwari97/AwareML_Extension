@@ -1,0 +1,40 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><title>V3 exclusive-node batch handover</title>
+<style>body{max-width:900px;margin:40px auto;font:17px/1.55 system-ui;color:#172335;padding:0 20px}pre{background:#f1f5f9;padding:18px;overflow:auto}h1,h2{line-height:1.2}strong{color:#173e78}</style>
+<h1>V3 exclusive-node batch launcher</h1>
+<p>The batch launcher changes scheduling only. The frozen framework code, scientific sample cap, seeds, five-thread budget, per-task two-hour watchdog, original result files and CPU/RAM estimation method remain in use. One measured workload executes per physical node at any time. This is CPU computation on Artemis, with CodeCarbon estimates rather than hardware-metered energy.</p>
+<h2>What improves, and what does not</h2>
+<p>Each array element reserves one exclusive Artemis node for up to 12 hours and launches its assigned tasks sequentially. No new Slurm allocation is required between those tasks. Four elements can reserve four nodes if resources, priority and association limits permit. This reduces queue gaps; it does not accelerate algorithms, guarantee four nodes, or guarantee an earlier finish. Longer requests may wait longer for an allocation.</p>
+<p>The launcher refuses to start another task unless the full two-hour watchdog plus ten minutes of headroom remains. A batch may therefore release its allocation early with tasks left over. Prepare a new plan for those remaining tasks after every batch has drained. Do not extend an individual scientific timeout.</p>
+<h2>Safe preparation while old jobs continue</h2>
+<pre>cd ~/AwareML_Extension
+git pull --ff-only
+"$HOME/.conda/envs/awareml-main/bin/python" -m unittest discover -s tests -p test_protocol_v3_batch_launcher.py -v
+"$HOME/.conda/envs/awareml-main/bin/python" hpc/protocol_v3/batch_launcher.py preview \
+  --campaign artifacts/stream_v3_dev_5cpu_20261023_180438</pre>
+<p>These additions are outside the existing campaign code-fingerprint paths. Preview reads results; it neither submits jobs nor changes campaign inputs or attempts. Current streaming tasks continue. Test fixtures simulate scheduling and result handling; they are not cluster or energy measurements.</p>
+<h2>Handover only after checking the new launcher</h2>
+<p>Cancel pending old tasks only, then let running and completing tasks finish. Never cancel an active task to make this handover. Check current hardware availability separately. No pending task has scientific results to lose.</p>
+<pre>scancel --state=PENDING 2998552 2998553
+squeue -u "$USER" -o "%.35i %.24j %.12T %.30R"</pre>
+<p>Wait until no old V3 job remains. Prepare refuses while those arrays or another named V3 workload are still present in the user's queue. If a race lets a task start before pending cancellation, let that task finish too.</p>
+<pre>export AWAREML_MAIN_PY="$HOME/.conda/envs/awareml-main/bin/python"
+export AWAREML_EVO_PYTHON="$HOME/.conda/envs/awareml-evo/bin/python"
+export AWAREML_OAML_PYTHON="$HOME/.conda/envs/awareml-oaml/bin/python"
+export AWAREML_OAML_MODE=online
+export PYTHONUNBUFFERED=1
+export V3_BATCH_PLAN="$PWD/artifacts/v3_batch_plan_$(date +%Y%m%d_%H%M%S)"
+"$AWAREML_MAIN_PY" hpc/protocol_v3/batch_launcher.py prepare \
+  --campaign artifacts/stream_v3_dev_5cpu_20261023_180438 \
+  --output "$V3_BATCH_PLAN" --nodes 4 --hours 12 \
+  --old-arrays 2998552 2998553
+"$AWAREML_MAIN_PY" hpc/protocol_v3/batch_launcher.py submit --plan "$V3_BATCH_PLAN" --dry-run</pre>
+<p>Prepare preserves eligible completed tasks and creates disjoint task lists for the remaining work. Failed or incomplete attempts require review and explicit <code>--retry-task ID</code> options at preparation; there are no automatic retries. Old attempts and hashes are retained. Check the counts and allocation before submission.</p>
+<pre>"$AWAREML_MAIN_PY" hpc/protocol_v3/batch_launcher.py submit --plan "$V3_BATCH_PLAN"</pre>
+<p>Submit exactly once. A submission marker blocks repeats, including uncertain submission outcomes. If submission errors, inspect the marker and Slurm before any retry. A second execution of a shard is also blocked. Do not manually remove these protections to rerun work; prepare a new reviewed plan after the old jobs drain.</p>
+<h2>Failure and measurement safeguards</h2>
+<p>Each task calls the unchanged <code>scripts/awareml_v3.py run</code> supervisor in a separate process. Its own energy interval, memory sampling, watchdog and attempt files remain independent of other tasks. CPU model, host memory capacity and Slurm thread budget are checked on every selected node. Existing AwareML and CodeCarbon locks cause a stop; the launcher never deletes locks automatically. Hardware models match the preserved EPYC 7763 baseline. This does not make estimated CPU or RAM power a direct meter reading.</p>
+<p>A failed backend, missing energy or invalid result stops that shard before another task starts. Inspect the logs and attempt before deciding on an explicit retry. Successful completed results are never overwritten. Collection should retain all attempt history and explicitly select the reviewed successful retries, including task 39.</p>
+<h2>Monitoring changes</h2>
+<p>Slurm now counts node batches, not framework tasks. A completed array element may have completed many tasks, stopped at an allocation boundary, or have unrun tasks remaining. Read <code>plan/shard_N.summary.json</code> and campaign <code>runs/task_*/attempt_*/result.json</code> for scientific progress. Plan logs contain per-task completion records. Do not add Slurm batch completion counts to benchmark counts.</p>
+<p>External data remain excluded from training and model selection. This launcher does not create or execute an external campaign automatically.</p>
+</html>

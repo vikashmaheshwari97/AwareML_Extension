@@ -96,8 +96,8 @@ with st.sidebar:
           <span>Faithfulness</span><b class="{c8}">{s8}</b>
         </div>
         """.format(
-            c6="ok" if status["phase6"]["ready"] else "warn",
-            s6="READY" if status["phase6"]["ready"] else "OFF",
+            c6="ok" if status["dataset_recommender"]["ready"] else "warn",
+            s6="READY" if status["dataset_recommender"]["ready"] else "PENDING",
             c7="ok" if status["phase7"]["ready"] else "warn",
             s7="READY" if status["phase7"]["ready"] else "OFF",
             c8="ok" if status["phase8"]["ready"] else "warn",

@@ -90,7 +90,9 @@ def test_patch_targets_new_research_grade_language():
     assert 'metric("Final held-out datasets", "31")' in three
     assert "Dataset-specific pre-execution recommendation" in three
     assert "render_phase18_heldout_validation" in three
-    assert "Cross-dataset preference score" in workspace
+    current = (ROOT / "awareml/ui_v2/copilot_recommender.py").read_text(encoding="utf-8")
+    assert "render_current_goal_guidance" in workspace
+    assert "Cross-dataset preference score" in current
     assert "render_priority_review_preview" in unified
     assert "Stage approved settings for Run Studio" in (ROOT / "awareml" / "ui_v2" / "recommender_research_grade.py").read_text(encoding="utf-8")
     assert "render_decision_space_research_layer" in core

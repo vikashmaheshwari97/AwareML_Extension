@@ -11,9 +11,25 @@ def test_runtime_bootstrap_is_installed():
     assert "bootstrap_study_runtime" in source
 
 
-def test_private_runtime_is_final_mode():
-    path = ROOT / "artifacts/phase16/private_mainstudy_runtime.json"
-    data = json.loads(path.read_text(encoding="utf-8"))
+def test_private_runtime_is_final_mode(tmp_path, monkeypatch):
+    # CI tests loading with disposable values, never real recruitment secrets.
+    from awareml.studies.study_runtime import bootstrap_study_runtime
+    path = tmp_path / "private_mainstudy_runtime.json"
+    fixture = {
+        "AWAREML_PHASE16_COLLECTION_MODE": "final",
+        "AWAREML_PHASE16_FINAL_ARMED": "YES",
+        "AWAREML_INFORMATION_SEEKING_COLLECTION_MODE": "final",
+        "AWAREML_INFORMATION_SEEKING_FINAL_ARMED": "YES",
+        "AWAREML_STUDY_RESEARCHER_KEY": "test-only-researcher-key",
+        "AWAREML_PHASE16_ID_SALT": "test-only-participant-salt",
+    }
+    path.write_text(json.dumps(fixture))
+    for key in fixture:
+        monkeypatch.delenv(key, raising=False)
+    data = bootstrap_study_runtime(path)
+    import os
+    assert all(os.environ[key] == value for key, value in fixture.items())
+    assert bootstrap_study_runtime(tmp_path / "missing.json") == {}
     assert data["AWAREML_PHASE16_COLLECTION_MODE"] == "final"
     assert data["AWAREML_PHASE16_FINAL_ARMED"] == "YES"
     assert data["AWAREML_INFORMATION_SEEKING_COLLECTION_MODE"] == "final"

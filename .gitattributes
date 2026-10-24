@@ -1,0 +1,10 @@
+# Preserve existing frozen byte hashes on both Linux and Windows.
+*.sbatch text eol=lf
+prompts/*.prompt text eol=lf
+data/journal/trust_stimulus_bank_v2/frozen/stimuli_researcher.json text eol=crlf
+data/journal/trust_stimulus_bank_v2/frozen/stimuli_participant.json text eol=crlf
+data/journal/trust_stimulus_bank_v2/frozen/scenario_map.csv text eol=crlf
+data/journal/trust_calibration_phase16_v2/frozen_design/protocol.json text eol=crlf
+data/journal/trust_stimulus_bank_v2/frozen/manifest.json text eol=crlf
+data/journal/information_seeking_v2/frozen/protocol.json text eol=crlf
+data/journal/protocol_v1/journal_experimental_protocol_v1.json text eol=crlf
