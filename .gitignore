@@ -227,3 +227,7 @@ artifacts/phase16/private_mainstudy_runtime.json
 
 # Optional local demonstration data; never publish as study evidence.
 /data/illustrative_demo/
+
+/historical_audit/
+/phase12_v2_human_enrichment_H041_H055/
+/phase12_v2_human_working/
