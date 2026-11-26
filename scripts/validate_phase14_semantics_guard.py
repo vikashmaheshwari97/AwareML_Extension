@@ -5,7 +5,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def main():
-    test_path = ROOT / "tests" / "test_phase14_robustness_hotfix.py"
+    test_path = ROOT / "tests" / "test_phase14_robustness.py"
     guard_path = ROOT / "tests" / "test_phase14_semantics_guard.py"
 
     text = test_path.read_text(encoding="utf-8")

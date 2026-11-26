@@ -26,7 +26,7 @@ def main():
         ROOT / "scripts" / "run_phase12_v3_paraphrase_diagnostic.py",
         ROOT / "scripts" / "run_phase12_v3_adversarial_diagnostic.py",
         ROOT / "scripts" / "evaluate_phase12_v3_diagnostic.py",
-        ROOT / "tests" / "test_phase12_v3_pre14_hotfix.py",
+        ROOT / "tests" / "test_phase12_v3_pre14.py",
     ]
     missing = [str(p.relative_to(ROOT)) for p in required if not p.exists()]
     if missing:

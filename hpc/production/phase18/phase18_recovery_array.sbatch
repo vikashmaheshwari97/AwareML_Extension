@@ -15,4 +15,4 @@ if [[ ! -x "$PYTHON" ]]; then
   echo "Main AwareML Python is not executable: $PYTHON" >&2
   exit 2
 fi
-"$PYTHON" hpc/production/phase18/run_phase18_task_hotfix.py --task-id "${SLURM_ARRAY_TASK_ID}"
+"$PYTHON" hpc/production/phase18/run_phase18_recovery_task.py --task-id "${SLURM_ARRAY_TASK_ID}"

@@ -45,9 +45,9 @@ def test_real_ethics_reference_is_required():
 
 def test_ethics_documents_exist():
     for rel in [
-        "docs/ethics/PHASE16_17_ETHICS_SELF_ASSESSMENT.html",
-        "docs/ethics/PARTICIPANT_INFORMATION_MAIN_STUDY.html",
-        "docs/ethics/CONSENT_RECORD_MAIN_STUDY.html",
-        "docs/ethics/PARTICIPANT_DEBRIEF_MAIN_STUDY.html",
+        "docs/ethics/PHASE16_17_ETHICS_SELF_ASSESSMENT.rst",
+        "docs/ethics/PARTICIPANT_INFORMATION_MAIN_STUDY.rst",
+        "docs/ethics/CONSENT_RECORD_MAIN_STUDY.rst",
+        "docs/ethics/PARTICIPANT_DEBRIEF_MAIN_STUDY.rst",
     ]:
         assert (ROOT / rel).exists()

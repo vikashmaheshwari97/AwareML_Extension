@@ -12,7 +12,7 @@ def read(relative):
 def main():
     benchmark = read("awareml/explanation_integrity/benchmark.py")
     runner = read("scripts/run_phase15_llm_benchmark.py")
-    phase14_test = read("tests/test_phase14_robustness_hotfix.py")
+    phase14_test = read("tests/test_phase14_robustness.py")
 
     checks = {
         "phase14_undefined_equal_opportunity_test_fixed": (

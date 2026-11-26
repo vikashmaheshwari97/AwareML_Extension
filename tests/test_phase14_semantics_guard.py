@@ -29,7 +29,7 @@ def test_equal_opportunity_is_na_when_any_group_has_no_positive_truth():
 
 def test_legacy_phase14_test_cannot_reintroduce_fake_zero():
     root = Path(__file__).resolve().parents[1]
-    legacy = root / "tests" / "test_phase14_robustness_hotfix.py"
+    legacy = root / "tests" / "test_phase14_robustness.py"
     text = legacy.read_text(encoding="utf-8")
 
     assert 'assert result["equal_opportunity_diff"] is None' in text

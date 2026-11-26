@@ -176,7 +176,7 @@ def main():
         if not actual_missing:
             print("Nothing to submit.")
             return
-        command = ["sbatch", f"--array={spec}%1", f"--account={args.account}", f"--partition={args.partition}", "hpc/production/phase18/phase18_hotfix_array.sbatch"]
+        command = ["sbatch", f"--array={spec}%1", f"--account={args.account}", f"--partition={args.partition}", "hpc/production/phase18/phase18_recovery_array.sbatch"]
         print("Submitting:")
         print(" ".join(command))
         subprocess.run(command, cwd=str(ROOT), check=True)

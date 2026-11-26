@@ -14,7 +14,7 @@ for value in (str(ROOT), str(SCRIPTS), str(HERE)):
     if value not in sys.path:
         sys.path.insert(0, value)
 
-from phase18_runtime_hotfix import HOTFIX_ID, install_phase18_runtime_hotfixes
+from phase18_runtime_compatibility import HOTFIX_ID, install_phase18_runtime_hotfixes
 install_phase18_runtime_hotfixes()
 import run_phase18_task as base_runner  # noqa: E402
 

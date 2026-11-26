@@ -4,11 +4,6 @@ import ast
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def test_hotfix_script_parses():
-    ast.parse(
-        (ROOT / "scripts/apply_main_stack_ci_hotfix_v9_1.py").read_text(encoding="utf-8")
-    )
-
 
 def test_goal_copilot_contract_is_current():
     source = (ROOT / "tests/test_goal_copilot_unified_ux.py").read_text(encoding="utf-8")

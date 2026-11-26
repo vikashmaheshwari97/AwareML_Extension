@@ -13,9 +13,9 @@ EXPECTED = {
     "tests/test_phase12_v31_final_pre14.py",
     "tests/test_phase15_allstages_live_runner.py",
     "tests/test_phase15_simplebatch_final_fix.py",
-    "tests/test_phase15_stageb_generation_prompt_hotfix.py",
+    "tests/test_phase15_stageb_generation_prompt.py",
     "tests/test_phase15_ui.py",
-    "tests/test_pre_phase14_hotfix.py",
+    "tests/test_pre_phase14.py",
 }
 
 proc = subprocess.run(
