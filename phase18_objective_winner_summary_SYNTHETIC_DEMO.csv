@@ -1,6 +1,0 @@
-objective,matches,total,top1_accuracy,data_status
-accuracy,29,31,0.93548,SYNTHETIC_DEMO
-runtime,28,31,0.90323,SYNTHETIC_DEMO
-energy,28,31,0.90323,SYNTHETIC_DEMO
-co2,28,31,0.90323,SYNTHETIC_DEMO
-overall,113,124,0.91129,SYNTHETIC_DEMO

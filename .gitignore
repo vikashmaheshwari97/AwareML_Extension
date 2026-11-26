@@ -191,3 +191,36 @@ artifacts/phase16/private_mainstudy_runtime.json
 # Ignore TXT artifacts except dependency requirement files
 *.txt
 !requirements*.txt
+
+# Repository cleanup: obsolete installers and duplicate datasets
+/_awareml_upgrade_backups/
+/_classic_update/
+/_compact_demo_fix/
+/_copilot_polish/
+/_copilot_upgrade/
+/_final_language_fix/
+/_group_counts_fix/
+/_illustrative_demo_fix/
+/_information12_acceptance_fix/
+/_information12_fix/
+/_morten_task_context/
+/_phase16_finalization_payload/
+/_workspace_restore/
+/local_artifacts/
+/protocol_v3_payload/
+/upgrade_v8_1_payload/
+/upgrade_v8_2_payload/
+/upgrade_v8_payload/
+/AwareML_Phase6_2_Hotfix/
+/External Evaluation Dataset/*.csv
+*.backup*
+*.local-backup-*
+*_backup/
+*_backups/
+/phase18_objective_winner_summary_SYNTHETIC_DEMO.csv
+/HOTFIX_DETAILS.json
+/Apply-Upgrade.ps1
+/AwareML_V3_Upgrade.patch
+/UPGRADE_MORTEN_V8*.json
+/PHASE17_CLASSIFIER_FIX_MANIFEST.json
+/VALIDATION_V8_2.json
