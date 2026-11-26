@@ -7,7 +7,7 @@ PAGE = (ROOT / "awareml" / "ui_v2" / "pages_copilot.py").read_text(encoding="utf
 
 def test_goal_path_uses_unified_renderer():
     assert "from .copilot_unified import render_goal_copilot_unified_page" in PAGE
-    assert "active_path = render_copilot_workspace_header(state)" in PAGE
+    assert "active_path = render_copilot_workspace_header(ensure_research_state())" in PAGE
     assert 'if active_path == "historical":' in PAGE
     assert "render_historical_preference_prior_tab()" in PAGE
     assert 'elif active_path == "dataset":' in PAGE
@@ -32,11 +32,11 @@ def test_ui_contains_no_emoji_icons():
 
 
 def test_flow_cards_are_aligned_and_numbered():
-    assert "awareml-flow-card" in UNIFIED
-    assert '"01"' in UNIFIED
-    assert '"02"' in UNIFIED
-    assert '"03"' in UNIFIED
-    assert '"04"' in UNIFIED
+    design = (ROOT / "awareml/ui_v2/copilot_design.py").read_text(encoding="utf-8")
+    assert "render_goal_steps()" in UNIFIED
+    assert "def render_goal_steps(" in design
+    for number, title in [("01", "Understand"), ("02", "Weight"), ("03", "Predict"), ("04", "You decide")]:
+        assert '("{}","{}",'.format(number, title) in design
 
 
 def test_hcai_is_rendered_as_oversight_cards():

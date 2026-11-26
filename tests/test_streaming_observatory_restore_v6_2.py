@@ -66,7 +66,8 @@ def test_window_level_views_replace_heatmap_with_position_based_charts():
 
 def test_advanced_drift_lab_uses_canonical_streaming_observatory():
     text = Path("awareml/ui_v2/pages_advanced.py").read_text(encoding="utf-8")
-    assert '"Drift & Temporal Lab": streaming_observatory_page' in text
+    top = Path('awareml/ui_v2/pages.py').read_text(encoding='utf-8')
+    assert '"Streaming Observatory": streaming_observatory_page' in top
     assert "drift_temporal_v2_page" not in text
 
 

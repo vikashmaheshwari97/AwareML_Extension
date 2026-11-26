@@ -18,6 +18,8 @@ RESULTS=PROJECT/'artifacts/copilot_results/20261025_five_frameworks'
 
 @pytest.fixture
 def real(monkeypatch,tmp_path):
+    if not (RESULTS/'models/manifest.json').is_file():
+        pytest.skip('Requires the original local experiment export; not included in a source checkout.')
     monkeypatch.setenv('AWAREML_RECOMMENDER_BUNDLE',str(RESULTS/'models'))
     monkeypatch.delenv('AWAREML_RECOMMENDER_V3_BUNDLE',raising=False)
     for kind in ('DEVELOPMENT','EXTERNAL'):
@@ -62,7 +64,7 @@ def test_actual_workspace_has_shared_header_and_available_historical_path(real):
     assert not app.exception
     text=' '.join(x.value for x in app.markdown)
     captions=' '.join(x.value for x in app.caption)
-    assert 'r9-hero' in text and 'AwareML Copilot Workspace' in text
+    assert 'r9-hero' in text and 'Goal and Recommendation Panel' in text
     assert '1,175' in captions and '5-seed' in captions
     assert 'Available' in text and 'training pending' not in text.lower()
 

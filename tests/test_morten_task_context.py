@@ -70,5 +70,6 @@ def test_installed_source_scopes_questions_and_preserves_s_tias():
     text=(root/'awareml/ui_v2/phase16_morten_v2.py').read_text()
     for item in ['I am confident in the AI assistant.','The AI assistant is reliable.','I can trust the AI assistant.']:
         assert item in text
-    assert 'EXPLANATION_LABELS[value]' in text and 'TRUST_INSTRUCTION' in text
+    assert 'EXPLANATION_LABELS[value]' in text
+    assert 'ASSISTANT_INSTRUCTION' in text and 'EXPLANATION_INSTRUCTION' in text
     assert 'SCOPE_LABELS[value]' in text

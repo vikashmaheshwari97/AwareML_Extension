@@ -197,7 +197,7 @@ def test_current_sidebar_route_has_no_separate_version_page():
     root = Path(__file__).resolve().parents[1]
     pages = (root / "awareml/ui_v2/pages.py").read_text(encoding="utf-8")
     assert '"Meta-Recommender V3":' not in pages
-    assert '"Copilot Workspace"' in pages
+    assert '"Goal and Recommendation Panel": copilot_workspace_page' in pages
     active = (root / "awareml/ui_v2/copilot_unified.py").read_text(encoding="utf-8")
     assert "propose_current(service,state,goal,use_llm)" in active
     assert "load_v2_recommender" not in active

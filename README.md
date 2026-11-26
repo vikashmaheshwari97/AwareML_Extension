@@ -13,7 +13,6 @@ AwareML is an interactive system for transparent, controllable and sustainable s
 | `data/Testing Datasets/` | External evaluation and application testing datasets |
 | `data/journal/` | Scenario benchmarks, annotations, study designs and research evidence |
 | `data/meta/` | Versioned recommender assets and metadata |
-| `data/illustrative_demo/` | Demonstration data, separate from empirical study results |
 | `prompts/` | Language-model prompt resources |
 | `scripts/` | Preparation, validation and evaluation utilities |
 | `tests/` | Automated checks |
@@ -32,7 +31,7 @@ AwareML is an interactive system for transparent, controllable and sustainable s
 - Review recommendations, record decisions and export run evidence.
 - Access trust-calibration and information-seeking study workspaces.
 
-Predicted outcomes, observed outcomes and demonstration data serve different purposes. Use their provenance and the relevant experiment configuration when interpreting results.
+Predicted and observed outcomes serve different purposes. Use their provenance and the relevant experiment configuration when interpreting results. Optional demonstration data stays local and is not distributed as study evidence.
 
 ## Requirements
 

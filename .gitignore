@@ -224,3 +224,6 @@ artifacts/phase16/private_mainstudy_runtime.json
 /UPGRADE_MORTEN_V8*.json
 /PHASE17_CLASSIFIER_FIX_MANIFEST.json
 /VALIDATION_V8_2.json
+
+# Optional local demonstration data; never publish as study evidence.
+/data/illustrative_demo/

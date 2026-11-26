@@ -5,6 +5,8 @@ import pandas as pd
 import pytest
 from awareml.studies.trust_morten_v2 import TrustCalibrationStudyV2, StudyV2Error, StimulusBankV2, analyze_v2
 from awareml.studies import information_seeking_morten_v2 as info
+from awareml.ui_v2.phase16_morten_v2 import PFX as TRUST_PFX
+from awareml.ui_v2.phase17_morten_v2 import PFX as INFORMATION_PFX
 from awareml.studies.morten_review_v3 import (
     bank_rows, validate_claims, review_template, review_status, review_identity, scenario_coverage,
     paired_inference, evidence_association, agency_evidence_association, study_ranking,
@@ -182,9 +184,9 @@ def test_streamlit_participant_can_accept_choice_and_correct_explanation(tmp_pat
     monkeypatch.setenv('AWAREML_PHASE16_V3_DB',str(tmp_path/'ui.sqlite'))
     at=AppTest.from_string('from awareml.ui_v2.phase16_morten_v2 import render_phase16_participant_study\nrender_phase16_participant_study(collection_mode="pilot", isolated=True)').run(timeout=30)
     assert not at.exception
-    at.text_input(key='p16v3_reg_code').set_value('UIV8TEST')
-    at.selectbox(key='p16v3_reg_group').select('Practitioner')
-    at.radio(key='p16v3_reg_expertise').set_value(4)
+    at.text_input(key=TRUST_PFX + '_reg_code').set_value('UIV8TEST')
+    at.selectbox(key=TRUST_PFX + '_reg_group').select('Practitioner')
+    at.radio(key=TRUST_PFX + '_reg_expertise').set_value(4)
     for box in at.checkbox:box.check()
     at.button[0].click().run(timeout=30)
     assert len(at.radio)==6 and all(r.value is None for r in at.radio)
@@ -227,12 +229,12 @@ def test_information_participant_scope_and_fixed_score_ui(tmp_path,monkeypatch):
     monkeypatch.setattr('awareml.studies.store.settings',replace(settings,study_db=tmp_path/'info.sqlite'))
     info.save_context('pilot',results(),[],{'ground_truth':'Accuracy','scenario':'Plate recognition accuracy and privacy.','scenario_id':'DEMO','benchmark_id':'DEMO','domain':'Transport'},True)
     at=AppTest.from_string('from awareml.ui_v2.phase17_morten_v2 import information_seeking_research_page_v2\ninformation_seeking_research_page_v2()').run(timeout=30)
-    at.button(key='p17v3_enterp').click().run(timeout=30)
+    at.button(key=INFORMATION_PFX + '_enterp').click().run(timeout=30)
     at.run(timeout=30)
     assert not at.exception
-    at.text_input(key='p17v3_reg_code').set_value('INFOV8TEST')
-    at.selectbox(key='p17v3_reg_group').select('Practitioner')
-    at.radio(key='p17v3_reg_expertise').set_value(4)
+    at.text_input(key=INFORMATION_PFX + '_reg_code').set_value('INFOV8TEST')
+    at.selectbox(key=INFORMATION_PFX + '_reg_group').select('Practitioner')
+    at.radio(key=INFORMATION_PFX + '_reg_expertise').set_value(4)
     for box in at.checkbox:box.check()
     at.button(key='FormSubmitter:p17v3_registration-Start information-seeking study').click().run(timeout=30)
     assert not at.exception

@@ -13,7 +13,9 @@ def test_phase14_is_integrated_into_existing_labs():
     specialist = _read("awareml/ui_v2/pages_specialist.py")
 
     assert "Phase 14 · Fairness + Sustainability Hardening" not in advanced
-    assert '"Fairness Lab": fairness_v2_page' in advanced
+    responsible = _read('awareml/ui_v2/pages_observatory.py')
+    assert 'Fairness Lab' in responsible
+    assert 'fairness_v2_page' in responsible
     assert '"Sustainability Lab": sustainability_v2_page' in advanced
     assert "render_phase14_fairness_details(results)" in specialist
     assert "render_phase14_sustainability_details(results)" in specialist

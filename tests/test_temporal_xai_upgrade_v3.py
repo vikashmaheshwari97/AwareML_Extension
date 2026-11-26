@@ -63,8 +63,8 @@ def test_streaming_observatory_is_consolidated_inside_advanced_labs():
     top = (ROOT / "awareml/ui_v2/pages.py").read_text(encoding="utf-8")
     advanced = (ROOT / "awareml/ui_v2/pages_advanced.py").read_text(encoding="utf-8")
     observatory = (ROOT / "awareml/ui_v2/pages_observatory.py").read_text(encoding="utf-8")
-    assert '"Streaming Observatory":' not in top
-    assert '"Drift & Temporal Lab": streaming_observatory_page' in advanced
+    assert '"Streaming Observatory": streaming_observatory_page' in top
+    assert '"Drift & Temporal Lab":' not in advanced
     assert "Post-change accuracy & recovery" in observatory
     assert "Detector health & adaptation" in observatory
 

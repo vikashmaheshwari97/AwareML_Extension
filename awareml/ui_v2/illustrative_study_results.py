@@ -196,6 +196,9 @@ def _stacked_table(frame, column, order, short, key):
 
 def render_trust_demo():
     if not _researcher_access():return
+    if not DATA_PATH.is_file():
+        st.info("Optional demonstration data is not installed locally. The study workspace remains available.")
+        return
     try:raw=load_demo()
     except (OSError,ValueError,KeyError,TypeError) as e:st.error('Demo data could not be loaded: '+str(e));return
     _banner(raw)
@@ -238,6 +241,9 @@ def render_trust_demo():
 
 def render_information_demo():
     if not _researcher_access():return
+    if not DATA_PATH.with_name("awareml_information_seeking_12_cases.json").is_file():
+        st.info("Optional demonstration data is not installed locally. The study workspace remains available.")
+        return
     try:raw=_load_information_demo12()
     except (OSError,ValueError,KeyError,TypeError) as e:st.error('Demo data could not be loaded: '+str(e));return
     st.subheader('Illustrative Information-Seeking results')
