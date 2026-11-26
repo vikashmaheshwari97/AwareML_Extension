@@ -1,0 +1,62 @@
+{
+  "unit_tests_passed": 13,
+  "python38_syntax_checked": true,
+  "streamlit": {
+    "errors": [],
+    "chart_count": 8,
+    "trust_parent_preserved": true,
+    "metrics": [
+      [
+        "Demo cases",
+        "34"
+      ],
+      [
+        "Correct trust",
+        "6.63"
+      ],
+      [
+        "Incorrect trust",
+        "2.80"
+      ],
+      [
+        "Illustrative difference",
+        "+3.82"
+      ],
+      [
+        "Demo cases",
+        "12"
+      ],
+      [
+        "Scripted questions",
+        "14"
+      ],
+      [
+        "Evidence accesses",
+        "29"
+      ],
+      [
+        "Repeated accesses",
+        "5"
+      ]
+    ],
+    "decision_table": [
+      {
+        "Decision": "Accept",
+        "Cases": 9,
+        "Decision (%)": "75.00"
+      },
+      {
+        "Decision": "Override",
+        "Cases": 2,
+        "Decision (%)": "16.67"
+      },
+      {
+        "Decision": "Reject",
+        "Cases": 1,
+        "Decision (%)": "8.33"
+      }
+    ],
+    "separate_activity_banner": true,
+    "researcher_gate_passed": true
+  }
+}

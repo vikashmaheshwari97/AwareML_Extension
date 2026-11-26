@@ -1,0 +1,50 @@
+{
+  "is_synthetic": true,
+  "eligible_for_main_study": false,
+  "cases": 12,
+  "final_responses": 12,
+  "group_counts": {
+    "ML / AutoML expert": 5,
+    "University / CS student": 4,
+    "Practitioner": 3
+  },
+  "questions": 14,
+  "evidence_accesses_including_repeats": 29,
+  "repeat_accesses": 5,
+  "evidence_by_area": {
+    "Performance": {
+      "all_accesses": 6,
+      "repeats": 1
+    },
+    "Fairness": {
+      "all_accesses": 7,
+      "repeats": 2
+    },
+    "Sustainability": {
+      "all_accesses": 7,
+      "repeats": 2
+    },
+    "Drift": {
+      "all_accesses": 5,
+      "repeats": 0
+    },
+    "Explainability": {
+      "all_accesses": 4,
+      "repeats": 0
+    }
+  },
+  "final_decisions": {
+    "Accept": {
+      "count": 9,
+      "percent": 75.0
+    },
+    "Override": {
+      "count": 2,
+      "percent": 16.666666666666668
+    },
+    "Reject": {
+      "count": 1,
+      "percent": 8.333333333333334
+    }
+  }
+}

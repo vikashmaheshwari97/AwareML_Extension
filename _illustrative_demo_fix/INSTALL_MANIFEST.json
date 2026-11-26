@@ -1,0 +1,22 @@
+{
+  "package": "AwareML Illustrative Study Tabs",
+  "target_branch": "upgrade/stream-protocol-v3",
+  "tested_streamlit": "1.40.2",
+  "tested_plotly": "5.24.1",
+  "python_syntax": "3.8",
+  "tests_passed": 7,
+  "illustrative_cases": 34,
+  "trial_rows": 680,
+  "visuals": 37,
+  "source": "GitHub current branch chart renderer snapshots",
+  "modified_existing_file": "awareml/ui_v2/pages_specialist.py",
+  "production_database_writes": false,
+  "researcher_access_required": true,
+  "data_sha256": "1159535e6467ef7cb7bee0246d322366c7f94d94a1143b3762607245d5e7dcf6",
+  "limitations": [
+    "No observed timing exists",
+    "No human qualitative coding exists",
+    "Demo groups use declared activity rules",
+    "Charts are copied into an isolated module so future production changes do not silently alter the demo"
+  ]
+}

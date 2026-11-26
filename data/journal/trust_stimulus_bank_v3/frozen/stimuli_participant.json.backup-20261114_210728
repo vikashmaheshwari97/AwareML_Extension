@@ -1,0 +1,3440 @@
+[
+  {
+    "scenario_id": "H001",
+    "scenario_text": "For our assembly line quality checks, we need a vision model that catches defects quickly enough so it won't slow down the main conveyor belt during peak shifts.",
+    "domain": "Manufacturing",
+    "framework_context": "AutoStreamML",
+    "source_name": "Objective-fit explanation",
+    "prompt": "Assess the explanation supporting the displayed framework recommendation using this reference table and these study objectives: Accuracy + Runtime.",
+    "recommendation": "Use AutoStreamML for the objectives included in this task.",
+    "recommended_framework": "AutoStreamML",
+    "explanation": "AutoStreamML has scenario-fit score 1.000, rank #1, based on accuracy 0.856, runtime 8.35 s. Higher accuracy and lower resource costs improve the score for the objectives included in this task.",
+    "reference_evidence": {
+      "scenario": {
+        "benchmark_id": "V2-024",
+        "scenario_id": "H001",
+        "text": "For our assembly line quality checks, we need a vision model that catches defects quickly enough so it won't slow down the main conveyor belt during peak shifts.",
+        "domain": "Manufacturing",
+        "track1_ground_truth_objectives": [
+          "Accuracy",
+          "Runtime"
+        ],
+        "source": "Track-1 scenario benchmark"
+      },
+      "scenario_objectives": [
+        "Accuracy",
+        "Runtime"
+      ],
+      "framework_context": "AutoStreamML",
+      "explanation_type": "Objective-fit explanation",
+      "frameworks": [
+        {
+          "framework": "AutoStreamML",
+          "accuracy": 0.856,
+          "runtime_sec": 8.35,
+          "energy_kwh": 0.00172,
+          "co2_kg": 0.00071672,
+          "scenario_fit_score": 1.0,
+          "rank": 1
+        },
+        {
+          "framework": "ChaCha",
+          "accuracy": 0.784,
+          "runtime_sec": 12.4,
+          "energy_kwh": 0.00124,
+          "co2_kg": 0.00051671,
+          "scenario_fit_score": 0.4662456445993033,
+          "rank": 2
+        },
+        {
+          "framework": "OAML",
+          "accuracy": 0.767,
+          "runtime_sec": 13.85,
+          "energy_kwh": 0.00136,
+          "co2_kg": 0.00056671,
+          "scenario_fit_score": 0.3108304297328689,
+          "rank": 3
+        },
+        {
+          "framework": "EvoAutoML",
+          "accuracy": 0.75,
+          "runtime_sec": 15.3,
+          "energy_kwh": 0.00148,
+          "co2_kg": 0.00061672,
+          "scenario_fit_score": 0.1554152148664344,
+          "rank": 4
+        },
+        {
+          "framework": "AutoClass",
+          "accuracy": 0.733,
+          "runtime_sec": 16.75,
+          "energy_kwh": 0.0016,
+          "co2_kg": 0.00066672,
+          "scenario_fit_score": 0.0,
+          "rank": 5
+        }
+      ],
+      "evidence_contract": "Researcher-constructed study reference table supplied to the explanation generator. Authoritative within this task only; not an independent external source or a measured run on the textual scenario.",
+      "objective_weights": {
+        "Accuracy": 0.5,
+        "Runtime": 0.5
+      },
+      "normalization": "within-table min-max, inverted for costs; equal weight for selected objectives",
+      "scope": "Only Accuracy, Runtime, Energy and CO2 can enter the ranking. Other scenario requirements have not been assessed."
+    }
+  },
+  {
+    "scenario_id": "H001",
+    "scenario_text": "For our assembly line quality checks, we need a vision model that catches defects quickly enough so it won't slow down the main conveyor belt during peak shifts.",
+    "domain": "Manufacturing",
+    "framework_context": "AutoStreamML",
+    "source_name": "Objective-fit explanation",
+    "prompt": "Assess the explanation supporting the displayed framework recommendation using this reference table and these study objectives: Accuracy + Runtime.",
+    "recommendation": "Use AutoStreamML for the objectives included in this task.",
+    "recommended_framework": "AutoStreamML",
+    "explanation": "AutoStreamML has scenario-fit score 1.000, rank #1, based on accuracy 0.686, runtime 8.35 s. Higher accuracy and lower resource costs improve the score for the objectives included in this task.",
+    "reference_evidence": {
+      "scenario": {
+        "benchmark_id": "V2-024",
+        "scenario_id": "H001",
+        "text": "For our assembly line quality checks, we need a vision model that catches defects quickly enough so it won't slow down the main conveyor belt during peak shifts.",
+        "domain": "Manufacturing",
+        "track1_ground_truth_objectives": [
+          "Accuracy",
+          "Runtime"
+        ],
+        "source": "Track-1 scenario benchmark"
+      },
+      "scenario_objectives": [
+        "Accuracy",
+        "Runtime"
+      ],
+      "framework_context": "AutoStreamML",
+      "explanation_type": "Objective-fit explanation",
+      "frameworks": [
+        {
+          "framework": "AutoStreamML",
+          "accuracy": 0.856,
+          "runtime_sec": 8.35,
+          "energy_kwh": 0.00172,
+          "co2_kg": 0.00071672,
+          "scenario_fit_score": 1.0,
+          "rank": 1
+        },
+        {
+          "framework": "ChaCha",
+          "accuracy": 0.784,
+          "runtime_sec": 12.4,
+          "energy_kwh": 0.00124,
+          "co2_kg": 0.00051671,
+          "scenario_fit_score": 0.4662456445993033,
+          "rank": 2
+        },
+        {
+          "framework": "OAML",
+          "accuracy": 0.767,
+          "runtime_sec": 13.85,
+          "energy_kwh": 0.00136,
+          "co2_kg": 0.00056671,
+          "scenario_fit_score": 0.3108304297328689,
+          "rank": 3
+        },
+        {
+          "framework": "EvoAutoML",
+          "accuracy": 0.75,
+          "runtime_sec": 15.3,
+          "energy_kwh": 0.00148,
+          "co2_kg": 0.00061672,
+          "scenario_fit_score": 0.1554152148664344,
+          "rank": 4
+        },
+        {
+          "framework": "AutoClass",
+          "accuracy": 0.733,
+          "runtime_sec": 16.75,
+          "energy_kwh": 0.0016,
+          "co2_kg": 0.00066672,
+          "scenario_fit_score": 0.0,
+          "rank": 5
+        }
+      ],
+      "evidence_contract": "Researcher-constructed study reference table supplied to the explanation generator. Authoritative within this task only; not an independent external source or a measured run on the textual scenario.",
+      "objective_weights": {
+        "Accuracy": 0.5,
+        "Runtime": 0.5
+      },
+      "normalization": "within-table min-max, inverted for costs; equal weight for selected objectives",
+      "scope": "Only Accuracy, Runtime, Energy and CO2 can enter the ranking. Other scenario requirements have not been assessed."
+    }
+  },
+  {
+    "scenario_id": "H053",
+    "scenario_text": "Wildlife camera traps need to run for months on one battery, but they also have to tell the difference between a rare leopard and a stray dog in bad lighting.",
+    "domain": "Wildlife monitoring",
+    "framework_context": "AutoClass",
+    "source_name": "Objective-fit explanation",
+    "prompt": "Assess the explanation supporting the displayed framework recommendation using this reference table and these study objectives: Accuracy + Energy.",
+    "recommendation": "Use AutoClass for the objectives included in this task.",
+    "recommended_framework": "AutoClass",
+    "explanation": "AutoClass has scenario-fit score 1.000, rank #1, based on accuracy 0.858, energy 0.000892 kWh. Higher accuracy and lower resource costs improve the score for the objectives included in this task.",
+    "reference_evidence": {
+      "scenario": {
+        "benchmark_id": "V2-025",
+        "scenario_id": "H053",
+        "text": "Wildlife camera traps need to run for months on one battery, but they also have to tell the difference between a rare leopard and a stray dog in bad lighting.",
+        "domain": "Wildlife monitoring",
+        "track1_ground_truth_objectives": [
+          "Accuracy",
+          "Energy"
+        ],
+        "source": "Track-1 scenario benchmark"
+      },
+      "scenario_objectives": [
+        "Accuracy",
+        "Energy"
+      ],
+      "framework_context": "AutoClass",
+      "explanation_type": "Objective-fit explanation",
+      "frameworks": [
+        {
+          "framework": "AutoClass",
+          "accuracy": 0.858,
+          "runtime_sec": 16.86,
+          "energy_kwh": 0.000892,
+          "co2_kg": 0.0003717,
+          "scenario_fit_score": 1.0,
+          "rank": 1
+        },
+        {
+          "framework": "ChaCha",
+          "accuracy": 0.785,
+          "runtime_sec": 12.51,
+          "energy_kwh": 0.00125,
+          "co2_kg": 0.00052088,
+          "scenario_fit_score": 0.527530933157298,
+          "rank": 2
+        },
+        {
+          "framework": "OAML",
+          "accuracy": 0.768,
+          "runtime_sec": 13.96,
+          "energy_kwh": 0.00137,
+          "co2_kg": 0.00057088,
+          "scenario_fit_score": 0.3956481998679736,
+          "rank": 3
+        },
+        {
+          "framework": "EvoAutoML",
+          "accuracy": 0.751,
+          "runtime_sec": 15.41,
+          "energy_kwh": 0.00149,
+          "co2_kg": 0.00062088,
+          "scenario_fit_score": 0.263765466578649,
+          "rank": 4
+        },
+        {
+          "framework": "AutoStreamML",
+          "accuracy": 0.717,
+          "runtime_sec": 18.31,
+          "energy_kwh": 0.00173,
+          "co2_kg": 0.00072089,
+          "scenario_fit_score": 0.0,
+          "rank": 5
+        }
+      ],
+      "evidence_contract": "Researcher-constructed study reference table supplied to the explanation generator. Authoritative within this task only; not an independent external source or a measured run on the textual scenario.",
+      "objective_weights": {
+        "Accuracy": 0.5,
+        "Energy": 0.5
+      },
+      "normalization": "within-table min-max, inverted for costs; equal weight for selected objectives",
+      "scope": "Only Accuracy, Runtime, Energy and CO2 can enter the ranking. Other scenario requirements have not been assessed."
+    }
+  },
+  {
+    "scenario_id": "H053",
+    "scenario_text": "Wildlife camera traps need to run for months on one battery, but they also have to tell the difference between a rare leopard and a stray dog in bad lighting.",
+    "domain": "Wildlife monitoring",
+    "framework_context": "AutoClass",
+    "source_name": "Objective-fit explanation",
+    "prompt": "Assess the explanation supporting the displayed framework recommendation using this reference table and these study objectives: Accuracy + Energy.",
+    "recommendation": "Use AutoClass for the objectives included in this task.",
+    "recommended_framework": "AutoClass",
+    "explanation": "AutoClass has scenario-fit score 1.000, rank #1, based on accuracy 0.858, energy 0.001606 kWh. Higher accuracy and lower resource costs improve the score for the objectives included in this task.",
+    "reference_evidence": {
+      "scenario": {
+        "benchmark_id": "V2-025",
+        "scenario_id": "H053",
+        "text": "Wildlife camera traps need to run for months on one battery, but they also have to tell the difference between a rare leopard and a stray dog in bad lighting.",
+        "domain": "Wildlife monitoring",
+        "track1_ground_truth_objectives": [
+          "Accuracy",
+          "Energy"
+        ],
+        "source": "Track-1 scenario benchmark"
+      },
+      "scenario_objectives": [
+        "Accuracy",
+        "Energy"
+      ],
+      "framework_context": "AutoClass",
+      "explanation_type": "Objective-fit explanation",
+      "frameworks": [
+        {
+          "framework": "AutoClass",
+          "accuracy": 0.858,
+          "runtime_sec": 16.86,
+          "energy_kwh": 0.000892,
+          "co2_kg": 0.0003717,
+          "scenario_fit_score": 1.0,
+          "rank": 1
+        },
+        {
+          "framework": "ChaCha",
+          "accuracy": 0.785,
+          "runtime_sec": 12.51,
+          "energy_kwh": 0.00125,
+          "co2_kg": 0.00052088,
+          "scenario_fit_score": 0.527530933157298,
+          "rank": 2
+        },
+        {
+          "framework": "OAML",
+          "accuracy": 0.768,
+          "runtime_sec": 13.96,
+          "energy_kwh": 0.00137,
+          "co2_kg": 0.00057088,
+          "scenario_fit_score": 0.3956481998679736,
+          "rank": 3
+        },
+        {
+          "framework": "EvoAutoML",
+          "accuracy": 0.751,
+          "runtime_sec": 15.41,
+          "energy_kwh": 0.00149,
+          "co2_kg": 0.00062088,
+          "scenario_fit_score": 0.263765466578649,
+          "rank": 4
+        },
+        {
+          "framework": "AutoStreamML",
+          "accuracy": 0.717,
+          "runtime_sec": 18.31,
+          "energy_kwh": 0.00173,
+          "co2_kg": 0.00072089,
+          "scenario_fit_score": 0.0,
+          "rank": 5
+        }
+      ],
+      "evidence_contract": "Researcher-constructed study reference table supplied to the explanation generator. Authoritative within this task only; not an independent external source or a measured run on the textual scenario.",
+      "objective_weights": {
+        "Accuracy": 0.5,
+        "Energy": 0.5
+      },
+      "normalization": "within-table min-max, inverted for costs; equal weight for selected objectives",
+      "scope": "Only Accuracy, Runtime, Energy and CO2 can enter the ranking. Other scenario requirements have not been assessed."
+    }
+  },
+  {
+    "scenario_id": "H047",
+    "scenario_text": "Our robotic arms need to stop immediately if a human gets too close, but they also can't stop every time a shadow passes over the sensor or production stops entirely.",
+    "domain": "Industrial robotics",
+    "framework_context": "EvoAutoML",
+    "source_name": "Objective-fit explanation",
+    "prompt": "Assess the explanation supporting the displayed framework recommendation using this reference table and these study objectives: Accuracy + Runtime.",
+    "recommendation": "Use EvoAutoML for the objectives included in this task.",
+    "recommended_framework": "EvoAutoML",
+    "explanation": "EvoAutoML has scenario-fit score 1.000, rank #1, based on accuracy 0.860, runtime 8.71 s. Higher accuracy and lower resource costs improve the score for the objectives included in this task.",
+    "reference_evidence": {
+      "scenario": {
+        "benchmark_id": "V2-026",
+        "scenario_id": "H047",
+        "text": "Our robotic arms need to stop immediately if a human gets too close, but they also can't stop every time a shadow passes over the sensor or production stops entirely.",
+        "domain": "Industrial robotics",
+        "track1_ground_truth_objectives": [
+          "Accuracy",
+          "Runtime"
+        ],
+        "source": "Track-1 scenario benchmark"
+      },
+      "scenario_objectives": [
+        "Accuracy",
+        "Runtime"
+      ],
+      "framework_context": "EvoAutoML",
+      "explanation_type": "Objective-fit explanation",
+      "frameworks": [
+        {
+          "framework": "EvoAutoML",
+          "accuracy": 0.86,
+          "runtime_sec": 8.71,
+          "energy_kwh": 0.0015,
+          "co2_kg": 0.00062505,
+          "scenario_fit_score": 1.0,
+          "rank": 1
+        },
+        {
+          "framework": "ChaCha",
+          "accuracy": 0.786,
+          "runtime_sec": 12.62,
+          "energy_kwh": 0.00126,
+          "co2_kg": 0.00052504,
+          "scenario_fit_score": 0.538097793765684,
+          "rank": 2
+        },
+        {
+          "framework": "OAML",
+          "accuracy": 0.769,
+          "runtime_sec": 14.07,
+          "energy_kwh": 0.00138,
+          "co2_kg": 0.00057505,
+          "scenario_fit_score": 0.403573345324263,
+          "rank": 3
+        },
+        {
+          "framework": "AutoClass",
+          "accuracy": 0.735,
+          "runtime_sec": 16.97,
+          "energy_kwh": 0.00162,
+          "co2_kg": 0.00067505,
+          "scenario_fit_score": 0.1345244484414211,
+          "rank": 4
+        },
+        {
+          "framework": "AutoStreamML",
+          "accuracy": 0.718,
+          "runtime_sec": 18.42,
+          "energy_kwh": 0.00174,
+          "co2_kg": 0.00072506,
+          "scenario_fit_score": 0.0,
+          "rank": 5
+        }
+      ],
+      "evidence_contract": "Researcher-constructed study reference table supplied to the explanation generator. Authoritative within this task only; not an independent external source or a measured run on the textual scenario.",
+      "objective_weights": {
+        "Accuracy": 0.5,
+        "Runtime": 0.5
+      },
+      "normalization": "within-table min-max, inverted for costs; equal weight for selected objectives",
+      "scope": "Only Accuracy, Runtime, Energy and CO2 can enter the ranking. Other scenario requirements have not been assessed."
+    }
+  },
+  {
+    "scenario_id": "H047",
+    "scenario_text": "Our robotic arms need to stop immediately if a human gets too close, but they also can't stop every time a shadow passes over the sensor or production stops entirely.",
+    "domain": "Industrial robotics",
+    "framework_context": "EvoAutoML",
+    "source_name": "Objective-fit explanation",
+    "prompt": "Assess the explanation supporting the displayed framework recommendation using this reference table and these study objectives: Accuracy + Runtime.",
+    "recommendation": "Use EvoAutoML for the objectives included in this task.",
+    "recommended_framework": "EvoAutoML",
+    "explanation": "EvoAutoML has scenario-fit score 1.000, rank #1, based on accuracy 0.690, runtime 8.71 s. Higher accuracy and lower resource costs improve the score for the objectives included in this task.",
+    "reference_evidence": {
+      "scenario": {
+        "benchmark_id": "V2-026",
+        "scenario_id": "H047",
+        "text": "Our robotic arms need to stop immediately if a human gets too close, but they also can't stop every time a shadow passes over the sensor or production stops entirely.",
+        "domain": "Industrial robotics",
+        "track1_ground_truth_objectives": [
+          "Accuracy",
+          "Runtime"
+        ],
+        "source": "Track-1 scenario benchmark"
+      },
+      "scenario_objectives": [
+        "Accuracy",
+        "Runtime"
+      ],
+      "framework_context": "EvoAutoML",
+      "explanation_type": "Objective-fit explanation",
+      "frameworks": [
+        {
+          "framework": "EvoAutoML",
+          "accuracy": 0.86,
+          "runtime_sec": 8.71,
+          "energy_kwh": 0.0015,
+          "co2_kg": 0.00062505,
+          "scenario_fit_score": 1.0,
+          "rank": 1
+        },
+        {
+          "framework": "ChaCha",
+          "accuracy": 0.786,
+          "runtime_sec": 12.62,
+          "energy_kwh": 0.00126,
+          "co2_kg": 0.00052504,
+          "scenario_fit_score": 0.538097793765684,
+          "rank": 2
+        },
+        {
+          "framework": "OAML",
+          "accuracy": 0.769,
+          "runtime_sec": 14.07,
+          "energy_kwh": 0.00138,
+          "co2_kg": 0.00057505,
+          "scenario_fit_score": 0.403573345324263,
+          "rank": 3
+        },
+        {
+          "framework": "AutoClass",
+          "accuracy": 0.735,
+          "runtime_sec": 16.97,
+          "energy_kwh": 0.00162,
+          "co2_kg": 0.00067505,
+          "scenario_fit_score": 0.1345244484414211,
+          "rank": 4
+        },
+        {
+          "framework": "AutoStreamML",
+          "accuracy": 0.718,
+          "runtime_sec": 18.42,
+          "energy_kwh": 0.00174,
+          "co2_kg": 0.00072506,
+          "scenario_fit_score": 0.0,
+          "rank": 5
+        }
+      ],
+      "evidence_contract": "Researcher-constructed study reference table supplied to the explanation generator. Authoritative within this task only; not an independent external source or a measured run on the textual scenario.",
+      "objective_weights": {
+        "Accuracy": 0.5,
+        "Runtime": 0.5
+      },
+      "normalization": "within-table min-max, inverted for costs; equal weight for selected objectives",
+      "scope": "Only Accuracy, Runtime, Energy and CO2 can enter the ranking. Other scenario requirements have not been assessed."
+    }
+  },
+  {
+    "scenario_id": "H050",
+    "scenario_text": "The automated tutor needs to explain math steps clearly so kids actually learn, but it also has to run on the cheap tablets the school district bought.",
+    "domain": "Education technology",
+    "framework_context": "OAML",
+    "source_name": "Objective-fit explanation",
+    "prompt": "Assess the explanation supporting the displayed framework recommendation using this reference table and these study objectives: Runtime + Energy.",
+    "recommendation": "Use OAML for the objectives included in this task.",
+    "recommended_framework": "OAML",
+    "explanation": "OAML has scenario-fit score 1.000, rank #1, based on runtime 8.89 s, energy 0.000916 kWh. Higher accuracy and lower resource costs improve the score for the objectives included in this task.",
+    "reference_evidence": {
+      "scenario": {
+        "benchmark_id": "V2-027",
+        "scenario_id": "H050",
+        "text": "The automated tutor needs to explain math steps clearly so kids actually learn, but it also has to run on the cheap tablets the school district bought.",
+        "domain": "Education technology",
+        "track1_ground_truth_objectives": [
+          "Runtime",
+          "Energy"
+        ],
+        "source": "Track-1 scenario benchmark"
+      },
+      "scenario_objectives": [
+        "Runtime",
+        "Energy"
+      ],
+      "framework_context": "OAML",
+      "explanation_type": "Objective-fit explanation",
+      "frameworks": [
+        {
+          "framework": "OAML",
+          "accuracy": 0.77,
+          "runtime_sec": 8.89,
+          "energy_kwh": 0.000916,
+          "co2_kg": 0.0003817,
+          "scenario_fit_score": 1.0,
+          "rank": 1
+        },
+        {
+          "framework": "ChaCha",
+          "accuracy": 0.787,
+          "runtime_sec": 12.73,
+          "energy_kwh": 0.00127,
+          "co2_kg": 0.00052921,
+          "scenario_fit_score": 0.5885996596913341,
+          "rank": 2
+        },
+        {
+          "framework": "EvoAutoML",
+          "accuracy": 0.753,
+          "runtime_sec": 15.63,
+          "energy_kwh": 0.00151,
+          "co2_kg": 0.00062922,
+          "scenario_fit_score": 0.29429982984566705,
+          "rank": 3
+        },
+        {
+          "framework": "AutoClass",
+          "accuracy": 0.736,
+          "runtime_sec": 17.08,
+          "energy_kwh": 0.00163,
+          "co2_kg": 0.00067922,
+          "scenario_fit_score": 0.14714991492283372,
+          "rank": 4
+        },
+        {
+          "framework": "AutoStreamML",
+          "accuracy": 0.719,
+          "runtime_sec": 18.53,
+          "energy_kwh": 0.00175,
+          "co2_kg": 0.00072923,
+          "scenario_fit_score": 0.0,
+          "rank": 5
+        }
+      ],
+      "evidence_contract": "Researcher-constructed study reference table supplied to the explanation generator. Authoritative within this task only; not an independent external source or a measured run on the textual scenario.",
+      "objective_weights": {
+        "Runtime": 0.5,
+        "Energy": 0.5
+      },
+      "normalization": "within-table min-max, inverted for costs; equal weight for selected objectives",
+      "scope": "Only Accuracy, Runtime, Energy and CO2 can enter the ranking. Other scenario requirements have not been assessed."
+    }
+  },
+  {
+    "scenario_id": "H050",
+    "scenario_text": "The automated tutor needs to explain math steps clearly so kids actually learn, but it also has to run on the cheap tablets the school district bought.",
+    "domain": "Education technology",
+    "framework_context": "OAML",
+    "source_name": "Objective-fit explanation",
+    "prompt": "Assess the explanation supporting the displayed framework recommendation using this reference table and these study objectives: Runtime + Energy.",
+    "recommendation": "Use OAML for the objectives included in this task.",
+    "recommended_framework": "OAML",
+    "explanation": "OAML has scenario-fit score 1.000, rank #1, based on runtime 8.89 s, energy 0.001649 kWh. Higher accuracy and lower resource costs improve the score for the objectives included in this task.",
+    "reference_evidence": {
+      "scenario": {
+        "benchmark_id": "V2-027",
+        "scenario_id": "H050",
+        "text": "The automated tutor needs to explain math steps clearly so kids actually learn, but it also has to run on the cheap tablets the school district bought.",
+        "domain": "Education technology",
+        "track1_ground_truth_objectives": [
+          "Runtime",
+          "Energy"
+        ],
+        "source": "Track-1 scenario benchmark"
+      },
+      "scenario_objectives": [
+        "Runtime",
+        "Energy"
+      ],
+      "framework_context": "OAML",
+      "explanation_type": "Objective-fit explanation",
+      "frameworks": [
+        {
+          "framework": "OAML",
+          "accuracy": 0.77,
+          "runtime_sec": 8.89,
+          "energy_kwh": 0.000916,
+          "co2_kg": 0.0003817,
+          "scenario_fit_score": 1.0,
+          "rank": 1
+        },
+        {
+          "framework": "ChaCha",
+          "accuracy": 0.787,
+          "runtime_sec": 12.73,
+          "energy_kwh": 0.00127,
+          "co2_kg": 0.00052921,
+          "scenario_fit_score": 0.5885996596913341,
+          "rank": 2
+        },
+        {
+          "framework": "EvoAutoML",
+          "accuracy": 0.753,
+          "runtime_sec": 15.63,
+          "energy_kwh": 0.00151,
+          "co2_kg": 0.00062922,
+          "scenario_fit_score": 0.29429982984566705,
+          "rank": 3
+        },
+        {
+          "framework": "AutoClass",
+          "accuracy": 0.736,
+          "runtime_sec": 17.08,
+          "energy_kwh": 0.00163,
+          "co2_kg": 0.00067922,
+          "scenario_fit_score": 0.14714991492283372,
+          "rank": 4
+        },
+        {
+          "framework": "AutoStreamML",
+          "accuracy": 0.719,
+          "runtime_sec": 18.53,
+          "energy_kwh": 0.00175,
+          "co2_kg": 0.00072923,
+          "scenario_fit_score": 0.0,
+          "rank": 5
+        }
+      ],
+      "evidence_contract": "Researcher-constructed study reference table supplied to the explanation generator. Authoritative within this task only; not an independent external source or a measured run on the textual scenario.",
+      "objective_weights": {
+        "Runtime": 0.5,
+        "Energy": 0.5
+      },
+      "normalization": "within-table min-max, inverted for costs; equal weight for selected objectives",
+      "scope": "Only Accuracy, Runtime, Energy and CO2 can enter the ranking. Other scenario requirements have not been assessed."
+    }
+  },
+  {
+    "scenario_id": "H046",
+    "scenario_text": "Delivery route optimization has to reroute around accidents without making drivers take weird detours that drain their EV batteries.",
+    "domain": "Transport",
+    "framework_context": "ChaCha",
+    "source_name": "Objective-fit explanation",
+    "prompt": "Assess the explanation supporting the displayed framework recommendation using this reference table and these study objectives: Accuracy + Energy.",
+    "recommendation": "Use ChaCha for the objectives included in this task.",
+    "recommended_framework": "ChaCha",
+    "explanation": "ChaCha has scenario-fit score 1.000, rank #1, based on accuracy 0.864, energy 0.000928 kWh. Higher accuracy and lower resource costs improve the score for the objectives included in this task.",
+    "reference_evidence": {
+      "scenario": {
+        "benchmark_id": "V2-028",
+        "scenario_id": "H046",
+        "text": "Delivery route optimization has to reroute around accidents without making drivers take weird detours that drain their EV batteries.",
+        "domain": "Transport",
+        "track1_ground_truth_objectives": [
+          "Accuracy",
+          "Energy"
+        ],
+        "source": "Track-1 scenario benchmark"
+      },
+      "scenario_objectives": [
+        "Accuracy",
+        "Energy"
+      ],
+      "framework_context": "ChaCha",
+      "explanation_type": "Objective-fit explanation",
+      "frameworks": [
+        {
+          "framework": "ChaCha",
+          "accuracy": 0.864,
+          "runtime_sec": 12.84,
+          "energy_kwh": 0.000928,
+          "co2_kg": 0.0003867,
+          "scenario_fit_score": 1.0,
+          "rank": 1
+        },
+        {
+          "framework": "OAML",
+          "accuracy": 0.767,
+          "runtime_sec": 14.29,
+          "energy_kwh": 0.00136,
+          "co2_kg": 0.00056671,
+          "scenario_fit_score": 0.39957002457002466,
+          "rank": 2
+        },
+        {
+          "framework": "EvoAutoML",
+          "accuracy": 0.75,
+          "runtime_sec": 15.74,
+          "energy_kwh": 0.00148,
+          "co2_kg": 0.00061672,
+          "scenario_fit_score": 0.26638001638001646,
+          "rank": 3
+        },
+        {
+          "framework": "AutoClass",
+          "accuracy": 0.733,
+          "runtime_sec": 17.19,
+          "energy_kwh": 0.0016,
+          "co2_kg": 0.00066672,
+          "scenario_fit_score": 0.13319000819000817,
+          "rank": 4
+        },
+        {
+          "framework": "AutoStreamML",
+          "accuracy": 0.716,
+          "runtime_sec": 18.64,
+          "energy_kwh": 0.00172,
+          "co2_kg": 0.00071672,
+          "scenario_fit_score": 0.0,
+          "rank": 5
+        }
+      ],
+      "evidence_contract": "Researcher-constructed study reference table supplied to the explanation generator. Authoritative within this task only; not an independent external source or a measured run on the textual scenario.",
+      "objective_weights": {
+        "Accuracy": 0.5,
+        "Energy": 0.5
+      },
+      "normalization": "within-table min-max, inverted for costs; equal weight for selected objectives",
+      "scope": "Only Accuracy, Runtime, Energy and CO2 can enter the ranking. Other scenario requirements have not been assessed."
+    }
+  },
+  {
+    "scenario_id": "H046",
+    "scenario_text": "Delivery route optimization has to reroute around accidents without making drivers take weird detours that drain their EV batteries.",
+    "domain": "Transport",
+    "framework_context": "ChaCha",
+    "source_name": "Objective-fit explanation",
+    "prompt": "Assess the explanation supporting the displayed framework recommendation using this reference table and these study objectives: Accuracy + Energy.",
+    "recommendation": "Use ChaCha for the objectives included in this task.",
+    "recommended_framework": "ChaCha",
+    "explanation": "ChaCha has scenario-fit score 1.000, rank #1, based on accuracy 0.694, energy 0.000928 kWh. Higher accuracy and lower resource costs improve the score for the objectives included in this task.",
+    "reference_evidence": {
+      "scenario": {
+        "benchmark_id": "V2-028",
+        "scenario_id": "H046",
+        "text": "Delivery route optimization has to reroute around accidents without making drivers take weird detours that drain their EV batteries.",
+        "domain": "Transport",
+        "track1_ground_truth_objectives": [
+          "Accuracy",
+          "Energy"
+        ],
+        "source": "Track-1 scenario benchmark"
+      },
+      "scenario_objectives": [
+        "Accuracy",
+        "Energy"
+      ],
+      "framework_context": "ChaCha",
+      "explanation_type": "Objective-fit explanation",
+      "frameworks": [
+        {
+          "framework": "ChaCha",
+          "accuracy": 0.864,
+          "runtime_sec": 12.84,
+          "energy_kwh": 0.000928,
+          "co2_kg": 0.0003867,
+          "scenario_fit_score": 1.0,
+          "rank": 1
+        },
+        {
+          "framework": "OAML",
+          "accuracy": 0.767,
+          "runtime_sec": 14.29,
+          "energy_kwh": 0.00136,
+          "co2_kg": 0.00056671,
+          "scenario_fit_score": 0.39957002457002466,
+          "rank": 2
+        },
+        {
+          "framework": "EvoAutoML",
+          "accuracy": 0.75,
+          "runtime_sec": 15.74,
+          "energy_kwh": 0.00148,
+          "co2_kg": 0.00061672,
+          "scenario_fit_score": 0.26638001638001646,
+          "rank": 3
+        },
+        {
+          "framework": "AutoClass",
+          "accuracy": 0.733,
+          "runtime_sec": 17.19,
+          "energy_kwh": 0.0016,
+          "co2_kg": 0.00066672,
+          "scenario_fit_score": 0.13319000819000817,
+          "rank": 4
+        },
+        {
+          "framework": "AutoStreamML",
+          "accuracy": 0.716,
+          "runtime_sec": 18.64,
+          "energy_kwh": 0.00172,
+          "co2_kg": 0.00071672,
+          "scenario_fit_score": 0.0,
+          "rank": 5
+        }
+      ],
+      "evidence_contract": "Researcher-constructed study reference table supplied to the explanation generator. Authoritative within this task only; not an independent external source or a measured run on the textual scenario.",
+      "objective_weights": {
+        "Accuracy": 0.5,
+        "Energy": 0.5
+      },
+      "normalization": "within-table min-max, inverted for costs; equal weight for selected objectives",
+      "scope": "Only Accuracy, Runtime, Energy and CO2 can enter the ranking. Other scenario requirements have not been assessed."
+    }
+  },
+  {
+    "scenario_id": "H049",
+    "scenario_text": "Solar grid forecasting has to be right about sudden cloud cover, but the model running on the local panels can't be too heavy or the processor overheats.",
+    "domain": "Energy",
+    "framework_context": "AutoStreamML",
+    "source_name": "Comparative explanation",
+    "prompt": "Assess the explanation supporting the displayed framework recommendation using this reference table and these study objectives: Accuracy + Energy.",
+    "recommendation": "Use AutoStreamML for the objectives included in this task.",
+    "recommended_framework": "AutoStreamML",
+    "explanation": "AutoStreamML has scenario-fit score 1.000, rank #1, based on accuracy 0.856, energy 0.000880 kWh. For comparison, ChaCha has rank #2 and score 0.456. The score difference favours AutoStreamML under the displayed weights.",
+    "reference_evidence": {
+      "scenario": {
+        "benchmark_id": "V2-029",
+        "scenario_id": "H049",
+        "text": "Solar grid forecasting has to be right about sudden cloud cover, but the model running on the local panels can't be too heavy or the processor overheats.",
+        "domain": "Energy",
+        "track1_ground_truth_objectives": [
+          "Accuracy",
+          "Energy"
+        ],
+        "source": "Track-1 scenario benchmark"
+      },
+      "scenario_objectives": [
+        "Accuracy",
+        "Energy"
+      ],
+      "framework_context": "AutoStreamML",
+      "explanation_type": "Comparative explanation",
+      "frameworks": [
+        {
+          "framework": "AutoStreamML",
+          "accuracy": 0.856,
+          "runtime_sec": 18.2,
+          "energy_kwh": 0.00088,
+          "co2_kg": 0.0003667,
+          "scenario_fit_score": 1.0,
+          "rank": 1
+        },
+        {
+          "framework": "ChaCha",
+          "accuracy": 0.785,
+          "runtime_sec": 12.4,
+          "energy_kwh": 0.00125,
+          "co2_kg": 0.00052088,
+          "scenario_fit_score": 0.4555917359083766,
+          "rank": 2
+        },
+        {
+          "framework": "OAML",
+          "accuracy": 0.768,
+          "runtime_sec": 13.85,
+          "energy_kwh": 0.00137,
+          "co2_kg": 0.00057088,
+          "scenario_fit_score": 0.30372782393891784,
+          "rank": 3
+        },
+        {
+          "framework": "EvoAutoML",
+          "accuracy": 0.751,
+          "runtime_sec": 15.3,
+          "energy_kwh": 0.00149,
+          "co2_kg": 0.00062088,
+          "scenario_fit_score": 0.15186391196945892,
+          "rank": 4
+        },
+        {
+          "framework": "AutoClass",
+          "accuracy": 0.734,
+          "runtime_sec": 16.75,
+          "energy_kwh": 0.00161,
+          "co2_kg": 0.00067089,
+          "scenario_fit_score": 0.0,
+          "rank": 5
+        }
+      ],
+      "evidence_contract": "Researcher-constructed study reference table supplied to the explanation generator. Authoritative within this task only; not an independent external source or a measured run on the textual scenario.",
+      "objective_weights": {
+        "Accuracy": 0.5,
+        "Energy": 0.5
+      },
+      "normalization": "within-table min-max, inverted for costs; equal weight for selected objectives",
+      "scope": "Only Accuracy, Runtime, Energy and CO2 can enter the ranking. Other scenario requirements have not been assessed."
+    }
+  },
+  {
+    "scenario_id": "H049",
+    "scenario_text": "Solar grid forecasting has to be right about sudden cloud cover, but the model running on the local panels can't be too heavy or the processor overheats.",
+    "domain": "Energy",
+    "framework_context": "AutoStreamML",
+    "source_name": "Comparative explanation",
+    "prompt": "Assess the explanation supporting the displayed framework recommendation using this reference table and these study objectives: Accuracy + Energy.",
+    "recommendation": "Use AutoStreamML for the objectives included in this task.",
+    "recommended_framework": "AutoStreamML",
+    "explanation": "AutoStreamML has scenario-fit score 1.000, rank #1, based on accuracy 0.856, energy 0.001584 kWh. For comparison, ChaCha has rank #2 and score 0.456. The score difference favours AutoStreamML under the displayed weights.",
+    "reference_evidence": {
+      "scenario": {
+        "benchmark_id": "V2-029",
+        "scenario_id": "H049",
+        "text": "Solar grid forecasting has to be right about sudden cloud cover, but the model running on the local panels can't be too heavy or the processor overheats.",
+        "domain": "Energy",
+        "track1_ground_truth_objectives": [
+          "Accuracy",
+          "Energy"
+        ],
+        "source": "Track-1 scenario benchmark"
+      },
+      "scenario_objectives": [
+        "Accuracy",
+        "Energy"
+      ],
+      "framework_context": "AutoStreamML",
+      "explanation_type": "Comparative explanation",
+      "frameworks": [
+        {
+          "framework": "AutoStreamML",
+          "accuracy": 0.856,
+          "runtime_sec": 18.2,
+          "energy_kwh": 0.00088,
+          "co2_kg": 0.0003667,
+          "scenario_fit_score": 1.0,
+          "rank": 1
+        },
+        {
+          "framework": "ChaCha",
+          "accuracy": 0.785,
+          "runtime_sec": 12.4,
+          "energy_kwh": 0.00125,
+          "co2_kg": 0.00052088,
+          "scenario_fit_score": 0.4555917359083766,
+          "rank": 2
+        },
+        {
+          "framework": "OAML",
+          "accuracy": 0.768,
+          "runtime_sec": 13.85,
+          "energy_kwh": 0.00137,
+          "co2_kg": 0.00057088,
+          "scenario_fit_score": 0.30372782393891784,
+          "rank": 3
+        },
+        {
+          "framework": "EvoAutoML",
+          "accuracy": 0.751,
+          "runtime_sec": 15.3,
+          "energy_kwh": 0.00149,
+          "co2_kg": 0.00062088,
+          "scenario_fit_score": 0.15186391196945892,
+          "rank": 4
+        },
+        {
+          "framework": "AutoClass",
+          "accuracy": 0.734,
+          "runtime_sec": 16.75,
+          "energy_kwh": 0.00161,
+          "co2_kg": 0.00067089,
+          "scenario_fit_score": 0.0,
+          "rank": 5
+        }
+      ],
+      "evidence_contract": "Researcher-constructed study reference table supplied to the explanation generator. Authoritative within this task only; not an independent external source or a measured run on the textual scenario.",
+      "objective_weights": {
+        "Accuracy": 0.5,
+        "Energy": 0.5
+      },
+      "normalization": "within-table min-max, inverted for costs; equal weight for selected objectives",
+      "scope": "Only Accuracy, Runtime, Energy and CO2 can enter the ranking. Other scenario requirements have not been assessed."
+    }
+  },
+  {
+    "scenario_id": "H026",
+    "scenario_text": "We want an endpoint malware scanner that catches new ransomware variants without slowing down employee computers during normal work hours.",
+    "domain": "Cybersecurity",
+    "framework_context": "AutoClass",
+    "source_name": "Comparative explanation",
+    "prompt": "Assess the explanation supporting the displayed framework recommendation using this reference table and these study objectives: Accuracy + Runtime.",
+    "recommendation": "Use AutoClass for the objectives included in this task.",
+    "recommended_framework": "AutoClass",
+    "explanation": "AutoClass has scenario-fit score 1.000, rank #1, based on accuracy 0.858, runtime 8.71 s. For comparison, ChaCha has rank #2 and score 0.545. The score difference favours AutoClass under the displayed weights.",
+    "reference_evidence": {
+      "scenario": {
+        "benchmark_id": "V2-030",
+        "scenario_id": "H026",
+        "text": "We want an endpoint malware scanner that catches new ransomware variants without slowing down employee computers during normal work hours.",
+        "domain": "Cybersecurity",
+        "track1_ground_truth_objectives": [
+          "Accuracy",
+          "Runtime"
+        ],
+        "source": "Track-1 scenario benchmark"
+      },
+      "scenario_objectives": [
+        "Accuracy",
+        "Runtime"
+      ],
+      "framework_context": "AutoClass",
+      "explanation_type": "Comparative explanation",
+      "frameworks": [
+        {
+          "framework": "AutoClass",
+          "accuracy": 0.858,
+          "runtime_sec": 8.71,
+          "energy_kwh": 0.00162,
+          "co2_kg": 0.00067505,
+          "scenario_fit_score": 1.0,
+          "rank": 1
+        },
+        {
+          "framework": "ChaCha",
+          "accuracy": 0.786,
+          "runtime_sec": 12.51,
+          "energy_kwh": 0.00126,
+          "co2_kg": 0.00052504,
+          "scenario_fit_score": 0.5449404761904764,
+          "rank": 2
+        },
+        {
+          "framework": "OAML",
+          "accuracy": 0.769,
+          "runtime_sec": 13.96,
+          "energy_kwh": 0.00138,
+          "co2_kg": 0.00057505,
+          "scenario_fit_score": 0.4087053571428573,
+          "rank": 3
+        },
+        {
+          "framework": "EvoAutoML",
+          "accuracy": 0.752,
+          "runtime_sec": 15.41,
+          "energy_kwh": 0.0015,
+          "co2_kg": 0.00062505,
+          "scenario_fit_score": 0.2724702380952382,
+          "rank": 4
+        },
+        {
+          "framework": "AutoStreamML",
+          "accuracy": 0.718,
+          "runtime_sec": 18.31,
+          "energy_kwh": 0.00174,
+          "co2_kg": 0.00072506,
+          "scenario_fit_score": 0.0,
+          "rank": 5
+        }
+      ],
+      "evidence_contract": "Researcher-constructed study reference table supplied to the explanation generator. Authoritative within this task only; not an independent external source or a measured run on the textual scenario.",
+      "objective_weights": {
+        "Accuracy": 0.5,
+        "Runtime": 0.5
+      },
+      "normalization": "within-table min-max, inverted for costs; equal weight for selected objectives",
+      "scope": "Only Accuracy, Runtime, Energy and CO2 can enter the ranking. Other scenario requirements have not been assessed."
+    }
+  },
+  {
+    "scenario_id": "H026",
+    "scenario_text": "We want an endpoint malware scanner that catches new ransomware variants without slowing down employee computers during normal work hours.",
+    "domain": "Cybersecurity",
+    "framework_context": "AutoClass",
+    "source_name": "Comparative explanation",
+    "prompt": "Assess the explanation supporting the displayed framework recommendation using this reference table and these study objectives: Accuracy + Runtime.",
+    "recommendation": "Use AutoClass for the objectives included in this task.",
+    "recommended_framework": "AutoClass",
+    "explanation": "AutoClass has scenario-fit score 1.000, rank #1, based on accuracy 0.688, runtime 8.71 s. For comparison, ChaCha has rank #2 and score 0.545. The score difference favours AutoClass under the displayed weights.",
+    "reference_evidence": {
+      "scenario": {
+        "benchmark_id": "V2-030",
+        "scenario_id": "H026",
+        "text": "We want an endpoint malware scanner that catches new ransomware variants without slowing down employee computers during normal work hours.",
+        "domain": "Cybersecurity",
+        "track1_ground_truth_objectives": [
+          "Accuracy",
+          "Runtime"
+        ],
+        "source": "Track-1 scenario benchmark"
+      },
+      "scenario_objectives": [
+        "Accuracy",
+        "Runtime"
+      ],
+      "framework_context": "AutoClass",
+      "explanation_type": "Comparative explanation",
+      "frameworks": [
+        {
+          "framework": "AutoClass",
+          "accuracy": 0.858,
+          "runtime_sec": 8.71,
+          "energy_kwh": 0.00162,
+          "co2_kg": 0.00067505,
+          "scenario_fit_score": 1.0,
+          "rank": 1
+        },
+        {
+          "framework": "ChaCha",
+          "accuracy": 0.786,
+          "runtime_sec": 12.51,
+          "energy_kwh": 0.00126,
+          "co2_kg": 0.00052504,
+          "scenario_fit_score": 0.5449404761904764,
+          "rank": 2
+        },
+        {
+          "framework": "OAML",
+          "accuracy": 0.769,
+          "runtime_sec": 13.96,
+          "energy_kwh": 0.00138,
+          "co2_kg": 0.00057505,
+          "scenario_fit_score": 0.4087053571428573,
+          "rank": 3
+        },
+        {
+          "framework": "EvoAutoML",
+          "accuracy": 0.752,
+          "runtime_sec": 15.41,
+          "energy_kwh": 0.0015,
+          "co2_kg": 0.00062505,
+          "scenario_fit_score": 0.2724702380952382,
+          "rank": 4
+        },
+        {
+          "framework": "AutoStreamML",
+          "accuracy": 0.718,
+          "runtime_sec": 18.31,
+          "energy_kwh": 0.00174,
+          "co2_kg": 0.00072506,
+          "scenario_fit_score": 0.0,
+          "rank": 5
+        }
+      ],
+      "evidence_contract": "Researcher-constructed study reference table supplied to the explanation generator. Authoritative within this task only; not an independent external source or a measured run on the textual scenario.",
+      "objective_weights": {
+        "Accuracy": 0.5,
+        "Runtime": 0.5
+      },
+      "normalization": "within-table min-max, inverted for costs; equal weight for selected objectives",
+      "scope": "Only Accuracy, Runtime, Energy and CO2 can enter the ranking. Other scenario requirements have not been assessed."
+    }
+  },
+  {
+    "scenario_id": "G044",
+    "scenario_text": "On battery-backed port cranes, the vision module must identify people or obstacles dependably and react before the crane reaches the unsafe zone, without consuming so much charge that auxiliary systems lose reserve capacity.",
+    "domain": "Port automation",
+    "framework_context": "EvoAutoML",
+    "source_name": "Comparative explanation",
+    "prompt": "Assess the explanation supporting the displayed framework recommendation using this reference table and these study objectives: Accuracy + Runtime + Energy.",
+    "recommendation": "Use EvoAutoML for the objectives included in this task.",
+    "recommended_framework": "EvoAutoML",
+    "explanation": "EvoAutoML has scenario-fit score 1.000, rank #1, based on accuracy 0.860, runtime 8.89 s, energy 0.000904 kWh. For comparison, ChaCha has rank #2 and score 0.553. The score difference favours EvoAutoML under the displayed weights.",
+    "reference_evidence": {
+      "scenario": {
+        "benchmark_id": "V2-031",
+        "scenario_id": "G044",
+        "text": "On battery-backed port cranes, the vision module must identify people or obstacles dependably and react before the crane reaches the unsafe zone, without consuming so much charge that auxiliary systems lose reserve capacity.",
+        "domain": "Port automation",
+        "track1_ground_truth_objectives": [
+          "Accuracy",
+          "Runtime",
+          "Energy"
+        ],
+        "source": "Track-1 scenario benchmark"
+      },
+      "scenario_objectives": [
+        "Accuracy",
+        "Runtime",
+        "Energy"
+      ],
+      "framework_context": "EvoAutoML",
+      "explanation_type": "Comparative explanation",
+      "frameworks": [
+        {
+          "framework": "EvoAutoML",
+          "accuracy": 0.86,
+          "runtime_sec": 8.89,
+          "energy_kwh": 0.000904,
+          "co2_kg": 0.0003767,
+          "scenario_fit_score": 1.0,
+          "rank": 1
+        },
+        {
+          "framework": "ChaCha",
+          "accuracy": 0.787,
+          "runtime_sec": 12.62,
+          "energy_kwh": 0.00127,
+          "co2_kg": 0.00052921,
+          "scenario_fit_score": 0.5527499324020948,
+          "rank": 2
+        },
+        {
+          "framework": "OAML",
+          "accuracy": 0.77,
+          "runtime_sec": 14.07,
+          "energy_kwh": 0.00139,
+          "co2_kg": 0.00057921,
+          "scenario_fit_score": 0.41456244930157116,
+          "rank": 3
+        },
+        {
+          "framework": "AutoClass",
+          "accuracy": 0.736,
+          "runtime_sec": 16.97,
+          "energy_kwh": 0.00163,
+          "co2_kg": 0.00067922,
+          "scenario_fit_score": 0.1381874831005238,
+          "rank": 4
+        },
+        {
+          "framework": "AutoStreamML",
+          "accuracy": 0.719,
+          "runtime_sec": 18.42,
+          "energy_kwh": 0.00175,
+          "co2_kg": 0.00072923,
+          "scenario_fit_score": 0.0,
+          "rank": 5
+        }
+      ],
+      "evidence_contract": "Researcher-constructed study reference table supplied to the explanation generator. Authoritative within this task only; not an independent external source or a measured run on the textual scenario.",
+      "objective_weights": {
+        "Accuracy": 0.3333333333333333,
+        "Runtime": 0.3333333333333333,
+        "Energy": 0.3333333333333333
+      },
+      "normalization": "within-table min-max, inverted for costs; equal weight for selected objectives",
+      "scope": "Only Accuracy, Runtime, Energy and CO2 can enter the ranking. Other scenario requirements have not been assessed."
+    }
+  },
+  {
+    "scenario_id": "G044",
+    "scenario_text": "On battery-backed port cranes, the vision module must identify people or obstacles dependably and react before the crane reaches the unsafe zone, without consuming so much charge that auxiliary systems lose reserve capacity.",
+    "domain": "Port automation",
+    "framework_context": "EvoAutoML",
+    "source_name": "Comparative explanation",
+    "prompt": "Assess the explanation supporting the displayed framework recommendation using this reference table and these study objectives: Accuracy + Runtime + Energy.",
+    "recommendation": "Use EvoAutoML for the objectives included in this task.",
+    "recommended_framework": "EvoAutoML",
+    "explanation": "EvoAutoML has scenario-fit score 1.000, rank #1, based on accuracy 0.860, runtime 15.39 s, energy 0.000904 kWh. For comparison, ChaCha has rank #2 and score 0.553. The score difference favours EvoAutoML under the displayed weights.",
+    "reference_evidence": {
+      "scenario": {
+        "benchmark_id": "V2-031",
+        "scenario_id": "G044",
+        "text": "On battery-backed port cranes, the vision module must identify people or obstacles dependably and react before the crane reaches the unsafe zone, without consuming so much charge that auxiliary systems lose reserve capacity.",
+        "domain": "Port automation",
+        "track1_ground_truth_objectives": [
+          "Accuracy",
+          "Runtime",
+          "Energy"
+        ],
+        "source": "Track-1 scenario benchmark"
+      },
+      "scenario_objectives": [
+        "Accuracy",
+        "Runtime",
+        "Energy"
+      ],
+      "framework_context": "EvoAutoML",
+      "explanation_type": "Comparative explanation",
+      "frameworks": [
+        {
+          "framework": "EvoAutoML",
+          "accuracy": 0.86,
+          "runtime_sec": 8.89,
+          "energy_kwh": 0.000904,
+          "co2_kg": 0.0003767,
+          "scenario_fit_score": 1.0,
+          "rank": 1
+        },
+        {
+          "framework": "ChaCha",
+          "accuracy": 0.787,
+          "runtime_sec": 12.62,
+          "energy_kwh": 0.00127,
+          "co2_kg": 0.00052921,
+          "scenario_fit_score": 0.5527499324020948,
+          "rank": 2
+        },
+        {
+          "framework": "OAML",
+          "accuracy": 0.77,
+          "runtime_sec": 14.07,
+          "energy_kwh": 0.00139,
+          "co2_kg": 0.00057921,
+          "scenario_fit_score": 0.41456244930157116,
+          "rank": 3
+        },
+        {
+          "framework": "AutoClass",
+          "accuracy": 0.736,
+          "runtime_sec": 16.97,
+          "energy_kwh": 0.00163,
+          "co2_kg": 0.00067922,
+          "scenario_fit_score": 0.1381874831005238,
+          "rank": 4
+        },
+        {
+          "framework": "AutoStreamML",
+          "accuracy": 0.719,
+          "runtime_sec": 18.42,
+          "energy_kwh": 0.00175,
+          "co2_kg": 0.00072923,
+          "scenario_fit_score": 0.0,
+          "rank": 5
+        }
+      ],
+      "evidence_contract": "Researcher-constructed study reference table supplied to the explanation generator. Authoritative within this task only; not an independent external source or a measured run on the textual scenario.",
+      "objective_weights": {
+        "Accuracy": 0.3333333333333333,
+        "Runtime": 0.3333333333333333,
+        "Energy": 0.3333333333333333
+      },
+      "normalization": "within-table min-max, inverted for costs; equal weight for selected objectives",
+      "scope": "Only Accuracy, Runtime, Energy and CO2 can enter the ranking. Other scenario requirements have not been assessed."
+    }
+  },
+  {
+    "scenario_id": "G074",
+    "scenario_text": "Marine scientists should receive trustworthy coral-bleaching maps from months-long reef deployments without exhausting buoy power or turning large image uploads into an environmentally heavy workflow. The edge system should make dependable local assessments and send only what is needed for research review.",
+    "domain": "Coral reef monitoring",
+    "framework_context": "OAML",
+    "source_name": "Comparative explanation",
+    "prompt": "Assess the explanation supporting the displayed framework recommendation using this reference table and these study objectives: Accuracy + Energy + CO2.",
+    "recommendation": "Use OAML for the objectives included in this task.",
+    "recommended_framework": "OAML",
+    "explanation": "OAML has scenario-fit score 1.000, rank #1, based on accuracy 0.862, energy 0.000916 kWh, CO₂ 0.00037600 kg. For comparison, ChaCha has rank #2 and score 0.550. The score difference favours OAML under the displayed weights.",
+    "reference_evidence": {
+      "scenario": {
+        "benchmark_id": "V2-032",
+        "scenario_id": "G074",
+        "text": "Marine scientists should receive trustworthy coral-bleaching maps from months-long reef deployments without exhausting buoy power or turning large image uploads into an environmentally heavy workflow. The edge system should make dependable local assessments and send only what is needed for research review.",
+        "domain": "Coral reef monitoring",
+        "track1_ground_truth_objectives": [
+          "Accuracy",
+          "Energy",
+          "CO2"
+        ],
+        "source": "Track-1 scenario benchmark"
+      },
+      "scenario_objectives": [
+        "Accuracy",
+        "Energy",
+        "CO2"
+      ],
+      "framework_context": "OAML",
+      "explanation_type": "Comparative explanation",
+      "frameworks": [
+        {
+          "framework": "OAML",
+          "accuracy": 0.862,
+          "runtime_sec": 14.18,
+          "energy_kwh": 0.000916,
+          "co2_kg": 0.000376,
+          "scenario_fit_score": 1.0,
+          "rank": 1
+        },
+        {
+          "framework": "ChaCha",
+          "accuracy": 0.784,
+          "runtime_sec": 12.73,
+          "energy_kwh": 0.00124,
+          "co2_kg": 0.00051671,
+          "scenario_fit_score": 0.5499299837818439,
+          "rank": 2
+        },
+        {
+          "framework": "EvoAutoML",
+          "accuracy": 0.75,
+          "runtime_sec": 15.63,
+          "energy_kwh": 0.00148,
+          "co2_kg": 0.00061672,
+          "scenario_fit_score": 0.27496010028882445,
+          "rank": 3
+        },
+        {
+          "framework": "AutoClass",
+          "accuracy": 0.733,
+          "runtime_sec": 17.08,
+          "energy_kwh": 0.0016,
+          "co2_kg": 0.00066672,
+          "scenario_fit_score": 0.13748005014441217,
+          "rank": 4
+        },
+        {
+          "framework": "AutoStreamML",
+          "accuracy": 0.716,
+          "runtime_sec": 18.53,
+          "energy_kwh": 0.00172,
+          "co2_kg": 0.00071672,
+          "scenario_fit_score": 0.0,
+          "rank": 5
+        }
+      ],
+      "evidence_contract": "Researcher-constructed study reference table supplied to the explanation generator. Authoritative within this task only; not an independent external source or a measured run on the textual scenario.",
+      "objective_weights": {
+        "Accuracy": 0.3333333333333333,
+        "Energy": 0.3333333333333333,
+        "CO2": 0.3333333333333333
+      },
+      "normalization": "within-table min-max, inverted for costs; equal weight for selected objectives",
+      "scope": "Only Accuracy, Runtime, Energy and CO2 can enter the ranking. Other scenario requirements have not been assessed."
+    }
+  },
+  {
+    "scenario_id": "G074",
+    "scenario_text": "Marine scientists should receive trustworthy coral-bleaching maps from months-long reef deployments without exhausting buoy power or turning large image uploads into an environmentally heavy workflow. The edge system should make dependable local assessments and send only what is needed for research review.",
+    "domain": "Coral reef monitoring",
+    "framework_context": "OAML",
+    "source_name": "Comparative explanation",
+    "prompt": "Assess the explanation supporting the displayed framework recommendation using this reference table and these study objectives: Accuracy + Energy + CO2.",
+    "recommendation": "Use OAML for the objectives included in this task.",
+    "recommended_framework": "OAML",
+    "explanation": "OAML has scenario-fit score 1.000, rank #1, based on accuracy 0.862, energy 0.000916 kWh, CO₂ 0.00067680 kg. For comparison, ChaCha has rank #2 and score 0.550. The score difference favours OAML under the displayed weights.",
+    "reference_evidence": {
+      "scenario": {
+        "benchmark_id": "V2-032",
+        "scenario_id": "G074",
+        "text": "Marine scientists should receive trustworthy coral-bleaching maps from months-long reef deployments without exhausting buoy power or turning large image uploads into an environmentally heavy workflow. The edge system should make dependable local assessments and send only what is needed for research review.",
+        "domain": "Coral reef monitoring",
+        "track1_ground_truth_objectives": [
+          "Accuracy",
+          "Energy",
+          "CO2"
+        ],
+        "source": "Track-1 scenario benchmark"
+      },
+      "scenario_objectives": [
+        "Accuracy",
+        "Energy",
+        "CO2"
+      ],
+      "framework_context": "OAML",
+      "explanation_type": "Comparative explanation",
+      "frameworks": [
+        {
+          "framework": "OAML",
+          "accuracy": 0.862,
+          "runtime_sec": 14.18,
+          "energy_kwh": 0.000916,
+          "co2_kg": 0.000376,
+          "scenario_fit_score": 1.0,
+          "rank": 1
+        },
+        {
+          "framework": "ChaCha",
+          "accuracy": 0.784,
+          "runtime_sec": 12.73,
+          "energy_kwh": 0.00124,
+          "co2_kg": 0.00051671,
+          "scenario_fit_score": 0.5499299837818439,
+          "rank": 2
+        },
+        {
+          "framework": "EvoAutoML",
+          "accuracy": 0.75,
+          "runtime_sec": 15.63,
+          "energy_kwh": 0.00148,
+          "co2_kg": 0.00061672,
+          "scenario_fit_score": 0.27496010028882445,
+          "rank": 3
+        },
+        {
+          "framework": "AutoClass",
+          "accuracy": 0.733,
+          "runtime_sec": 17.08,
+          "energy_kwh": 0.0016,
+          "co2_kg": 0.00066672,
+          "scenario_fit_score": 0.13748005014441217,
+          "rank": 4
+        },
+        {
+          "framework": "AutoStreamML",
+          "accuracy": 0.716,
+          "runtime_sec": 18.53,
+          "energy_kwh": 0.00172,
+          "co2_kg": 0.00071672,
+          "scenario_fit_score": 0.0,
+          "rank": 5
+        }
+      ],
+      "evidence_contract": "Researcher-constructed study reference table supplied to the explanation generator. Authoritative within this task only; not an independent external source or a measured run on the textual scenario.",
+      "objective_weights": {
+        "Accuracy": 0.3333333333333333,
+        "Energy": 0.3333333333333333,
+        "CO2": 0.3333333333333333
+      },
+      "normalization": "within-table min-max, inverted for costs; equal weight for selected objectives",
+      "scope": "Only Accuracy, Runtime, Energy and CO2 can enter the ranking. Other scenario requirements have not been assessed."
+    }
+  },
+  {
+    "scenario_id": "G033",
+    "scenario_text": "With rescue drones limited to one field battery, onboard scene analysis must preserve enough charge for the full search, identify people and hazards dependably, and finish each pass before the aircraft reaches the next sector.",
+    "domain": "Search and rescue",
+    "framework_context": "ChaCha",
+    "source_name": "Comparative explanation",
+    "prompt": "Assess the explanation supporting the displayed framework recommendation using this reference table and these study objectives: Accuracy + Runtime + Energy.",
+    "recommendation": "Use ChaCha for the objectives included in this task.",
+    "recommended_framework": "ChaCha",
+    "explanation": "ChaCha has scenario-fit score 1.000, rank #1, based on accuracy 0.864, runtime 8.53 s, energy 0.000928 kWh. For comparison, OAML has rank #2 and score 0.409. The score difference favours ChaCha under the displayed weights.",
+    "reference_evidence": {
+      "scenario": {
+        "benchmark_id": "V2-033",
+        "scenario_id": "G033",
+        "text": "With rescue drones limited to one field battery, onboard scene analysis must preserve enough charge for the full search, identify people and hazards dependably, and finish each pass before the aircraft reaches the next sector.",
+        "domain": "Search and rescue",
+        "track1_ground_truth_objectives": [
+          "Accuracy",
+          "Runtime",
+          "Energy"
+        ],
+        "source": "Track-1 scenario benchmark"
+      },
+      "scenario_objectives": [
+        "Accuracy",
+        "Runtime",
+        "Energy"
+      ],
+      "framework_context": "ChaCha",
+      "explanation_type": "Comparative explanation",
+      "frameworks": [
+        {
+          "framework": "ChaCha",
+          "accuracy": 0.864,
+          "runtime_sec": 8.53,
+          "energy_kwh": 0.000928,
+          "co2_kg": 0.0003867,
+          "scenario_fit_score": 1.0,
+          "rank": 1
+        },
+        {
+          "framework": "OAML",
+          "accuracy": 0.768,
+          "runtime_sec": 14.29,
+          "energy_kwh": 0.00137,
+          "co2_kg": 0.00057088,
+          "scenario_fit_score": 0.408694547770343,
+          "rank": 2
+        },
+        {
+          "framework": "EvoAutoML",
+          "accuracy": 0.751,
+          "runtime_sec": 15.74,
+          "energy_kwh": 0.00149,
+          "co2_kg": 0.00062088,
+          "scenario_fit_score": 0.27246303184689524,
+          "rank": 3
+        },
+        {
+          "framework": "AutoClass",
+          "accuracy": 0.734,
+          "runtime_sec": 17.19,
+          "energy_kwh": 0.00161,
+          "co2_kg": 0.00067089,
+          "scenario_fit_score": 0.13623151592344757,
+          "rank": 4
+        },
+        {
+          "framework": "AutoStreamML",
+          "accuracy": 0.717,
+          "runtime_sec": 18.64,
+          "energy_kwh": 0.00173,
+          "co2_kg": 0.00072089,
+          "scenario_fit_score": 0.0,
+          "rank": 5
+        }
+      ],
+      "evidence_contract": "Researcher-constructed study reference table supplied to the explanation generator. Authoritative within this task only; not an independent external source or a measured run on the textual scenario.",
+      "objective_weights": {
+        "Accuracy": 0.3333333333333333,
+        "Runtime": 0.3333333333333333,
+        "Energy": 0.3333333333333333
+      },
+      "normalization": "within-table min-max, inverted for costs; equal weight for selected objectives",
+      "scope": "Only Accuracy, Runtime, Energy and CO2 can enter the ranking. Other scenario requirements have not been assessed."
+    }
+  },
+  {
+    "scenario_id": "G033",
+    "scenario_text": "With rescue drones limited to one field battery, onboard scene analysis must preserve enough charge for the full search, identify people and hazards dependably, and finish each pass before the aircraft reaches the next sector.",
+    "domain": "Search and rescue",
+    "framework_context": "ChaCha",
+    "source_name": "Comparative explanation",
+    "prompt": "Assess the explanation supporting the displayed framework recommendation using this reference table and these study objectives: Accuracy + Runtime + Energy.",
+    "recommendation": "Use ChaCha for the objectives included in this task.",
+    "recommended_framework": "ChaCha",
+    "explanation": "ChaCha has scenario-fit score 1.000, rank #1, based on accuracy 0.864, runtime 15.03 s, energy 0.000928 kWh. For comparison, OAML has rank #2 and score 0.409. The score difference favours ChaCha under the displayed weights.",
+    "reference_evidence": {
+      "scenario": {
+        "benchmark_id": "V2-033",
+        "scenario_id": "G033",
+        "text": "With rescue drones limited to one field battery, onboard scene analysis must preserve enough charge for the full search, identify people and hazards dependably, and finish each pass before the aircraft reaches the next sector.",
+        "domain": "Search and rescue",
+        "track1_ground_truth_objectives": [
+          "Accuracy",
+          "Runtime",
+          "Energy"
+        ],
+        "source": "Track-1 scenario benchmark"
+      },
+      "scenario_objectives": [
+        "Accuracy",
+        "Runtime",
+        "Energy"
+      ],
+      "framework_context": "ChaCha",
+      "explanation_type": "Comparative explanation",
+      "frameworks": [
+        {
+          "framework": "ChaCha",
+          "accuracy": 0.864,
+          "runtime_sec": 8.53,
+          "energy_kwh": 0.000928,
+          "co2_kg": 0.0003867,
+          "scenario_fit_score": 1.0,
+          "rank": 1
+        },
+        {
+          "framework": "OAML",
+          "accuracy": 0.768,
+          "runtime_sec": 14.29,
+          "energy_kwh": 0.00137,
+          "co2_kg": 0.00057088,
+          "scenario_fit_score": 0.408694547770343,
+          "rank": 2
+        },
+        {
+          "framework": "EvoAutoML",
+          "accuracy": 0.751,
+          "runtime_sec": 15.74,
+          "energy_kwh": 0.00149,
+          "co2_kg": 0.00062088,
+          "scenario_fit_score": 0.27246303184689524,
+          "rank": 3
+        },
+        {
+          "framework": "AutoClass",
+          "accuracy": 0.734,
+          "runtime_sec": 17.19,
+          "energy_kwh": 0.00161,
+          "co2_kg": 0.00067089,
+          "scenario_fit_score": 0.13623151592344757,
+          "rank": 4
+        },
+        {
+          "framework": "AutoStreamML",
+          "accuracy": 0.717,
+          "runtime_sec": 18.64,
+          "energy_kwh": 0.00173,
+          "co2_kg": 0.00072089,
+          "scenario_fit_score": 0.0,
+          "rank": 5
+        }
+      ],
+      "evidence_contract": "Researcher-constructed study reference table supplied to the explanation generator. Authoritative within this task only; not an independent external source or a measured run on the textual scenario.",
+      "objective_weights": {
+        "Accuracy": 0.3333333333333333,
+        "Runtime": 0.3333333333333333,
+        "Energy": 0.3333333333333333
+      },
+      "normalization": "within-table min-max, inverted for costs; equal weight for selected objectives",
+      "scope": "Only Accuracy, Runtime, Energy and CO2 can enter the ranking. Other scenario requirements have not been assessed."
+    }
+  },
+  {
+    "scenario_id": "G150",
+    "scenario_text": "A historic museum uses wireless sensors to decide which rooms genuinely need conservation staff attention, so spurious warnings create real disruption. The gateways have a very small electrical allowance, and the museum wants background analysis to stay consistent with its low-impact operations policy instead of depending on fossil-heavy overflow.",
+    "domain": "Cultural heritage monitoring",
+    "framework_context": "AutoStreamML",
+    "source_name": "Trade-off explanation",
+    "prompt": "Assess the explanation supporting the displayed framework recommendation using this reference table and these study objectives: Accuracy + Energy + CO2.",
+    "recommendation": "Use AutoStreamML for the objectives included in this task.",
+    "recommended_framework": "AutoStreamML",
+    "explanation": "AutoStreamML has scenario-fit score 1.000, rank #1, based on accuracy 0.856, energy 0.000880 kWh, CO₂ 0.00034000 kg. The score combines the included objectives using the displayed weights; it does not establish superiority on requirements outside those objectives.",
+    "reference_evidence": {
+      "scenario": {
+        "benchmark_id": "V2-034",
+        "scenario_id": "G150",
+        "text": "A historic museum uses wireless sensors to decide which rooms genuinely need conservation staff attention, so spurious warnings create real disruption. The gateways have a very small electrical allowance, and the museum wants background analysis to stay consistent with its low-impact operations policy instead of depending on fossil-heavy overflow.",
+        "domain": "Cultural heritage monitoring",
+        "track1_ground_truth_objectives": [
+          "Accuracy",
+          "Energy",
+          "CO2"
+        ],
+        "source": "Track-1 scenario benchmark"
+      },
+      "scenario_objectives": [
+        "Accuracy",
+        "Energy",
+        "CO2"
+      ],
+      "framework_context": "AutoStreamML",
+      "explanation_type": "Trade-off explanation",
+      "frameworks": [
+        {
+          "framework": "AutoStreamML",
+          "accuracy": 0.856,
+          "runtime_sec": 18.2,
+          "energy_kwh": 0.00088,
+          "co2_kg": 0.00034,
+          "scenario_fit_score": 1.0,
+          "rank": 1
+        },
+        {
+          "framework": "ChaCha",
+          "accuracy": 0.786,
+          "runtime_sec": 12.4,
+          "energy_kwh": 0.00126,
+          "co2_kg": 0.00052504,
+          "scenario_fit_score": 0.451899436685968,
+          "rank": 2
+        },
+        {
+          "framework": "OAML",
+          "accuracy": 0.769,
+          "runtime_sec": 13.85,
+          "energy_kwh": 0.00138,
+          "co2_kg": 0.00057505,
+          "scenario_fit_score": 0.3012596586147346,
+          "rank": 3
+        },
+        {
+          "framework": "EvoAutoML",
+          "accuracy": 0.752,
+          "runtime_sec": 15.3,
+          "energy_kwh": 0.0015,
+          "co2_kg": 0.00062505,
+          "scenario_fit_score": 0.15062982930736718,
+          "rank": 4
+        },
+        {
+          "framework": "AutoClass",
+          "accuracy": 0.735,
+          "runtime_sec": 16.75,
+          "energy_kwh": 0.00162,
+          "co2_kg": 0.00067505,
+          "scenario_fit_score": 0.0,
+          "rank": 5
+        }
+      ],
+      "evidence_contract": "Researcher-constructed study reference table supplied to the explanation generator. Authoritative within this task only; not an independent external source or a measured run on the textual scenario.",
+      "objective_weights": {
+        "Accuracy": 0.3333333333333333,
+        "Energy": 0.3333333333333333,
+        "CO2": 0.3333333333333333
+      },
+      "normalization": "within-table min-max, inverted for costs; equal weight for selected objectives",
+      "scope": "Only Accuracy, Runtime, Energy and CO2 can enter the ranking. Other scenario requirements have not been assessed."
+    }
+  },
+  {
+    "scenario_id": "G150",
+    "scenario_text": "A historic museum uses wireless sensors to decide which rooms genuinely need conservation staff attention, so spurious warnings create real disruption. The gateways have a very small electrical allowance, and the museum wants background analysis to stay consistent with its low-impact operations policy instead of depending on fossil-heavy overflow.",
+    "domain": "Cultural heritage monitoring",
+    "framework_context": "AutoStreamML",
+    "source_name": "Trade-off explanation",
+    "prompt": "Assess the explanation supporting the displayed framework recommendation using this reference table and these study objectives: Accuracy + Energy + CO2.",
+    "recommendation": "Use AutoStreamML for the objectives included in this task.",
+    "recommended_framework": "AutoStreamML",
+    "explanation": "AutoStreamML has scenario-fit score 1.000, rank #1, based on accuracy 0.856, energy 0.001584 kWh, CO₂ 0.00034000 kg. The score combines the included objectives using the displayed weights; it does not establish superiority on requirements outside those objectives.",
+    "reference_evidence": {
+      "scenario": {
+        "benchmark_id": "V2-034",
+        "scenario_id": "G150",
+        "text": "A historic museum uses wireless sensors to decide which rooms genuinely need conservation staff attention, so spurious warnings create real disruption. The gateways have a very small electrical allowance, and the museum wants background analysis to stay consistent with its low-impact operations policy instead of depending on fossil-heavy overflow.",
+        "domain": "Cultural heritage monitoring",
+        "track1_ground_truth_objectives": [
+          "Accuracy",
+          "Energy",
+          "CO2"
+        ],
+        "source": "Track-1 scenario benchmark"
+      },
+      "scenario_objectives": [
+        "Accuracy",
+        "Energy",
+        "CO2"
+      ],
+      "framework_context": "AutoStreamML",
+      "explanation_type": "Trade-off explanation",
+      "frameworks": [
+        {
+          "framework": "AutoStreamML",
+          "accuracy": 0.856,
+          "runtime_sec": 18.2,
+          "energy_kwh": 0.00088,
+          "co2_kg": 0.00034,
+          "scenario_fit_score": 1.0,
+          "rank": 1
+        },
+        {
+          "framework": "ChaCha",
+          "accuracy": 0.786,
+          "runtime_sec": 12.4,
+          "energy_kwh": 0.00126,
+          "co2_kg": 0.00052504,
+          "scenario_fit_score": 0.451899436685968,
+          "rank": 2
+        },
+        {
+          "framework": "OAML",
+          "accuracy": 0.769,
+          "runtime_sec": 13.85,
+          "energy_kwh": 0.00138,
+          "co2_kg": 0.00057505,
+          "scenario_fit_score": 0.3012596586147346,
+          "rank": 3
+        },
+        {
+          "framework": "EvoAutoML",
+          "accuracy": 0.752,
+          "runtime_sec": 15.3,
+          "energy_kwh": 0.0015,
+          "co2_kg": 0.00062505,
+          "scenario_fit_score": 0.15062982930736718,
+          "rank": 4
+        },
+        {
+          "framework": "AutoClass",
+          "accuracy": 0.735,
+          "runtime_sec": 16.75,
+          "energy_kwh": 0.00162,
+          "co2_kg": 0.00067505,
+          "scenario_fit_score": 0.0,
+          "rank": 5
+        }
+      ],
+      "evidence_contract": "Researcher-constructed study reference table supplied to the explanation generator. Authoritative within this task only; not an independent external source or a measured run on the textual scenario.",
+      "objective_weights": {
+        "Accuracy": 0.3333333333333333,
+        "Energy": 0.3333333333333333,
+        "CO2": 0.3333333333333333
+      },
+      "normalization": "within-table min-max, inverted for costs; equal weight for selected objectives",
+      "scope": "Only Accuracy, Runtime, Energy and CO2 can enter the ranking. Other scenario requirements have not been assessed."
+    }
+  },
+  {
+    "scenario_id": "G146",
+    "scenario_text": "A museum lends visitors handheld translation devices that should update speech quickly enough to feel like a conversation. The units must last through a full day of tours, and the museum would rather schedule heavy preparation work when its building is on cleaner supply than add more charging demand during fossil-heavy peaks.",
+    "domain": "Museum visitor services",
+    "framework_context": "AutoClass",
+    "source_name": "Trade-off explanation",
+    "prompt": "Assess the explanation supporting the displayed framework recommendation using this reference table and these study objectives: Runtime + Energy + CO2.",
+    "recommendation": "Use AutoClass for the objectives included in this task.",
+    "recommended_framework": "AutoClass",
+    "explanation": "AutoClass has scenario-fit score 1.000, rank #1, based on runtime 8.89 s, energy 0.000892 kWh, CO₂ 0.00035200 kg. The score combines the included objectives using the displayed weights; it does not establish superiority on requirements outside those objectives.",
+    "reference_evidence": {
+      "scenario": {
+        "benchmark_id": "V2-035",
+        "scenario_id": "G146",
+        "text": "A museum lends visitors handheld translation devices that should update speech quickly enough to feel like a conversation. The units must last through a full day of tours, and the museum would rather schedule heavy preparation work when its building is on cleaner supply than add more charging demand during fossil-heavy peaks.",
+        "domain": "Museum visitor services",
+        "track1_ground_truth_objectives": [
+          "Runtime",
+          "Energy",
+          "CO2"
+        ],
+        "source": "Track-1 scenario benchmark"
+      },
+      "scenario_objectives": [
+        "Runtime",
+        "Energy",
+        "CO2"
+      ],
+      "framework_context": "AutoClass",
+      "explanation_type": "Trade-off explanation",
+      "frameworks": [
+        {
+          "framework": "AutoClass",
+          "accuracy": 0.736,
+          "runtime_sec": 8.89,
+          "energy_kwh": 0.000892,
+          "co2_kg": 0.000352,
+          "scenario_fit_score": 1.0,
+          "rank": 1
+        },
+        {
+          "framework": "ChaCha",
+          "accuracy": 0.787,
+          "runtime_sec": 12.51,
+          "energy_kwh": 0.00127,
+          "co2_kg": 0.00052921,
+          "scenario_fit_score": 0.5684617855387989,
+          "rank": 2
+        },
+        {
+          "framework": "OAML",
+          "accuracy": 0.77,
+          "runtime_sec": 13.96,
+          "energy_kwh": 0.00139,
+          "co2_kg": 0.00057921,
+          "scenario_fit_score": 0.42635075732515304,
+          "rank": 3
+        },
+        {
+          "framework": "EvoAutoML",
+          "accuracy": 0.753,
+          "runtime_sec": 15.41,
+          "energy_kwh": 0.00151,
+          "co2_kg": 0.00062922,
+          "scenario_fit_score": 0.2842308927693994,
+          "rank": 4
+        },
+        {
+          "framework": "AutoStreamML",
+          "accuracy": 0.719,
+          "runtime_sec": 18.31,
+          "energy_kwh": 0.00175,
+          "co2_kg": 0.00072923,
+          "scenario_fit_score": 0.0,
+          "rank": 5
+        }
+      ],
+      "evidence_contract": "Researcher-constructed study reference table supplied to the explanation generator. Authoritative within this task only; not an independent external source or a measured run on the textual scenario.",
+      "objective_weights": {
+        "Runtime": 0.3333333333333333,
+        "Energy": 0.3333333333333333,
+        "CO2": 0.3333333333333333
+      },
+      "normalization": "within-table min-max, inverted for costs; equal weight for selected objectives",
+      "scope": "Only Accuracy, Runtime, Energy and CO2 can enter the ranking. Other scenario requirements have not been assessed."
+    }
+  },
+  {
+    "scenario_id": "G146",
+    "scenario_text": "A museum lends visitors handheld translation devices that should update speech quickly enough to feel like a conversation. The units must last through a full day of tours, and the museum would rather schedule heavy preparation work when its building is on cleaner supply than add more charging demand during fossil-heavy peaks.",
+    "domain": "Museum visitor services",
+    "framework_context": "AutoClass",
+    "source_name": "Trade-off explanation",
+    "prompt": "Assess the explanation supporting the displayed framework recommendation using this reference table and these study objectives: Runtime + Energy + CO2.",
+    "recommendation": "Use AutoClass for the objectives included in this task.",
+    "recommended_framework": "AutoClass",
+    "explanation": "AutoClass has scenario-fit score 1.000, rank #1, based on runtime 8.89 s, energy 0.000892 kWh, CO₂ 0.00063360 kg. The score combines the included objectives using the displayed weights; it does not establish superiority on requirements outside those objectives.",
+    "reference_evidence": {
+      "scenario": {
+        "benchmark_id": "V2-035",
+        "scenario_id": "G146",
+        "text": "A museum lends visitors handheld translation devices that should update speech quickly enough to feel like a conversation. The units must last through a full day of tours, and the museum would rather schedule heavy preparation work when its building is on cleaner supply than add more charging demand during fossil-heavy peaks.",
+        "domain": "Museum visitor services",
+        "track1_ground_truth_objectives": [
+          "Runtime",
+          "Energy",
+          "CO2"
+        ],
+        "source": "Track-1 scenario benchmark"
+      },
+      "scenario_objectives": [
+        "Runtime",
+        "Energy",
+        "CO2"
+      ],
+      "framework_context": "AutoClass",
+      "explanation_type": "Trade-off explanation",
+      "frameworks": [
+        {
+          "framework": "AutoClass",
+          "accuracy": 0.736,
+          "runtime_sec": 8.89,
+          "energy_kwh": 0.000892,
+          "co2_kg": 0.000352,
+          "scenario_fit_score": 1.0,
+          "rank": 1
+        },
+        {
+          "framework": "ChaCha",
+          "accuracy": 0.787,
+          "runtime_sec": 12.51,
+          "energy_kwh": 0.00127,
+          "co2_kg": 0.00052921,
+          "scenario_fit_score": 0.5684617855387989,
+          "rank": 2
+        },
+        {
+          "framework": "OAML",
+          "accuracy": 0.77,
+          "runtime_sec": 13.96,
+          "energy_kwh": 0.00139,
+          "co2_kg": 0.00057921,
+          "scenario_fit_score": 0.42635075732515304,
+          "rank": 3
+        },
+        {
+          "framework": "EvoAutoML",
+          "accuracy": 0.753,
+          "runtime_sec": 15.41,
+          "energy_kwh": 0.00151,
+          "co2_kg": 0.00062922,
+          "scenario_fit_score": 0.2842308927693994,
+          "rank": 4
+        },
+        {
+          "framework": "AutoStreamML",
+          "accuracy": 0.719,
+          "runtime_sec": 18.31,
+          "energy_kwh": 0.00175,
+          "co2_kg": 0.00072923,
+          "scenario_fit_score": 0.0,
+          "rank": 5
+        }
+      ],
+      "evidence_contract": "Researcher-constructed study reference table supplied to the explanation generator. Authoritative within this task only; not an independent external source or a measured run on the textual scenario.",
+      "objective_weights": {
+        "Runtime": 0.3333333333333333,
+        "Energy": 0.3333333333333333,
+        "CO2": 0.3333333333333333
+      },
+      "normalization": "within-table min-max, inverted for costs; equal weight for selected objectives",
+      "scope": "Only Accuracy, Runtime, Energy and CO2 can enter the ranking. Other scenario requirements have not been assessed."
+    }
+  },
+  {
+    "scenario_id": "G133",
+    "scenario_text": "A pop-up music festival wants crowd-density maps refreshed often enough for stewards to react while a bottleneck is forming. The temporary network runs from battery trailers, and organizers want to minimize generator use overnight rather than keep extra machines humming between updates.",
+    "domain": "Live event safety",
+    "framework_context": "EvoAutoML",
+    "source_name": "Trade-off explanation",
+    "prompt": "Assess the explanation supporting the displayed framework recommendation using this reference table and these study objectives: Runtime + Energy + CO2.",
+    "recommendation": "Use EvoAutoML for the objectives included in this task.",
+    "recommended_framework": "EvoAutoML",
+    "explanation": "EvoAutoML has scenario-fit score 1.000, rank #1, based on runtime 8.35 s, energy 0.000904 kWh, CO₂ 0.00036400 kg. The score combines the included objectives using the displayed weights; it does not establish superiority on requirements outside those objectives.",
+    "reference_evidence": {
+      "scenario": {
+        "benchmark_id": "V2-036",
+        "scenario_id": "G133",
+        "text": "A pop-up music festival wants crowd-density maps refreshed often enough for stewards to react while a bottleneck is forming. The temporary network runs from battery trailers, and organizers want to minimize generator use overnight rather than keep extra machines humming between updates.",
+        "domain": "Live event safety",
+        "track1_ground_truth_objectives": [
+          "Runtime",
+          "Energy",
+          "CO2"
+        ],
+        "source": "Track-1 scenario benchmark"
+      },
+      "scenario_objectives": [
+        "Runtime",
+        "Energy",
+        "CO2"
+      ],
+      "framework_context": "EvoAutoML",
+      "explanation_type": "Trade-off explanation",
+      "frameworks": [
+        {
+          "framework": "EvoAutoML",
+          "accuracy": 0.75,
+          "runtime_sec": 8.35,
+          "energy_kwh": 0.000904,
+          "co2_kg": 0.000364,
+          "scenario_fit_score": 1.0,
+          "rank": 1
+        },
+        {
+          "framework": "ChaCha",
+          "accuracy": 0.784,
+          "runtime_sec": 12.62,
+          "energy_kwh": 0.00124,
+          "co2_kg": 0.00051671,
+          "scenario_fit_score": 0.577084622704729,
+          "rank": 2
+        },
+        {
+          "framework": "OAML",
+          "accuracy": 0.767,
+          "runtime_sec": 14.07,
+          "energy_kwh": 0.00136,
+          "co2_kg": 0.00056671,
+          "scenario_fit_score": 0.43281582962021525,
+          "rank": 3
+        },
+        {
+          "framework": "AutoClass",
+          "accuracy": 0.733,
+          "runtime_sec": 16.97,
+          "energy_kwh": 0.0016,
+          "co2_kg": 0.00066672,
+          "scenario_fit_score": 0.14426879308451374,
+          "rank": 4
+        },
+        {
+          "framework": "AutoStreamML",
+          "accuracy": 0.716,
+          "runtime_sec": 18.42,
+          "energy_kwh": 0.00172,
+          "co2_kg": 0.00071672,
+          "scenario_fit_score": 0.0,
+          "rank": 5
+        }
+      ],
+      "evidence_contract": "Researcher-constructed study reference table supplied to the explanation generator. Authoritative within this task only; not an independent external source or a measured run on the textual scenario.",
+      "objective_weights": {
+        "Runtime": 0.3333333333333333,
+        "Energy": 0.3333333333333333,
+        "CO2": 0.3333333333333333
+      },
+      "normalization": "within-table min-max, inverted for costs; equal weight for selected objectives",
+      "scope": "Only Accuracy, Runtime, Energy and CO2 can enter the ranking. Other scenario requirements have not been assessed."
+    }
+  },
+  {
+    "scenario_id": "G133",
+    "scenario_text": "A pop-up music festival wants crowd-density maps refreshed often enough for stewards to react while a bottleneck is forming. The temporary network runs from battery trailers, and organizers want to minimize generator use overnight rather than keep extra machines humming between updates.",
+    "domain": "Live event safety",
+    "framework_context": "EvoAutoML",
+    "source_name": "Trade-off explanation",
+    "prompt": "Assess the explanation supporting the displayed framework recommendation using this reference table and these study objectives: Runtime + Energy + CO2.",
+    "recommendation": "Use EvoAutoML for the objectives included in this task.",
+    "recommended_framework": "EvoAutoML",
+    "explanation": "EvoAutoML has scenario-fit score 1.000, rank #1, based on runtime 14.85 s, energy 0.000904 kWh, CO₂ 0.00036400 kg. The score combines the included objectives using the displayed weights; it does not establish superiority on requirements outside those objectives.",
+    "reference_evidence": {
+      "scenario": {
+        "benchmark_id": "V2-036",
+        "scenario_id": "G133",
+        "text": "A pop-up music festival wants crowd-density maps refreshed often enough for stewards to react while a bottleneck is forming. The temporary network runs from battery trailers, and organizers want to minimize generator use overnight rather than keep extra machines humming between updates.",
+        "domain": "Live event safety",
+        "track1_ground_truth_objectives": [
+          "Runtime",
+          "Energy",
+          "CO2"
+        ],
+        "source": "Track-1 scenario benchmark"
+      },
+      "scenario_objectives": [
+        "Runtime",
+        "Energy",
+        "CO2"
+      ],
+      "framework_context": "EvoAutoML",
+      "explanation_type": "Trade-off explanation",
+      "frameworks": [
+        {
+          "framework": "EvoAutoML",
+          "accuracy": 0.75,
+          "runtime_sec": 8.35,
+          "energy_kwh": 0.000904,
+          "co2_kg": 0.000364,
+          "scenario_fit_score": 1.0,
+          "rank": 1
+        },
+        {
+          "framework": "ChaCha",
+          "accuracy": 0.784,
+          "runtime_sec": 12.62,
+          "energy_kwh": 0.00124,
+          "co2_kg": 0.00051671,
+          "scenario_fit_score": 0.577084622704729,
+          "rank": 2
+        },
+        {
+          "framework": "OAML",
+          "accuracy": 0.767,
+          "runtime_sec": 14.07,
+          "energy_kwh": 0.00136,
+          "co2_kg": 0.00056671,
+          "scenario_fit_score": 0.43281582962021525,
+          "rank": 3
+        },
+        {
+          "framework": "AutoClass",
+          "accuracy": 0.733,
+          "runtime_sec": 16.97,
+          "energy_kwh": 0.0016,
+          "co2_kg": 0.00066672,
+          "scenario_fit_score": 0.14426879308451374,
+          "rank": 4
+        },
+        {
+          "framework": "AutoStreamML",
+          "accuracy": 0.716,
+          "runtime_sec": 18.42,
+          "energy_kwh": 0.00172,
+          "co2_kg": 0.00071672,
+          "scenario_fit_score": 0.0,
+          "rank": 5
+        }
+      ],
+      "evidence_contract": "Researcher-constructed study reference table supplied to the explanation generator. Authoritative within this task only; not an independent external source or a measured run on the textual scenario.",
+      "objective_weights": {
+        "Runtime": 0.3333333333333333,
+        "Energy": 0.3333333333333333,
+        "CO2": 0.3333333333333333
+      },
+      "normalization": "within-table min-max, inverted for costs; equal weight for selected objectives",
+      "scope": "Only Accuracy, Runtime, Energy and CO2 can enter the ranking. Other scenario requirements have not been assessed."
+    }
+  },
+  {
+    "scenario_id": "G080",
+    "scenario_text": "Technicians should isolate a failing wind-turbine component before it causes a costly shutdown, while nacelle sensors continue operating through long service intervals. The local diagnostic service should recognise genuine fault signatures, return a maintenance indication promptly, and avoid processor use that unnecessarily drains the embedded power supply.",
+    "domain": "Wind turbine monitoring",
+    "framework_context": "OAML",
+    "source_name": "Trade-off explanation",
+    "prompt": "Assess the explanation supporting the displayed framework recommendation using this reference table and these study objectives: Accuracy + Runtime + Energy.",
+    "recommendation": "Use OAML for the objectives included in this task.",
+    "recommended_framework": "OAML",
+    "explanation": "OAML has scenario-fit score 1.000, rank #1, based on accuracy 0.862, runtime 8.53 s, energy 0.000916 kWh. The score combines the included objectives using the displayed weights; it does not establish superiority on requirements outside those objectives.",
+    "reference_evidence": {
+      "scenario": {
+        "benchmark_id": "V2-037",
+        "scenario_id": "G080",
+        "text": "Technicians should isolate a failing wind-turbine component before it causes a costly shutdown, while nacelle sensors continue operating through long service intervals. The local diagnostic service should recognise genuine fault signatures, return a maintenance indication promptly, and avoid processor use that unnecessarily drains the embedded power supply.",
+        "domain": "Wind turbine monitoring",
+        "track1_ground_truth_objectives": [
+          "Accuracy",
+          "Runtime",
+          "Energy"
+        ],
+        "source": "Track-1 scenario benchmark"
+      },
+      "scenario_objectives": [
+        "Accuracy",
+        "Runtime",
+        "Energy"
+      ],
+      "framework_context": "OAML",
+      "explanation_type": "Trade-off explanation",
+      "frameworks": [
+        {
+          "framework": "OAML",
+          "accuracy": 0.862,
+          "runtime_sec": 8.53,
+          "energy_kwh": 0.000916,
+          "co2_kg": 0.0003817,
+          "scenario_fit_score": 1.0,
+          "rank": 1
+        },
+        {
+          "framework": "ChaCha",
+          "accuracy": 0.785,
+          "runtime_sec": 12.73,
+          "energy_kwh": 0.00125,
+          "co2_kg": 0.00052088,
+          "scenario_fit_score": 0.5462153689739897,
+          "rank": 2
+        },
+        {
+          "framework": "EvoAutoML",
+          "accuracy": 0.751,
+          "runtime_sec": 15.63,
+          "energy_kwh": 0.00149,
+          "co2_kg": 0.00062088,
+          "scenario_fit_score": 0.27310768448699485,
+          "rank": 3
+        },
+        {
+          "framework": "AutoClass",
+          "accuracy": 0.734,
+          "runtime_sec": 17.08,
+          "energy_kwh": 0.00161,
+          "co2_kg": 0.00067089,
+          "scenario_fit_score": 0.13655384224349748,
+          "rank": 4
+        },
+        {
+          "framework": "AutoStreamML",
+          "accuracy": 0.717,
+          "runtime_sec": 18.53,
+          "energy_kwh": 0.00173,
+          "co2_kg": 0.00072089,
+          "scenario_fit_score": 0.0,
+          "rank": 5
+        }
+      ],
+      "evidence_contract": "Researcher-constructed study reference table supplied to the explanation generator. Authoritative within this task only; not an independent external source or a measured run on the textual scenario.",
+      "objective_weights": {
+        "Accuracy": 0.3333333333333333,
+        "Runtime": 0.3333333333333333,
+        "Energy": 0.3333333333333333
+      },
+      "normalization": "within-table min-max, inverted for costs; equal weight for selected objectives",
+      "scope": "Only Accuracy, Runtime, Energy and CO2 can enter the ranking. Other scenario requirements have not been assessed."
+    }
+  },
+  {
+    "scenario_id": "G080",
+    "scenario_text": "Technicians should isolate a failing wind-turbine component before it causes a costly shutdown, while nacelle sensors continue operating through long service intervals. The local diagnostic service should recognise genuine fault signatures, return a maintenance indication promptly, and avoid processor use that unnecessarily drains the embedded power supply.",
+    "domain": "Wind turbine monitoring",
+    "framework_context": "OAML",
+    "source_name": "Trade-off explanation",
+    "prompt": "Assess the explanation supporting the displayed framework recommendation using this reference table and these study objectives: Accuracy + Runtime + Energy.",
+    "recommendation": "Use OAML for the objectives included in this task.",
+    "recommended_framework": "OAML",
+    "explanation": "OAML has scenario-fit score 1.000, rank #1, based on accuracy 0.862, runtime 15.03 s, energy 0.000916 kWh. The score combines the included objectives using the displayed weights; it does not establish superiority on requirements outside those objectives.",
+    "reference_evidence": {
+      "scenario": {
+        "benchmark_id": "V2-037",
+        "scenario_id": "G080",
+        "text": "Technicians should isolate a failing wind-turbine component before it causes a costly shutdown, while nacelle sensors continue operating through long service intervals. The local diagnostic service should recognise genuine fault signatures, return a maintenance indication promptly, and avoid processor use that unnecessarily drains the embedded power supply.",
+        "domain": "Wind turbine monitoring",
+        "track1_ground_truth_objectives": [
+          "Accuracy",
+          "Runtime",
+          "Energy"
+        ],
+        "source": "Track-1 scenario benchmark"
+      },
+      "scenario_objectives": [
+        "Accuracy",
+        "Runtime",
+        "Energy"
+      ],
+      "framework_context": "OAML",
+      "explanation_type": "Trade-off explanation",
+      "frameworks": [
+        {
+          "framework": "OAML",
+          "accuracy": 0.862,
+          "runtime_sec": 8.53,
+          "energy_kwh": 0.000916,
+          "co2_kg": 0.0003817,
+          "scenario_fit_score": 1.0,
+          "rank": 1
+        },
+        {
+          "framework": "ChaCha",
+          "accuracy": 0.785,
+          "runtime_sec": 12.73,
+          "energy_kwh": 0.00125,
+          "co2_kg": 0.00052088,
+          "scenario_fit_score": 0.5462153689739897,
+          "rank": 2
+        },
+        {
+          "framework": "EvoAutoML",
+          "accuracy": 0.751,
+          "runtime_sec": 15.63,
+          "energy_kwh": 0.00149,
+          "co2_kg": 0.00062088,
+          "scenario_fit_score": 0.27310768448699485,
+          "rank": 3
+        },
+        {
+          "framework": "AutoClass",
+          "accuracy": 0.734,
+          "runtime_sec": 17.08,
+          "energy_kwh": 0.00161,
+          "co2_kg": 0.00067089,
+          "scenario_fit_score": 0.13655384224349748,
+          "rank": 4
+        },
+        {
+          "framework": "AutoStreamML",
+          "accuracy": 0.717,
+          "runtime_sec": 18.53,
+          "energy_kwh": 0.00173,
+          "co2_kg": 0.00072089,
+          "scenario_fit_score": 0.0,
+          "rank": 5
+        }
+      ],
+      "evidence_contract": "Researcher-constructed study reference table supplied to the explanation generator. Authoritative within this task only; not an independent external source or a measured run on the textual scenario.",
+      "objective_weights": {
+        "Accuracy": 0.3333333333333333,
+        "Runtime": 0.3333333333333333,
+        "Energy": 0.3333333333333333
+      },
+      "normalization": "within-table min-max, inverted for costs; equal weight for selected objectives",
+      "scope": "Only Accuracy, Runtime, Energy and CO2 can enter the ranking. Other scenario requirements have not been assessed."
+    }
+  },
+  {
+    "scenario_id": "G105",
+    "scenario_text": "A seafood plant uses a camera to spot broken seals on vacuum packs. Wrong calls are costly, the decision has to arrive before the pack leaves the inspection point, and the edge box cannot draw so much that it overheats in the chilled room.",
+    "domain": "Seafood packaging inspection",
+    "framework_context": "ChaCha",
+    "source_name": "Trade-off explanation",
+    "prompt": "Assess the explanation supporting the displayed framework recommendation using this reference table and these study objectives: Accuracy + Runtime + Energy.",
+    "recommendation": "Use ChaCha for the objectives included in this task.",
+    "recommended_framework": "ChaCha",
+    "explanation": "ChaCha has scenario-fit score 1.000, rank #1, based on accuracy 0.864, runtime 8.71 s, energy 0.000928 kWh. The score combines the included objectives using the displayed weights; it does not establish superiority on requirements outside those objectives.",
+    "reference_evidence": {
+      "scenario": {
+        "benchmark_id": "V2-038",
+        "scenario_id": "G105",
+        "text": "A seafood plant uses a camera to spot broken seals on vacuum packs. Wrong calls are costly, the decision has to arrive before the pack leaves the inspection point, and the edge box cannot draw so much that it overheats in the chilled room.",
+        "domain": "Seafood packaging inspection",
+        "track1_ground_truth_objectives": [
+          "Accuracy",
+          "Runtime",
+          "Energy"
+        ],
+        "source": "Track-1 scenario benchmark"
+      },
+      "scenario_objectives": [
+        "Accuracy",
+        "Runtime",
+        "Energy"
+      ],
+      "framework_context": "ChaCha",
+      "explanation_type": "Trade-off explanation",
+      "frameworks": [
+        {
+          "framework": "ChaCha",
+          "accuracy": 0.864,
+          "runtime_sec": 8.71,
+          "energy_kwh": 0.000928,
+          "co2_kg": 0.0003867,
+          "scenario_fit_score": 1.0,
+          "rank": 1
+        },
+        {
+          "framework": "OAML",
+          "accuracy": 0.769,
+          "runtime_sec": 14.29,
+          "energy_kwh": 0.00138,
+          "co2_kg": 0.00057505,
+          "scenario_fit_score": 0.41024376248151,
+          "rank": 2
+        },
+        {
+          "framework": "EvoAutoML",
+          "accuracy": 0.752,
+          "runtime_sec": 15.74,
+          "energy_kwh": 0.0015,
+          "co2_kg": 0.00062505,
+          "scenario_fit_score": 0.27349584165433993,
+          "rank": 3
+        },
+        {
+          "framework": "AutoClass",
+          "accuracy": 0.735,
+          "runtime_sec": 17.19,
+          "energy_kwh": 0.00162,
+          "co2_kg": 0.00067505,
+          "scenario_fit_score": 0.13674792082717,
+          "rank": 4
+        },
+        {
+          "framework": "AutoStreamML",
+          "accuracy": 0.718,
+          "runtime_sec": 18.64,
+          "energy_kwh": 0.00174,
+          "co2_kg": 0.00072506,
+          "scenario_fit_score": 0.0,
+          "rank": 5
+        }
+      ],
+      "evidence_contract": "Researcher-constructed study reference table supplied to the explanation generator. Authoritative within this task only; not an independent external source or a measured run on the textual scenario.",
+      "objective_weights": {
+        "Accuracy": 0.3333333333333333,
+        "Runtime": 0.3333333333333333,
+        "Energy": 0.3333333333333333
+      },
+      "normalization": "within-table min-max, inverted for costs; equal weight for selected objectives",
+      "scope": "Only Accuracy, Runtime, Energy and CO2 can enter the ranking. Other scenario requirements have not been assessed."
+    }
+  },
+  {
+    "scenario_id": "G105",
+    "scenario_text": "A seafood plant uses a camera to spot broken seals on vacuum packs. Wrong calls are costly, the decision has to arrive before the pack leaves the inspection point, and the edge box cannot draw so much that it overheats in the chilled room.",
+    "domain": "Seafood packaging inspection",
+    "framework_context": "ChaCha",
+    "source_name": "Trade-off explanation",
+    "prompt": "Assess the explanation supporting the displayed framework recommendation using this reference table and these study objectives: Accuracy + Runtime + Energy.",
+    "recommendation": "Use ChaCha for the objectives included in this task.",
+    "recommended_framework": "ChaCha",
+    "explanation": "ChaCha has scenario-fit score 1.000, rank #1, based on accuracy 0.864, runtime 8.71 s, energy 0.001670 kWh. The score combines the included objectives using the displayed weights; it does not establish superiority on requirements outside those objectives.",
+    "reference_evidence": {
+      "scenario": {
+        "benchmark_id": "V2-038",
+        "scenario_id": "G105",
+        "text": "A seafood plant uses a camera to spot broken seals on vacuum packs. Wrong calls are costly, the decision has to arrive before the pack leaves the inspection point, and the edge box cannot draw so much that it overheats in the chilled room.",
+        "domain": "Seafood packaging inspection",
+        "track1_ground_truth_objectives": [
+          "Accuracy",
+          "Runtime",
+          "Energy"
+        ],
+        "source": "Track-1 scenario benchmark"
+      },
+      "scenario_objectives": [
+        "Accuracy",
+        "Runtime",
+        "Energy"
+      ],
+      "framework_context": "ChaCha",
+      "explanation_type": "Trade-off explanation",
+      "frameworks": [
+        {
+          "framework": "ChaCha",
+          "accuracy": 0.864,
+          "runtime_sec": 8.71,
+          "energy_kwh": 0.000928,
+          "co2_kg": 0.0003867,
+          "scenario_fit_score": 1.0,
+          "rank": 1
+        },
+        {
+          "framework": "OAML",
+          "accuracy": 0.769,
+          "runtime_sec": 14.29,
+          "energy_kwh": 0.00138,
+          "co2_kg": 0.00057505,
+          "scenario_fit_score": 0.41024376248151,
+          "rank": 2
+        },
+        {
+          "framework": "EvoAutoML",
+          "accuracy": 0.752,
+          "runtime_sec": 15.74,
+          "energy_kwh": 0.0015,
+          "co2_kg": 0.00062505,
+          "scenario_fit_score": 0.27349584165433993,
+          "rank": 3
+        },
+        {
+          "framework": "AutoClass",
+          "accuracy": 0.735,
+          "runtime_sec": 17.19,
+          "energy_kwh": 0.00162,
+          "co2_kg": 0.00067505,
+          "scenario_fit_score": 0.13674792082717,
+          "rank": 4
+        },
+        {
+          "framework": "AutoStreamML",
+          "accuracy": 0.718,
+          "runtime_sec": 18.64,
+          "energy_kwh": 0.00174,
+          "co2_kg": 0.00072506,
+          "scenario_fit_score": 0.0,
+          "rank": 5
+        }
+      ],
+      "evidence_contract": "Researcher-constructed study reference table supplied to the explanation generator. Authoritative within this task only; not an independent external source or a measured run on the textual scenario.",
+      "objective_weights": {
+        "Accuracy": 0.3333333333333333,
+        "Runtime": 0.3333333333333333,
+        "Energy": 0.3333333333333333
+      },
+      "normalization": "within-table min-max, inverted for costs; equal weight for selected objectives",
+      "scope": "Only Accuracy, Runtime, Energy and CO2 can enter the ranking. Other scenario requirements have not been assessed."
+    }
+  },
+  {
+    "scenario_id": "G109",
+    "scenario_text": "In a printing house, operators want the camera to catch a wrong page insert before the book is bound. It needs to make a solid call in time to pause the line, without forcing the inspection unit onto a larger power supply.",
+    "domain": "Bookbinding quality control",
+    "framework_context": "AutoStreamML",
+    "source_name": "Conversational decision explanation",
+    "prompt": "Assess the explanation supporting the displayed framework recommendation using this reference table and these study objectives: Accuracy + Runtime + Energy.",
+    "recommendation": "Use AutoStreamML for the objectives included in this task.",
+    "recommended_framework": "AutoStreamML",
+    "explanation": "The displayed score supports this framework choice. AutoStreamML has scenario-fit score 1.000, rank #1, based on accuracy 0.856, runtime 8.89 s, energy 0.000880 kWh. This conclusion applies to the stated study task and reference table.",
+    "reference_evidence": {
+      "scenario": {
+        "benchmark_id": "V2-039",
+        "scenario_id": "G109",
+        "text": "In a printing house, operators want the camera to catch a wrong page insert before the book is bound. It needs to make a solid call in time to pause the line, without forcing the inspection unit onto a larger power supply.",
+        "domain": "Bookbinding quality control",
+        "track1_ground_truth_objectives": [
+          "Accuracy",
+          "Runtime",
+          "Energy"
+        ],
+        "source": "Track-1 scenario benchmark"
+      },
+      "scenario_objectives": [
+        "Accuracy",
+        "Runtime",
+        "Energy"
+      ],
+      "framework_context": "AutoStreamML",
+      "explanation_type": "Conversational decision explanation",
+      "frameworks": [
+        {
+          "framework": "AutoStreamML",
+          "accuracy": 0.856,
+          "runtime_sec": 8.89,
+          "energy_kwh": 0.00088,
+          "co2_kg": 0.0003667,
+          "scenario_fit_score": 1.0,
+          "rank": 1
+        },
+        {
+          "framework": "ChaCha",
+          "accuracy": 0.787,
+          "runtime_sec": 12.4,
+          "energy_kwh": 0.00127,
+          "co2_kg": 0.00052921,
+          "scenario_fit_score": 0.48614503816793897,
+          "rank": 2
+        },
+        {
+          "framework": "OAML",
+          "accuracy": 0.77,
+          "runtime_sec": 13.85,
+          "energy_kwh": 0.00139,
+          "co2_kg": 0.00057921,
+          "scenario_fit_score": 0.32409669211195935,
+          "rank": 3
+        },
+        {
+          "framework": "EvoAutoML",
+          "accuracy": 0.753,
+          "runtime_sec": 15.3,
+          "energy_kwh": 0.00151,
+          "co2_kg": 0.00062922,
+          "scenario_fit_score": 0.16204834605597962,
+          "rank": 4
+        },
+        {
+          "framework": "AutoClass",
+          "accuracy": 0.736,
+          "runtime_sec": 16.75,
+          "energy_kwh": 0.00163,
+          "co2_kg": 0.00067922,
+          "scenario_fit_score": 0.0,
+          "rank": 5
+        }
+      ],
+      "evidence_contract": "Researcher-constructed study reference table supplied to the explanation generator. Authoritative within this task only; not an independent external source or a measured run on the textual scenario.",
+      "objective_weights": {
+        "Accuracy": 0.3333333333333333,
+        "Runtime": 0.3333333333333333,
+        "Energy": 0.3333333333333333
+      },
+      "normalization": "within-table min-max, inverted for costs; equal weight for selected objectives",
+      "scope": "Only Accuracy, Runtime, Energy and CO2 can enter the ranking. Other scenario requirements have not been assessed."
+    }
+  },
+  {
+    "scenario_id": "G109",
+    "scenario_text": "In a printing house, operators want the camera to catch a wrong page insert before the book is bound. It needs to make a solid call in time to pause the line, without forcing the inspection unit onto a larger power supply.",
+    "domain": "Bookbinding quality control",
+    "framework_context": "AutoStreamML",
+    "source_name": "Conversational decision explanation",
+    "prompt": "Assess the explanation supporting the displayed framework recommendation using this reference table and these study objectives: Accuracy + Runtime + Energy.",
+    "recommendation": "Use AutoStreamML for the objectives included in this task.",
+    "recommended_framework": "AutoStreamML",
+    "explanation": "The displayed score supports this framework choice. AutoStreamML has scenario-fit score 1.000, rank #1, based on accuracy 0.686, runtime 8.89 s, energy 0.000880 kWh. This conclusion applies to the stated study task and reference table.",
+    "reference_evidence": {
+      "scenario": {
+        "benchmark_id": "V2-039",
+        "scenario_id": "G109",
+        "text": "In a printing house, operators want the camera to catch a wrong page insert before the book is bound. It needs to make a solid call in time to pause the line, without forcing the inspection unit onto a larger power supply.",
+        "domain": "Bookbinding quality control",
+        "track1_ground_truth_objectives": [
+          "Accuracy",
+          "Runtime",
+          "Energy"
+        ],
+        "source": "Track-1 scenario benchmark"
+      },
+      "scenario_objectives": [
+        "Accuracy",
+        "Runtime",
+        "Energy"
+      ],
+      "framework_context": "AutoStreamML",
+      "explanation_type": "Conversational decision explanation",
+      "frameworks": [
+        {
+          "framework": "AutoStreamML",
+          "accuracy": 0.856,
+          "runtime_sec": 8.89,
+          "energy_kwh": 0.00088,
+          "co2_kg": 0.0003667,
+          "scenario_fit_score": 1.0,
+          "rank": 1
+        },
+        {
+          "framework": "ChaCha",
+          "accuracy": 0.787,
+          "runtime_sec": 12.4,
+          "energy_kwh": 0.00127,
+          "co2_kg": 0.00052921,
+          "scenario_fit_score": 0.48614503816793897,
+          "rank": 2
+        },
+        {
+          "framework": "OAML",
+          "accuracy": 0.77,
+          "runtime_sec": 13.85,
+          "energy_kwh": 0.00139,
+          "co2_kg": 0.00057921,
+          "scenario_fit_score": 0.32409669211195935,
+          "rank": 3
+        },
+        {
+          "framework": "EvoAutoML",
+          "accuracy": 0.753,
+          "runtime_sec": 15.3,
+          "energy_kwh": 0.00151,
+          "co2_kg": 0.00062922,
+          "scenario_fit_score": 0.16204834605597962,
+          "rank": 4
+        },
+        {
+          "framework": "AutoClass",
+          "accuracy": 0.736,
+          "runtime_sec": 16.75,
+          "energy_kwh": 0.00163,
+          "co2_kg": 0.00067922,
+          "scenario_fit_score": 0.0,
+          "rank": 5
+        }
+      ],
+      "evidence_contract": "Researcher-constructed study reference table supplied to the explanation generator. Authoritative within this task only; not an independent external source or a measured run on the textual scenario.",
+      "objective_weights": {
+        "Accuracy": 0.3333333333333333,
+        "Runtime": 0.3333333333333333,
+        "Energy": 0.3333333333333333
+      },
+      "normalization": "within-table min-max, inverted for costs; equal weight for selected objectives",
+      "scope": "Only Accuracy, Runtime, Energy and CO2 can enter the ranking. Other scenario requirements have not been assessed."
+    }
+  },
+  {
+    "scenario_id": "G072",
+    "scenario_text": "Rescue crews should be directed to the right building section within moments after an earthquake, even when drones must remain aloft on limited batteries. The onboard search service needs dependable victim indications, quick scene interpretation, and restrained processor use so aircraft can keep surveying instead of returning early to recharge.",
+    "domain": "Post-earthquake drone search",
+    "framework_context": "AutoClass",
+    "source_name": "Conversational decision explanation",
+    "prompt": "Assess the explanation supporting the displayed framework recommendation using this reference table and these study objectives: Accuracy + Runtime + Energy.",
+    "recommendation": "Use AutoClass for the objectives included in this task.",
+    "recommended_framework": "AutoClass",
+    "explanation": "The displayed score supports this framework choice. AutoClass has scenario-fit score 1.000, rank #1, based on accuracy 0.858, runtime 8.35 s, energy 0.000892 kWh. This conclusion applies to the stated study task and reference table.",
+    "reference_evidence": {
+      "scenario": {
+        "benchmark_id": "V2-040",
+        "scenario_id": "G072",
+        "text": "Rescue crews should be directed to the right building section within moments after an earthquake, even when drones must remain aloft on limited batteries. The onboard search service needs dependable victim indications, quick scene interpretation, and restrained processor use so aircraft can keep surveying instead of returning early to recharge.",
+        "domain": "Post-earthquake drone search",
+        "track1_ground_truth_objectives": [
+          "Accuracy",
+          "Runtime",
+          "Energy"
+        ],
+        "source": "Track-1 scenario benchmark"
+      },
+      "scenario_objectives": [
+        "Accuracy",
+        "Runtime",
+        "Energy"
+      ],
+      "framework_context": "AutoClass",
+      "explanation_type": "Conversational decision explanation",
+      "frameworks": [
+        {
+          "framework": "AutoClass",
+          "accuracy": 0.858,
+          "runtime_sec": 8.35,
+          "energy_kwh": 0.000892,
+          "co2_kg": 0.0003717,
+          "scenario_fit_score": 1.0,
+          "rank": 1
+        },
+        {
+          "framework": "ChaCha",
+          "accuracy": 0.784,
+          "runtime_sec": 12.51,
+          "energy_kwh": 0.00124,
+          "co2_kg": 0.00051671,
+          "scenario_fit_score": 0.5469709005444108,
+          "rank": 2
+        },
+        {
+          "framework": "OAML",
+          "accuracy": 0.767,
+          "runtime_sec": 13.96,
+          "energy_kwh": 0.00136,
+          "co2_kg": 0.00056671,
+          "scenario_fit_score": 0.410228175408308,
+          "rank": 3
+        },
+        {
+          "framework": "EvoAutoML",
+          "accuracy": 0.75,
+          "runtime_sec": 15.41,
+          "energy_kwh": 0.00148,
+          "co2_kg": 0.00061672,
+          "scenario_fit_score": 0.2734854502722054,
+          "rank": 4
+        },
+        {
+          "framework": "AutoStreamML",
+          "accuracy": 0.716,
+          "runtime_sec": 18.31,
+          "energy_kwh": 0.00172,
+          "co2_kg": 0.00071672,
+          "scenario_fit_score": 0.0,
+          "rank": 5
+        }
+      ],
+      "evidence_contract": "Researcher-constructed study reference table supplied to the explanation generator. Authoritative within this task only; not an independent external source or a measured run on the textual scenario.",
+      "objective_weights": {
+        "Accuracy": 0.3333333333333333,
+        "Runtime": 0.3333333333333333,
+        "Energy": 0.3333333333333333
+      },
+      "normalization": "within-table min-max, inverted for costs; equal weight for selected objectives",
+      "scope": "Only Accuracy, Runtime, Energy and CO2 can enter the ranking. Other scenario requirements have not been assessed."
+    }
+  },
+  {
+    "scenario_id": "G072",
+    "scenario_text": "Rescue crews should be directed to the right building section within moments after an earthquake, even when drones must remain aloft on limited batteries. The onboard search service needs dependable victim indications, quick scene interpretation, and restrained processor use so aircraft can keep surveying instead of returning early to recharge.",
+    "domain": "Post-earthquake drone search",
+    "framework_context": "AutoClass",
+    "source_name": "Conversational decision explanation",
+    "prompt": "Assess the explanation supporting the displayed framework recommendation using this reference table and these study objectives: Accuracy + Runtime + Energy.",
+    "recommendation": "Use AutoClass for the objectives included in this task.",
+    "recommended_framework": "AutoClass",
+    "explanation": "The displayed score supports this framework choice. AutoClass has scenario-fit score 1.000, rank #1, based on accuracy 0.858, runtime 14.85 s, energy 0.000892 kWh. This conclusion applies to the stated study task and reference table.",
+    "reference_evidence": {
+      "scenario": {
+        "benchmark_id": "V2-040",
+        "scenario_id": "G072",
+        "text": "Rescue crews should be directed to the right building section within moments after an earthquake, even when drones must remain aloft on limited batteries. The onboard search service needs dependable victim indications, quick scene interpretation, and restrained processor use so aircraft can keep surveying instead of returning early to recharge.",
+        "domain": "Post-earthquake drone search",
+        "track1_ground_truth_objectives": [
+          "Accuracy",
+          "Runtime",
+          "Energy"
+        ],
+        "source": "Track-1 scenario benchmark"
+      },
+      "scenario_objectives": [
+        "Accuracy",
+        "Runtime",
+        "Energy"
+      ],
+      "framework_context": "AutoClass",
+      "explanation_type": "Conversational decision explanation",
+      "frameworks": [
+        {
+          "framework": "AutoClass",
+          "accuracy": 0.858,
+          "runtime_sec": 8.35,
+          "energy_kwh": 0.000892,
+          "co2_kg": 0.0003717,
+          "scenario_fit_score": 1.0,
+          "rank": 1
+        },
+        {
+          "framework": "ChaCha",
+          "accuracy": 0.784,
+          "runtime_sec": 12.51,
+          "energy_kwh": 0.00124,
+          "co2_kg": 0.00051671,
+          "scenario_fit_score": 0.5469709005444108,
+          "rank": 2
+        },
+        {
+          "framework": "OAML",
+          "accuracy": 0.767,
+          "runtime_sec": 13.96,
+          "energy_kwh": 0.00136,
+          "co2_kg": 0.00056671,
+          "scenario_fit_score": 0.410228175408308,
+          "rank": 3
+        },
+        {
+          "framework": "EvoAutoML",
+          "accuracy": 0.75,
+          "runtime_sec": 15.41,
+          "energy_kwh": 0.00148,
+          "co2_kg": 0.00061672,
+          "scenario_fit_score": 0.2734854502722054,
+          "rank": 4
+        },
+        {
+          "framework": "AutoStreamML",
+          "accuracy": 0.716,
+          "runtime_sec": 18.31,
+          "energy_kwh": 0.00172,
+          "co2_kg": 0.00071672,
+          "scenario_fit_score": 0.0,
+          "rank": 5
+        }
+      ],
+      "evidence_contract": "Researcher-constructed study reference table supplied to the explanation generator. Authoritative within this task only; not an independent external source or a measured run on the textual scenario.",
+      "objective_weights": {
+        "Accuracy": 0.3333333333333333,
+        "Runtime": 0.3333333333333333,
+        "Energy": 0.3333333333333333
+      },
+      "normalization": "within-table min-max, inverted for costs; equal weight for selected objectives",
+      "scope": "Only Accuracy, Runtime, Energy and CO2 can enter the ranking. Other scenario requirements have not been assessed."
+    }
+  },
+  {
+    "scenario_id": "G122",
+    "scenario_text": "Inside an ambulance, the ECG assistant has to give crews a dependable warning while there is still time to act, yet it runs on the same portable unit used for the rest of the trip. Long transfers and spotty charging mean it cannot burn through the device battery just to respond faster.",
+    "domain": "Emergency medical transport",
+    "framework_context": "EvoAutoML",
+    "source_name": "Conversational decision explanation",
+    "prompt": "Assess the explanation supporting the displayed framework recommendation using this reference table and these study objectives: Accuracy + Runtime + Energy.",
+    "recommendation": "Use EvoAutoML for the objectives included in this task.",
+    "recommended_framework": "EvoAutoML",
+    "explanation": "The displayed score supports this framework choice. EvoAutoML has scenario-fit score 1.000, rank #1, based on accuracy 0.860, runtime 8.53 s, energy 0.000904 kWh. This conclusion applies to the stated study task and reference table.",
+    "reference_evidence": {
+      "scenario": {
+        "benchmark_id": "V2-041",
+        "scenario_id": "G122",
+        "text": "Inside an ambulance, the ECG assistant has to give crews a dependable warning while there is still time to act, yet it runs on the same portable unit used for the rest of the trip. Long transfers and spotty charging mean it cannot burn through the device battery just to respond faster.",
+        "domain": "Emergency medical transport",
+        "track1_ground_truth_objectives": [
+          "Accuracy",
+          "Runtime",
+          "Energy"
+        ],
+        "source": "Track-1 scenario benchmark"
+      },
+      "scenario_objectives": [
+        "Accuracy",
+        "Runtime",
+        "Energy"
+      ],
+      "framework_context": "EvoAutoML",
+      "explanation_type": "Conversational decision explanation",
+      "frameworks": [
+        {
+          "framework": "EvoAutoML",
+          "accuracy": 0.86,
+          "runtime_sec": 8.53,
+          "energy_kwh": 0.000904,
+          "co2_kg": 0.0003767,
+          "scenario_fit_score": 1.0,
+          "rank": 1
+        },
+        {
+          "framework": "ChaCha",
+          "accuracy": 0.785,
+          "runtime_sec": 12.62,
+          "energy_kwh": 0.00125,
+          "co2_kg": 0.00052088,
+          "scenario_fit_score": 0.5476964125144963,
+          "rank": 2
+        },
+        {
+          "framework": "OAML",
+          "accuracy": 0.768,
+          "runtime_sec": 14.07,
+          "energy_kwh": 0.00137,
+          "co2_kg": 0.00057088,
+          "scenario_fit_score": 0.4107723093858722,
+          "rank": 3
+        },
+        {
+          "framework": "AutoClass",
+          "accuracy": 0.734,
+          "runtime_sec": 16.97,
+          "energy_kwh": 0.00161,
+          "co2_kg": 0.00067089,
+          "scenario_fit_score": 0.1369241031286241,
+          "rank": 4
+        },
+        {
+          "framework": "AutoStreamML",
+          "accuracy": 0.717,
+          "runtime_sec": 18.42,
+          "energy_kwh": 0.00173,
+          "co2_kg": 0.00072089,
+          "scenario_fit_score": 0.0,
+          "rank": 5
+        }
+      ],
+      "evidence_contract": "Researcher-constructed study reference table supplied to the explanation generator. Authoritative within this task only; not an independent external source or a measured run on the textual scenario.",
+      "objective_weights": {
+        "Accuracy": 0.3333333333333333,
+        "Runtime": 0.3333333333333333,
+        "Energy": 0.3333333333333333
+      },
+      "normalization": "within-table min-max, inverted for costs; equal weight for selected objectives",
+      "scope": "Only Accuracy, Runtime, Energy and CO2 can enter the ranking. Other scenario requirements have not been assessed."
+    }
+  },
+  {
+    "scenario_id": "G122",
+    "scenario_text": "Inside an ambulance, the ECG assistant has to give crews a dependable warning while there is still time to act, yet it runs on the same portable unit used for the rest of the trip. Long transfers and spotty charging mean it cannot burn through the device battery just to respond faster.",
+    "domain": "Emergency medical transport",
+    "framework_context": "EvoAutoML",
+    "source_name": "Conversational decision explanation",
+    "prompt": "Assess the explanation supporting the displayed framework recommendation using this reference table and these study objectives: Accuracy + Runtime + Energy.",
+    "recommendation": "Use EvoAutoML for the objectives included in this task.",
+    "recommended_framework": "EvoAutoML",
+    "explanation": "The displayed score supports this framework choice. EvoAutoML has scenario-fit score 1.000, rank #1, based on accuracy 0.860, runtime 8.53 s, energy 0.001627 kWh. This conclusion applies to the stated study task and reference table.",
+    "reference_evidence": {
+      "scenario": {
+        "benchmark_id": "V2-041",
+        "scenario_id": "G122",
+        "text": "Inside an ambulance, the ECG assistant has to give crews a dependable warning while there is still time to act, yet it runs on the same portable unit used for the rest of the trip. Long transfers and spotty charging mean it cannot burn through the device battery just to respond faster.",
+        "domain": "Emergency medical transport",
+        "track1_ground_truth_objectives": [
+          "Accuracy",
+          "Runtime",
+          "Energy"
+        ],
+        "source": "Track-1 scenario benchmark"
+      },
+      "scenario_objectives": [
+        "Accuracy",
+        "Runtime",
+        "Energy"
+      ],
+      "framework_context": "EvoAutoML",
+      "explanation_type": "Conversational decision explanation",
+      "frameworks": [
+        {
+          "framework": "EvoAutoML",
+          "accuracy": 0.86,
+          "runtime_sec": 8.53,
+          "energy_kwh": 0.000904,
+          "co2_kg": 0.0003767,
+          "scenario_fit_score": 1.0,
+          "rank": 1
+        },
+        {
+          "framework": "ChaCha",
+          "accuracy": 0.785,
+          "runtime_sec": 12.62,
+          "energy_kwh": 0.00125,
+          "co2_kg": 0.00052088,
+          "scenario_fit_score": 0.5476964125144963,
+          "rank": 2
+        },
+        {
+          "framework": "OAML",
+          "accuracy": 0.768,
+          "runtime_sec": 14.07,
+          "energy_kwh": 0.00137,
+          "co2_kg": 0.00057088,
+          "scenario_fit_score": 0.4107723093858722,
+          "rank": 3
+        },
+        {
+          "framework": "AutoClass",
+          "accuracy": 0.734,
+          "runtime_sec": 16.97,
+          "energy_kwh": 0.00161,
+          "co2_kg": 0.00067089,
+          "scenario_fit_score": 0.1369241031286241,
+          "rank": 4
+        },
+        {
+          "framework": "AutoStreamML",
+          "accuracy": 0.717,
+          "runtime_sec": 18.42,
+          "energy_kwh": 0.00173,
+          "co2_kg": 0.00072089,
+          "scenario_fit_score": 0.0,
+          "rank": 5
+        }
+      ],
+      "evidence_contract": "Researcher-constructed study reference table supplied to the explanation generator. Authoritative within this task only; not an independent external source or a measured run on the textual scenario.",
+      "objective_weights": {
+        "Accuracy": 0.3333333333333333,
+        "Runtime": 0.3333333333333333,
+        "Energy": 0.3333333333333333
+      },
+      "normalization": "within-table min-max, inverted for costs; equal weight for selected objectives",
+      "scope": "Only Accuracy, Runtime, Energy and CO2 can enter the ranking. Other scenario requirements have not been assessed."
+    }
+  },
+  {
+    "scenario_id": "G030",
+    "scenario_text": "An insurer is preparing a storm-response service that prioritizes incoming property claims for adjusters. The ordering should be dependable and available while field teams are still allocating visits, and large cloud processing jobs should use lower-impact regions or periods when that does not delay the response.",
+    "domain": "Insurance operations",
+    "framework_context": "OAML",
+    "source_name": "Conversational decision explanation",
+    "prompt": "Assess the explanation supporting the displayed framework recommendation using this reference table and these study objectives: Accuracy + Runtime + CO2.",
+    "recommendation": "Use OAML for the objectives included in this task.",
+    "recommended_framework": "OAML",
+    "explanation": "The displayed score supports this framework choice. OAML has scenario-fit score 1.000, rank #1, based on accuracy 0.862, runtime 8.71 s, CO₂ 0.00037600 kg. This conclusion applies to the stated study task and reference table.",
+    "reference_evidence": {
+      "scenario": {
+        "benchmark_id": "V2-042",
+        "scenario_id": "G030",
+        "text": "An insurer is preparing a storm-response service that prioritizes incoming property claims for adjusters. The ordering should be dependable and available while field teams are still allocating visits, and large cloud processing jobs should use lower-impact regions or periods when that does not delay the response.",
+        "domain": "Insurance operations",
+        "track1_ground_truth_objectives": [
+          "Accuracy",
+          "Runtime",
+          "CO2"
+        ],
+        "source": "Track-1 scenario benchmark"
+      },
+      "scenario_objectives": [
+        "Accuracy",
+        "Runtime",
+        "CO2"
+      ],
+      "framework_context": "OAML",
+      "explanation_type": "Conversational decision explanation",
+      "frameworks": [
+        {
+          "framework": "OAML",
+          "accuracy": 0.862,
+          "runtime_sec": 8.71,
+          "energy_kwh": 0.001038,
+          "co2_kg": 0.000376,
+          "scenario_fit_score": 1.0,
+          "rank": 1
+        },
+        {
+          "framework": "ChaCha",
+          "accuracy": 0.786,
+          "runtime_sec": 12.73,
+          "energy_kwh": 0.00126,
+          "co2_kg": 0.00052504,
+          "scenario_fit_score": 0.5452927605597337,
+          "rank": 2
+        },
+        {
+          "framework": "EvoAutoML",
+          "accuracy": 0.752,
+          "runtime_sec": 15.63,
+          "energy_kwh": 0.0015,
+          "co2_kg": 0.00062505,
+          "scenario_fit_score": 0.2726463802798668,
+          "rank": 3
+        },
+        {
+          "framework": "AutoClass",
+          "accuracy": 0.735,
+          "runtime_sec": 17.08,
+          "energy_kwh": 0.00162,
+          "co2_kg": 0.00067505,
+          "scenario_fit_score": 0.13632796486825155,
+          "rank": 4
+        },
+        {
+          "framework": "AutoStreamML",
+          "accuracy": 0.718,
+          "runtime_sec": 18.53,
+          "energy_kwh": 0.00174,
+          "co2_kg": 0.00072506,
+          "scenario_fit_score": 0.0,
+          "rank": 5
+        }
+      ],
+      "evidence_contract": "Researcher-constructed study reference table supplied to the explanation generator. Authoritative within this task only; not an independent external source or a measured run on the textual scenario.",
+      "objective_weights": {
+        "Accuracy": 0.3333333333333333,
+        "Runtime": 0.3333333333333333,
+        "CO2": 0.3333333333333333
+      },
+      "normalization": "within-table min-max, inverted for costs; equal weight for selected objectives",
+      "scope": "Only Accuracy, Runtime, Energy and CO2 can enter the ranking. Other scenario requirements have not been assessed."
+    }
+  },
+  {
+    "scenario_id": "G030",
+    "scenario_text": "An insurer is preparing a storm-response service that prioritizes incoming property claims for adjusters. The ordering should be dependable and available while field teams are still allocating visits, and large cloud processing jobs should use lower-impact regions or periods when that does not delay the response.",
+    "domain": "Insurance operations",
+    "framework_context": "OAML",
+    "source_name": "Conversational decision explanation",
+    "prompt": "Assess the explanation supporting the displayed framework recommendation using this reference table and these study objectives: Accuracy + Runtime + CO2.",
+    "recommendation": "Use OAML for the objectives included in this task.",
+    "recommended_framework": "OAML",
+    "explanation": "The displayed score supports this framework choice. OAML has scenario-fit score 1.000, rank #1, based on accuracy 0.692, runtime 8.71 s, CO₂ 0.00037600 kg. This conclusion applies to the stated study task and reference table.",
+    "reference_evidence": {
+      "scenario": {
+        "benchmark_id": "V2-042",
+        "scenario_id": "G030",
+        "text": "An insurer is preparing a storm-response service that prioritizes incoming property claims for adjusters. The ordering should be dependable and available while field teams are still allocating visits, and large cloud processing jobs should use lower-impact regions or periods when that does not delay the response.",
+        "domain": "Insurance operations",
+        "track1_ground_truth_objectives": [
+          "Accuracy",
+          "Runtime",
+          "CO2"
+        ],
+        "source": "Track-1 scenario benchmark"
+      },
+      "scenario_objectives": [
+        "Accuracy",
+        "Runtime",
+        "CO2"
+      ],
+      "framework_context": "OAML",
+      "explanation_type": "Conversational decision explanation",
+      "frameworks": [
+        {
+          "framework": "OAML",
+          "accuracy": 0.862,
+          "runtime_sec": 8.71,
+          "energy_kwh": 0.001038,
+          "co2_kg": 0.000376,
+          "scenario_fit_score": 1.0,
+          "rank": 1
+        },
+        {
+          "framework": "ChaCha",
+          "accuracy": 0.786,
+          "runtime_sec": 12.73,
+          "energy_kwh": 0.00126,
+          "co2_kg": 0.00052504,
+          "scenario_fit_score": 0.5452927605597337,
+          "rank": 2
+        },
+        {
+          "framework": "EvoAutoML",
+          "accuracy": 0.752,
+          "runtime_sec": 15.63,
+          "energy_kwh": 0.0015,
+          "co2_kg": 0.00062505,
+          "scenario_fit_score": 0.2726463802798668,
+          "rank": 3
+        },
+        {
+          "framework": "AutoClass",
+          "accuracy": 0.735,
+          "runtime_sec": 17.08,
+          "energy_kwh": 0.00162,
+          "co2_kg": 0.00067505,
+          "scenario_fit_score": 0.13632796486825155,
+          "rank": 4
+        },
+        {
+          "framework": "AutoStreamML",
+          "accuracy": 0.718,
+          "runtime_sec": 18.53,
+          "energy_kwh": 0.00174,
+          "co2_kg": 0.00072506,
+          "scenario_fit_score": 0.0,
+          "rank": 5
+        }
+      ],
+      "evidence_contract": "Researcher-constructed study reference table supplied to the explanation generator. Authoritative within this task only; not an independent external source or a measured run on the textual scenario.",
+      "objective_weights": {
+        "Accuracy": 0.3333333333333333,
+        "Runtime": 0.3333333333333333,
+        "CO2": 0.3333333333333333
+      },
+      "normalization": "within-table min-max, inverted for costs; equal weight for selected objectives",
+      "scope": "Only Accuracy, Runtime, Energy and CO2 can enter the ranking. Other scenario requirements have not been assessed."
+    }
+  },
+  {
+    "scenario_id": "G076",
+    "scenario_text": "A warehouse robot should stop or reroute before a worker steps into its path, while still completing a full shift between charges. Its onboard perception must distinguish people and obstacles dependably, react within the safety window, and avoid sustained heavy computation that shortens operating time.",
+    "domain": "Collaborative warehouse robotics",
+    "framework_context": "ChaCha",
+    "source_name": "Conversational decision explanation",
+    "prompt": "Assess the explanation supporting the displayed framework recommendation using this reference table and these study objectives: Accuracy + Runtime + Energy.",
+    "recommendation": "Use ChaCha for the objectives included in this task.",
+    "recommended_framework": "ChaCha",
+    "explanation": "The displayed score supports this framework choice. ChaCha has scenario-fit score 1.000, rank #1, based on accuracy 0.864, runtime 8.89 s, energy 0.000928 kWh. This conclusion applies to the stated study task and reference table.",
+    "reference_evidence": {
+      "scenario": {
+        "benchmark_id": "V2-043",
+        "scenario_id": "G076",
+        "text": "A warehouse robot should stop or reroute before a worker steps into its path, while still completing a full shift between charges. Its onboard perception must distinguish people and obstacles dependably, react within the safety window, and avoid sustained heavy computation that shortens operating time.",
+        "domain": "Collaborative warehouse robotics",
+        "track1_ground_truth_objectives": [
+          "Accuracy",
+          "Runtime",
+          "Energy"
+        ],
+        "source": "Track-1 scenario benchmark"
+      },
+      "scenario_objectives": [
+        "Accuracy",
+        "Runtime",
+        "Energy"
+      ],
+      "framework_context": "ChaCha",
+      "explanation_type": "Conversational decision explanation",
+      "frameworks": [
+        {
+          "framework": "ChaCha",
+          "accuracy": 0.864,
+          "runtime_sec": 8.89,
+          "energy_kwh": 0.000928,
+          "co2_kg": 0.0003867,
+          "scenario_fit_score": 1.0,
+          "rank": 1
+        },
+        {
+          "framework": "OAML",
+          "accuracy": 0.77,
+          "runtime_sec": 14.29,
+          "energy_kwh": 0.00139,
+          "co2_kg": 0.00057921,
+          "scenario_fit_score": 0.4119447294881477,
+          "rank": 2
+        },
+        {
+          "framework": "EvoAutoML",
+          "accuracy": 0.753,
+          "runtime_sec": 15.74,
+          "energy_kwh": 0.00151,
+          "co2_kg": 0.00062922,
+          "scenario_fit_score": 0.2746298196587651,
+          "rank": 3
+        },
+        {
+          "framework": "AutoClass",
+          "accuracy": 0.736,
+          "runtime_sec": 17.19,
+          "energy_kwh": 0.00163,
+          "co2_kg": 0.00067922,
+          "scenario_fit_score": 0.13731490982938255,
+          "rank": 4
+        },
+        {
+          "framework": "AutoStreamML",
+          "accuracy": 0.719,
+          "runtime_sec": 18.64,
+          "energy_kwh": 0.00175,
+          "co2_kg": 0.00072923,
+          "scenario_fit_score": 0.0,
+          "rank": 5
+        }
+      ],
+      "evidence_contract": "Researcher-constructed study reference table supplied to the explanation generator. Authoritative within this task only; not an independent external source or a measured run on the textual scenario.",
+      "objective_weights": {
+        "Accuracy": 0.3333333333333333,
+        "Runtime": 0.3333333333333333,
+        "Energy": 0.3333333333333333
+      },
+      "normalization": "within-table min-max, inverted for costs; equal weight for selected objectives",
+      "scope": "Only Accuracy, Runtime, Energy and CO2 can enter the ranking. Other scenario requirements have not been assessed."
+    }
+  },
+  {
+    "scenario_id": "G076",
+    "scenario_text": "A warehouse robot should stop or reroute before a worker steps into its path, while still completing a full shift between charges. Its onboard perception must distinguish people and obstacles dependably, react within the safety window, and avoid sustained heavy computation that shortens operating time.",
+    "domain": "Collaborative warehouse robotics",
+    "framework_context": "ChaCha",
+    "source_name": "Conversational decision explanation",
+    "prompt": "Assess the explanation supporting the displayed framework recommendation using this reference table and these study objectives: Accuracy + Runtime + Energy.",
+    "recommendation": "Use ChaCha for the objectives included in this task.",
+    "recommended_framework": "ChaCha",
+    "explanation": "The displayed score supports this framework choice. ChaCha has scenario-fit score 1.000, rank #1, based on accuracy 0.864, runtime 15.39 s, energy 0.000928 kWh. This conclusion applies to the stated study task and reference table.",
+    "reference_evidence": {
+      "scenario": {
+        "benchmark_id": "V2-043",
+        "scenario_id": "G076",
+        "text": "A warehouse robot should stop or reroute before a worker steps into its path, while still completing a full shift between charges. Its onboard perception must distinguish people and obstacles dependably, react within the safety window, and avoid sustained heavy computation that shortens operating time.",
+        "domain": "Collaborative warehouse robotics",
+        "track1_ground_truth_objectives": [
+          "Accuracy",
+          "Runtime",
+          "Energy"
+        ],
+        "source": "Track-1 scenario benchmark"
+      },
+      "scenario_objectives": [
+        "Accuracy",
+        "Runtime",
+        "Energy"
+      ],
+      "framework_context": "ChaCha",
+      "explanation_type": "Conversational decision explanation",
+      "frameworks": [
+        {
+          "framework": "ChaCha",
+          "accuracy": 0.864,
+          "runtime_sec": 8.89,
+          "energy_kwh": 0.000928,
+          "co2_kg": 0.0003867,
+          "scenario_fit_score": 1.0,
+          "rank": 1
+        },
+        {
+          "framework": "OAML",
+          "accuracy": 0.77,
+          "runtime_sec": 14.29,
+          "energy_kwh": 0.00139,
+          "co2_kg": 0.00057921,
+          "scenario_fit_score": 0.4119447294881477,
+          "rank": 2
+        },
+        {
+          "framework": "EvoAutoML",
+          "accuracy": 0.753,
+          "runtime_sec": 15.74,
+          "energy_kwh": 0.00151,
+          "co2_kg": 0.00062922,
+          "scenario_fit_score": 0.2746298196587651,
+          "rank": 3
+        },
+        {
+          "framework": "AutoClass",
+          "accuracy": 0.736,
+          "runtime_sec": 17.19,
+          "energy_kwh": 0.00163,
+          "co2_kg": 0.00067922,
+          "scenario_fit_score": 0.13731490982938255,
+          "rank": 4
+        },
+        {
+          "framework": "AutoStreamML",
+          "accuracy": 0.719,
+          "runtime_sec": 18.64,
+          "energy_kwh": 0.00175,
+          "co2_kg": 0.00072923,
+          "scenario_fit_score": 0.0,
+          "rank": 5
+        }
+      ],
+      "evidence_contract": "Researcher-constructed study reference table supplied to the explanation generator. Authoritative within this task only; not an independent external source or a measured run on the textual scenario.",
+      "objective_weights": {
+        "Accuracy": 0.3333333333333333,
+        "Runtime": 0.3333333333333333,
+        "Energy": 0.3333333333333333
+      },
+      "normalization": "within-table min-max, inverted for costs; equal weight for selected objectives",
+      "scope": "Only Accuracy, Runtime, Energy and CO2 can enter the ranking. Other scenario requirements have not been assessed."
+    }
+  }
+]

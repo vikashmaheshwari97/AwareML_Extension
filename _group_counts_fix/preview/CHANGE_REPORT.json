@@ -1,0 +1,54 @@
+{
+  "is_synthetic": true,
+  "eligible_for_main_study": false,
+  "purpose": "Generated case composition update only",
+  "source_sha256": "c52501343b313ff144d11cdbf493f3f4af22b98efcd26383ef7e86fba95d3b93",
+  "before_counts": {
+    "ML / AutoML expert": 13,
+    "University / CS student": 14,
+    "Practitioner": 7
+  },
+  "after_counts": {
+    "ML / AutoML expert": 15,
+    "University / CS student": 7,
+    "Practitioner": 12
+  },
+  "reassigned_cases": [
+    {
+      "participant_code": "DEMO_P012",
+      "before": "University / CS student",
+      "after": "Practitioner"
+    },
+    {
+      "participant_code": "DEMO_P016",
+      "before": "University / CS student",
+      "after": "Practitioner"
+    },
+    {
+      "participant_code": "DEMO_P024",
+      "before": "University / CS student",
+      "after": "Practitioner"
+    },
+    {
+      "participant_code": "DEMO_P026",
+      "before": "University / CS student",
+      "after": "Practitioner"
+    },
+    {
+      "participant_code": "DEMO_P028",
+      "before": "University / CS student",
+      "after": "Practitioner"
+    },
+    {
+      "participant_code": "DEMO_P029",
+      "before": "University / CS student",
+      "after": "ML / AutoML expert"
+    },
+    {
+      "participant_code": "DEMO_P032",
+      "before": "University / CS student",
+      "after": "ML / AutoML expert"
+    }
+  ],
+  "ratings_decisions_arms_events_retained": true
+}

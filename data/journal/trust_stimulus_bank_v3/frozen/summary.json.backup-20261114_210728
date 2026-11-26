@@ -1,0 +1,9 @@
+{
+  "matched_pairs": 20,
+  "stimuli": 40,
+  "scenario_subset": 20,
+  "full_scenario_bank": 60,
+  "recommendation_correct_in_both_conditions": true,
+  "manipulation": "one numerical explanation claim only",
+  "human_explanation_review": "pending; no assessor evidence fabricated"
+}
