@@ -275,3 +275,8 @@ artifacts/phase16/private_mainstudy_runtime.json
 /tests/test_recommender_nested_expander_hotfix_v1_3_2_replacement.py
 /tests/test_responsible_ai_observatory_visual_hotfix_v6_4.py
 /tests/test_temporal_xai_hotfix_v3_1.py
+
+# Local upgrade reports and manuscript review notes
+/MANIFEST.json
+/source_review_comments.json
+/validation_results.json
