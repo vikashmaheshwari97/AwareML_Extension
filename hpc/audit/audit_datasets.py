@@ -17,7 +17,7 @@ MANIFEST = ROOT / "data/meta/manifests/train_v1_47.yaml"
 
 REGISTRY = ROOT / "data/meta/registry/datasets_v1_47.yaml"
 
-DATA_DIR = ROOT / "data/stream_datasets"
+DATA_DIR = ROOT / "data/Supplementary Data/stream_datasets"
 
 OUT = ROOT / "hpc/audit/dataset_audit_preview.tsv"
 

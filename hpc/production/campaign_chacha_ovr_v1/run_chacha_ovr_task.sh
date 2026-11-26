@@ -70,7 +70,7 @@ esac
 
 
 
-DATA="$ROOT/data/stream_datasets/$file_name"
+DATA="$ROOT/data/Supplementary Data/stream_datasets/$file_name"
 
 
 

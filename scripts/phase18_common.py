@@ -17,7 +17,7 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG_PATH = ROOT / "configs" / "phase18_final_heldout_31.json"
 INVENTORY_PATH = ROOT / "configs" / "phase18_dataset_inventory_31.csv"
-DATASET_DIR = ROOT / "data" / "Testing Datasets"
+DATASET_DIR = ROOT / "data" / "Supplementary Data" / "External Evaluation Dataset"
 WORK_DIR = ROOT / "data" / "journal" / "phase18_final_heldout_31_v1"
 PREFLIGHT_DIR = WORK_DIR / "preflight"
 FROZEN_DIR = WORK_DIR / "frozen"

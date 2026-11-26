@@ -18,13 +18,13 @@ def source_inventory(root=ROOT):
     registry = yaml.safe_load((root / "data/meta/registry/datasets_v1_47_audited.yaml").read_text())
     rows = []
     for item in registry["datasets"]:
-        rows.append({"dataset_id": item["dataset_id"], "path": str(root / "data/stream_datasets" / item["file_name"]),
+        rows.append({"dataset_id": item["dataset_id"], "path": str(root / "data/Supplementary Data/stream_datasets" / item["file_name"]),
                      "target": item["target"], "cohort": "dev", "task_policy": "native_classification",
                      "dataset_family": item.get("family") or "unknown", "source_type": item.get("source_type") or "unknown",
                      "drift_type": item.get("drift_type") or "unknown", "sensitive_attribute": ""})
     inventory = pd.read_csv(root / "configs/phase18_dataset_inventory_31.csv", keep_default_na=False)
     for item in inventory.to_dict("records"):
-        rows.append({"dataset_id": item["dataset_id"], "path": str(root / "data/Testing Datasets" / item["filename"]),
+        rows.append({"dataset_id": item["dataset_id"], "path": str(root / "data/Supplementary Data/External Evaluation Dataset" / item["filename"]),
                      "target": item["target"], "cohort": "eval", "task_policy": item["task_policy"],
                      **{key: item.get(key) or "unknown" for key in METADATA},
                      "sensitive_attribute": item.get("sensitive_attribute") or ""})

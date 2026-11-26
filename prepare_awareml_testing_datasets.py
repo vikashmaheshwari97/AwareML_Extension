@@ -21,7 +21,7 @@ It creates two versions of each dataset:
    - phase boundaries and modifications are recorded in JSON
 
 Outputs are written to:
-    data/Testing Datasets/AwareML_Ready/
+    data/Supplementary Data/External Evaluation Dataset/AwareML_Ready/
 
 Typical usage from the AwareML_Extension project root:
 
@@ -30,8 +30,8 @@ Typical usage from the AwareML_Extension project root:
 or:
 
     python scripts/prepare_awareml_testing_datasets.py ^
-        --input-dir "data/Testing Datasets" ^
-        --output-dir "data/Testing Datasets/AwareML_Ready"
+        --input-dir "data/Supplementary Data/External Evaluation Dataset" ^
+        --output-dir "data/Supplementary Data/External Evaluation Dataset/AwareML_Ready"
 
 Requirements:
     pandas

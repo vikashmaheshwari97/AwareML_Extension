@@ -9,8 +9,8 @@ AwareML is an interactive system for transparent, controllable and sustainable s
 | `app.py` | Main Streamlit dashboard |
 | `awareml/` | Framework adapters, streaming execution, recommenders, analysis, workspaces and study support |
 | `configs/` | Experiment configurations and dataset inventories |
-| `data/stream_datasets/` | Development stream datasets |
-| `data/Testing Datasets/` | External evaluation and application testing datasets |
+| `data/Supplementary Data/stream_datasets/` | Development stream datasets |
+| `data/Supplementary Data/External Evaluation Dataset/` | External evaluation and application testing datasets |
 | `data/journal/` | Scenario benchmarks, annotations, study designs and research evidence |
 | `data/meta/` | Versioned recommender assets and metadata |
 | `prompts/` | Language-model prompt resources |

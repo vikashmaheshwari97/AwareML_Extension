@@ -4,7 +4,7 @@
   "protocol_id": "phase18_final_heldout_31_v1",
   "reference_repository": "vikashmaheshwari97/AwareML_Extension",
   "reference_commit": "25f8a226335428252c500e22c48d233e876ac2c4",
-  "dataset_directory": "data/Testing Datasets",
+  "dataset_directory": "data/Supplementary Data/External Evaluation Dataset",
   "dataset_inventory": "configs/phase18_dataset_inventory_31.csv",
   "excluded_from_primary": [
     {
