@@ -46,7 +46,7 @@ Some native dependencies require platform build tools. Install the required comp
 Clone the repository and select the branch containing the current application:
 
 ```powershell
-git clone --branch upgrade/stream-protocol-v3 https://github.com/vikashmaheshwari97/AwareML_Extension.git
+git clone --branch main https://github.com/vikashmaheshwari97/AwareML_Extension.git
 cd AwareML_Extension
 ```
 
